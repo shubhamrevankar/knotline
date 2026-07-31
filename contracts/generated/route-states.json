@@ -1,0 +1,151 @@
+{
+  "entries": [
+    {
+      "alwaysRequired": [
+        "first load",
+        "content/render failure fallback",
+        "offline/cached-or-unavailable",
+        "unsupported locale",
+        "404"
+      ],
+      "conditional": [
+        "consent",
+        "stale/version notice",
+        "degraded status feed"
+      ],
+      "normallyNotApplicable": [
+        "workspace unauthorized",
+        "plan gate",
+        "edit conflict",
+        "archived resource"
+      ],
+      "routeClass": "static_public"
+    },
+    {
+      "alwaysRequired": [
+        "loading/pending",
+        "success",
+        "validation",
+        "empty result",
+        "retryable/final error",
+        "rate limit",
+        "offline",
+        "404"
+      ],
+      "conditional": [
+        "provider degraded",
+        "consent/challenge",
+        "expired/replayed token",
+        "partial result"
+      ],
+      "normallyNotApplicable": [
+        "workspace archive unless invitation targets one"
+      ],
+      "routeClass": "public_async"
+    },
+    {
+      "alwaysRequired": [
+        "loading/skeleton",
+        "first-use empty",
+        "filtered empty",
+        "partial page",
+        "refresh/stale",
+        "error/retry",
+        "unauthorized",
+        "session expired",
+        "plan/limit",
+        "offline",
+        "404"
+      ],
+      "conditional": [
+        "degraded dependency",
+        "bulk pending/partial",
+        "archived scope"
+      ],
+      "normallyNotApplicable": [
+        "edit conflict unless saved-view mutation"
+      ],
+      "routeClass": "protected_collection"
+    },
+    {
+      "alwaysRequired": [
+        "loading",
+        "success",
+        "stale refresh",
+        "error",
+        "unauthorized",
+        "session expired",
+        "plan/limit",
+        "offline",
+        "missing/deleted"
+      ],
+      "conditional": [
+        "partial/degraded dependency",
+        "archived/suspended",
+        "async action pending/result",
+        "conflict for mutable fields"
+      ],
+      "normallyNotApplicable": [
+        "empty only when the resource legitimately has no children"
+      ],
+      "routeClass": "protected_detail"
+    },
+    {
+      "alwaysRequired": [
+        "loading",
+        "draft/saving/saved",
+        "validation",
+        "pending",
+        "success",
+        "error",
+        "conflict",
+        "unauthorized",
+        "plan/limit",
+        "offline",
+        "stale",
+        "missing/deleted",
+        "destructive confirm"
+      ],
+      "conditional": [
+        "partial/degraded dependency",
+        "archived/suspended",
+        "step-up",
+        "policy denial"
+      ],
+      "normallyNotApplicable": [
+        "none without recorded reason"
+      ],
+      "routeClass": "editor_form_settings"
+    },
+    {
+      "alwaysRequired": [
+        "connecting/live",
+        "reconnecting",
+        "stale",
+        "polling fallback",
+        "partial history",
+        "pending action",
+        "success/error",
+        "unauthorized",
+        "plan/policy",
+        "offline",
+        "missing",
+        "terminal"
+      ],
+      "conditional": [
+        "degraded provider",
+        "uncertain/reconciling",
+        "kill/throttle",
+        "expired",
+        "archived"
+      ],
+      "normallyNotApplicable": [
+        "edit conflict only for truly immutable views"
+      ],
+      "routeClass": "live_operator"
+    }
+  ],
+  "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
+  "planDigest": "sha256:2d5a5a71365fa03169b00a30f4dee979cadb8d47be6a847a6851faecc38cc41b",
+  "schemaVersion": 1
+}

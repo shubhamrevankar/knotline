@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M01",
+  "rows": [
+    {
+      "name": "format:check",
+      "status": "ACTIVE",
+      "script": "format:check",
+      "declarationRow": "format"
+    },
+    { "name": "lint", "status": "ACTIVE", "script": "lint", "declarationRow": "lint" },
+    {
+      "name": "typecheck",
+      "status": "ACTIVE",
+      "script": "typecheck",
+      "declarationRow": "strict type"
+    },
+    {
+      "name": "test:unit",
+      "status": "ACTIVE",
+      "script": "test:unit",
+      "declarationRow": "unit coverage",
+      "requiredTestFiles": [
+        "apps/**/src/**/*.test.{ts,tsx}",
+        "packages/**/src/**/*.test.{ts,tsx}",
+        "scripts/**/*.test.ts"
+      ]
+    },
+    {
+      "name": "test:contracts",
+      "status": "ACTIVE",
+      "script": "test:contracts",
+      "requiredTestFiles": ["tooling/quality/*.test.mjs", "tooling/gate/*.test.mjs"]
+    },
+    { "name": "build", "status": "ACTIVE", "script": "build", "declarationRow": "build" },
+    {
+      "name": "verify:reproducible-build",
+      "status": "ACTIVE",
+      "script": "verify:reproducible-build"
+    },
+    {
+      "name": "verify:brand",
+      "status": "ACTIVE",
+      "script": "verify:brand",
+      "declarationRow": "brand/provenance guard"
+    },
+    {
+      "name": "verify:boundaries",
+      "status": "ACTIVE",
+      "script": "verify:boundaries",
+      "declarationRow": "package boundaries"
+    },
+    { "name": "verify:openapi", "status": "ACTIVE", "script": "verify:openapi" },
+    { "name": "verify:events", "status": "ACTIVE", "script": "verify:events" },
+    {
+      "name": "verify:contracts",
+      "status": "ACTIVE",
+      "script": "verify:contracts",
+      "declarationRow": "docs validation"
+    },
+    {
+      "name": "verify:evidence",
+      "status": "ACTIVE",
+      "script": "verify:evidence",
+      "declarationRow": "evidence"
+    },
+    {
+      "name": "verify:licenses",
+      "status": "ACTIVE",
+      "script": "verify:licenses",
+      "declarationRow": "license"
+    },
+    {
+      "name": "verify:secrets",
+      "status": "ACTIVE",
+      "script": "verify:secrets",
+      "declarationRow": "secret"
+    },
+    {
+      "name": "verify:dependencies",
+      "status": "ACTIVE",
+      "script": "verify:dependencies",
+      "declarationRow": "dependency"
+    },
+    {
+      "name": "verify:containers",
+      "status": "ACTIVE",
+      "script": "verify:containers"
+    },
+    {
+      "name": "test:property",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M06"
+    },
+    {
+      "name": "test:db",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M03"
+    },
+    {
+      "name": "test:integration",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M03"
+    },
+    {
+      "name": "test:rls",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M03"
+    },
+    {
+      "name": "test:contract",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M22"
+    },
+    {
+      "name": "test:api",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M06"
+    },
+    {
+      "name": "test:e2e",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M02"
+    },
+    {
+      "name": "verify:localization",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M02"
+    },
+    {
+      "name": "test:a11y",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M02"
+    },
+    {
+      "name": "test:visual",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M02"
+    },
+    {
+      "name": "test:security",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M04"
+    },
+    {
+      "name": "test:evals",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M15"
+    },
+    {
+      "name": "verify:migrations",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M03"
+    },
+    {
+      "name": "verify:iac",
+      "status": "NOT_YET_APPLICABLE",
+      "activationMilestone": "M34"
+    }
+  ]
+}

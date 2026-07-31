@@ -2056,6 +2056,12 @@ Every implemented operation carries exactly one OpenAPI extension:
 provider_callback | standards | platform_operator_auth | platform_operator`.
 CI fails an unclassified operation or a namespace/exposure mismatch.
 
+The load-balancer liveness and readiness probes at `/health` and `/ready` are
+private infrastructure endpoints, not product API operations. They are omitted
+from product OpenAPI documents and the exposure taxonomy, contain no tenant or
+customer data, and are reachable only from the orchestrator/load-balancer
+network boundary. Their response schemas and container behavior remain tested.
+
 | Exposure | Namespace/host | Authentication | Compatibility |
 |---|---|---|---|
 | Public anonymous edge | App edge `/edge/v1/*` | Narrow operation-specific challenge, one-time token, state, origin, or no credential as declared; never an ambient workspace session requirement | Additive request contract for published forms/auth; aggressive abuse and privacy controls |
@@ -5393,7 +5399,7 @@ explicit demo fallback.
 
 ### M01 — Engineering quality system and implementation contract
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M00\
 **Required commit:** `chore: establish the verified Knotline engineering system`
 
@@ -9191,7 +9197,7 @@ must appear in that milestone's boundary cell.
 | Milestone | Engineering | Environment | External gates at production boundary | Required final commit / evidence |
 |---|---|---|---|---|
 | M00 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `c1a2f16`; baseline verification |
-| M01 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `chore: establish the verified Knotline engineering system` |
+| M01 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `chore: establish the verified Knotline engineering system` |
 | M02 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-001 | `feat: deliver the responsive Knotline product shell` |
 | M03 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-002 | `feat: persist Knotline data with enforced tenant isolation` |
 | M04 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006, EXT-007 | `feat: add secure passwordless and Google authentication` |

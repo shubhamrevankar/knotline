@@ -1,0 +1,1165 @@
+{
+  "entries": [
+    {
+      "id": "route.public.home",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M02",
+      "path": "/",
+      "requiredSurface": "Product narrative, interactive example, use cases, proof, CTA",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.accessibility",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/accessibility",
+      "requiredSurface": "Current accessibility statement and contact path",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.app",
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "ownerMilestone": "M28",
+      "path": "/app",
+      "requiredSurface": "Role-aware operations home",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.2"
+    },
+    {
+      "id": "route.app.agents",
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "ownerMilestone": "M14",
+      "path": "/app/agents",
+      "requiredSurface": "Agent catalog, status, health, usage",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.5"
+    },
+    {
+      "id": "route.app.agents.detail",
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "ownerMilestone": "M14",
+      "path": "/app/agents/:agentId",
+      "requiredSurface": "Definition overview and versions",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.5"
+    },
+    {
+      "id": "route.app.agents.detail.activity",
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "ownerMilestone": "M18",
+      "path": "/app/agents/:agentId/activity",
+      "requiredSurface": "Invocations, quality, latency, cost, failures",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.5"
+    },
+    {
+      "id": "route.app.agents.detail.builder",
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "ownerMilestone": "M14",
+      "path": "/app/agents/:agentId/builder",
+      "requiredSurface": "Instructions, schemas, model, retrieval, tools, budgets",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.5"
+    },
+    {
+      "id": "route.app.agents.detail.evals",
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "ownerMilestone": "M18",
+      "path": "/app/agents/:agentId/evals",
+      "requiredSurface": "Datasets, runs, comparisons, release gates",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.5"
+    },
+    {
+      "id": "route.app.agents.detail.memory",
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "ownerMilestone": "M17",
+      "path": "/app/agents/:agentId/memory",
+      "requiredSurface": "Permitted memory policies, records, uses, and workspace-shared administration",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.5"
+    },
+    {
+      "id": "route.app.agents.new",
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "ownerMilestone": "M14",
+      "path": "/app/agents/new",
+      "requiredSurface": "Guided agent creation",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.5"
+    },
+    {
+      "id": "route.app.analytics",
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "ownerMilestone": "M28",
+      "path": "/app/analytics",
+      "requiredSurface": "Operational analytics",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.analytics.reports.detail",
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "ownerMilestone": "M28",
+      "path": "/app/analytics/reports/:reportId",
+      "requiredSurface": "Report detail and export",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.approvals",
+      "journeyIds": [
+        "CJ-09"
+      ],
+      "ownerMilestone": "M13",
+      "path": "/app/approvals",
+      "requiredSurface": "Approval queue",
+      "routeClass": "live_operator",
+      "sourceSection": "5.4"
+    },
+    {
+      "id": "route.app.approvals.detail",
+      "journeyIds": [
+        "CJ-09"
+      ],
+      "ownerMilestone": "M13",
+      "path": "/app/approvals/:approvalId",
+      "requiredSurface": "Exact payload, policy, evidence, decision",
+      "routeClass": "live_operator",
+      "sourceSection": "5.4"
+    },
+    {
+      "id": "route.app.connections",
+      "journeyIds": [
+        "CJ-13.FRAMEWORK"
+      ],
+      "ownerMilestone": "M22",
+      "path": "/app/connections",
+      "requiredSurface": "Integration catalog and connected accounts",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.connections.detail",
+      "journeyIds": [
+        "CJ-13.FRAMEWORK"
+      ],
+      "ownerMilestone": "M22",
+      "path": "/app/connections/:integrationId",
+      "requiredSurface": "Health, scopes, syncs, webhooks, actions",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.connections.new.detail",
+      "journeyIds": [
+        "CJ-13.FRAMEWORK"
+      ],
+      "ownerMilestone": "M22",
+      "path": "/app/connections/new/:provider",
+      "requiredSurface": "Authorization/setup",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.developer.api",
+      "journeyIds": [
+        "CJ-18"
+      ],
+      "ownerMilestone": "M30",
+      "path": "/app/developer/api",
+      "requiredSurface": "Interactive workspace API documentation",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.developer.apps",
+      "journeyIds": [
+        "CJ-18"
+      ],
+      "ownerMilestone": "M30",
+      "path": "/app/developer/apps",
+      "requiredSurface": "OAuth clients, credentials, scopes, and consent configuration",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.developer.webhooks",
+      "journeyIds": [
+        "CJ-18"
+      ],
+      "ownerMilestone": "M30",
+      "path": "/app/developer/webhooks",
+      "requiredSurface": "Public webhook subscriptions, tests, logs, and redelivery",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.feedback",
+      "journeyIds": [
+        "CJ-22"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/app/feedback",
+      "requiredSurface": "Product, citation-quality, accessibility, and unsafe-output report",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.2"
+    },
+    {
+      "id": "route.app.inbox",
+      "journeyIds": [
+        "CJ-08",
+        "CJ-09"
+      ],
+      "ownerMilestone": "M12",
+      "path": "/app/inbox",
+      "requiredSurface": "Unified tasks, approvals, mentions, and exceptions",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.2"
+    },
+    {
+      "id": "route.app.knowledge",
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "ownerMilestone": "M21",
+      "path": "/app/knowledge",
+      "requiredSurface": "Source and corpus overview",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.5"
+    },
+    {
+      "id": "route.app.knowledge.documents.detail",
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "ownerMilestone": "M19",
+      "path": "/app/knowledge/documents/:documentId",
+      "requiredSurface": "Versions, parse, permissions, citations",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.5"
+    },
+    {
+      "id": "route.app.knowledge.entities",
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "ownerMilestone": "M21",
+      "path": "/app/knowledge/entities",
+      "requiredSurface": "Entity explorer",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.5"
+    },
+    {
+      "id": "route.app.knowledge.entities.detail",
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "ownerMilestone": "M21",
+      "path": "/app/knowledge/entities/:entityId",
+      "requiredSurface": "Attributes, relations, provenance",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.5"
+    },
+    {
+      "id": "route.app.knowledge.search",
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "ownerMilestone": "M20",
+      "path": "/app/knowledge/search",
+      "requiredSurface": "Hybrid search debugger",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.5"
+    },
+    {
+      "id": "route.app.knowledge.sources",
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "ownerMilestone": "M19",
+      "path": "/app/knowledge/sources",
+      "requiredSurface": "Files and connected sources",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.5"
+    },
+    {
+      "id": "route.app.notifications",
+      "journeyIds": [
+        "CJ-15"
+      ],
+      "ownerMilestone": "M27",
+      "path": "/app/notifications",
+      "requiredSurface": "Notification center",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.2"
+    },
+    {
+      "id": "route.app.onboarding",
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "ownerMilestone": "M05",
+      "path": "/app/onboarding",
+      "requiredSurface": "Resumable activation flow",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.2"
+    },
+    {
+      "id": "route.app.profile",
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "ownerMilestone": "M04",
+      "path": "/app/profile",
+      "requiredSurface": "Profile, locale, accessibility, and notification preferences",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.2"
+    },
+    {
+      "id": "route.app.profile.memory",
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "ownerMilestone": "M17",
+      "path": "/app/profile/memory",
+      "requiredSurface": "User-private agent memory, provenance, correction, export, and deletion",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.2"
+    },
+    {
+      "id": "route.app.profile.sessions",
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "ownerMilestone": "M04",
+      "path": "/app/profile/sessions",
+      "requiredSurface": "Session inventory and revocation",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.2"
+    },
+    {
+      "id": "route.app.runs",
+      "journeyIds": [
+        "CJ-07"
+      ],
+      "ownerMilestone": "M11",
+      "path": "/app/runs",
+      "requiredSurface": "Filterable run operations table",
+      "routeClass": "live_operator",
+      "sourceSection": "5.4"
+    },
+    {
+      "id": "route.app.runs.detail",
+      "journeyIds": [
+        "CJ-07"
+      ],
+      "ownerMilestone": "M11",
+      "path": "/app/runs/:runId",
+      "requiredSurface": "Live run room",
+      "routeClass": "live_operator",
+      "sourceSection": "5.4"
+    },
+    {
+      "id": "route.app.runs.detail.tasks.detail",
+      "journeyIds": [
+        "CJ-07"
+      ],
+      "ownerMilestone": "M11",
+      "path": "/app/runs/:runId/tasks/:taskRunId",
+      "requiredSurface": "Task, attempts, inputs, outputs, provenance",
+      "routeClass": "live_operator",
+      "sourceSection": "5.4"
+    },
+    {
+      "id": "route.app.runs.detail.timeline",
+      "journeyIds": [
+        "CJ-07"
+      ],
+      "ownerMilestone": "M11",
+      "path": "/app/runs/:runId/timeline",
+      "requiredSurface": "Complete sequenced history",
+      "routeClass": "live_operator",
+      "sourceSection": "5.4"
+    },
+    {
+      "id": "route.app.search",
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "ownerMilestone": "M28",
+      "path": "/app/search",
+      "requiredSurface": "Permission-aware global search",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.2"
+    },
+    {
+      "id": "route.app.settings.audit",
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "ownerMilestone": "M31",
+      "path": "/app/settings/audit",
+      "requiredSurface": "Audit explorer and exports",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.billing",
+      "journeyIds": [
+        "CJ-17"
+      ],
+      "ownerMilestone": "M29",
+      "path": "/app/settings/billing",
+      "requiredSurface": "Plan, payment, usage, invoices",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.data",
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "ownerMilestone": "M31",
+      "path": "/app/settings/data",
+      "requiredSurface": "Retention, export, deletion, residency",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.developers",
+      "journeyIds": [
+        "CJ-18"
+      ],
+      "ownerMilestone": "M30",
+      "path": "/app/settings/developers",
+      "requiredSurface": "Service principals, API credentials, OAuth clients",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.feature-access",
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "ownerMilestone": "M34",
+      "path": "/app/settings/feature-access",
+      "requiredSurface": "Connector/model/agent allowlists and kill switches",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.identity",
+      "journeyIds": [
+        "CJ-04"
+      ],
+      "ownerMilestone": "M32",
+      "path": "/app/settings/identity",
+      "requiredSurface": "SSO, domains, SCIM, JIT, and enterprise sessions",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.members",
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "ownerMilestone": "M05",
+      "path": "/app/settings/members",
+      "requiredSurface": "Members, invitations, groups",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.notifications",
+      "journeyIds": [
+        "CJ-15"
+      ],
+      "ownerMilestone": "M27",
+      "path": "/app/settings/notifications",
+      "requiredSurface": "Workspace notification and escalation defaults",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.policies",
+      "journeyIds": [
+        "CJ-04",
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "ownerMilestone": "M32",
+      "path": "/app/settings/policies",
+      "requiredSurface": "Model, connector, memory, sharing, telemetry, and support policies",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.roles",
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "ownerMilestone": "M05",
+      "path": "/app/settings/roles",
+      "requiredSurface": "System and custom roles",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.security",
+      "journeyIds": [
+        "CJ-04"
+      ],
+      "ownerMilestone": "M32",
+      "path": "/app/settings/security",
+      "requiredSurface": "Sessions, domains, SSO, SCIM, policies",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.support-access",
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "ownerMilestone": "M31",
+      "path": "/app/settings/support-access",
+      "requiredSurface": "Customer-authorized and emergency support access history",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.usage",
+      "journeyIds": [
+        "CJ-17"
+      ],
+      "ownerMilestone": "M29",
+      "path": "/app/settings/usage",
+      "requiredSurface": "Meter and cost explorer",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.webhooks",
+      "journeyIds": [
+        "CJ-18"
+      ],
+      "ownerMilestone": "M30",
+      "path": "/app/settings/webhooks",
+      "requiredSurface": "Outgoing webhooks and delivery logs",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.settings.workspace",
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "ownerMilestone": "M05",
+      "path": "/app/settings/workspace",
+      "requiredSurface": "Name, region, defaults",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.6"
+    },
+    {
+      "id": "route.app.support",
+      "journeyIds": [
+        "CJ-22"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/app/support",
+      "requiredSurface": "Support cases, service targets, status, and new request",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.2"
+    },
+    {
+      "id": "route.app.support.detail",
+      "journeyIds": [
+        "CJ-22"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/app/support/:ticketId",
+      "requiredSurface": "Ticket messages, attachments, diagnostics, and resolution",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.2"
+    },
+    {
+      "id": "route.app.tasks",
+      "journeyIds": [
+        "CJ-08"
+      ],
+      "ownerMilestone": "M12",
+      "path": "/app/tasks",
+      "requiredSurface": "Human task list and saved views",
+      "routeClass": "live_operator",
+      "sourceSection": "5.4"
+    },
+    {
+      "id": "route.app.tasks.detail",
+      "journeyIds": [
+        "CJ-08"
+      ],
+      "ownerMilestone": "M12",
+      "path": "/app/tasks/:taskRunId",
+      "requiredSurface": "Task form, context, comments, artifacts",
+      "routeClass": "live_operator",
+      "sourceSection": "5.4"
+    },
+    {
+      "id": "route.app.templates",
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "ownerMilestone": "M06",
+      "path": "/app/templates",
+      "requiredSurface": "Workspace and first-party templates",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.3"
+    },
+    {
+      "id": "route.app.templates.detail",
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "ownerMilestone": "M06",
+      "path": "/app/templates/:templateId",
+      "requiredSurface": "Template editor, versions, usage",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.3"
+    },
+    {
+      "id": "route.app.workflows",
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "ownerMilestone": "M06",
+      "path": "/app/workflows",
+      "requiredSurface": "Library, folders, tags, filters, bulk actions",
+      "routeClass": "protected_collection",
+      "sourceSection": "5.3"
+    },
+    {
+      "id": "route.app.workflows.detail",
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "ownerMilestone": "M06",
+      "path": "/app/workflows/:workflowId",
+      "requiredSurface": "Overview, health, versions, runs",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.3"
+    },
+    {
+      "id": "route.app.workflows.detail.settings",
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "ownerMilestone": "M06",
+      "path": "/app/workflows/:workflowId/settings",
+      "requiredSurface": "Ownership, permissions, retention, archive/delete",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.3"
+    },
+    {
+      "id": "route.app.workflows.detail.studio",
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "ownerMilestone": "M07",
+      "path": "/app/workflows/:workflowId/studio",
+      "requiredSurface": "Graph editor and accessible outline",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.3"
+    },
+    {
+      "id": "route.app.workflows.detail.triggers",
+      "journeyIds": [
+        "CJ-14"
+      ],
+      "ownerMilestone": "M26",
+      "path": "/app/workflows/:workflowId/triggers",
+      "requiredSurface": "Manual, schedule, webhook, event, API triggers",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.3"
+    },
+    {
+      "id": "route.app.workflows.detail.versions",
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "ownerMilestone": "M06",
+      "path": "/app/workflows/:workflowId/versions",
+      "requiredSurface": "Immutable version history",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.3"
+    },
+    {
+      "id": "route.app.workflows.detail.versions.detail",
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "ownerMilestone": "M06",
+      "path": "/app/workflows/:workflowId/versions/:version",
+      "requiredSurface": "Read-only version and diff entry",
+      "routeClass": "protected_detail",
+      "sourceSection": "5.3"
+    },
+    {
+      "id": "route.app.workflows.new",
+      "journeyIds": [
+        "CJ-06"
+      ],
+      "ownerMilestone": "M08",
+      "path": "/app/workflows/new",
+      "requiredSurface": "Blank, prompt, import, or template creation",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.3"
+    },
+    {
+      "id": "route.auth.check-email",
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "ownerMilestone": "M04",
+      "path": "/auth/check-email",
+      "requiredSurface": "Non-enumerating email confirmation",
+      "routeClass": "public_async",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.auth.google.callback",
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "ownerMilestone": "M04",
+      "path": "/auth/google/callback",
+      "requiredSurface": "OIDC callback and clean redirect",
+      "routeClass": "public_async",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.auth.magic.callback",
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "ownerMilestone": "M04",
+      "path": "/auth/magic/callback",
+      "requiredSurface": "One-time exchange and clean redirect",
+      "routeClass": "public_async",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.auth.sign-in",
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "ownerMilestone": "M04",
+      "path": "/auth/sign-in",
+      "requiredSurface": "Magic-link and Google sign-in",
+      "routeClass": "public_async",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.changelog",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M02",
+      "path": "/changelog",
+      "requiredSurface": "Versioned product changes",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.contact",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/contact",
+      "requiredSurface": "Sales/contact workflow",
+      "routeClass": "editor_form_settings",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.docs",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M02",
+      "path": "/docs",
+      "requiredSurface": "Product and API documentation home",
+      "routeClass": "public_async",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.docs.wildcard",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M02",
+      "path": "/docs/*",
+      "requiredSurface": "Searchable documentation pages",
+      "routeClass": "public_async",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.guest",
+      "journeyIds": [
+        "CJ-20"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/guest",
+      "requiredSurface": "Asset-isolated scoped guest-token exchange followed by task, approval, or resource surface",
+      "routeClass": "public_async",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.help",
+      "journeyIds": [
+        "CJ-22"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/help",
+      "requiredSurface": "Versioned product help, troubleshooting, and support entry",
+      "routeClass": "public_async",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.help.wildcard",
+      "journeyIds": [
+        "CJ-22"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/help/*",
+      "requiredSurface": "Searchable localized help articles",
+      "routeClass": "public_async",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.invitations.accept",
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "ownerMilestone": "M05",
+      "path": "/invitations/accept",
+      "requiredSurface": "Asset-isolated invitation token exchange, preview, and acceptance",
+      "routeClass": "public_async",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.legal.acceptable-use",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/legal/acceptable-use",
+      "requiredSurface": "Acceptable-use and prohibited-use policy",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.legal.dpa",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/legal/dpa",
+      "requiredSurface": "Data processing terms",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.legal.privacy",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/legal/privacy",
+      "requiredSurface": "Privacy notice",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.legal.subprocessors",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/legal/subprocessors",
+      "requiredSurface": "Current subprocessor list and change process",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.legal.terms",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/legal/terms",
+      "requiredSurface": "Terms of service",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.ops",
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "ownerMilestone": "M34",
+      "path": "/ops",
+      "requiredSurface": "Fleet health, active incidents, SLO burn, deploys, and safe global controls",
+      "routeClass": "live_operator",
+      "sourceSection": "5.7"
+    },
+    {
+      "id": "route.ops.incidents",
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "ownerMilestone": "M34",
+      "path": "/ops/incidents",
+      "requiredSurface": "Incident lifecycle, roles, timeline, status communication, and post-incident evidence",
+      "routeClass": "live_operator",
+      "sourceSection": "5.7"
+    },
+    {
+      "id": "route.ops.privacy",
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "ownerMilestone": "M31",
+      "path": "/ops/privacy",
+      "requiredSurface": "Export/delete/hold/retention/residency cases and failed propagation",
+      "routeClass": "live_operator",
+      "sourceSection": "5.7"
+    },
+    {
+      "id": "route.ops.providers",
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "ownerMilestone": "M34",
+      "path": "/ops/providers",
+      "requiredSurface": "Model/tool/connector/email/billing health, limits, credentials state, and kill switches",
+      "routeClass": "live_operator",
+      "sourceSection": "5.7"
+    },
+    {
+      "id": "route.ops.releases",
+      "journeyIds": [
+        "CJ-23.PRODUCTION"
+      ],
+      "ownerMilestone": "M37",
+      "path": "/ops/releases",
+      "requiredSurface": "Artifacts, flags, canaries, migrations, health gates, rollback, and evidence",
+      "routeClass": "live_operator",
+      "sourceSection": "5.7"
+    },
+    {
+      "id": "route.ops.runtime",
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "ownerMilestone": "M34",
+      "path": "/ops/runtime",
+      "requiredSurface": "Queues, Temporal, outbox, stuck work, DLQ, reconciler, and audited repair",
+      "routeClass": "live_operator",
+      "sourceSection": "5.7"
+    },
+    {
+      "id": "route.ops.security",
+      "journeyIds": [
+        "CJ-23.SECURITY"
+      ],
+      "ownerMilestone": "M35",
+      "path": "/ops/security",
+      "requiredSurface": "Risk events, access review, secret/key/certificate rotation, and break-glass review",
+      "routeClass": "live_operator",
+      "sourceSection": "5.7"
+    },
+    {
+      "id": "route.ops.support",
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "ownerMilestone": "M34",
+      "path": "/ops/support",
+      "requiredSurface": "Support queues, entitlements, assignment, SLA, and customer-visible messages",
+      "routeClass": "live_operator",
+      "sourceSection": "5.7"
+    },
+    {
+      "id": "route.ops.workspaces.detail",
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "ownerMilestone": "M34",
+      "path": "/ops/workspaces/:workspaceId",
+      "requiredSurface": "Safe metadata, support-access request/session, throttles, and diagnostics",
+      "routeClass": "live_operator",
+      "sourceSection": "5.7"
+    },
+    {
+      "id": "route.pricing",
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "ownerMilestone": "M29",
+      "path": "/pricing",
+      "requiredSurface": "Plans, limits, FAQ, enterprise contact",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.product",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M02",
+      "path": "/product",
+      "requiredSurface": "Complete product overview",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.product.agents",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M02",
+      "path": "/product/agents",
+      "requiredSurface": "Agent foundry and governed execution",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.product.integrations",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M02",
+      "path": "/product/integrations",
+      "requiredSurface": "Searchable supported connector catalog",
+      "routeClass": "public_async",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.product.knowledge",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M02",
+      "path": "/product/knowledge",
+      "requiredSurface": "Connected knowledge and provenance",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.product.workflows",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M02",
+      "path": "/product/workflows",
+      "requiredSurface": "Workflow studio and runtime",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.security",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M02",
+      "path": "/security",
+      "requiredSurface": "Security architecture and controls",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.solutions.detail",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M02",
+      "path": "/solutions/:solution",
+      "requiredSurface": "Operations, go-to-market, product, support, finance, HR, IT",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.status",
+      "journeyIds": [
+        "CJ-22"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/status",
+      "requiredSurface": "Link or embedded public status",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.templates",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M02",
+      "path": "/templates",
+      "requiredSurface": "Public template gallery",
+      "routeClass": "public_async",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.templates.detail",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M02",
+      "path": "/templates/:slug",
+      "requiredSurface": "Template detail and preview",
+      "routeClass": "public_async",
+      "sourceSection": "5.1"
+    },
+    {
+      "id": "route.trust",
+      "journeyIds": [
+        "CJ-01"
+      ],
+      "ownerMilestone": "M33",
+      "path": "/trust",
+      "requiredSurface": "Availability, subprocessors, policies, and reports",
+      "routeClass": "static_public",
+      "sourceSection": "5.1"
+    }
+  ],
+  "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
+  "planDigest": "sha256:2d5a5a71365fa03169b00a30f4dee979cadb8d47be6a847a6851faecc38cc41b",
+  "schemaVersion": 1
+}

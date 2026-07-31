@@ -1,0 +1,437 @@
+{
+  "entries": [
+    {
+      "activationMilestones": [
+        "M01"
+      ],
+      "capability": "Format",
+      "id": "format"
+    },
+    {
+      "activationMilestones": [
+        "M01"
+      ],
+      "capability": "lint",
+      "id": "lint"
+    },
+    {
+      "activationMilestones": [
+        "M01"
+      ],
+      "capability": "strict type",
+      "id": "strict-type"
+    },
+    {
+      "activationMilestones": [
+        "M01"
+      ],
+      "capability": "unit coverage",
+      "id": "unit-coverage"
+    },
+    {
+      "activationMilestones": [
+        "M01"
+      ],
+      "capability": "build",
+      "id": "build"
+    },
+    {
+      "activationMilestones": [
+        "M01"
+      ],
+      "capability": "brand/provenance guard",
+      "id": "brand-provenance-guard"
+    },
+    {
+      "activationMilestones": [
+        "M01"
+      ],
+      "capability": "package boundaries",
+      "id": "package-boundaries"
+    },
+    {
+      "activationMilestones": [
+        "M01"
+      ],
+      "capability": "license",
+      "id": "license"
+    },
+    {
+      "activationMilestones": [
+        "M01"
+      ],
+      "capability": "dependency",
+      "id": "dependency"
+    },
+    {
+      "activationMilestones": [
+        "M01"
+      ],
+      "capability": "secret",
+      "id": "secret"
+    },
+    {
+      "activationMilestones": [
+        "M01"
+      ],
+      "capability": "evidence",
+      "id": "evidence"
+    },
+    {
+      "activationMilestones": [
+        "M01"
+      ],
+      "capability": "docs validation",
+      "id": "docs-validation"
+    },
+    {
+      "activationMilestones": [
+        "M02"
+      ],
+      "capability": "Browser E2E",
+      "id": "browser-e2e"
+    },
+    {
+      "activationMilestones": [
+        "M02"
+      ],
+      "capability": "automated accessibility",
+      "id": "automated-accessibility"
+    },
+    {
+      "activationMilestones": [
+        "M02"
+      ],
+      "capability": "responsive/visual regression",
+      "id": "responsive-visual-regression"
+    },
+    {
+      "activationMilestones": [
+        "M02"
+      ],
+      "capability": "bundle and Web Vitals smoke",
+      "id": "bundle-and-web-vitals-smoke"
+    },
+    {
+      "activationMilestones": [
+        "M03"
+      ],
+      "capability": "Real PostgreSQL integration",
+      "id": "real-postgresql-integration"
+    },
+    {
+      "activationMilestones": [
+        "M03",
+        "M37"
+      ],
+      "capability": "migration",
+      "id": "migration"
+    },
+    {
+      "activationMilestones": [
+        "M03"
+      ],
+      "capability": "RLS/tenant isolation",
+      "id": "rls-tenant-isolation"
+    },
+    {
+      "activationMilestones": [
+        "M03"
+      ],
+      "capability": "query plan",
+      "id": "query-plan"
+    },
+    {
+      "activationMilestones": [
+        "M03"
+      ],
+      "capability": "backup smoke",
+      "id": "backup-smoke"
+    },
+    {
+      "activationMilestones": [
+        "M04"
+      ],
+      "capability": "Auth/session/CSRF/CORS/abuse security suite",
+      "id": "auth-session-csrf-cors-abuse-security-suite"
+    },
+    {
+      "activationMilestones": [
+        "M06"
+      ],
+      "capability": "Workflow schema/property",
+      "id": "workflow-schema-property"
+    },
+    {
+      "activationMilestones": [
+        "M06"
+      ],
+      "capability": "API/OpenAPI",
+      "id": "api-openapi"
+    },
+    {
+      "activationMilestones": [
+        "M06"
+      ],
+      "capability": "event compatibility",
+      "id": "event-compatibility"
+    },
+    {
+      "activationMilestones": [
+        "M10"
+      ],
+      "capability": "Temporal replay/restart/concurrency/idempotency",
+      "id": "temporal-replay-restart-concurrency-idempotency"
+    },
+    {
+      "activationMilestones": [
+        "M10"
+      ],
+      "capability": "outbox/DLQ",
+      "id": "outbox-dlq"
+    },
+    {
+      "activationMilestones": [
+        "M10"
+      ],
+      "capability": "runtime load-lite",
+      "id": "runtime-load-lite"
+    },
+    {
+      "activationMilestones": [
+        "M10"
+      ],
+      "capability": "kill/repair smoke",
+      "id": "kill-repair-smoke"
+    },
+    {
+      "activationMilestones": [
+        "M12"
+      ],
+      "capability": "Restricted task/comment attachment upload",
+      "id": "restricted-task-comment-attachment-upload"
+    },
+    {
+      "activationMilestones": [
+        "M12"
+      ],
+      "capability": "checksum/quota",
+      "id": "checksum-quota"
+    },
+    {
+      "activationMilestones": [
+        "M12"
+      ],
+      "capability": "quarantine/malware",
+      "id": "quarantine-malware"
+    },
+    {
+      "activationMilestones": [
+        "M12"
+      ],
+      "capability": "authorization",
+      "id": "authorization"
+    },
+    {
+      "activationMilestones": [
+        "M12"
+      ],
+      "capability": "download",
+      "id": "download"
+    },
+    {
+      "activationMilestones": [
+        "M12"
+      ],
+      "capability": "and lifecycle gate",
+      "id": "and-lifecycle-gate"
+    },
+    {
+      "activationMilestones": [
+        "M15"
+      ],
+      "capability": "Model contract/live-sandbox gate",
+      "id": "model-contract-live-sandbox-gate"
+    },
+    {
+      "activationMilestones": [
+        "M15"
+      ],
+      "capability": "structured output",
+      "id": "structured-output"
+    },
+    {
+      "activationMilestones": [
+        "M15"
+      ],
+      "capability": "evaluation smoke",
+      "id": "evaluation-smoke"
+    },
+    {
+      "activationMilestones": [
+        "M15"
+      ],
+      "capability": "AI usage/cost and kill switch",
+      "id": "ai-usage-cost-and-kill-switch"
+    },
+    {
+      "activationMilestones": [
+        "M16"
+      ],
+      "capability": "Tool/credential/SSRF/sandbox security",
+      "id": "tool-credential-ssrf-sandbox-security"
+    },
+    {
+      "activationMilestones": [
+        "M18"
+      ],
+      "capability": "Full agent evaluation",
+      "id": "full-agent-evaluation"
+    },
+    {
+      "activationMilestones": [
+        "M18"
+      ],
+      "capability": "release/canary/rollback",
+      "id": "release-canary-rollback"
+    },
+    {
+      "activationMilestones": [
+        "M19"
+      ],
+      "capability": "File malware/parser/object lifecycle",
+      "id": "file-malware-parser-object-lifecycle"
+    },
+    {
+      "activationMilestones": [
+        "M20"
+      ],
+      "capability": "Retrieval quality/ACL/citation/performance",
+      "id": "retrieval-quality-acl-citation-performance"
+    },
+    {
+      "activationMilestones": [
+        "M22"
+      ],
+      "capability": "Connector contract/OAuth/webhook/sync fixture suites",
+      "id": "connector-contract-oauth-webhook-sync-fixture-suites"
+    },
+    {
+      "activationMilestones": [
+        "M23",
+        "M24",
+        "M25"
+      ],
+      "capability": "Each named provider’s real sandbox certification row",
+      "id": "each-named-provider-s-real-sandbox-certification-row"
+    },
+    {
+      "activationMilestones": [
+        "M27"
+      ],
+      "capability": "Notification delivery/render/access-recheck",
+      "id": "notification-delivery-render-access-recheck"
+    },
+    {
+      "activationMilestones": [
+        "M29"
+      ],
+      "capability": "Billing/entitlement/ledger/Stripe sandbox",
+      "id": "billing-entitlement-ledger-stripe-sandbox"
+    },
+    {
+      "activationMilestones": [
+        "M31"
+      ],
+      "capability": "Privacy/export/delete/retention/hold/restore-deletion",
+      "id": "privacy-export-delete-retention-hold-restore-deletion"
+    },
+    {
+      "activationMilestones": [
+        "M32"
+      ],
+      "capability": "SSO/SCIM/policy/residency/migration",
+      "id": "sso-scim-policy-residency-migration"
+    },
+    {
+      "activationMilestones": [
+        "M33"
+      ],
+      "capability": "Complete browser/device/locale/PWA/guest/support/manual AT matrix",
+      "id": "complete-browser-device-locale-pwa-guest-support-manual-at-matrix"
+    },
+    {
+      "activationMilestones": [
+        "M34"
+      ],
+      "capability": "AWS staging Terraform/fresh deploy/canary/rollback plus workforce operator identity",
+      "id": "aws-staging-terraform-fresh-deploy-canary-rollback-plus-workforce-operator-identity"
+    },
+    {
+      "activationMilestones": [
+        "M34"
+      ],
+      "capability": "trace/redaction/SLI/alert/runbook/kill/game-day",
+      "id": "trace-redaction-sli-alert-runbook-kill-game-day"
+    },
+    {
+      "activationMilestones": [
+        "M35"
+      ],
+      "capability": "SAST/DAST/IaC/container/SBOM/signature/penetration evidence",
+      "id": "sast-dast-iac-container-sbom-signature-penetration-evidence"
+    },
+    {
+      "activationMilestones": [
+        "M36"
+      ],
+      "capability": "Section 4.2 full load/soak/chaos/backup/restore/DR profiles",
+      "id": "section-4-2-full-load-soak-chaos-backup-restore-dr-profiles"
+    },
+    {
+      "activationMilestones": [
+        "M37"
+      ],
+      "capability": "Terraform",
+      "id": "terraform"
+    },
+    {
+      "activationMilestones": [
+        "M37"
+      ],
+      "capability": "fresh bootstrap",
+      "id": "fresh-bootstrap"
+    },
+    {
+      "activationMilestones": [
+        "M37"
+      ],
+      "capability": "deployment",
+      "id": "deployment"
+    },
+    {
+      "activationMilestones": [
+        "M37"
+      ],
+      "capability": "canary",
+      "id": "canary"
+    },
+    {
+      "activationMilestones": [
+        "M37"
+      ],
+      "capability": "rollback",
+      "id": "rollback"
+    },
+    {
+      "activationMilestones": [
+        "M38"
+      ],
+      "capability": "Every gate row above and every external gate in GA scope; zero gate-row N/A/skip/quarantine. Reasoned route-state NOT_APPLICABLE remains governed by Section 5.8",
+      "id": "every-gate-row-above-and-every-external-gate-in-ga-scope-zero-gate-row-n-a-skip-quarantine-reasoned-route-state-not-applicable-remains-governed-by-section-5-8"
+    }
+  ],
+  "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
+  "planDigest": "sha256:2d5a5a71365fa03169b00a30f4dee979cadb8d47be6a847a6851faecc38cc41b",
+  "schemaVersion": 1
+}

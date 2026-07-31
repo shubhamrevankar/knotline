@@ -1,0 +1,38 @@
+{
+  "name": "@knotline/testing",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./clock": {
+      "types": "./dist/clock.d.ts",
+      "default": "./dist/clock.js"
+    },
+    "./fixtures": {
+      "types": "./dist/fixtures.d.ts",
+      "default": "./dist/fixtures.js"
+    },
+    "./ids": {
+      "types": "./dist/ids.d.ts",
+      "default": "./dist/ids.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint src --max-warnings 0",
+    "test": "vitest run src",
+    "test:unit": "vitest run src",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

@@ -1,0 +1,13 @@
+**/coverage/
+**/dist/
+**/node_modules/
+**/*.tsbuildinfo
+.git/
+.pnpm-store/
+artifacts/
+contracts/generated/
+packages/contracts/generated/
+docs/
+pnpm-lock.yaml
+test/fixtures/
+apps/web/src/__lint_fixtures__/

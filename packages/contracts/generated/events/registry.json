@@ -1,0 +1,185 @@
+{
+  "registryVersion": 1,
+  "envelope": {
+    "schemaVersion": 1,
+    "compatibility": "BACKWARD",
+    "schema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "pattern": "^evt_[A-Za-z0-9]+$"
+        },
+        "eventType": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$"
+        },
+        "eventVersion": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+        },
+        "workspaceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "aggregateType": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "actor": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "user",
+                "agent",
+                "service",
+                "operator",
+                "system"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            }
+          },
+          "required": [
+            "type",
+            "id"
+          ],
+          "additionalProperties": {}
+        },
+        "trace": {
+          "type": "object",
+          "properties": {
+            "traceparent": {
+              "type": "string",
+              "pattern": "^00-[0-9a-f]{32}-[0-9a-f]{16}-[0-9a-f]{2}$"
+            }
+          },
+          "required": [
+            "traceparent"
+          ],
+          "additionalProperties": {}
+        },
+        "data": {
+          "$ref": "#/definitions/__schema0"
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "eventVersion",
+        "occurredAt",
+        "workspaceId",
+        "aggregateType",
+        "aggregateId",
+        "aggregateVersion",
+        "correlationId",
+        "causationId",
+        "actor",
+        "trace",
+        "data"
+      ],
+      "additionalProperties": {},
+      "definitions": {
+        "__schema0": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/__schema0"
+              }
+            },
+            {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "$ref": "#/definitions/__schema0"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "eventType": "workflow.created",
+      "eventVersion": 1,
+      "owner": "workflow-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "workflowId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 120
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          }
+        },
+        "required": [
+          "workflowId",
+          "name",
+          "createdAt"
+        ],
+        "additionalProperties": {}
+      }
+    }
+  ]
+}

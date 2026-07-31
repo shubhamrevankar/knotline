@@ -73,9 +73,15 @@ const workflows = new Map<string, Workflow>([[seededWorkflow.id, seededWorkflow]
 export function listWorkflows(teamId: string): WorkflowSummary[] {
   return [...workflows.values()]
     .filter((workflow) => workflow.teamId === teamId)
-    .map(({ nodes, edges, ...workflow }) => ({
-      ...workflow,
-      nodeCount: nodes.length,
+    .map((workflow) => ({
+      id: workflow.id,
+      teamId: workflow.teamId,
+      name: workflow.name,
+      description: workflow.description,
+      status: workflow.status,
+      version: workflow.version,
+      updatedAt: workflow.updatedAt,
+      nodeCount: workflow.nodes.length,
       activeRuns: workflow.id === seededWorkflow.id ? 3 : 0
     }));
 }

@@ -1,0 +1,73 @@
+{
+  "entries": [
+    {
+      "count": 199,
+      "digest": "sha256:964b90d9b89063be12c6bb122f112c2d328c092bf1993eea7d623c171bb984e0",
+      "file": "requirements.json",
+      "name": "requirements"
+    },
+    {
+      "count": 39,
+      "digest": "sha256:964320351318cfaee31107e4c3b1e257f628fd9be189deefb5de34e5e038c591",
+      "file": "milestones.json",
+      "name": "milestones"
+    },
+    {
+      "count": 105,
+      "digest": "sha256:2e2921965630da4317540685bb220309db6dfeab34432e2bae70b0d6dfc3f361",
+      "file": "routes.json",
+      "name": "routes"
+    },
+    {
+      "count": 6,
+      "digest": "sha256:37211e506f11a7bd81f82d40c1315eaf25aa2306394b4c9435c4b98adc0e41b0",
+      "file": "route-states.json",
+      "name": "routeStates"
+    },
+    {
+      "count": 39,
+      "digest": "sha256:8064e570b4b34877d8d8a30ca2d44393d3408e813a691144e3c185a0a3454457",
+      "file": "journeys.json",
+      "name": "journeys"
+    },
+    {
+      "count": 442,
+      "digest": "sha256:8094e48122f9aae4a7dbb30184935a64a18f1d7a6e74194d90d39c38500ea454",
+      "file": "api-operations.json",
+      "name": "api"
+    },
+    {
+      "count": 25,
+      "digest": "sha256:ea1c454f0c7b311a783328d99cb04f521d129e5a0184964c76c6bad74d38c2d2",
+      "file": "external-gates.json",
+      "name": "externalGates"
+    },
+    {
+      "count": 199,
+      "digest": "sha256:7f2b97fad50bbe743cd8c2b0f0c6cabf9c0bcc9e06142ff0e29d9911ac014440",
+      "file": "traceability.json",
+      "name": "traceability"
+    },
+    {
+      "count": 79,
+      "digest": "sha256:3a5462d39ce29128702295262b46465fac79c9bf91b06eef2bca0ce0095f1bc6",
+      "file": "environment-criteria.json",
+      "name": "criteria"
+    },
+    {
+      "count": 61,
+      "digest": "sha256:9d58aab3b1d1e6b9d089f3bc9f66502491b6a1f8ffbdb70d4618aac7ef3a32e9",
+      "file": "gate-activation.json",
+      "name": "gateActivation"
+    },
+    {
+      "count": 7,
+      "digest": "sha256:b6214e4f94e0cf783bccef65cf2d8b1c47a683c2b9f28090869e379b82063ccd",
+      "file": "evidence-schemas.json",
+      "name": "schemas"
+    }
+  ],
+  "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
+  "planDigest": "sha256:2d5a5a71365fa03169b00a30f4dee979cadb8d47be6a847a6851faecc38cc41b",
+  "schemaVersion": 1
+}

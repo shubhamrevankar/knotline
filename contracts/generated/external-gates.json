@@ -1,0 +1,357 @@
+{
+  "entries": [
+    {
+      "accountableRole": "Executive/legal",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-001",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Knotline name, trademark, domains",
+      "neededBy": [
+        "M02",
+        "M38"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Clearance decision, acquired domains, renewal owner"
+    },
+    {
+      "accountableRole": "Cloud owner",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-002",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "AWS organization and production account",
+      "neededBy": [
+        "M03",
+        "M34",
+        "M37"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Approved accounts, billing, regions, quotas, support tier, break-glass owners"
+    },
+    {
+      "accountableRole": "Platform owner",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-003",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Temporal production service decision",
+      "neededBy": [
+        "M10",
+        "M34",
+        "M37"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "ADR, contract/account/namespace, region, retention, SLO/DPA, credentials"
+    },
+    {
+      "accountableRole": "AI owner/privacy",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-004",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "OpenAI production project",
+      "neededBy": [
+        "M15",
+        "M16",
+        "M34",
+        "M36",
+        "M38"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Contract/DPA, project, budgets, approved models, regions/retention, key rotation, live eval receipt"
+    },
+    {
+      "accountableRole": "Finance/legal",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-005",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Stripe merchant/tax configuration",
+      "neededBy": [
+        "M29",
+        "M34",
+        "M38"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Production account, catalog/prices/tax policy, bank/payout, webhook, refund/support approval"
+    },
+    {
+      "accountableRole": "Operations/marketing",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-006",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "SES and sending domains",
+      "neededBy": [
+        "M27",
+        "M34",
+        "M37"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Verified identities, DKIM/SPF/DMARC, production access, complaint/bounce path"
+    },
+    {
+      "accountableRole": "Connector owner/privacy",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-007",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Google developer applications",
+      "neededBy": [
+        "M04",
+        "M23",
+        "M25",
+        "M34"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "OAuth consent/app verification as required, sandbox and production clients, scopes, DPA, certification"
+    },
+    {
+      "accountableRole": "Connector owner/privacy",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-008",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Microsoft Entra/Graph application",
+      "neededBy": [
+        "M24",
+        "M25",
+        "M27",
+        "M34"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Multi-tenant app/consent, verified publisher if required, scopes, sandbox tenant, certification"
+    },
+    {
+      "accountableRole": "Connector owner",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-009",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Notion and Confluence applications",
+      "neededBy": [
+        "M23",
+        "M34"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Apps, test workspaces/sites, scopes, terms/DPA, live capability certification"
+    },
+    {
+      "accountableRole": "Connector owner",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-010",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Linear and Atlassian/Jira applications",
+      "neededBy": [
+        "M24",
+        "M34"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Apps/test sites, scopes/webhooks, terms/DPA, live read/write certification"
+    },
+    {
+      "accountableRole": "Connector/security",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-011",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "GitHub App and test organization",
+      "neededBy": [
+        "M24",
+        "M34"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "App ownership, permissions/events, private test org, security review, certification"
+    },
+    {
+      "accountableRole": "Connector/security",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-012",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Slack and Teams app distribution",
+      "neededBy": [
+        "M24",
+        "M27",
+        "M34"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Apps, scopes, interactivity/webhooks, test workspaces/tenant, distribution approval, certification"
+    },
+    {
+      "accountableRole": "Connector owner/privacy",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-013",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Salesforce and HubSpot applications",
+      "neededBy": [
+        "M25",
+        "M34"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Developer tenants/apps, scopes/tier, terms/DPA, read/write/delete certification"
+    },
+    {
+      "accountableRole": "Product/legal",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-014",
+      "initialState": "BLOCKED_EXTERNAL; this provider cannot be called LIVE until clear",
+      "name": "X developer access and commercial tier",
+      "neededBy": [
+        "M24",
+        "M34"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Approved application/tier, permitted capabilities, terms/content policy, live receipts"
+    },
+    {
+      "accountableRole": "Identity owner/security",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-015",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Enterprise IdP and SCIM certification tenants",
+      "neededBy": [
+        "M32",
+        "M34"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "At least two independent IdPs plus SCIM client conformance evidence, recovery/break-glass review"
+    },
+    {
+      "accountableRole": "Legal/privacy",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-016",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Legal, privacy, AI, and subprocessor approval",
+      "neededBy": [
+        "M31",
+        "M33",
+        "M38"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Terms, privacy, DPA/SCC, AUP, subprocessors, consent, deletion, AI use, regional claims approved"
+    },
+    {
+      "accountableRole": "Security owner",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-017",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Independent penetration test and launch security review",
+      "neededBy": [
+        "M35",
+        "M38"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Signed scope/report, critical/high remediation, independent retest, and owner-signed cloud/production/support/CI/source/provider/break-glass access review"
+    },
+    {
+      "accountableRole": "Security/compliance",
+      "gaPolicy": "CONDITIONAL_CLAIM",
+      "id": "EXT-018",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "SOC 2 readiness/audit",
+      "neededBy": [
+        "M35"
+      ],
+      "requiredTerminalState": "NOT_APPLICABLE",
+      "unblockEvidence": "Auditor/period/control evidence; public claims limited to report actually issued"
+    },
+    {
+      "accountableRole": "Operations/support",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-019",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "On-call, support, and incident staffing",
+      "neededBy": [
+        "M33",
+        "M34",
+        "M35",
+        "M36",
+        "M38"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Named rotations, contact/escalation, service targets, training, game-day attendance"
+    },
+    {
+      "accountableRole": "Finance/legal/support",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-020",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Pricing, accounting, tax, and support policy",
+      "neededBy": [
+        "M29",
+        "M33",
+        "M38"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Approved plans/prices/refunds/tax/invoice/trial/cancel/support terms"
+    },
+    {
+      "accountableRole": "Operations",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-021",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Public DNS, certificates, status, monitoring",
+      "neededBy": [
+        "M34",
+        "M37",
+        "M38"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Production records/certs/status ownership, synthetic monitoring, renewal/failure test"
+    },
+    {
+      "accountableRole": "Privacy/platform",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-022",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Regional processor/residency approval",
+      "neededBy": [
+        "M31",
+        "M32",
+        "M34",
+        "M35",
+        "M36",
+        "M37",
+        "M38"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Service-by-region matrix, active/standby/protection triples, journal/WAL/object placement, provider processing, re-protection, restore/migration and compound-disaster certification"
+    },
+    {
+      "accountableRole": "Product research/accessibility",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-023",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Usability, activation, accessibility, and linguistic participants",
+      "neededBy": [
+        "M33",
+        "M38"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Consented representative users and design-partner workspaces, every Section 20.9 role/modality/locale cohort, study and activation protocol, findings, remediation/retest, privacy/compensation approval"
+    },
+    {
+      "accountableRole": "Security/platform owner",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-024",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "Workforce operator identity and hardware assurance",
+      "neededBy": [
+        "M34",
+        "M35",
+        "M38"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Approved workforce OIDC client/tenant, directory/SCIM lifecycle source, phishing-resistant FIDO2 authenticators, emergency hardware identities, named provisioning/offboarding owners, and live login/disable/break-glass evidence"
+    },
+    {
+      "accountableRole": "Connector owner/security/privacy",
+      "gaPolicy": "REQUIRED",
+      "id": "EXT-025",
+      "initialState": "BLOCKED_EXTERNAL",
+      "name": "S3-compatible connector endpoint and certification",
+      "neededBy": [
+        "M25",
+        "M26",
+        "M34",
+        "M38"
+      ],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "unblockEvidence": "Named real S3-compatible service/account and non-production bucket, endpoint/region/ownership, credentials and bucket policy, encryption/versioning/event configuration, commercial terms/DPA where external, read/write/delete/version/event receipts, prefix-isolation and SSRF review, rotation/revocation, and live capability certification"
+    }
+  ],
+  "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
+  "planDigest": "sha256:2d5a5a71365fa03169b00a30f4dee979cadb8d47be6a847a6851faecc38cc41b",
+  "schemaVersion": 1
+}

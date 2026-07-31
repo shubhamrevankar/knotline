@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap");
-
 :root {
   color-scheme: dark;
   font-family: "Manrope", sans-serif;
@@ -33,8 +31,7 @@ body,
 body {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 78% 2%, rgba(100, 164, 255, 0.09), transparent 24rem),
-    var(--ink);
+    radial-gradient(circle at 78% 2%, rgba(100, 164, 255, 0.09), transparent 24rem), var(--ink);
 }
 
 button,
@@ -44,6 +41,23 @@ input {
 
 button {
   color: inherit;
+}
+
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .app-shell {
@@ -289,6 +303,28 @@ button {
   backdrop-filter: blur(20px);
 }
 
+.demo-banner {
+  display: flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 28px;
+  border-bottom: 1px solid rgba(240, 173, 85, 0.24);
+  color: #cbd2d1;
+  background: rgba(240, 173, 85, 0.07);
+  font-size: 10px;
+}
+
+.demo-banner strong {
+  padding: 2px 6px;
+  border: 1px solid rgba(240, 173, 85, 0.45);
+  border-radius: 9px;
+  color: #ffd59d;
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}
+
 .command-search {
   display: flex;
   width: min(360px, 35vw);
@@ -298,7 +334,7 @@ button {
   padding: 0 11px;
   border: 1px solid var(--line);
   border-radius: 9px;
-  color: #758085;
+  color: #8a9699;
   background: rgba(255, 255, 255, 0.025);
   font-size: 11px;
   cursor: pointer;
@@ -333,7 +369,7 @@ kbd {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #778286;
+  color: #98a4a7;
   font-family: "DM Mono", monospace;
   font-size: 9px;
   text-transform: uppercase;
@@ -466,7 +502,7 @@ kbd {
 }
 
 .metric-strip small {
-  color: #687377;
+  color: #99a5a7;
   font-size: 9px;
 }
 
@@ -552,9 +588,7 @@ kbd {
 
 .workflow-card--active {
   border-color: rgba(100, 164, 255, 0.32);
-  background:
-    linear-gradient(135deg, rgba(100, 164, 255, 0.1), transparent 60%),
-    #1b1f22;
+  background: linear-gradient(135deg, rgba(100, 164, 255, 0.1), transparent 60%), #1b1f22;
 }
 
 .workflow-card-top,
@@ -568,7 +602,7 @@ kbd {
 }
 
 .workflow-card-top small {
-  color: #657074;
+  color: #98a4a7;
   font-family: "DM Mono", monospace;
   font-size: 9px;
 }
@@ -600,7 +634,7 @@ kbd {
 
 .workflow-card p {
   margin: 7px 0 16px;
-  color: #7c888c;
+  color: #96a2a5;
   font-size: 10px;
   line-height: 1.5;
 }
@@ -608,7 +642,7 @@ kbd {
 .workflow-meta {
   gap: 11px;
   margin-top: auto;
-  color: #697478;
+  color: #98a4a7;
   font-family: "DM Mono", monospace;
   font-size: 8px;
 }
@@ -622,8 +656,7 @@ kbd {
   min-width: 0;
   grid-template-rows: 74px minmax(0, 1fr);
   background:
-    radial-gradient(circle at 55% 42%, rgba(100, 164, 255, 0.06), transparent 25rem),
-    #131618;
+    radial-gradient(circle at 55% 42%, rgba(100, 164, 255, 0.06), transparent 25rem), #131618;
 }
 
 .canvas-header {
@@ -654,7 +687,9 @@ kbd {
 
 .operation-node--running {
   border-color: rgba(200, 255, 82, 0.58);
-  box-shadow: 0 0 0 3px rgba(200, 255, 82, 0.05), 0 16px 34px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 0 0 3px rgba(200, 255, 82, 0.05),
+    0 16px 34px rgba(0, 0, 0, 0.3);
 }
 
 .operation-node header,
@@ -670,7 +705,7 @@ kbd {
 
 .node-kind {
   gap: 5px;
-  color: #778387;
+  color: #99a5a8;
   font-family: "DM Mono", monospace;
   font-size: 8px;
   letter-spacing: 0.08em;
@@ -710,7 +745,7 @@ kbd {
 .operation-node p {
   min-height: 30px;
   margin: 0;
-  color: #7f8b8f;
+  color: #9aa6a9;
   font-size: 9px;
   line-height: 1.55;
 }
@@ -720,7 +755,7 @@ kbd {
   margin-top: 12px;
   padding-top: 9px;
   border-top: 1px solid rgba(255, 255, 255, 0.07);
-  color: #899497;
+  color: #a1abad;
   font-family: "DM Mono", monospace;
   font-size: 8px;
 }
@@ -830,11 +865,13 @@ kbd {
   }
 
   .sidebar {
+    visibility: hidden;
     transform: translateX(-100%);
     transition: transform 180ms ease;
   }
 
   .sidebar--open {
+    visibility: visible;
     transform: translateX(0);
   }
 
@@ -850,6 +887,10 @@ kbd {
   .topbar {
     gap: 10px;
     padding: 0 16px;
+  }
+
+  .demo-banner {
+    padding-inline: 16px;
   }
 
   .command-search {

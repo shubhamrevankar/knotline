@@ -1,0 +1,35 @@
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  test: {
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json-summary", "lcov"],
+      reportsDirectory: "artifacts/coverage/unit",
+      thresholds: {
+        statements: 85,
+        branches: 80,
+        functions: 85,
+        lines: 85
+      },
+      exclude: [
+        "**/*.config.{js,mjs,ts}",
+        "**/*.d.ts",
+        "**/*.test.{ts,tsx}",
+        "**/dist/**",
+        "**/node_modules/**",
+        "contracts/generated/**",
+        "tooling/**"
+      ]
+    },
+    exclude: ["**/dist/**", "**/node_modules/**", "tests/e2e/**", "tooling/**/*.test.mjs"],
+    include: [
+      "apps/**/src/**/*.test.{ts,tsx}",
+      "packages/**/src/**/*.test.{ts,tsx}",
+      "scripts/**/*.test.ts"
+    ],
+    passWithNoTests: false,
+    reporters: ["default"],
+    testTimeout: 10_000
+  }
+});

@@ -1,0 +1,3101 @@
+{
+  "entries": [
+    {
+      "exposure": "provider_callback",
+      "id": "post-callbacks-v1-billing-stripe-by-endpoint-locator",
+      "method": "POST",
+      "path": "/callbacks/v1/billing/stripe/:endpointLocator",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "provider_callback",
+      "id": "get-callbacks-v1-connections-oauth-by-provider",
+      "method": "GET",
+      "path": "/callbacks/v1/connections/oauth/:provider",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "provider_callback",
+      "id": "get-callbacks-v1-identity-oauth-by-provider",
+      "method": "GET",
+      "path": "/callbacks/v1/identity/oauth/:provider",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "provider_callback",
+      "id": "post-callbacks-v1-identity-saml-by-connection-locator",
+      "method": "POST",
+      "path": "/callbacks/v1/identity/saml/:connectionLocator",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "provider_callback",
+      "id": "post-callbacks-v1-provider-webhooks-by-provider-by-endpoint-locator",
+      "method": "POST",
+      "path": "/callbacks/v1/provider-webhooks/:provider/:endpointLocator",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "provider_callback",
+      "id": "post-callbacks-v1-workflow-triggers-by-endpoint-key",
+      "method": "POST",
+      "path": "/callbacks/v1/workflow-triggers/:endpointKey",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "public_anonymous",
+      "id": "post-edge-v1-auth-google-authorizations",
+      "method": "POST",
+      "path": "/edge/v1/auth/google/authorizations",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "public_anonymous",
+      "id": "post-edge-v1-auth-google-exchange",
+      "method": "POST",
+      "path": "/edge/v1/auth/google/exchange",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "public_anonymous",
+      "id": "post-edge-v1-auth-magic-links",
+      "method": "POST",
+      "path": "/edge/v1/auth/magic-links",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "public_anonymous",
+      "id": "post-edge-v1-auth-magic-links-exchange",
+      "method": "POST",
+      "path": "/edge/v1/auth/magic-links/exchange",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "public_anonymous",
+      "id": "post-edge-v1-auth-sso-by-connection-id-authorizations",
+      "method": "POST",
+      "path": "/edge/v1/auth/sso/:connectionId/authorizations",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "public_anonymous",
+      "id": "post-edge-v1-auth-sso-by-connection-id-exchange",
+      "method": "POST",
+      "path": "/edge/v1/auth/sso/:connectionId/exchange",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "public_anonymous",
+      "id": "get-edge-v1-auth-sso-discovery",
+      "method": "GET",
+      "path": "/edge/v1/auth/sso/discovery",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "public_anonymous",
+      "id": "post-edge-v1-contact-requests",
+      "method": "POST",
+      "path": "/edge/v1/contact-requests",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "public_anonymous",
+      "id": "post-edge-v1-guest-access-exchanges",
+      "method": "POST",
+      "path": "/edge/v1/guest-access/exchanges",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "public_anonymous",
+      "id": "post-edge-v1-guest-access-previews",
+      "method": "POST",
+      "path": "/edge/v1/guest-access/previews",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "public_anonymous",
+      "id": "post-edge-v1-invitation-responses",
+      "method": "POST",
+      "path": "/edge/v1/invitation-responses",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "get-ops-callbacks-v1-auth-oidc",
+      "method": "GET",
+      "path": "/ops/callbacks/v1/auth/oidc",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "post-ops-edge-v1-auth-oidc-authorizations",
+      "method": "POST",
+      "path": "/ops/edge/v1/auth/oidc/authorizations",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "post-ops-edge-v1-auth-oidc-exchange",
+      "method": "POST",
+      "path": "/ops/edge/v1/auth/oidc/exchange",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "get-ops-scim-v2-groups",
+      "method": "GET",
+      "path": "/ops/scim/v2/Groups",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "post-ops-scim-v2-groups",
+      "method": "POST",
+      "path": "/ops/scim/v2/Groups",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "get-ops-scim-v2-groups-by-scim-id",
+      "method": "GET",
+      "path": "/ops/scim/v2/Groups/:scimId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "patch-ops-scim-v2-groups-by-scim-id",
+      "method": "PATCH",
+      "path": "/ops/scim/v2/Groups/:scimId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "put-ops-scim-v2-groups-by-scim-id",
+      "method": "PUT",
+      "path": "/ops/scim/v2/Groups/:scimId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "get-ops-scim-v2-resource-types",
+      "method": "GET",
+      "path": "/ops/scim/v2/ResourceTypes",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "get-ops-scim-v2-schemas",
+      "method": "GET",
+      "path": "/ops/scim/v2/Schemas",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "get-ops-scim-v2-service-provider-config",
+      "method": "GET",
+      "path": "/ops/scim/v2/ServiceProviderConfig",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "get-ops-scim-v2-users",
+      "method": "GET",
+      "path": "/ops/scim/v2/Users",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "post-ops-scim-v2-users",
+      "method": "POST",
+      "path": "/ops/scim/v2/Users",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "get-ops-scim-v2-users-by-scim-id",
+      "method": "GET",
+      "path": "/ops/scim/v2/Users/:scimId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "patch-ops-scim-v2-users-by-scim-id",
+      "method": "PATCH",
+      "path": "/ops/scim/v2/Users/:scimId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator_auth",
+      "id": "put-ops-scim-v2-users-by-scim-id",
+      "method": "PUT",
+      "path": "/ops/scim/v2/Users/:scimId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-access-reviews",
+      "method": "GET",
+      "path": "/ops/v1/access-reviews",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-access-reviews",
+      "method": "POST",
+      "path": "/ops/v1/access-reviews",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-access-reviews-by-review-id",
+      "method": "GET",
+      "path": "/ops/v1/access-reviews/:reviewId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-access-reviews-by-review-id-completions",
+      "method": "POST",
+      "path": "/ops/v1/access-reviews/:reviewId/completions",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-access-reviews-by-review-id-item-decisions",
+      "method": "POST",
+      "path": "/ops/v1/access-reviews/:reviewId/item-decisions",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-auth-logout",
+      "method": "POST",
+      "path": "/ops/v1/auth/logout",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-auth-sessions",
+      "method": "GET",
+      "path": "/ops/v1/auth/sessions",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "delete-ops-v1-auth-sessions-by-session-id",
+      "method": "DELETE",
+      "path": "/ops/v1/auth/sessions/:sessionId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-auth-sessions-refresh",
+      "method": "POST",
+      "path": "/ops/v1/auth/sessions/refresh",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-auth-step-up-authorizations",
+      "method": "POST",
+      "path": "/ops/v1/auth/step-up/authorizations",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-auth-step-up-exchange",
+      "method": "POST",
+      "path": "/ops/v1/auth/step-up/exchange",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-break-glass-grants-by-grant-id-reviews",
+      "method": "POST",
+      "path": "/ops/v1/break-glass-grants/:grantId/reviews",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-break-glass-grants-by-grant-id-revocations",
+      "method": "POST",
+      "path": "/ops/v1/break-glass-grants/:grantId/revocations",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-break-glass-requests",
+      "method": "GET",
+      "path": "/ops/v1/break-glass-requests",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-break-glass-requests",
+      "method": "POST",
+      "path": "/ops/v1/break-glass-requests",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-break-glass-requests-by-request-id",
+      "method": "GET",
+      "path": "/ops/v1/break-glass-requests/:requestId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-break-glass-requests-by-request-id-activations",
+      "method": "POST",
+      "path": "/ops/v1/break-glass-requests/:requestId/activations",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-break-glass-requests-by-request-id-approvals",
+      "method": "POST",
+      "path": "/ops/v1/break-glass-requests/:requestId/approvals",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-deployments",
+      "method": "GET",
+      "path": "/ops/v1/deployments",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-deployments-by-deployment-id-rollbacks",
+      "method": "POST",
+      "path": "/ops/v1/deployments/:deploymentId/rollbacks",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-health",
+      "method": "GET",
+      "path": "/ops/v1/health",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-incidents",
+      "method": "GET",
+      "path": "/ops/v1/incidents",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-incidents",
+      "method": "POST",
+      "path": "/ops/v1/incidents",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "patch-ops-v1-incidents-by-incident-id",
+      "method": "PATCH",
+      "path": "/ops/v1/incidents/:incidentId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-incidents-by-incident-id-resolutions",
+      "method": "POST",
+      "path": "/ops/v1/incidents/:incidentId/resolutions",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-incidents-by-incident-id-status-updates",
+      "method": "POST",
+      "path": "/ops/v1/incidents/:incidentId/status-updates",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-kill-switches",
+      "method": "POST",
+      "path": "/ops/v1/kill-switches",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "delete-ops-v1-kill-switches-by-switch-id",
+      "method": "DELETE",
+      "path": "/ops/v1/kill-switches/:switchId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-me-bootstrap",
+      "method": "GET",
+      "path": "/ops/v1/me/bootstrap",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-migrations",
+      "method": "GET",
+      "path": "/ops/v1/migrations",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "delete-ops-v1-operator-role-bindings-by-binding-id",
+      "method": "DELETE",
+      "path": "/ops/v1/operator-role-bindings/:bindingId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-operators",
+      "method": "GET",
+      "path": "/ops/v1/operators",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-operators-by-operator-id",
+      "method": "GET",
+      "path": "/ops/v1/operators/:operatorId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-operators-by-operator-id-disables",
+      "method": "POST",
+      "path": "/ops/v1/operators/:operatorId/disables",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-operators-by-operator-id-offboardings",
+      "method": "POST",
+      "path": "/ops/v1/operators/:operatorId/offboardings",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-operators-by-operator-id-role-bindings",
+      "method": "POST",
+      "path": "/ops/v1/operators/:operatorId/role-bindings",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-privacy-cases",
+      "method": "GET",
+      "path": "/ops/v1/privacy-cases",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-providers",
+      "method": "GET",
+      "path": "/ops/v1/providers",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-runtime-dead-letter-items",
+      "method": "GET",
+      "path": "/ops/v1/runtime/dead-letter-items",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-runtime-dead-letter-items-by-item-id-repair-previews",
+      "method": "POST",
+      "path": "/ops/v1/runtime/dead-letter-items/:itemId/repair-previews",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-runtime-dead-letter-items-by-item-id-repairs",
+      "method": "POST",
+      "path": "/ops/v1/runtime/dead-letter-items/:itemId/repairs",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-runtime-queues",
+      "method": "GET",
+      "path": "/ops/v1/runtime/queues",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-runtime-reconcilers",
+      "method": "GET",
+      "path": "/ops/v1/runtime/reconcilers",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-runtime-reconcilers-by-reconciler-id-runs",
+      "method": "POST",
+      "path": "/ops/v1/runtime/reconcilers/:reconcilerId/runs",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-support-tickets",
+      "method": "GET",
+      "path": "/ops/v1/support-tickets",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-support-tickets-by-ticket-id-assignments",
+      "method": "POST",
+      "path": "/ops/v1/support-tickets/:ticketId/assignments",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-support-tickets-by-ticket-id-messages",
+      "method": "POST",
+      "path": "/ops/v1/support-tickets/:ticketId/messages",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-support-tickets-by-ticket-id-status-changes",
+      "method": "POST",
+      "path": "/ops/v1/support-tickets/:ticketId/status-changes",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-usage-adjustment-requests-by-request-id-approvals",
+      "method": "POST",
+      "path": "/ops/v1/usage-adjustment-requests/:requestId/approvals",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-usage-adjustment-requests-by-request-id-commits",
+      "method": "POST",
+      "path": "/ops/v1/usage-adjustment-requests/:requestId/commits",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-workforce-directory-operations",
+      "method": "GET",
+      "path": "/ops/v1/workforce-directory/operations",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-workforce-directory-reconciliations",
+      "method": "POST",
+      "path": "/ops/v1/workforce-directory/reconciliations",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "get-ops-v1-workspaces-by-workspace-id-safe-summary",
+      "method": "GET",
+      "path": "/ops/v1/workspaces/:workspaceId/safe-summary",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-workspaces-by-workspace-id-support-access-requests",
+      "method": "POST",
+      "path": "/ops/v1/workspaces/:workspaceId/support-access-requests",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-workspaces-by-workspace-id-throttles",
+      "method": "POST",
+      "path": "/ops/v1/workspaces/:workspaceId/throttles",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "delete-ops-v1-workspaces-by-workspace-id-throttles-by-throttle-id",
+      "method": "DELETE",
+      "path": "/ops/v1/workspaces/:workspaceId/throttles/:throttleId",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-workspaces-by-workspace-id-usage-adjustment-previews",
+      "method": "POST",
+      "path": "/ops/v1/workspaces/:workspaceId/usage-adjustment-previews",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "platform_operator",
+      "id": "post-ops-v1-workspaces-by-workspace-id-usage-adjustment-requests",
+      "method": "POST",
+      "path": "/ops/v1/workspaces/:workspaceId/usage-adjustment-requests",
+      "sourceSection": "10.10"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-agents-by-agent-id",
+      "method": "DELETE",
+      "path": "/v1/agents/:agentId",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-agents-by-agent-id",
+      "method": "GET",
+      "path": "/v1/agents/:agentId",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-agents-by-agent-id",
+      "method": "PATCH",
+      "path": "/v1/agents/:agentId",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-agents-by-agent-id-disables",
+      "method": "POST",
+      "path": "/v1/agents/:agentId/disables",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-agents-by-agent-id-enables",
+      "method": "POST",
+      "path": "/v1/agents/:agentId/enables",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-agents-by-agent-id-memory-policy",
+      "method": "GET",
+      "path": "/v1/agents/:agentId/memory-policy",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "put-v1-agents-by-agent-id-memory-policy",
+      "method": "PUT",
+      "path": "/v1/agents/:agentId/memory-policy",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-agents-by-agent-id-versions",
+      "method": "GET",
+      "path": "/v1/agents/:agentId/versions",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-agents-by-agent-id-versions",
+      "method": "POST",
+      "path": "/v1/agents/:agentId/versions",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-agents-by-agent-id-versions-by-version",
+      "method": "GET",
+      "path": "/v1/agents/:agentId/versions/:version",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-agents-by-agent-id-versions-by-version-evaluation-runs",
+      "method": "POST",
+      "path": "/v1/agents/:agentId/versions/:version/evaluation-runs",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-agents-by-agent-id-versions-by-version-releases",
+      "method": "POST",
+      "path": "/v1/agents/:agentId/versions/:version/releases",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-agents-by-agent-id-versions-by-version-validations",
+      "method": "POST",
+      "path": "/v1/agents/:agentId/versions/:version/validations",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-api-credentials-by-credential-id",
+      "method": "DELETE",
+      "path": "/v1/api-credentials/:credentialId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-api-credentials-by-credential-id-rotations",
+      "method": "POST",
+      "path": "/v1/api-credentials/:credentialId/rotations",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-approvals",
+      "method": "GET",
+      "path": "/v1/approvals",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-approvals-by-approval-id",
+      "method": "GET",
+      "path": "/v1/approvals/:approvalId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-approvals-by-approval-id-decisions",
+      "method": "POST",
+      "path": "/v1/approvals/:approvalId/decisions",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-approvals-by-approval-id-delegations",
+      "method": "POST",
+      "path": "/v1/approvals/:approvalId/delegations",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-approvals-by-approval-id-reminders",
+      "method": "POST",
+      "path": "/v1/approvals/:approvalId/reminders",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-approvals-by-approval-id-revocations",
+      "method": "POST",
+      "path": "/v1/approvals/:approvalId/revocations",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-artifact-uploads-by-upload-id-completions",
+      "method": "POST",
+      "path": "/v1/artifact-uploads/:uploadId/completions",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-artifacts-by-artifact-id",
+      "method": "DELETE",
+      "path": "/v1/artifacts/:artifactId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-artifacts-by-artifact-id-download",
+      "method": "GET",
+      "path": "/v1/artifacts/:artifactId/download",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-audit-exports-by-export-id",
+      "method": "GET",
+      "path": "/v1/audit-exports/:exportId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-auth-logout",
+      "method": "POST",
+      "path": "/v1/auth/logout",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-auth-sessions",
+      "method": "GET",
+      "path": "/v1/auth/sessions",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-auth-sessions-by-session-id",
+      "method": "DELETE",
+      "path": "/v1/auth/sessions/:sessionId",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-auth-sessions-refresh",
+      "method": "POST",
+      "path": "/v1/auth/sessions/refresh",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-budget-thresholds-by-threshold-id",
+      "method": "DELETE",
+      "path": "/v1/budget-thresholds/:thresholdId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-budget-thresholds-by-threshold-id",
+      "method": "PATCH",
+      "path": "/v1/budget-thresholds/:thresholdId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-budgets-by-budget-id",
+      "method": "GET",
+      "path": "/v1/budgets/:budgetId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-budgets-by-budget-id",
+      "method": "PATCH",
+      "path": "/v1/budgets/:budgetId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-budgets-by-budget-id-thresholds",
+      "method": "POST",
+      "path": "/v1/budgets/:budgetId/thresholds",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-comments-by-comment-id",
+      "method": "DELETE",
+      "path": "/v1/comments/:commentId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-comments-by-comment-id",
+      "method": "PATCH",
+      "path": "/v1/comments/:commentId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-comments-by-comment-id-reactions",
+      "method": "POST",
+      "path": "/v1/comments/:commentId/reactions",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-comments-by-comment-id-reactions-by-reaction",
+      "method": "DELETE",
+      "path": "/v1/comments/:commentId/reactions/:reaction",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-connection-authorizations-by-authorization-id",
+      "method": "GET",
+      "path": "/v1/connection-authorizations/:authorizationId",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-connections-by-connection-id",
+      "method": "DELETE",
+      "path": "/v1/connections/:connectionId",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-connections-by-connection-id",
+      "method": "GET",
+      "path": "/v1/connections/:connectionId",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-connections-by-connection-id",
+      "method": "PATCH",
+      "path": "/v1/connections/:connectionId",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-connections-by-connection-id-pauses",
+      "method": "POST",
+      "path": "/v1/connections/:connectionId/pauses",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-connections-by-connection-id-reauthorizations",
+      "method": "POST",
+      "path": "/v1/connections/:connectionId/reauthorizations",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-connections-by-connection-id-reconciliations",
+      "method": "POST",
+      "path": "/v1/connections/:connectionId/reconciliations",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-connections-by-connection-id-resumptions",
+      "method": "POST",
+      "path": "/v1/connections/:connectionId/resumptions",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-connections-by-connection-id-syncs",
+      "method": "GET",
+      "path": "/v1/connections/:connectionId/syncs",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-connections-by-connection-id-syncs",
+      "method": "POST",
+      "path": "/v1/connections/:connectionId/syncs",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-connections-by-connection-id-syncs-by-sync-id",
+      "method": "GET",
+      "path": "/v1/connections/:connectionId/syncs/:syncId",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-data-exports-by-export-id",
+      "method": "GET",
+      "path": "/v1/data-exports/:exportId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-deletion-requests-by-request-id",
+      "method": "GET",
+      "path": "/v1/deletion-requests/:requestId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-diagnostic-bundles-by-bundle-id-consents",
+      "method": "POST",
+      "path": "/v1/diagnostic-bundles/:bundleId/consents",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-diagnostic-bundles-by-bundle-id-download",
+      "method": "GET",
+      "path": "/v1/diagnostic-bundles/:bundleId/download",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-documents-by-document-id",
+      "method": "DELETE",
+      "path": "/v1/documents/:documentId",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-documents-by-document-id",
+      "method": "GET",
+      "path": "/v1/documents/:documentId",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-documents-by-document-id-citations",
+      "method": "GET",
+      "path": "/v1/documents/:documentId/citations",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-documents-by-document-id-reprocessings",
+      "method": "POST",
+      "path": "/v1/documents/:documentId/reprocessings",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-documents-by-document-id-versions",
+      "method": "GET",
+      "path": "/v1/documents/:documentId/versions",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-domains-by-domain-id",
+      "method": "DELETE",
+      "path": "/v1/domains/:domainId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-domains-by-domain-id-enforcement",
+      "method": "PATCH",
+      "path": "/v1/domains/:domainId/enforcement",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-domains-by-domain-id-verifications",
+      "method": "POST",
+      "path": "/v1/domains/:domainId/verifications",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-entities-by-entity-id",
+      "method": "GET",
+      "path": "/v1/entities/:entityId",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-entities-by-entity-id",
+      "method": "PATCH",
+      "path": "/v1/entities/:entityId",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-entities-by-entity-id-merges",
+      "method": "POST",
+      "path": "/v1/entities/:entityId/merges",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-entities-by-entity-id-relations",
+      "method": "GET",
+      "path": "/v1/entities/:entityId/relations",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-entities-by-entity-id-splits",
+      "method": "POST",
+      "path": "/v1/entities/:entityId/splits",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-eval-cases-by-case-id",
+      "method": "DELETE",
+      "path": "/v1/eval-cases/:caseId",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-eval-cases-by-case-id",
+      "method": "PATCH",
+      "path": "/v1/eval-cases/:caseId",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-eval-comparisons",
+      "method": "GET",
+      "path": "/v1/eval-comparisons",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-eval-datasets-by-dataset-id",
+      "method": "GET",
+      "path": "/v1/eval-datasets/:datasetId",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-eval-datasets-by-dataset-id-cases",
+      "method": "POST",
+      "path": "/v1/eval-datasets/:datasetId/cases",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-eval-datasets-by-dataset-id-versions",
+      "method": "POST",
+      "path": "/v1/eval-datasets/:datasetId/versions",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-eval-runs-by-eval-run-id",
+      "method": "GET",
+      "path": "/v1/eval-runs/:evalRunId",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-eval-runs-by-eval-run-id-cancellations",
+      "method": "POST",
+      "path": "/v1/eval-runs/:evalRunId/cancellations",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-eval-runs-by-eval-run-id-results",
+      "method": "GET",
+      "path": "/v1/eval-runs/:evalRunId/results",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-feedback-reports",
+      "method": "POST",
+      "path": "/v1/feedback-reports",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-file-uploads-by-upload-id-completions",
+      "method": "POST",
+      "path": "/v1/file-uploads/:uploadId/completions",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-groups-by-group-id",
+      "method": "DELETE",
+      "path": "/v1/groups/:groupId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-groups-by-group-id",
+      "method": "PATCH",
+      "path": "/v1/groups/:groupId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-groups-by-group-id-members-by-user-id",
+      "method": "DELETE",
+      "path": "/v1/groups/:groupId/members/:userId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "put-v1-groups-by-group-id-members-by-user-id",
+      "method": "PUT",
+      "path": "/v1/groups/:groupId/members/:userId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-guest-invitations-by-invitation-id",
+      "method": "DELETE",
+      "path": "/v1/guest-invitations/:invitationId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-guest-invitations-by-invitation-id-resends",
+      "method": "POST",
+      "path": "/v1/guest-invitations/:invitationId/resends",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-guest-logout",
+      "method": "POST",
+      "path": "/v1/guest/logout",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-guest-sessions",
+      "method": "GET",
+      "path": "/v1/guest/sessions",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-guest-sessions-by-session-id",
+      "method": "DELETE",
+      "path": "/v1/guest/sessions/:sessionId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-invitations-by-invitation-id",
+      "method": "DELETE",
+      "path": "/v1/invitations/:invitationId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-invitations-by-invitation-id-resends",
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/resends",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-legal-holds-by-hold-id-releases",
+      "method": "POST",
+      "path": "/v1/legal-holds/:holdId/releases",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-me",
+      "method": "GET",
+      "path": "/v1/me",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-me",
+      "method": "PATCH",
+      "path": "/v1/me",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-me-bootstrap",
+      "method": "GET",
+      "path": "/v1/me/bootstrap",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-me-data-exports",
+      "method": "POST",
+      "path": "/v1/me/data-exports",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-me-deletion-requests",
+      "method": "POST",
+      "path": "/v1/me/deletion-requests",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-me-memory-exports",
+      "method": "POST",
+      "path": "/v1/me/memory-exports",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-me-memory-records",
+      "method": "GET",
+      "path": "/v1/me/memory-records",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-me-memory-records-by-memory-id",
+      "method": "DELETE",
+      "path": "/v1/me/memory-records/:memoryId",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-me-memory-records-by-memory-id",
+      "method": "GET",
+      "path": "/v1/me/memory-records/:memoryId",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-me-memory-records-by-memory-id-corrections",
+      "method": "POST",
+      "path": "/v1/me/memory-records/:memoryId/corrections",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-me-notification-preferences",
+      "method": "GET",
+      "path": "/v1/me/notification-preferences",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-me-notification-preferences",
+      "method": "PATCH",
+      "path": "/v1/me/notification-preferences",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-me-notifications",
+      "method": "GET",
+      "path": "/v1/me/notifications",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-me-notifications-by-notification-id-read",
+      "method": "POST",
+      "path": "/v1/me/notifications/:notificationId/read",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-me-notifications-read-all",
+      "method": "POST",
+      "path": "/v1/me/notifications/read-all",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-me-offline-devices",
+      "method": "GET",
+      "path": "/v1/me/offline-devices",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-me-offline-devices-by-device-id",
+      "method": "DELETE",
+      "path": "/v1/me/offline-devices/:deviceId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-me-offline-devices-by-device-id-activations",
+      "method": "POST",
+      "path": "/v1/me/offline-devices/:deviceId/activations",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-me-offline-devices-by-device-id-key-leases",
+      "method": "POST",
+      "path": "/v1/me/offline-devices/:deviceId/key-leases",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-me-onboarding",
+      "method": "GET",
+      "path": "/v1/me/onboarding",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "put-v1-me-onboarding",
+      "method": "PUT",
+      "path": "/v1/me/onboarding",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-me-onboarding-sample-workspaces",
+      "method": "POST",
+      "path": "/v1/me/onboarding/sample-workspaces",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-me-onboarding-sample-workspaces-by-sample-id",
+      "method": "DELETE",
+      "path": "/v1/me/onboarding/sample-workspaces/:sampleId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-me-preferences",
+      "method": "GET",
+      "path": "/v1/me/preferences",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-me-preferences",
+      "method": "PATCH",
+      "path": "/v1/me/preferences",
+      "sourceSection": "10.3"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-me-push-subscriptions",
+      "method": "GET",
+      "path": "/v1/me/push-subscriptions",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-me-push-subscriptions",
+      "method": "POST",
+      "path": "/v1/me/push-subscriptions",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-me-push-subscriptions-by-subscription-id",
+      "method": "DELETE",
+      "path": "/v1/me/push-subscriptions/:subscriptionId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-memory-records-by-memory-id",
+      "method": "DELETE",
+      "path": "/v1/memory-records/:memoryId",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-memory-records-by-memory-id-corrections",
+      "method": "POST",
+      "path": "/v1/memory-records/:memoryId/corrections",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-model-policies-by-policy-id",
+      "method": "GET",
+      "path": "/v1/model-policies/:policyId",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-model-policies-by-policy-id",
+      "method": "PATCH",
+      "path": "/v1/model-policies/:policyId",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-oauth-clients-by-client-id",
+      "method": "DELETE",
+      "path": "/v1/oauth-clients/:clientId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-oauth-clients-by-client-id",
+      "method": "GET",
+      "path": "/v1/oauth-clients/:clientId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-oauth-clients-by-client-id",
+      "method": "PATCH",
+      "path": "/v1/oauth-clients/:clientId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-oauth-clients-by-client-id-rotations",
+      "method": "POST",
+      "path": "/v1/oauth-clients/:clientId/rotations",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-outgoing-webhooks-by-webhook-id",
+      "method": "DELETE",
+      "path": "/v1/outgoing-webhooks/:webhookId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-outgoing-webhooks-by-webhook-id",
+      "method": "PATCH",
+      "path": "/v1/outgoing-webhooks/:webhookId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-outgoing-webhooks-by-webhook-id-deliveries",
+      "method": "GET",
+      "path": "/v1/outgoing-webhooks/:webhookId/deliveries",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-region-migrations-by-migration-id",
+      "method": "GET",
+      "path": "/v1/region-migrations/:migrationId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-report-schedules-by-schedule-id",
+      "method": "DELETE",
+      "path": "/v1/report-schedules/:scheduleId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-report-schedules-by-schedule-id",
+      "method": "PATCH",
+      "path": "/v1/report-schedules/:scheduleId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-reports-by-report-id",
+      "method": "GET",
+      "path": "/v1/reports/:reportId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-reports-by-report-id-exports",
+      "method": "POST",
+      "path": "/v1/reports/:reportId/exports",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-reports-by-report-id-schedules",
+      "method": "POST",
+      "path": "/v1/reports/:reportId/schedules",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-resources-by-resource-type-by-resource-id-comments",
+      "method": "POST",
+      "path": "/v1/resources/:resourceType/:resourceId/comments",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-resources-by-resource-type-by-resource-id-thread",
+      "method": "GET",
+      "path": "/v1/resources/:resourceType/:resourceId/thread",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-roles-by-role-id",
+      "method": "DELETE",
+      "path": "/v1/roles/:roleId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-roles-by-role-id",
+      "method": "GET",
+      "path": "/v1/roles/:roleId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-roles-by-role-id",
+      "method": "PATCH",
+      "path": "/v1/roles/:roleId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-runs-by-run-id",
+      "method": "GET",
+      "path": "/v1/runs/:runId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-runs-by-run-id-cancellations",
+      "method": "POST",
+      "path": "/v1/runs/:runId/cancellations",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-runs-by-run-id-events",
+      "method": "GET",
+      "path": "/v1/runs/:runId/events",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-runs-by-run-id-exports",
+      "method": "POST",
+      "path": "/v1/runs/:runId/exports",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-runs-by-run-id-follows",
+      "method": "DELETE",
+      "path": "/v1/runs/:runId/follows",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-runs-by-run-id-follows",
+      "method": "POST",
+      "path": "/v1/runs/:runId/follows",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-runs-by-run-id-forks",
+      "method": "POST",
+      "path": "/v1/runs/:runId/forks",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-runs-by-run-id-pauses",
+      "method": "POST",
+      "path": "/v1/runs/:runId/pauses",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-runs-by-run-id-resumptions",
+      "method": "POST",
+      "path": "/v1/runs/:runId/resumptions",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-runs-by-run-id-retries",
+      "method": "POST",
+      "path": "/v1/runs/:runId/retries",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-runs-by-run-id-stream",
+      "method": "GET",
+      "path": "/v1/runs/:runId/stream",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-saved-views-by-view-id",
+      "method": "DELETE",
+      "path": "/v1/saved-views/:viewId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-saved-views-by-view-id",
+      "method": "PATCH",
+      "path": "/v1/saved-views/:viewId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-scim-tokens-by-token-id",
+      "method": "DELETE",
+      "path": "/v1/scim-tokens/:tokenId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-scim-tokens-by-token-id-rotations",
+      "method": "POST",
+      "path": "/v1/scim-tokens/:tokenId/rotations",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-service-principals-by-principal-id",
+      "method": "DELETE",
+      "path": "/v1/service-principals/:principalId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-service-principals-by-principal-id",
+      "method": "PATCH",
+      "path": "/v1/service-principals/:principalId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-service-principals-by-principal-id-credentials",
+      "method": "GET",
+      "path": "/v1/service-principals/:principalId/credentials",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-service-principals-by-principal-id-credentials",
+      "method": "POST",
+      "path": "/v1/service-principals/:principalId/credentials",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-sso-connections-by-connection-id",
+      "method": "DELETE",
+      "path": "/v1/sso-connections/:connectionId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-sso-connections-by-connection-id",
+      "method": "PATCH",
+      "path": "/v1/sso-connections/:connectionId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-sso-connections-by-connection-id-activations",
+      "method": "POST",
+      "path": "/v1/sso-connections/:connectionId/activations",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-sso-connections-by-connection-id-rotations",
+      "method": "POST",
+      "path": "/v1/sso-connections/:connectionId/rotations",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-sso-connections-by-connection-id-tests",
+      "method": "POST",
+      "path": "/v1/sso-connections/:connectionId/tests",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-support-access-by-grant-id",
+      "method": "DELETE",
+      "path": "/v1/support-access/:grantId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-support-tickets",
+      "method": "GET",
+      "path": "/v1/support-tickets",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-support-tickets",
+      "method": "POST",
+      "path": "/v1/support-tickets",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-support-tickets-by-ticket-id",
+      "method": "GET",
+      "path": "/v1/support-tickets/:ticketId",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-support-tickets-by-ticket-id-diagnostic-bundles",
+      "method": "POST",
+      "path": "/v1/support-tickets/:ticketId/diagnostic-bundles",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-support-tickets-by-ticket-id-messages",
+      "method": "POST",
+      "path": "/v1/support-tickets/:ticketId/messages",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-task-queues-by-queue-id",
+      "method": "DELETE",
+      "path": "/v1/task-queues/:queueId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-task-queues-by-queue-id",
+      "method": "GET",
+      "path": "/v1/task-queues/:queueId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-task-queues-by-queue-id",
+      "method": "PATCH",
+      "path": "/v1/task-queues/:queueId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-task-queues-by-queue-id-members-by-principal-id",
+      "method": "DELETE",
+      "path": "/v1/task-queues/:queueId/members/:principalId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "put-v1-task-queues-by-queue-id-members-by-principal-id",
+      "method": "PUT",
+      "path": "/v1/task-queues/:queueId/members/:principalId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "put-v1-task-queues-by-queue-id-routing-policy",
+      "method": "PUT",
+      "path": "/v1/task-queues/:queueId/routing-policy",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-queues-by-queue-id-routing-simulations",
+      "method": "POST",
+      "path": "/v1/task-queues/:queueId/routing-simulations",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-task-runs",
+      "method": "GET",
+      "path": "/v1/task-runs",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-task-runs-by-task-run-id",
+      "method": "GET",
+      "path": "/v1/task-runs/:taskRunId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-runs-by-task-run-id-artifact-uploads",
+      "method": "POST",
+      "path": "/v1/task-runs/:taskRunId/artifact-uploads",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-task-runs-by-task-run-id-artifacts",
+      "method": "GET",
+      "path": "/v1/task-runs/:taskRunId/artifacts",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-task-runs-by-task-run-id-attempts",
+      "method": "GET",
+      "path": "/v1/task-runs/:taskRunId/attempts",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-task-runs-by-task-run-id-attempts-by-attempt",
+      "method": "GET",
+      "path": "/v1/task-runs/:taskRunId/attempts/:attempt",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-runs-by-task-run-id-claims",
+      "method": "POST",
+      "path": "/v1/task-runs/:taskRunId/claims",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-runs-by-task-run-id-clarification-requests",
+      "method": "POST",
+      "path": "/v1/task-runs/:taskRunId/clarification-requests",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-task-runs-by-task-run-id-comments",
+      "method": "GET",
+      "path": "/v1/task-runs/:taskRunId/comments",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-runs-by-task-run-id-comments",
+      "method": "POST",
+      "path": "/v1/task-runs/:taskRunId/comments",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-runs-by-task-run-id-delegations",
+      "method": "POST",
+      "path": "/v1/task-runs/:taskRunId/delegations",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-runs-by-task-run-id-reassignments",
+      "method": "POST",
+      "path": "/v1/task-runs/:taskRunId/reassignments",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-runs-by-task-run-id-reopenings",
+      "method": "POST",
+      "path": "/v1/task-runs/:taskRunId/reopenings",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-runs-by-task-run-id-returns-to-queue",
+      "method": "POST",
+      "path": "/v1/task-runs/:taskRunId/returns-to-queue",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-runs-by-task-run-id-submissions",
+      "method": "POST",
+      "path": "/v1/task-runs/:taskRunId/submissions",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-runs-by-task-run-id-unclaims",
+      "method": "POST",
+      "path": "/v1/task-runs/:taskRunId/unclaims",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-task-runs-by-task-run-id-watches",
+      "method": "DELETE",
+      "path": "/v1/task-runs/:taskRunId/watches",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-runs-by-task-run-id-watches",
+      "method": "POST",
+      "path": "/v1/task-runs/:taskRunId/watches",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-runs-bulk-actions",
+      "method": "POST",
+      "path": "/v1/task-runs/bulk-actions",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-task-templates-by-template-id",
+      "method": "DELETE",
+      "path": "/v1/task-templates/:templateId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-task-templates-by-template-id",
+      "method": "GET",
+      "path": "/v1/task-templates/:templateId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-task-templates-by-template-id",
+      "method": "PATCH",
+      "path": "/v1/task-templates/:templateId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-templates-by-template-id-previews",
+      "method": "POST",
+      "path": "/v1/task-templates/:templateId/previews",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-templates-by-template-id-publications",
+      "method": "POST",
+      "path": "/v1/task-templates/:templateId/publications",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-task-templates-by-template-id-versions",
+      "method": "POST",
+      "path": "/v1/task-templates/:templateId/versions",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-templates",
+      "method": "GET",
+      "path": "/v1/templates",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-templates-by-template-id",
+      "method": "DELETE",
+      "path": "/v1/templates/:templateId",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-templates-by-template-id",
+      "method": "GET",
+      "path": "/v1/templates/:templateId",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-templates-by-template-id",
+      "method": "PATCH",
+      "path": "/v1/templates/:templateId",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-templates-by-template-id-instantiations",
+      "method": "POST",
+      "path": "/v1/templates/:templateId/instantiations",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-templates-by-template-id-publications",
+      "method": "POST",
+      "path": "/v1/templates/:templateId/publications",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-tools-by-tool-id",
+      "method": "GET",
+      "path": "/v1/tools/:toolId",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-tools-by-tool-id-disables",
+      "method": "POST",
+      "path": "/v1/tools/:toolId/disables",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-tools-by-tool-id-enables",
+      "method": "POST",
+      "path": "/v1/tools/:toolId/enables",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-tools-by-tool-id-versions",
+      "method": "GET",
+      "path": "/v1/tools/:toolId/versions",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-tools-by-tool-id-versions",
+      "method": "POST",
+      "path": "/v1/tools/:toolId/versions",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-webhook-deliveries-by-delivery-id-replays",
+      "method": "POST",
+      "path": "/v1/webhook-deliveries/:deliveryId/replays",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-workflow-folders-by-folder-id",
+      "method": "DELETE",
+      "path": "/v1/workflow-folders/:folderId",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-workflow-folders-by-folder-id",
+      "method": "PATCH",
+      "path": "/v1/workflow-folders/:folderId",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workflow-generations-by-generation-id",
+      "method": "GET",
+      "path": "/v1/workflow-generations/:generationId",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflow-generations-by-generation-id-cancellations",
+      "method": "POST",
+      "path": "/v1/workflow-generations/:generationId/cancellations",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-workflow-tags-by-tag-id",
+      "method": "DELETE",
+      "path": "/v1/workflow-tags/:tagId",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-workflow-tags-by-tag-id",
+      "method": "PATCH",
+      "path": "/v1/workflow-tags/:tagId",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-workflow-triggers-by-trigger-id",
+      "method": "DELETE",
+      "path": "/v1/workflow-triggers/:triggerId",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-workflow-triggers-by-trigger-id",
+      "method": "PATCH",
+      "path": "/v1/workflow-triggers/:triggerId",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workflow-triggers-by-trigger-id-deliveries",
+      "method": "GET",
+      "path": "/v1/workflow-triggers/:triggerId/deliveries",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflow-triggers-by-trigger-id-disables",
+      "method": "POST",
+      "path": "/v1/workflow-triggers/:triggerId/disables",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflow-triggers-by-trigger-id-enables",
+      "method": "POST",
+      "path": "/v1/workflow-triggers/:triggerId/enables",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflow-triggers-by-trigger-id-secret-rotations",
+      "method": "POST",
+      "path": "/v1/workflow-triggers/:triggerId/secret-rotations",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflow-triggers-by-trigger-id-test-events",
+      "method": "POST",
+      "path": "/v1/workflow-triggers/:triggerId/test-events",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-workflows-by-workflow-id",
+      "method": "DELETE",
+      "path": "/v1/workflows/:workflowId",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workflows-by-workflow-id",
+      "method": "GET",
+      "path": "/v1/workflows/:workflowId",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-workflows-by-workflow-id",
+      "method": "PATCH",
+      "path": "/v1/workflows/:workflowId",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workflows-by-workflow-id-draft",
+      "method": "GET",
+      "path": "/v1/workflows/:workflowId/draft",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "put-v1-workflows-by-workflow-id-draft",
+      "method": "PUT",
+      "path": "/v1/workflows/:workflowId/draft",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-draft-dry-runs",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/draft/dry-runs",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-workflows-by-workflow-id-draft-edges-by-edge-key",
+      "method": "DELETE",
+      "path": "/v1/workflows/:workflowId/draft/edges/:edgeKey",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "put-v1-workflows-by-workflow-id-draft-edges-by-edge-key",
+      "method": "PUT",
+      "path": "/v1/workflows/:workflowId/draft/edges/:edgeKey",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-draft-layouts",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/draft/layouts",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-workflows-by-workflow-id-draft-nodes-by-node-key",
+      "method": "DELETE",
+      "path": "/v1/workflows/:workflowId/draft/nodes/:nodeKey",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "put-v1-workflows-by-workflow-id-draft-nodes-by-node-key",
+      "method": "PUT",
+      "path": "/v1/workflows/:workflowId/draft/nodes/:nodeKey",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-draft-nodes-by-node-key-duplicates",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/draft/nodes/:nodeKey/duplicates",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-draft-nodes-by-node-key-splits",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/draft/nodes/:nodeKey/splits",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-draft-operations",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/draft/operations",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-draft-publications",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/draft/publications",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-draft-validations",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/draft/validations",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-drafts-from-version",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/drafts-from-version",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-duplicates",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/duplicates",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-exports",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/exports",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-workflows-by-workflow-id-favorites",
+      "method": "DELETE",
+      "path": "/v1/workflows/:workflowId/favorites",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-favorites",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/favorites",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-workflows-by-workflow-id-follows",
+      "method": "DELETE",
+      "path": "/v1/workflows/:workflowId/follows",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-follows",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/follows",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-ownership-transfers",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/ownership-transfers",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-restorations",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/restorations",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workflows-by-workflow-id-runs",
+      "method": "GET",
+      "path": "/v1/workflows/:workflowId/runs",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-runs",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/runs",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workflows-by-workflow-id-triggers",
+      "method": "GET",
+      "path": "/v1/workflows/:workflowId/triggers",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-by-workflow-id-triggers",
+      "method": "POST",
+      "path": "/v1/workflows/:workflowId/triggers",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workflows-by-workflow-id-version-diffs",
+      "method": "GET",
+      "path": "/v1/workflows/:workflowId/version-diffs",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workflows-by-workflow-id-versions",
+      "method": "GET",
+      "path": "/v1/workflows/:workflowId/versions",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workflows-by-workflow-id-versions-by-version",
+      "method": "GET",
+      "path": "/v1/workflows/:workflowId/versions/:version",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflows-bulk-actions",
+      "method": "POST",
+      "path": "/v1/workflows/bulk-actions",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces",
+      "method": "GET",
+      "path": "/v1/workspaces",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces",
+      "method": "POST",
+      "path": "/v1/workspaces",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-workspaces-by-workspace-id",
+      "method": "DELETE",
+      "path": "/v1/workspaces/:workspaceId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-workspaces-by-workspace-id",
+      "method": "PATCH",
+      "path": "/v1/workspaces/:workspaceId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-agents",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/agents",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-agents",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/agents",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-analytics",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/analytics",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-audit-events",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/audit-events",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-audit-exports",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/audit-exports",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-billing-portal-sessions",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/billing-portal-sessions",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-budgets",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/budgets",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-budgets",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/budgets",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-checkout-sessions",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/checkout-sessions",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-connection-authorizations",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/connection-authorizations",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-connections",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/connections",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-data-exports",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/data-exports",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-data-policies",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/data-policies",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "put-v1-workspaces-by-workspace-id-data-policies",
+      "method": "PUT",
+      "path": "/v1/workspaces/:workspaceId/data-policies",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-deletion-requests",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/deletion-requests",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-documents",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/documents",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-domains",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/domains",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-domains",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/domains",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-entities",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/entities",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-eval-datasets",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/eval-datasets",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-eval-datasets",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/eval-datasets",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-file-uploads",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/file-uploads",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-groups",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/groups",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-groups",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/groups",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-guest-invitations",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/guest-invitations",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-guest-invitations",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/guest-invitations",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-invitations",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/invitations",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-invitations",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/invitations",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-invoices",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/invoices",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-legal-holds",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/legal-holds",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-legal-holds",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/legal-holds",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-members",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/members",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-workspaces-by-workspace-id-members-by-member-id",
+      "method": "DELETE",
+      "path": "/v1/workspaces/:workspaceId/members/:memberId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-members-by-member-id",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/members/:memberId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-workspaces-by-workspace-id-members-by-member-id",
+      "method": "PATCH",
+      "path": "/v1/workspaces/:workspaceId/members/:memberId",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-memory-records",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/memory-records",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-model-policies",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/model-policies",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-model-policies",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/model-policies",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-models",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/models",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-notification-preferences",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/notification-preferences",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "patch-v1-workspaces-by-workspace-id-notification-preferences",
+      "method": "PATCH",
+      "path": "/v1/workspaces/:workspaceId/notification-preferences",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-oauth-clients",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/oauth-clients",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-oauth-clients",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/oauth-clients",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-outgoing-webhooks",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/outgoing-webhooks",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-outgoing-webhooks",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/outgoing-webhooks",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-plans",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/plans",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-provisioning-events",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/provisioning-events",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-region-migrations",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/region-migrations",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-reports",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/reports",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-reports",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/reports",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-restorations",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/restorations",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-retention-policies",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/retention-policies",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "put-v1-workspaces-by-workspace-id-retention-policies",
+      "method": "PUT",
+      "path": "/v1/workspaces/:workspaceId/retention-policies",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-retrieval-debug",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/retrieval-debug",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-roles",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/roles",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-roles",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/roles",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-saved-views",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/saved-views",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-saved-views",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/saved-views",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-scim-tokens",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/scim-tokens",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-scim-tokens",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/scim-tokens",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-search",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/search",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-service-principals",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/service-principals",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-service-principals",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/service-principals",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-spend-resumptions",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/spend-resumptions",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-spend-stops",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/spend-stops",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-sso-connections",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/sso-connections",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-sso-connections",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/sso-connections",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-subscription",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/subscription",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-support-access",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/support-access",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-support-access",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/support-access",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-task-queues",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/task-queues",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-task-queues",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/task-queues",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-task-templates",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/task-templates",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-task-templates",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/task-templates",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-templates",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/templates",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-tools",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/tools",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-tools",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/tools",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-usage",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/usage",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-usage-forecast",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/usage/forecast",
+      "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-workflow-folders",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/workflow-folders",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-workflow-folders",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/workflow-folders",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-workflow-generations",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/workflow-generations",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-workflow-imports",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/workflow-imports",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-workflow-tags",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/workflow-tags",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-workflow-tags",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/workflow-tags",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-workflows",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/workflows",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-workflows",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/workflows",
+      "sourceSection": "10.5"
+    }
+  ],
+  "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
+  "planDigest": "sha256:2d5a5a71365fa03169b00a30f4dee979cadb8d47be6a847a6851faecc38cc41b",
+  "schemaVersion": 1
+}

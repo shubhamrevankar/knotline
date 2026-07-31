@@ -1,0 +1,786 @@
+{
+  "entries": [
+    {
+      "criterionId": "M32.ENV.in-the-named-m32-staging-environment-a-region",
+      "externalGates": [],
+      "milestone": "M32",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] In the named M32 staging environment, a region migration ends with reconciled data and evidence that obsolete copies entered deletion.",
+      "sourceBulletDigest": "sha256:7f3f874c3a7f10b10acf4a270ed8f0e30c1eba062dd14feda67141c0fd0da0bd"
+    },
+    {
+      "criterionId": "M33.ENV.knotline-installs-and-completes-the-supported-mobile-task",
+      "externalGates": [],
+      "milestone": "M33",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Knotline installs and completes the supported mobile task journey on iOS and Android browsers.",
+      "sourceBulletDigest": "sha256:96abc165ac657857e71a53be09abf047b1d14d486525a9f046e0b9075a3cb136"
+    },
+    {
+      "criterionId": "M33.ENV.manual-keyboard-focus-zoom-reflow-contrast-voice-control",
+      "externalGates": [
+        "EXT-023"
+      ],
+      "milestone": "M33",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Manual keyboard, focus, zoom/reflow, contrast, voice-control, and screen-reader matrix from Section 20 uses the `EXT-023` cohort, named M33 staging deployment, and exact immutable M33 candidate digest. M38 separately reruns the summative matrix against its frozen release candidate.",
+      "sourceBulletDigest": "sha256:dd3b41a2dd98001fd15530d6a3aa7064872d8a4c41e7c3373dbeff63b5d7b311"
+    },
+    {
+      "criterionId": "M33.ENV.physical-ios-android-install-launch-push-offline-draft",
+      "externalGates": [],
+      "milestone": "M33",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Physical iOS/Android install, launch, push, offline draft, camera upload, rotation/safe-area, update waiting/activation, sign-out purge, and rollback run against the named M33 staging deployment and exact immutable M33 candidate digest on the pinned device/OS/browser matrix.",
+      "sourceBulletDigest": "sha256:a0612a11d3a8d04bd1d8bcfdce5a453e259d4dee0ac1ad07a529c025e9e0e88b"
+    },
+    {
+      "criterionId": "M33.ENV.representative-participants-and-accessibility-specialists-execute-the-complete",
+      "externalGates": [
+        "EXT-023"
+      ],
+      "milestone": "M33",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Representative participants and accessibility specialists execute the complete manual and multi-AT audit for critical journeys against the named M33 staging deployment and immutable M33 candidate digest under `EXT-023`; no A/AA exception is allowed at GA.",
+      "sourceBulletDigest": "sha256:4880f405e4a80c3db6024536dd9ec539c9415f8d2580a21ea14368a0ae32243a"
+    },
+    {
+      "criterionId": "M33.ENV.the-complete-section-20-9-study-runs-against",
+      "externalGates": [
+        "EXT-023"
+      ],
+      "milestone": "M33",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] The complete Section 20.9 study runs against the same named M33 staging candidate: every owner, builder, contributor/approver, agent/integration administrator, operator/on-call, guest, accessibility, and design-partner cohort meets its per-task threshold; SEQ/SUS, safety, denominator/exclusions, activation, findings, fixes, and retests are retained under `EXT-023`.",
+      "sourceBulletDigest": "sha256:392a34fc01f81f022478d59d631b8c9172079f35fc0029f9fb3cb4bfa4ae60ca"
+    },
+    {
+      "criterionId": "M33.ENV.under-every-launch-locale-completes-every-applicable-canonical",
+      "externalGates": [
+        "EXT-023"
+      ],
+      "milestone": "M33",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Under `EXT-023`, every launch locale completes every applicable canonical journey in the named M33 staging deployment and all first-party content categories without missing, broken, or linguistically rejected messages.",
+      "sourceBulletDigest": "sha256:d51a7ec4ce6110efa1eeb0b331e797c332224b1c4ef37f3e5f1b4458a20481dc"
+    },
+    {
+      "criterionId": "M33.ENV.under-every-section-20-9-cohort-seq-sus",
+      "externalGates": [
+        "EXT-023"
+      ],
+      "milestone": "M33",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Under `EXT-023`, every Section 20.9 cohort, SEQ/SUS threshold, safety rule, and design-partner activation threshold passes on the immutable M33 candidate; any failure keeps the M33 environment/external criterion incomplete.",
+      "sourceBulletDigest": "sha256:b3babf56d253aa296d71a7260d1c73f99c280eb0ca4375ebf3c4f88c176477c6"
+    },
+    {
+      "criterionId": "M33.ENV.under-exact-and-rows-a-customer-can-find",
+      "externalGates": [
+        "EXT-016",
+        "EXT-019",
+        "EXT-023"
+      ],
+      "milestone": "M33",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Under exact `EXT-016`, `EXT-019`, and `EXT-023` rows, a customer can find help, open a support case with safe diagnostics, follow status, and read current legal/accessibility information in the named M33 staging deployment.",
+      "sourceBulletDigest": "sha256:e528b693c163e170561f348c436be53353f7e748ab5302c66989e8619704bd4b"
+    },
+    {
+      "criterionId": "M33.ENV.under-named-professional-human-linguistic-review-for-all",
+      "externalGates": [
+        "EXT-023"
+      ],
+      "milestone": "M33",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Under `EXT-023`, named professional/human linguistic review for all six locales against the named M33 staging deployment and immutable M33 candidate digest covers UI, validation, notifications, help, exports/PDF, public/pricing, and legal copy, including terminology, tone, truncation, comprehension, and locale-specific task usability; machine translation alone cannot certify GA.",
+      "sourceBulletDigest": "sha256:0e7e84c5988b9ea44d00c842c6f37e7216c385e41e73067f0190a03fddd8bcb4"
+    },
+    {
+      "criterionId": "M34.ENV.a-clean-production-equivalent-staging-environment-is-recreated",
+      "externalGates": [],
+      "milestone": "M34",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] A clean production-equivalent staging environment is recreated from the reviewed modules and runs every non-external/core journey; M35 and M36 consume this exact environment/module digest.",
+      "sourceBulletDigest": "sha256:41788e2b2875c00f577e60e4e10a47a3ea98d9589df886b5cbc6ba4185de5d77"
+    },
+    {
+      "criterionId": "M34.ENV.a-kill-switch-stops-the-targeted-new-work",
+      "externalGates": [],
+      "milestone": "M34",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] A kill switch stops the targeted new work without widening the blast radius.",
+      "sourceBulletDigest": "sha256:b6bcf0635a81c6bf3d66708d74f7925dc8e9139f8948e26e9ad2b1af467ddec1"
+    },
+    {
+      "criterionId": "M34.ENV.a-staffed-break-glass-exercise-proves-dual-control",
+      "externalGates": [
+        "EXT-019",
+        "EXT-024"
+      ],
+      "milestone": "M34",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] A staffed break-glass exercise proves dual control, hardware step-up, exact 30-minute-or-shorter scope, immediate revocation, complete audit/session evidence, security notification, and independent post-use review under `EXT-019` and `EXT-024`.",
+      "sourceBulletDigest": "sha256:7f65bbfaa84d7ab06f747fc1813217dcee1a7eb08ef07a353f6fc152bcbe9800"
+    },
+    {
+      "criterionId": "M34.ENV.every-kill-switch-is-exercised-in-staging-including",
+      "externalGates": [],
+      "milestone": "M34",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Every kill switch is exercised in staging, including in-flight semantics and re-enable.",
+      "sourceBulletDigest": "sha256:ebb84461189ce84c3df217887ded1553607108a4c6539e664df7a95af921f162"
+    },
+    {
+      "criterionId": "M34.ENV.fresh-staging-bootstrap-signed-artifact-admission-migration-canary",
+      "externalGates": [],
+      "milestone": "M34",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Fresh staging bootstrap, signed artifact admission, migration, canary bad-build rollback, drift injection, origin bypass, and safe teardown.",
+      "sourceBulletDigest": "sha256:8bb066a8a60a629c5cdfc31e4ea67546446a354fe9335f5b199790de86a28ef0"
+    },
+    {
+      "criterionId": "M34.ENV.in-named-staging-the-approved-workforce-application-directory",
+      "externalGates": [
+        "EXT-024"
+      ],
+      "milestone": "M34",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] In named staging, the approved `EXT-024` workforce application, directory, and hardware identities execute login/step-up, provisioning, role assignment, M29 finance adjustment, M31 privacy case, access review, session revoke, and offboarding-during-operation flows; origin isolation is verified against the exact deployed digest.",
+      "sourceBulletDigest": "sha256:89704b6905883821dde620bf8aa37deb2c667dc8fcdd58dee55a1d85c08d5678"
+    },
+    {
+      "criterionId": "M34.ENV.production-equivalent-staging-smoke-for-every-core-path",
+      "externalGates": [],
+      "milestone": "M34",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Production-equivalent staging smoke for every core `CJ-*` path using deterministic provider fixtures and synthetic accounts.",
+      "sourceBulletDigest": "sha256:332207f2f99a6cbce6cf5087c3d21298f5791762146db97eccc9879657bb57c9"
+    },
+    {
+      "criterionId": "M34.ENV.separate-criterion-rows-for-each-applicable-and-real",
+      "externalGates": [
+        "EXT-004",
+        "EXT-005",
+        "EXT-006",
+        "EXT-007",
+        "EXT-008",
+        "EXT-009",
+        "EXT-010",
+        "EXT-011",
+        "EXT-012",
+        "EXT-013",
+        "EXT-014",
+        "EXT-015",
+        "EXT-025"
+      ],
+      "milestone": "M34",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Separate criterion rows for each applicable `EXT-004`, `EXT-005`, `EXT-006`, `EXT-007`, `EXT-008`, `EXT-009`, `EXT-010`, `EXT-011`, `EXT-012`, `EXT-013`, `EXT-014`, `EXT-015`, and `EXT-025` real sandbox branch run and retain their own state; one pass cannot advance another and a blocked branch cannot be labelled `LIVE`.",
+      "sourceBulletDigest": "sha256:09853f72091242bf43e7878eadedacd3159e9d5ab070dc54e9b37f0119749560"
+    },
+    {
+      "criterionId": "M34.ENV.under-a-newly-provisioned-operator-can-perform-only",
+      "externalGates": [
+        "EXT-024"
+      ],
+      "milestone": "M34",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Under `EXT-024`, a newly provisioned operator can perform only the actions of the assigned duty/environment scope; disabling that workforce identity revokes active sessions and support/break-glass access promptly, while workspace credentials can never reach an operator route.",
+      "sourceBulletDigest": "sha256:f7fa720387f9f8a2220e2f38fdeb9766b983d8c1d4de0b18063b45a3db22651c"
+    },
+    {
+      "criterionId": "M34.ENV.under-a-staffed-on-call-game-day-covers",
+      "externalGates": [
+        "EXT-019"
+      ],
+      "milestone": "M34",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Under `EXT-019`, a staffed on-call game day covers model outage, database saturation, connector storm, stuck workflows, billing webhook loss, and credential compromise.",
+      "sourceBulletDigest": "sha256:cacd028cff59c12f4af6ef10a544c799008de9ceb4925196e4b4ccc9de3a885e"
+    },
+    {
+      "criterionId": "M34.ENV.under-an-on-call-operator-detects-and-contains",
+      "externalGates": [
+        "EXT-019"
+      ],
+      "milestone": "M34",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Under `EXT-019`, an on-call operator detects and contains each rehearsed critical failure from documented signals and controls.",
+      "sourceBulletDigest": "sha256:2ddf45181011dcbee538d9a91c5b8af12097b9738975cff48a9a2a26f7c45723"
+    },
+    {
+      "criterionId": "M34.ENV.under-every-page-has-a-named-owner-deputy",
+      "externalGates": [
+        "EXT-019"
+      ],
+      "milestone": "M34",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Under `EXT-019`, every page has a named owner/deputy and runnable runbook; every runbook has a tested alert or explicit manual trigger.",
+      "sourceBulletDigest": "sha256:9af9fce0e9faf8fedfaadad8c2d5ea7d2210eef35de49ba9605948f9901e9e7b"
+    },
+    {
+      "criterionId": "M35.ENV.key-secret-certificate-rotation-and-emergency-revocation-exercises",
+      "externalGates": [],
+      "milestone": "M35",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Key/secret/certificate rotation and emergency revocation exercises.",
+      "sourceBulletDigest": "sha256:288c311b637a1b57ae1d4b43ef832d2831a96d5f806d2a6fb115c10afa597df9"
+    },
+    {
+      "criterionId": "M35.ENV.named-security-and-system-owners-complete-the-initial",
+      "externalGates": [
+        "EXT-017"
+      ],
+      "milestone": "M35",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Named security and system owners complete the initial launch access review, remove unexplained access, and sign the evidence under `EXT-017`.",
+      "sourceBulletDigest": "sha256:33287a70f78ee8c1d5f7cc1c83203e34aa1fc3549001271c12395b02c89d0b1a"
+    },
+    {
+      "criterionId": "M35.ENV.under-exact-and-rows-break-glass-access-and",
+      "externalGates": [
+        "EXT-017",
+        "EXT-024"
+      ],
+      "milestone": "M35",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Under exact `EXT-017` and `EXT-024` rows, break-glass access and post-use review pass in the named security environment.",
+      "sourceBulletDigest": "sha256:64eaade656a69cf4d5bf4dd4d1f7f5cc991bd9823cf66511f1afa37755abdd74"
+    },
+    {
+      "criterionId": "M36.ENV.24-hour-soak-for-leaks-bloat-stuck-work",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] 24-hour soak for leaks, bloat, stuck work, cursor drift, usage mismatch, and telemetry/cardinality growth.",
+      "sourceBulletDigest": "sha256:21d6c66255499bb6e8949966bbb54f6f06bc5edb2273f8397d8c68db986342f0"
+    },
+    {
+      "criterionId": "M36.ENV.a-pending-browser-api-public-anonymous-mutation-and",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] A pending browser/API `COMMIT_CONFIRMATION_PENDING`, public-anonymous mutation, and provider callback each retry across a journal generation and, separately, a recovery-table-region change; the scope-wide claim digest preserves one request hash, one logical operation/effect identity, and the original current/final result without duplicate mutation or receipt.",
+      "sourceBulletDigest": "sha256:046e294308c8aa5e8b89e7b6acb43815ff94d6be0d38c71a24f66be07d468197"
+    },
+    {
+      "criterionId": "M36.ENV.all-section-4-2-launch-profiles-pass-in",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] All Section 4.2 launch profiles pass in production-equivalent staging within their cost ceilings.",
+      "sourceBulletDigest": "sha256:4a445261efad337262381a126246dc88d8cba72193257633d39dee372a0255ea"
+    },
+    {
+      "criterionId": "M36.ENV.an-epoch-transition-triggered-immediately-after-a-maximum",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] An epoch transition triggered immediately after a maximum-duration old-region lease issuance proves: issuance closes atomically, the recorded maximum expiry cannot move afterward, no new-region lease is issued during the 30-second lease plus five-second clock and five-second safety drain, the old authoritative store rejects a late commit, and no mutation/effect lease overlaps across regions.",
+      "sourceBulletDigest": "sha256:aeddd4c1386557109f51ef0ec69dcf1fdb2aa499e35e2523ccad62a7a3d2560f"
+    },
+    {
+      "criterionId": "M36.ENV.browser-web-vitals-and-interaction-budgets-across-the",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Browser Web Vitals and interaction budgets across the support matrix.",
+      "sourceBulletDigest": "sha256:2d48089ebc7ac68a662cd90bf110a0fc63496bdcb5662f4b02ea58c751151788"
+    },
+    {
+      "criterionId": "M36.ENV.every-reference-profile-runs-for-its-declared-duration",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Every reference profile runs for its declared duration with exact pass/fail percentiles, error rate, queue lag, correctness checks, and cost.",
+      "sourceBulletDigest": "sha256:a0d4d55b9a22adb97d486822d6d246b3dc7e857ae4be2199d41a1fddc1299f9c"
+    },
+    {
+      "criterionId": "M36.ENV.exact-and-rows-retain-the-staffed-regional-disaster",
+      "externalGates": [
+        "EXT-002",
+        "EXT-003",
+        "EXT-004",
+        "EXT-019",
+        "EXT-022"
+      ],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Exact `EXT-002`, `EXT-003`, `EXT-004`, `EXT-019`, and `EXT-022` rows retain the staffed regional disaster game day, dependency owners, status/customer/support communication, and after-action review.",
+      "sourceBulletDigest": "sha256:cf899641a14e68060d6fe306adbe1ba361ac4d509c8a7a4dba5ad140c9ab7c36"
+    },
+    {
+      "criterionId": "M36.ENV.fault-injection-at-every-critical-runtime-crash-window",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Fault injection at every critical runtime crash window and infrastructure dependency.",
+      "sourceBulletDigest": "sha256:34fe1c65eb41bc0b431b1191ed67f75898e00e81f2b3ea09bbe8348122694e24"
+    },
+    {
+      "criterionId": "M36.ENV.full-point-in-time-restore-and-regional-recovery",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Full point-in-time restore and regional recovery exercises measured from declared incident start to verified service.",
+      "sourceBulletDigest": "sha256:e41c858a8741dfe5bb2039be6f080275cfb535434bf7d6a0d68da3e958bda6e3"
+    },
+    {
+      "criterionId": "M36.ENV.generation-tests-delay-primary-commit-confirmation-and-provider",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] `OPEN`/`DRAINING`/`SEALED` generation tests delay primary commit confirmation and provider receipts across the seal. New intents/effects stop at the cutoff, eligible drain records are included in the final root, an old-generation late append is conditionally rejected, and verified late completion appears only as linked `LATE_COMPLETION`/`CARRIED_FORWARD` in the new generation. The source lease may reconcile and write only `UNSETTLED_SEALED`/`CARRY_MANIFEST`; an attempted source `CARRIED_FORWARD` fails. The destination is created `PREPARING` before it copies the carry root and writes carry records/pointers, and no `GENERATION_ACCEPTED` precedes their verified digest.",
+      "sourceBulletDigest": "sha256:a6acdf8631dd5ea669d3b2491630052d748b1a0cf43c40b9c524f14edfeec80a"
+    },
+    {
+      "criterionId": "M36.ENV.hot-key-noisy-tenant-retry-storm-webhook-flood",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Hot-key/noisy-tenant, retry storm, webhook flood, large graph/document/log, slow consumer, and export workload.",
+      "sourceBulletDigest": "sha256:b3b5dc01ab18e3919e27602f2420d2c812178f59fbcc9dca8257b29b2bfa2e52"
+    },
+    {
+      "criterionId": "M36.ENV.live-but-partitioned-former-primary-stale-30-second",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Live-but-partitioned former primary, stale 30-second epoch lease, isolation of each MRSC authority region in turn with linearizable operation through the other replicas, separate quorum-loss fail-closed and measured restoration, edge/credential/network egress fence, and no-second-writer proof.",
+      "sourceBulletDigest": "sha256:34b27c2da445e437f833f5b3d310dde633260d87aa6436dfa42b5c78b1b547a4"
+    },
+    {
+      "criterionId": "M36.ENV.losing-one-availability-zone-does-not-lose-an",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Losing one availability zone does not lose an acknowledged durable operation.",
+      "sourceBulletDigest": "sha256:6bc51375daa4cb7500ae15ac408caf99bff5688a5b20dd13ffa630e3a58b3032"
+    },
+    {
+      "criterionId": "M36.ENV.measured-recovery-meets-the-declared-rpo-rto-and",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Measured recovery meets the declared RPO/RTO and preserves audit, deletion, residency, and side-effect correctness.",
+      "sourceBulletDigest": "sha256:b66b0495d4aebf8a8fd86a5ef4f3dce36ffcea8322675e8a28f6b0d71f98bb64"
+    },
+    {
+      "criterionId": "M36.ENV.overload-produces-bounded-queues-fair-throttling-and-honest",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Overload produces bounded queues, fair throttling, and honest degradation rather than silent corruption.",
+      "sourceBulletDigest": "sha256:050c60dd23dde1c3656427f7c002c45f32132809657b431aa0fb20db53c694b9"
+    },
+    {
+      "criterionId": "M36.ENV.queue-backlog-drain-preserves-fairness-and-does-not",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Queue/backlog drain preserves fairness and does not duplicate logical work.",
+      "sourceBulletDigest": "sha256:f4a36bcca4d238d0bc5711611770c8f5a9090b918589cc823f593d8aa4f2b580"
+    },
+    {
+      "criterionId": "M36.ENV.recovery-control-lease-tests-exercise-every-allowed-drain",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Recovery-control lease tests exercise every allowed drain/seal/manifest/ claim-copy/carry/registration-resolve/scope-manifest verb and attempt DB/product commit, task claim, new `INTENT`, `SEND_STARTED`, credential retrieval, provider call, and egress. Distinct source-close and destination-prepare leases move between different journal tables/regions; exchanging either lease across endpoints or invoking the other's verbs fails. Key audience, IAM, gateway, journal ARN/region, state, transition, incident, scope, epoch, generation, expiry, and nonce checks reject every authority escalation while the barrier completes without waiting for a data lease. The separate lost-source destination-reconstruct lease rejects every normal source-close claim and cannot be issued unless the authority state, missing-source identity, data-plane snapshot, effect-mirror inventory, and lease drain match `LOST_SOURCE_JOURNAL`. If the source disappears midway through a normal close, the test requires that transition and both leases to be fenced/expired before a new epoch and immutable branch selection can issue the reconstruct lease.",
+      "sourceBulletDigest": "sha256:a98a1440bba70afd5189debbece6b0888135a0ca1aaa5a0af6a6748732d0eaa4"
+    },
+    {
+      "criterionId": "M36.ENV.recovery-journal-qualification-covers-workspace-identity-home-platform",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Recovery-journal qualification covers workspace, identity-home, platform-control, public-intake, and global-directory scope classes; first/ last records on hour and shard boundaries; both certified clock-skew bounds; an exact-hour restore point; long-straddling operations; strongly consistent enumeration of every shard; missing, duplicate, or hash-mismatched base/index pointers; hundreds of concurrent appenders with forced sequence conflicts; definite conflict retry under a new candidate token; ambiguous response retry under only the same token for the full horizon; acceptance- sequence continuity; sealed-window counts, roots, adjacent anchors, and generation-root inclusion proofs; atomic unsettled-pointer create/advance/ terminal-delete; all fixed unsettled-shard counts/roots; and proof that non-indexed control envelopes neither mutate nor self-reference a sealed root. An `INTENT` begins two hours before the restore point, its primary commit occurs inside the RPO gap, and its `COMMITTED` marker is deliberately lost; despite falling outside both guard hours and restored active state, its unsettled pointer must place the complete chain in the affected manifest. The suite finishes with a gap-free, non-overlapping old-generation close/ new-generation acceptance handoff.",
+      "sourceBulletDigest": "sha256:b30132c9fc6be403b17530dea8111ffcb2702d637567378904a929e0337178bd"
+    },
+    {
+      "criterionId": "M36.ENV.redis-loss-during-schedule-model-connector-tool-paid",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Redis loss during schedule, model, connector, tool, paid-limit, and provider- concurrency load proves conservative fallback/fail-closed rather than flood or duplicate ownership.",
+      "sourceBulletDigest": "sha256:7c334cc14f7b3bb8d2fd526fd3872406fa0006589a7600ae90a324d3b9ca8347"
+    },
+    {
+      "criterionId": "M36.ENV.restore-never-serves-previously-deleted-data-or-moves",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Restore never serves previously deleted data or moves a workspace outside its allowed region.",
+      "sourceBulletDigest": "sha256:979fbb7feb8021c1702a77edb6c8d3df1fe69e5b0a705c9c2e46519395757bb1"
+    },
+    {
+      "criterionId": "M36.ENV.rpo-window-api-callback-schedule-billing-effect-intents",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] RPO-window API/callback/schedule/billing/effect intents with lost primary commits, orphan journal intents, post-commit/pre-marker failures, verified absence of false success acknowledgements, missing receipts, and complete manifest reconciliation.",
+      "sourceBulletDigest": "sha256:3f348804322816fa115c101cc819652ef1b558dcb22d41c2cbb7835b916bf33e"
+    },
+    {
+      "criterionId": "M36.ENV.single-az-failover-and-recovery-during-active-workflows",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Single-AZ failover and recovery during active workflows and external writes.",
+      "sourceBulletDigest": "sha256:ab12b9f2c890a2927446648a989bae6ab6e8fde494c2c6d080b22742383fb315"
+    },
+    {
+      "criterionId": "M36.ENV.the-fixed-shard-mrsc-scope-directory-stops-registration",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] The fixed-shard MRSC scope directory stops registration and G-shard data leases on every fixed admission shard in the environment across all control/ residency pools, including shards with no currently affected scope; captures each serialized admission cutoff and bounded active-token map; waits every recorded lease/clock/safety drain; and then finds every affected workspace, identity, platform, public, and global scope across all declared shards. A registration intentionally routed through a previously unaffected/empty shard but mapped to the incident region is rejected or included before `SCOPE_MANIFEST_FIXED`. A readable G journal seals normally; a separately unavailable G journal reconstructs from its MRSC token/directory mirror under a destination-reconstruct lease and never asserts an old root. The test also fills the 128-token admission cap, verifies deterministic queuing rather than shard bypass, and includes a `PENDING`/`REGISTERING` scope, a scope created after the restore point, and a migrated/tombstoned scope absent from restored product state. It delays an admitted initial put and final activation until enumeration/terminalization is underway; exact operation/step-version conditions prove each write either serialized before the manifest outcome or failed afterward, with no omitted or resurrected mutable scope. Crash injection after G-shard lease-pair issue, source `DRAINING`, source `SEALED`, destination `PREPARING`, each per-item terminalization, `REGISTRATION_RESOLVED`, `SCOPE_MANIFEST_FIXED`, and the branch-appropriate `GENERATION_ACCEPTED`/`LOST_SOURCE_ACCEPTED` proves idempotent resume and proves the later generic barrier does not create a duplicate G generation. Assertions require exactly one G-scope recovery epoch increment, the same transition/epoch on every issued endpoint credential and acceptance envelope, explicit authority `OPENING`, destination journal `OPEN`, then authority `ACTIVE`/`PROTECTED` in that order before the first post-recovery G data lease.",
+      "sourceBulletDigest": "sha256:64dd49cb33ec054d3e3353b6456ff4b074f78e7f83a18621533474f7436cb81e"
+    },
+    {
+      "criterionId": "M36.ENV.with-the-original-primary-held-unavailable-the-standby",
+      "externalGates": [],
+      "milestone": "M36",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] With the original primary held unavailable, the standby acknowledges mutations/effects only while the distinct third-region journal and WAL/PITR/ object/deletion streams meet NFR-008. Protection loss closes writes before breach. One drill keeps the old journal readable and uses the normal sealed handoff. A separate drill makes the journal/protection region wholly unavailable while the authoritative data plane remains healthy: it proves the single `LOST_SOURCE_JOURNAL` epoch/fence, fixed DB LSN and object/ deletion/hold inventories, complete local effect mirrors, provider reconciliation, reconstructed claims/records, independently recomputed `LOST_SOURCE_MANIFEST`/`LOST_SOURCE_ACCEPTED`, new-lineage seed/catch-up/ digest/restore, and `OPEN` before writes resume. Immediately before total journal-region loss, the fixture commits one non-G journal `INTENT` but no primary/local row; reconstruction must declare that bounded population and count `UNKNOWN`, must not invent the operation/count/root, and must prove it could not mutate, send, or receive success. Removing any required mirror or losing the data plane keeps the scope read-only; a later-returning old journal is quarantined and cannot merge. Re-protection to a new distinct destination then passes, and a separately injected standby loss preserves the complete manifest and bounded recovery material with measured compound- disaster RTO. Promotion creates a new authority-epoch/source-incarnation/ PostgreSQL-timeline manifest; deliberately delayed old-primary WAL, snapshot, object version, and delete-marker deliveries stay in the closed old namespace and cannot advance or overwrite the canonical restore chain.",
+      "sourceBulletDigest": "sha256:d3eb52d667d9f5a9dc77226b014709b436f6a46e2b8ebc436ab6850edb03a93a"
+    },
+    {
+      "criterionId": "M37.ENV.canary-bad-build-injection-triggers-health-gate-rollback",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Canary bad-build injection triggers health-gate rollback.",
+      "sourceBulletDigest": "sha256:bffcf5b144ad8dd0bcc5dc0f779673c13e6aab501d174cc2b54eeb72fc559528"
+    },
+    {
+      "criterionId": "M37.ENV.cost-ttl-guard-and-safe-teardown-for-preview",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Cost/TTL guard and safe teardown for preview environments.",
+      "sourceBulletDigest": "sha256:f57dbbbf23cd67db0290d79365af6d387afb9c80c1f006460a88e9be71fe1104"
+    },
+    {
+      "criterionId": "M37.ENV.direct-alb-s3-origin-attempts-prove-cloudfront-waf",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Direct ALB/S3/origin attempts prove CloudFront/WAF/origin-auth controls cannot be bypassed.",
+      "sourceBulletDigest": "sha256:3fba339f88b4c2a799b831c3a99f341b2bf0fe08f0ada065d4730ed4b1b3adcd"
+    },
+    {
+      "criterionId": "M37.ENV.drift-failed-migration-unhealthy-canary-expired-certificate-and",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Drift, failed migration, unhealthy canary, expired certificate, and quota pressure are detected before they become silent customer failures.",
+      "sourceBulletDigest": "sha256:50e44d53a195eaa0967c1b7e4975c93fcf8b8495a360805b2c824a069d0db328"
+    },
+    {
+      "criterionId": "M37.ENV.fresh-environment-bootstrap-and-full-application-deploy-from",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Fresh-environment bootstrap and full application deploy from documented prerequisites.",
+      "sourceBulletDigest": "sha256:84b786b26fe19f71a82e85a83b6c9d14bd02aa77aa527de2c0e8e70bc818489d"
+    },
+    {
+      "criterionId": "M37.ENV.infrastructure-drift-injection-detection-review-and-repair",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Infrastructure drift injection, detection, review, and repair.",
+      "sourceBulletDigest": "sha256:4d8590651fba69ffba4e60183a0179e160219acd15fa03332d6b65ae42586985"
+    },
+    {
+      "criterionId": "M37.ENV.migration-against-previous-production-version-mixed-version-window",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Migration against previous production version, mixed-version window, interruption, rollback/roll-forward, and large backfill.",
+      "sourceBulletDigest": "sha256:8a5db0be88abff98ac943ce82565ea90ace7bdb576141540d298d31efb82277b"
+    },
+    {
+      "criterionId": "M37.ENV.production-like-staging-smoke-of-every-critical-journey",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Production-like staging smoke of every critical journey.",
+      "sourceBulletDigest": "sha256:8ac7b3513a3bdf3062d8cc62838c6c0e9ca4f5c7c0016acbe490298a7e2c0352"
+    },
+    {
+      "criterionId": "M37.ENV.required-environment-terminal-a-clean-production-account-region",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBullet": "[ENV] **Required environment terminal: `PRODUCTION_VERIFIED`.** A clean production account/region can be bootstrapped from the exact M34/M36-tested modules, approved secret references, and signed artifact digests without undocumented console changes; staging remains reproducible from the same modules.",
+      "sourceBulletDigest": "sha256:65b676d529075cb9419c32bc0a9bedfe26cbf198d1a7c04143c8fc316ab34461"
+    },
+    {
+      "criterionId": "M37.ENV.required-environment-terminal-exact-and-rows-retain-domain",
+      "externalGates": [
+        "EXT-006",
+        "EXT-021"
+      ],
+      "milestone": "M37",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBullet": "[ENV+EXT] **Required environment terminal: `PRODUCTION_VERIFIED`.** Exact `EXT-006` and `EXT-021` rows retain domain/email production verification, status page, support tooling, and public endpoint monitoring.",
+      "sourceBulletDigest": "sha256:de93ba5693105af7f10317458ea60462052ecf2e8261708aa2bcf62ee63e63bb"
+    },
+    {
+      "criterionId": "M37.ENV.required-environment-terminal-exact-and-rows-retain-secret",
+      "externalGates": [
+        "EXT-002",
+        "EXT-006",
+        "EXT-021"
+      ],
+      "milestone": "M37",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBullet": "[ENV+EXT] **Required environment terminal: `PRODUCTION_VERIFIED`.** Exact `EXT-002`, `EXT-006`, and `EXT-021` rows retain secret, certificate, domain, and email rotation with the approved external accounts and owners.",
+      "sourceBulletDigest": "sha256:26a8e9b1c4f1d479ae92ae15fcc71afb9ef54a53cc762cb54d727d98e427f6cd"
+    },
+    {
+      "criterionId": "M37.ENV.required-environment-terminal-production-uses-isolated-identities-networks",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBullet": "[ENV] **Required environment terminal: `PRODUCTION_VERIFIED`.** Production uses isolated identities, networks, data stores, encryption keys, and budgets.",
+      "sourceBulletDigest": "sha256:5c36063afaa314d306ba6a35aaa00a038538293813ff015e46870285687ee164"
+    },
+    {
+      "criterionId": "M37.ENV.required-environment-terminal-reviewed-apply-in-development-staging",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBullet": "[ENV] **Required environment terminal: `PRODUCTION_VERIFIED`.** Reviewed apply in development, staging, and the fresh production bootstrap target.",
+      "sourceBulletDigest": "sha256:33c4b9ad80f67be7f7957a244214d9dd2a3f0d65102418ef7062572af5c1e841"
+    },
+    {
+      "criterionId": "M37.ENV.required-environment-terminal-the-approved-temporal-production-account",
+      "externalGates": [
+        "EXT-003"
+      ],
+      "milestone": "M37",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBullet": "[ENV+EXT] **Required environment terminal: `PRODUCTION_VERIFIED`.** The approved `EXT-003` Temporal production account/namespace passes configuration, network, retention, credential, outage, and recovery/export verification.",
+      "sourceBulletDigest": "sha256:6c9260fdbd1c358e611084549e2736f5d8230444c315df134a8d1e1e53ccf975"
+    },
+    {
+      "criterionId": "M37.ENV.required-environment-terminal-the-exact-signed-image-digest",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBullet": "[ENV] **Required environment terminal: `PRODUCTION_VERIFIED`.** The exact signed image digest is promoted through the named environments and its deployment record is retained.",
+      "sourceBulletDigest": "sha256:ebdac4c7c4714116eafb3c36cc1882959a6fed9bb6cb91eacf63f56ef986c318"
+    },
+    {
+      "criterionId": "M37.ENV.required-environment-terminal-the-exact-tested-artifact-digest",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBullet": "[ENV] **Required environment terminal: `PRODUCTION_VERIFIED`.** The exact tested artifact digest reaches production and can be rolled back with compatible data/schema behavior.",
+      "sourceBulletDigest": "sha256:452b04dd4d0a092183b31a59e9c0dfda10faa4e0f4fd9b3b246d27e15b5f1c23"
+    },
+    {
+      "criterionId": "M37.ENV.required-environment-terminal-under-exact-and-fresh-production",
+      "externalGates": [
+        "EXT-002",
+        "EXT-022"
+      ],
+      "milestone": "M37",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBullet": "[ENV+EXT] **Required environment terminal: `PRODUCTION_VERIFIED`.** Under exact `EXT-002` and `EXT-022`, fresh production validation proves all active/ standby/protection region IDs are distinct and privacy-approved, no protection region serves customer traffic, journal/protection lag closes writes before NFR-008, and the documented re-protection workflow can replace a failed protection destination without split brain. The test separately proves readable-source sealed handoff and genuinely unavailable-source reconstruction; the latter cannot apply when any required authoritative snapshot/effect-mirror/ledger proof is missing.",
+      "sourceBulletDigest": "sha256:8796da150026f04f4e16e5e5fad6552f804b75f55aa1dc010e9553c884b9e0b6"
+    },
+    {
+      "criterionId": "M37.ENV.service-drain-restart-autoscale-az-failure-and-scheduled",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Service drain/restart/autoscale/AZ failure and scheduled task singleton.",
+      "sourceBulletDigest": "sha256:ad5ae212417e7a61463000c02f7fe05a844791a679eadcd3705c45d11963b547"
+    },
+    {
+      "criterionId": "M37.ENV.signed-image-sbom-provenance-verification-at-deployment-admission",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Signed image/SBOM/provenance verification at deployment admission.",
+      "sourceBulletDigest": "sha256:54b22867d822d35ba0d1adb0dc24d95843412139c6357cbaf87fc9f9dcb1f520"
+    },
+    {
+      "criterionId": "M37.ENV.the-deployed-mrsc-authority-has-exactly-the-approved",
+      "externalGates": [],
+      "milestone": "M37",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] The deployed MRSC authority has exactly the approved three readable/ writable replicas, strong conditional single-item scope transitions, no application transaction call, independent regional epoch services/signing permissions, successful one-region routing isolation, and fail-closed quorum loss. Directory activation/freeze and data/recovery-control lease policies match the M36-tested configuration byte for byte.",
+      "sourceBulletDigest": "sha256:e5d625dad557542c744285ee89ef889c673b0df8c8ead815b3bc964f9a1fcdfa"
+    },
+    {
+      "criterionId": "M38.ENV.exact-and-rows-retain-billing-penny-unit-reconciliation",
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "milestone": "M38",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Exact `EXT-005` and `EXT-020` rows retain billing penny/unit reconciliation and entitlement-boundary evidence.",
+      "sourceBulletDigest": "sha256:e02fce96483561d7528b8d66c876fce7111a8387e6417bd35b3e59bb9a6cfc61"
+    },
+    {
+      "criterionId": "M38.ENV.exact-and-rows-retain-named-owner-acceptance-of",
+      "externalGates": [
+        "EXT-002",
+        "EXT-003",
+        "EXT-004",
+        "EXT-017",
+        "EXT-019",
+        "EXT-022",
+        "EXT-024"
+      ],
+      "milestone": "M38",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Exact `EXT-002`, `EXT-003`, `EXT-004`, `EXT-017`, `EXT-019`, `EXT-022`, and `EXT-024` rows retain named-owner acceptance of final performance, resilience, security/penetration retest, privacy/residency, backup/restore, DR, cost, and operational evidence.",
+      "sourceBulletDigest": "sha256:0fe4a3343f8fb86aa7c5c27826d86ddb40226563bb478fa557dbf7086c5904cd"
+    },
+    {
+      "criterionId": "M38.ENV.exact-and-rows-retain-the-audit-export-deletion",
+      "externalGates": [
+        "EXT-016",
+        "EXT-017",
+        "EXT-019",
+        "EXT-022",
+        "EXT-024"
+      ],
+      "milestone": "M38",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Exact `EXT-016`, `EXT-017`, `EXT-019`, `EXT-022`, and `EXT-024` rows retain the audit/export/deletion/legal-hold/support-access evidence review.",
+      "sourceBulletDigest": "sha256:e6e8090de0a3a0ccc30777bb505dfc35a154bfb4ab389653728bcd58dd7c8595"
+    },
+    {
+      "criterionId": "M38.ENV.exact-and-rows-retain-the-final-visual-copy",
+      "externalGates": [
+        "EXT-001",
+        "EXT-016",
+        "EXT-020",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "milestone": "M38",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Exact `EXT-001`, `EXT-016`, `EXT-020`, `EXT-021`, and `EXT-023` rows retain the final visual, copy, responsive, accessibility, localization, browser/device, email/chat, PDF/export, empty/error/offline/degraded, and legal review against the frozen release-candidate deployment.",
+      "sourceBulletDigest": "sha256:7af1f43393c14ef8288fbbe84434f0dc81a8446a9a4b98b209a436cfa3986e1b"
+    },
+    {
+      "criterionId": "M38.ENV.final-load-soak-chaos-az-restore-regional-dr",
+      "externalGates": [],
+      "milestone": "M38",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV] Final load/soak/chaos/AZ/restore/regional DR and cost profiles.",
+      "sourceBulletDigest": "sha256:bef9dbceb20067d18365bdc9204082fde41c0987414bf38d61910ca4382bb169"
+    },
+    {
+      "criterionId": "M38.ENV.separate-and-and-rows-retain-the-applicable-backup",
+      "externalGates": [
+        "EXT-002",
+        "EXT-003",
+        "EXT-004",
+        "EXT-005",
+        "EXT-006",
+        "EXT-007",
+        "EXT-008",
+        "EXT-009",
+        "EXT-010",
+        "EXT-011",
+        "EXT-012",
+        "EXT-013",
+        "EXT-014",
+        "EXT-015",
+        "EXT-019",
+        "EXT-021",
+        "EXT-022",
+        "EXT-024",
+        "EXT-025"
+      ],
+      "milestone": "M38",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Separate `EXT-002`, `EXT-003`, `EXT-004`, `EXT-005`, `EXT-006`, `EXT-007`, `EXT-008`, `EXT-009`, `EXT-010`, `EXT-011`, `EXT-012`, `EXT-013`, `EXT-014`, `EXT-015`, `EXT-019`, `EXT-021`, `EXT-022`, and `EXT-024`, and `EXT-025` rows retain the applicable backup, rollback, data/schema compatibility, kill-switch, provider-disable, customer- communication, and post-rollback-reconciliation rehearsal completed within seven days of GA.",
+      "sourceBulletDigest": "sha256:75394da65b7b1a4b53e690a71a74125d01b0f73f4a57d0bd7300145b0661a02c"
+    },
+    {
+      "criterionId": "M38.ENV.separate-and-evidence-rows-back-the-applicable-branches",
+      "externalGates": [
+        "EXT-002",
+        "EXT-003",
+        "EXT-004",
+        "EXT-005",
+        "EXT-006",
+        "EXT-007",
+        "EXT-008",
+        "EXT-009",
+        "EXT-010",
+        "EXT-011",
+        "EXT-012",
+        "EXT-013",
+        "EXT-014",
+        "EXT-015",
+        "EXT-019",
+        "EXT-023",
+        "EXT-024",
+        "EXT-025"
+      ],
+      "milestone": "M38",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Separate `EXT-002`, `EXT-003`, `EXT-004`, `EXT-005`, `EXT-006`, `EXT-007`, `EXT-008`, `EXT-009`, `EXT-010`, `EXT-011`, `EXT-012`, `EXT-013`, `EXT-014`, `EXT-015`, `EXT-019`, `EXT-023`, `EXT-024`, and `EXT-025` evidence rows back the applicable branches of the complete critical-journey E2E suite in production-equivalent staging: discover → sign up → onboard → build/import/generate → test → publish → trigger → agent/tool/knowledge → task/approval → external action → observe → analyze → bill → audit/export/delete → get support.",
+      "sourceBulletDigest": "sha256:f3ddfed57ba4c1999c24240a50d56d24cc4cec79d9c02ef1b83560506639f55c"
+    },
+    {
+      "criterionId": "M38.ENV.separate-and-rows-back-their-applicable-critical-journeys",
+      "externalGates": [
+        "EXT-004",
+        "EXT-005",
+        "EXT-006",
+        "EXT-007",
+        "EXT-008",
+        "EXT-009",
+        "EXT-010",
+        "EXT-011",
+        "EXT-012",
+        "EXT-013",
+        "EXT-014",
+        "EXT-015",
+        "EXT-023",
+        "EXT-025"
+      ],
+      "milestone": "M38",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Separate `EXT-004`, `EXT-005`, `EXT-006`, `EXT-007`, `EXT-008`, `EXT-009`, `EXT-010`, `EXT-011`, `EXT-012`, `EXT-013`, `EXT-014`, `EXT-015`, `EXT-023`, and `EXT-025` rows back their applicable critical journeys on the browser/device/locale/assistive-technology matrix.",
+      "sourceBulletDigest": "sha256:ba2b6e15c24cc8d1c76c33706e9f68109e64049e1f72f178b331a4916bfca0dd"
+    },
+    {
+      "criterionId": "M38.ENV.under-section-20-9-usability-studies-and-beta",
+      "externalGates": [
+        "EXT-023"
+      ],
+      "milestone": "M38",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Under `EXT-023`, Section 20.9 usability studies and beta activation thresholds pass against the frozen release-candidate deployment; every fixed major finding is retested and every accepted lower-severity finding has owner and expiry.",
+      "sourceBulletDigest": "sha256:9188f1698738803ec071564cf332b1645a7b3d2d396d007568d1b223312f94b2"
+    },
+    {
+      "criterionId": "M38.ENV.under-the-summative-usability-and-activation-calculation-reruns",
+      "externalGates": [
+        "EXT-023"
+      ],
+      "milestone": "M38",
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBullet": "[ENV+EXT] Under `EXT-023`, the summative usability and activation calculation reruns against the exact frozen release-candidate deployment, including denominator, exclusions, findings, fixes, and retest evidence.",
+      "sourceBulletDigest": "sha256:e9baac12aca10fe730686a123f577f6a99afe8b9478710411cd6da985d4d0cbd"
+    }
+  ],
+  "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
+  "planDigest": "sha256:2d5a5a71365fa03169b00a30f4dee979cadb8d47be6a847a6851faecc38cc41b",
+  "schemaVersion": 1
+}

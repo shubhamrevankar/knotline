@@ -1,0 +1,829 @@
+{
+  "entries": [
+    {
+      "actorAndPrecondition": "Visitor; no account",
+      "coverageProfiles": [
+        "UI-CRITICAL"
+      ],
+      "id": "CJ-01",
+      "mandatoryBranches": "mobile, locale, offline, form error, abuse/rate, routing outage, privacy delete",
+      "ownerMilestone": "M33",
+      "prerequisiteMilestones": [
+        "M02",
+        "M12",
+        "M27",
+        "M31",
+        "M32"
+      ],
+      "routeIds": [
+        "route.public.home",
+        "route.accessibility",
+        "route.changelog",
+        "route.contact",
+        "route.docs",
+        "route.docs.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.pricing",
+        "route.product",
+        "route.product.agents",
+        "route.product.integrations",
+        "route.product.knowledge",
+        "route.product.workflows",
+        "route.security",
+        "route.solutions.detail",
+        "route.templates",
+        "route.templates.detail",
+        "route.trust"
+      ],
+      "successfulOutcome": "//product/pricing/security → consented /contact request routed and acknowledged",
+      "title": "Evaluate and contact"
+    },
+    {
+      "actorAndPrecondition": "New/returning user",
+      "coverageProfiles": [
+        "UI-CRITICAL"
+      ],
+      "id": "CJ-02",
+      "mandatoryBranches": "unknown email, resend, expired/replay, Google denial, CSRF, suspended, session reuse",
+      "ownerMilestone": "M04",
+      "prerequisiteMilestones": [
+        "M02",
+        "M03"
+      ],
+      "routeIds": [
+        "route.app.profile",
+        "route.app.profile.sessions",
+        "route.auth.check-email",
+        "route.auth.google.callback",
+        "route.auth.magic.callback",
+        "route.auth.sign-in"
+      ],
+      "successfulOutcome": "sign-in → clean callback → session inventory/revoke/logout",
+      "title": "Authenticate and recover"
+    },
+    {
+      "actorAndPrecondition": "Owner; valid session",
+      "coverageProfiles": [
+        "UI-CRITICAL"
+      ],
+      "id": "CJ-03",
+      "mandatoryBranches": "skip/resume, sample removal, invite mismatch/expiry, no provider, failure/recovery, multi-workspace switch",
+      "ownerMilestone": "M15",
+      "prerequisiteMilestones": [
+        "M08",
+        "M10",
+        "M14"
+      ],
+      "routeIds": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "successfulOutcome": "create/join workspace → role/use case → teammate → real first successful run",
+      "title": "Activate workspace"
+    },
+    {
+      "actorAndPrecondition": "Enterprise admin + IdP",
+      "coverageProfiles": [
+        "UI-ADMIN",
+        "API-CRITICAL"
+      ],
+      "id": "CJ-04",
+      "mandatoryBranches": "bad cert/claims, mapping conflict, last owner, break glass, token reuse, region policy",
+      "ownerMilestone": "M32",
+      "prerequisiteMilestones": [
+        "M04",
+        "M05",
+        "M31"
+      ],
+      "routeIds": [
+        "route.app.settings.identity",
+        "route.app.settings.policies",
+        "route.app.settings.security"
+      ],
+      "successfulOutcome": "verify domain → test/enforce SSO → SCIM user/group → deprovision",
+      "title": "Enterprise lifecycle"
+    },
+    {
+      "actorAndPrecondition": "Builder; workspace",
+      "coverageProfiles": [
+        "UI-CRITICAL"
+      ],
+      "id": "CJ-05",
+      "mandatoryBranches": "every node, keyboard/touch, 500 nodes, conflict/offline, invalid policy, rollback draft",
+      "ownerMilestone": "M07",
+      "prerequisiteMilestones": [
+        "M02",
+        "M06"
+      ],
+      "routeIds": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.studio",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "successfulOutcome": "workflow library → studio/outline → validate → publish/version/diff",
+      "title": "Build and publish"
+    },
+    {
+      "actorAndPrecondition": "Builder",
+      "coverageProfiles": [
+        "UI-CRITICAL"
+      ],
+      "id": "CJ-06",
+      "mandatoryBranches": "refusal/schema error, injection, cancel, fixture-only side effects, real provider status/cost",
+      "ownerMilestone": "M15",
+      "prerequisiteMilestones": [
+        "M08",
+        "M10",
+        "M14"
+      ],
+      "routeIds": [
+        "route.app.workflows.new"
+      ],
+      "successfulOutcome": "prompt or import → assumptions/repair → dry run → accept/publish",
+      "title": "Generate/import/test"
+    },
+    {
+      "actorAndPrecondition": "Builder/operator; published workflow",
+      "coverageProfiles": [
+        "UI-CRITICAL",
+        "OPS-CRITICAL"
+      ],
+      "id": "CJ-07",
+      "mandatoryBranches": "restart, duplicate, failed/timeout, retry/fork, SSE loss, uncertain effect, DLQ/repair",
+      "ownerMilestone": "M11",
+      "prerequisiteMilestones": [
+        "M02",
+        "M10"
+      ],
+      "routeIds": [
+        "route.app.runs",
+        "route.app.runs.detail",
+        "route.app.runs.detail.tasks.detail",
+        "route.app.runs.detail.timeline"
+      ],
+      "successfulOutcome": "trigger/start → live run room → pause/resume/cancel or terminal result",
+      "title": "Run and recover"
+    },
+    {
+      "actorAndPrecondition": "Member; assigned/queue task",
+      "coverageProfiles": [
+        "UI-CRITICAL"
+      ],
+      "id": "CJ-08",
+      "mandatoryBranches": "double claim, reassign, clarify, reopen, offline conflict, malicious file, expired SLA",
+      "ownerMilestone": "M12",
+      "prerequisiteMilestones": [
+        "M05",
+        "M10",
+        "M11"
+      ],
+      "routeIds": [
+        "route.app.inbox",
+        "route.app.tasks",
+        "route.app.tasks.detail"
+      ],
+      "successfulOutcome": "inbox → claim/delegate/draft/attach → submit → workflow resumes",
+      "title": "Complete human task"
+    },
+    {
+      "actorAndPrecondition": "Eligible approver",
+      "coverageProfiles": [
+        "UI-CRITICAL"
+      ],
+      "id": "CJ-09",
+      "mandatoryBranches": "mobile, delegate/abstain/revise, quorum, self deny, revoke race, expiry/escalation/DST",
+      "ownerMilestone": "M13",
+      "prerequisiteMilestones": [
+        "M12"
+      ],
+      "routeIds": [
+        "route.app.approvals",
+        "route.app.approvals.detail",
+        "route.app.inbox"
+      ],
+      "successfulOutcome": "queue/deep link → inspect exact packet → decide → effect consumes approval",
+      "title": "Decide approval"
+    },
+    {
+      "actorAndPrecondition": "Agent builder/governor",
+      "coverageProfiles": [
+        "UI-ADMIN"
+      ],
+      "id": "CJ-10",
+      "mandatoryBranches": "invalid schema/tool scope, safety regression, low sample, provider outage, budget",
+      "ownerMilestone": "M18",
+      "prerequisiteMilestones": [
+        "M17"
+      ],
+      "routeIds": [
+        "route.app.agents",
+        "route.app.agents.detail",
+        "route.app.agents.detail.activity",
+        "route.app.agents.detail.builder",
+        "route.app.agents.detail.evals",
+        "route.app.agents.new"
+      ],
+      "successfulOutcome": "configure → test → eval compare → canary → promote/rollback",
+      "title": "Release agent"
+    },
+    {
+      "actorAndPrecondition": "Workflow operator; released agent",
+      "coverageProfiles": [
+        "UI-CRITICAL",
+        "OPS-CRITICAL"
+      ],
+      "id": "CJ-11",
+      "mandatoryBranches": "injection, refusal, memory policy, secret, sandbox, cancellation, uncertain write, kill",
+      "ownerMilestone": "M17",
+      "prerequisiteMilestones": [
+        "M10",
+        "M13",
+        "M15",
+        "M16"
+      ],
+      "routeIds": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "successfulOutcome": "retrieve → model → tool approval → brokered effect → typed output/provenance",
+      "title": "Governed agent effect"
+    },
+    {
+      "completionRule": "M18; full CJ-11 cannot pass before M18",
+      "id": "CJ-11.RELEASE",
+      "ownerMilestones": [
+        "M18"
+      ],
+      "parentJourneyId": "CJ-11",
+      "prerequisiteMilestones": [
+        "M17"
+      ],
+      "routeIds": [],
+      "title": "released/canary-controlled agent version"
+    },
+    {
+      "completionRule": "M20; joins M17’s agent-context contract",
+      "id": "CJ-11.RETRIEVAL",
+      "ownerMilestones": [
+        "M17",
+        "M20"
+      ],
+      "parentJourneyId": "CJ-11",
+      "prerequisiteMilestones": [
+        "M10",
+        "M13",
+        "M15",
+        "M16",
+        "M17",
+        "M19"
+      ],
+      "routeIds": [],
+      "title": "real indexed retrieval, ACL revocation, citation/provenance"
+    },
+    {
+      "actorAndPrecondition": "Knowledge steward/member",
+      "coverageProfiles": [
+        "UI-CRITICAL"
+      ],
+      "id": "CJ-12",
+      "mandatoryBranches": "malware, OCR/corrupt, ACL revoke ≤5 min, stale/fail closed, reindex/delete",
+      "ownerMilestone": "M21",
+      "prerequisiteMilestones": [
+        "M20"
+      ],
+      "routeIds": [
+        "route.app.knowledge",
+        "route.app.knowledge.documents.detail",
+        "route.app.knowledge.entities",
+        "route.app.knowledge.entities.detail",
+        "route.app.knowledge.search",
+        "route.app.knowledge.sources"
+      ],
+      "successfulOutcome": "upload/connect file → scan/parse/index → search → exact citation/entity provenance",
+      "title": "File to cited knowledge"
+    },
+    {
+      "completionRule": "M23; manual file/entity path remains M21 core",
+      "id": "CJ-12.CONNECTED",
+      "ownerMilestones": [
+        "M21",
+        "M23"
+      ],
+      "parentJourneyId": "CJ-12",
+      "prerequisiteMilestones": [
+        "M20",
+        "M22"
+      ],
+      "routeIds": [],
+      "title": "provider-connected file/source rather than manual upload"
+    },
+    {
+      "actorAndPrecondition": "Integration admin",
+      "coverageProfiles": [
+        "UI-ADMIN",
+        "API-CRITICAL"
+      ],
+      "id": "CJ-13",
+      "mandatoryBranches": "PKCE/state, reduced scope, cursor reset, webhook replay, quota/outage, ACL/delete",
+      "ownerMilestone": "M25",
+      "prerequisiteMilestones": [
+        "M22"
+      ],
+      "routeIds": [],
+      "successfulOutcome": "catalog → scope/OAuth → initial/incremental sync → health → reauth/remove",
+      "title": "Connect and synchronize"
+    },
+    {
+      "completionRule": "M25; CJ-13 is complete only when every GA LIVE family branch passes",
+      "id": "CJ-13.ENTERPRISE_DATA",
+      "ownerMilestones": [
+        "M25"
+      ],
+      "parentJourneyId": "CJ-13",
+      "prerequisiteMilestones": [
+        "M22"
+      ],
+      "routeIds": [],
+      "title": "Microsoft 365/mail/calendar/CRM/generic/data families"
+    },
+    {
+      "completionRule": "M22",
+      "id": "CJ-13.FRAMEWORK",
+      "ownerMilestones": [
+        "M22"
+      ],
+      "parentJourneyId": "CJ-13",
+      "prerequisiteMilestones": [
+        "M03",
+        "M16",
+        "M19",
+        "M20"
+      ],
+      "routeIds": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "title": "OAuth/sync/health/reauth/remove fixture contract"
+    },
+    {
+      "completionRule": "M23",
+      "id": "CJ-13.KNOWLEDGE",
+      "ownerMilestones": [
+        "M23"
+      ],
+      "parentJourneyId": "CJ-13",
+      "prerequisiteMilestones": [
+        "M22"
+      ],
+      "routeIds": [],
+      "title": "Google/Notion/Confluence source families"
+    },
+    {
+      "completionRule": "M24",
+      "id": "CJ-13.WORK",
+      "ownerMilestones": [
+        "M24"
+      ],
+      "parentJourneyId": "CJ-13",
+      "prerequisiteMilestones": [
+        "M22"
+      ],
+      "routeIds": [],
+      "title": "work/source-control/collaboration/X families"
+    },
+    {
+      "actorAndPrecondition": "Builder/operator",
+      "coverageProfiles": [
+        "UI-CRITICAL",
+        "API-CRITICAL"
+      ],
+      "id": "CJ-14",
+      "mandatoryBranches": "DST/burst/duplicate/reorder, target mismatch, conflict, uncertain outcome, pause/kill",
+      "ownerMilestone": "M26",
+      "prerequisiteMilestones": [
+        "M10",
+        "M13",
+        "M22"
+      ],
+      "routeIds": [
+        "route.app.workflows.detail.triggers"
+      ],
+      "successfulOutcome": "configure trigger/action → event → run/approval → provider receipt",
+      "title": "Event to reconciled write"
+    },
+    {
+      "completionRule": "M23–M25; M26 owns the generic fixture/schedule/broker path",
+      "id": "CJ-14.PROVIDERS",
+      "ownerMilestones": [
+        "M23",
+        "M24",
+        "M25",
+        "M26"
+      ],
+      "parentJourneyId": "CJ-14",
+      "prerequisiteMilestones": [
+        "M10",
+        "M13",
+        "M22"
+      ],
+      "routeIds": [],
+      "title": "at least one certified read-trigger/write receipt per declared provider family"
+    },
+    {
+      "actorAndPrecondition": "Member/admin",
+      "coverageProfiles": [
+        "UI-CRITICAL"
+      ],
+      "id": "CJ-15",
+      "mandatoryBranches": "quiet hours, escalation, revoked access, duplicate, bounce, push expiry, chat replay",
+      "ownerMilestone": "M27",
+      "prerequisiteMilestones": [
+        "M09",
+        "M12",
+        "M13",
+        "M24",
+        "M26"
+      ],
+      "routeIds": [
+        "route.app.notifications",
+        "route.app.settings.notifications"
+      ],
+      "successfulOutcome": "preference/default → notification/digest → authorized deep link/action",
+      "title": "Receive and act"
+    },
+    {
+      "completionRule": "M24 + M27",
+      "id": "CJ-15.CHAT",
+      "ownerMilestones": [
+        "M24",
+        "M27"
+      ],
+      "parentJourneyId": "CJ-15",
+      "prerequisiteMilestones": [
+        "M09",
+        "M12",
+        "M13",
+        "M22",
+        "M24",
+        "M26"
+      ],
+      "routeIds": [],
+      "title": "real Slack/Teams delivery/action/replay"
+    },
+    {
+      "completionRule": "M33; M27 owns in-app/email/webhook/digest core",
+      "id": "CJ-15.PUSH",
+      "ownerMilestones": [
+        "M27",
+        "M33"
+      ],
+      "parentJourneyId": "CJ-15",
+      "prerequisiteMilestones": [
+        "M02",
+        "M09",
+        "M12",
+        "M13",
+        "M24",
+        "M26",
+        "M27",
+        "M31",
+        "M32"
+      ],
+      "routeIds": [],
+      "title": "installed-device PWA push expiry/revocation/click"
+    },
+    {
+      "actorAndPrecondition": "Leader/member",
+      "coverageProfiles": [
+        "UI-CRITICAL"
+      ],
+      "id": "CJ-16",
+      "mandatoryBranches": "ACL revoke, partial/stale metric, empty/demo exclusion, late event, formula injection",
+      "ownerMilestone": "M28",
+      "prerequisiteMilestones": [
+        "M11",
+        "M12",
+        "M18",
+        "M21",
+        "M27"
+      ],
+      "routeIds": [
+        "route.app",
+        "route.app.analytics",
+        "route.app.analytics.reports.detail",
+        "route.app.search"
+      ],
+      "successfulOutcome": "global search/saved view → dashboard → drill/export/schedule",
+      "title": "Find and measure"
+    },
+    {
+      "actorAndPrecondition": "Billing admin",
+      "coverageProfiles": [
+        "UI-ADMIN"
+      ],
+      "id": "CJ-17",
+      "mandatoryBranches": "webhook reorder, failed payment, grace, concurrent hard limit, Stripe outage, refund",
+      "ownerMilestone": "M29",
+      "prerequisiteMilestones": [
+        "M05",
+        "M10",
+        "M15",
+        "M19",
+        "M28"
+      ],
+      "routeIds": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "successfulOutcome": "checkout/trial → usage/budget/invoice → plan change/cancel/reactivate",
+      "title": "Buy and control spend"
+    },
+    {
+      "actorAndPrecondition": "Developer",
+      "coverageProfiles": [
+        "API-CRITICAL",
+        "UI-ADMIN"
+      ],
+      "id": "CJ-18",
+      "mandatoryBranches": "scope/resource deny, idempotency conflict, rate limit, replay, SDK compatibility",
+      "ownerMilestone": "M30",
+      "prerequisiteMilestones": [
+        "M05",
+        "M10",
+        "M22",
+        "M26",
+        "M29"
+      ],
+      "routeIds": [
+        "route.app.developer.api",
+        "route.app.developer.apps",
+        "route.app.developer.webhooks",
+        "route.app.settings.developers",
+        "route.app.settings.webhooks"
+      ],
+      "successfulOutcome": "service/OAuth credential → public API run → signed webhook → rotate/revoke",
+      "title": "Integrate by API"
+    },
+    {
+      "actorAndPrecondition": "Owner/privacy/auditor",
+      "coverageProfiles": [
+        "UI-ADMIN",
+        "OPS-CRITICAL"
+      ],
+      "id": "CJ-19",
+      "mandatoryBranches": "support access, partial delete, hold conflict, restore ledger, region fail/rollback",
+      "ownerMilestone": "M31",
+      "prerequisiteMilestones": [
+        "M21",
+        "M27",
+        "M29",
+        "M30"
+      ],
+      "routeIds": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "successfulOutcome": "audit verify → retention/hold → export/delete or region migration → proof",
+      "title": "Govern data"
+    },
+    {
+      "completionRule": "M32; M31 owns audit/retention/hold/export/delete core",
+      "id": "CJ-19.REGION_MIGRATION",
+      "ownerMilestones": [
+        "M31",
+        "M32"
+      ],
+      "parentJourneyId": "CJ-19",
+      "prerequisiteMilestones": [
+        "M04",
+        "M05",
+        "M21",
+        "M27",
+        "M29",
+        "M30",
+        "M31"
+      ],
+      "routeIds": [
+        "route.app.settings.policies"
+      ],
+      "title": "region eligibility/freeze/cutover/rollback/purge"
+    },
+    {
+      "completionRule": "M36",
+      "id": "CJ-19.RESTORE",
+      "ownerMilestones": [
+        "M36"
+      ],
+      "parentJourneyId": "CJ-19",
+      "prerequisiteMilestones": [
+        "M18",
+        "M21",
+        "M26",
+        "M28",
+        "M29",
+        "M34",
+        "M35"
+      ],
+      "routeIds": [],
+      "title": "restore deletion/hold/residency proof"
+    },
+    {
+      "actorAndPrecondition": "Guest + inviter",
+      "coverageProfiles": [
+        "UI-CRITICAL"
+      ],
+      "id": "CJ-20",
+      "mandatoryBranches": "forwarded/replayed/expired token, identity/domain mismatch, metadata probing, lost device",
+      "ownerMilestone": "M33",
+      "prerequisiteMilestones": [
+        "M02",
+        "M12",
+        "M27",
+        "M31",
+        "M32"
+      ],
+      "routeIds": [
+        "route.guest"
+      ],
+      "successfulOutcome": "fragment exchange → exact task/approval/resource action → logout/revoke",
+      "title": "External guest action"
+    },
+    {
+      "actorAndPrecondition": "Member",
+      "coverageProfiles": [
+        "UI-CRITICAL"
+      ],
+      "id": "CJ-21",
+      "mandatoryBranches": "physical iOS/Android, quota, sign-out purge, push revoke, update rollback, no offline approval",
+      "ownerMilestone": "M33",
+      "prerequisiteMilestones": [
+        "M02",
+        "M12",
+        "M27",
+        "M31",
+        "M32"
+      ],
+      "routeIds": [],
+      "successfulOutcome": "install → cached shell/draft → reconnect/conflict → safe update",
+      "title": "Install and work offline"
+    },
+    {
+      "actorAndPrecondition": "Customer/support",
+      "coverageProfiles": [
+        "UI-CRITICAL",
+        "UI-ADMIN"
+      ],
+      "id": "CJ-22",
+      "mandatoryBranches": "locale/a11y, redaction, access expiry, attachment, outage/banner fallback, escalation",
+      "ownerMilestone": "M33",
+      "prerequisiteMilestones": [
+        "M02",
+        "M12",
+        "M27",
+        "M31",
+        "M32"
+      ],
+      "routeIds": [
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.help",
+        "route.help.wildcard",
+        "route.status"
+      ],
+      "successfulOutcome": "help search → ticket/consented diagnostics → response/resolution/status",
+      "title": "Get help/support"
+    },
+    {
+      "actorAndPrecondition": "On-call/platform operator",
+      "coverageProfiles": [
+        "OPS-CRITICAL"
+      ],
+      "id": "CJ-23",
+      "mandatoryBranches": "compromised credential, DB/Temporal/provider/queue, unsafe repair, break glass, status",
+      "ownerMilestone": "M34",
+      "prerequisiteMilestones": [
+        "M18",
+        "M23",
+        "M24",
+        "M25",
+        "M33"
+      ],
+      "routeIds": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "successfulOutcome": "alert → incident/diagnosis → contain/repair/rollback → communicate/review",
+      "title": "Operate incident"
+    },
+    {
+      "completionRule": "M37",
+      "id": "CJ-23.PRODUCTION",
+      "ownerMilestones": [
+        "M37"
+      ],
+      "parentJourneyId": "CJ-23",
+      "prerequisiteMilestones": [
+        "M32",
+        "M34",
+        "M35",
+        "M36"
+      ],
+      "routeIds": [
+        "route.ops.releases"
+      ],
+      "title": "production canary/rollback/status branch"
+    },
+    {
+      "completionRule": "M35; M34 owns staging operations core",
+      "id": "CJ-23.SECURITY",
+      "ownerMilestones": [
+        "M34",
+        "M35"
+      ],
+      "parentJourneyId": "CJ-23",
+      "prerequisiteMilestones": [
+        "M18",
+        "M23",
+        "M24",
+        "M25",
+        "M30",
+        "M31",
+        "M32",
+        "M33",
+        "M34"
+      ],
+      "routeIds": [
+        "route.ops.security"
+      ],
+      "title": "compromised-credential/break-glass incident branch"
+    },
+    {
+      "actorAndPrecondition": "Incident commander/privacy",
+      "coverageProfiles": [
+        "OPS-CRITICAL"
+      ],
+      "id": "CJ-24",
+      "mandatoryBranches": "RPO affected manifest, deleted data, residency, split brain, waits/timers, uncertain effects",
+      "ownerMilestone": "M36",
+      "prerequisiteMilestones": [
+        "M18",
+        "M21",
+        "M26",
+        "M28",
+        "M29",
+        "M34",
+        "M35"
+      ],
+      "routeIds": [],
+      "successfulOutcome": "declare loss → restore/fence/reconcile → limited read → approved writes",
+      "title": "Recover region"
+    },
+    {
+      "completionRule": "M37; M36 owns production-equivalent DR proof",
+      "id": "CJ-24.PRODUCTION",
+      "ownerMilestones": [
+        "M36",
+        "M37"
+      ],
+      "parentJourneyId": "CJ-24",
+      "prerequisiteMilestones": [
+        "M18",
+        "M21",
+        "M26",
+        "M28",
+        "M29",
+        "M32",
+        "M34",
+        "M35",
+        "M36"
+      ],
+      "routeIds": [],
+      "title": "production-region bootstrap/cutover controls"
+    }
+  ],
+  "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
+  "planDigest": "sha256:2d5a5a71365fa03169b00a30f4dee979cadb8d47be6a847a6851faecc38cc41b",
+  "schemaVersion": 1
+}

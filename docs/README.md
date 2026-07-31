@@ -40,3 +40,23 @@ docs/
 - [Knotline product build blueprint](product/knotline/2026-07-31-product-build-blueprint.md)
 - [Trace.so technical analysis](research/trace-so/2026-07-29-trace-so-technical-analysis.md)
 - [Trace end-to-end system design](system-design/trace/2026-07-29-trace-end-to-end-system-design.md)
+
+## Contributor quick start
+
+From the repository root, start the complete local dependency and application
+stack with one command:
+
+```sh
+pnpm local:up
+```
+
+Run the complete currently activated engineering gate with:
+
+```sh
+pnpm verify
+```
+
+Use `pnpm local:down` to stop the local stack. The verification gate includes
+the plan-derived contract registries and evidence validation; regenerate an
+intentionally changed plan contract with `pnpm contracts:generate` before
+reviewing and committing its diff.

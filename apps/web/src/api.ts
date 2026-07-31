@@ -1,6 +1,7 @@
 import type { ApiEnvelope, Workflow, WorkflowSummary } from "@knotline/contracts";
 
-const apiUrl = import.meta.env.VITE_API_URL ?? "http://localhost:4100";
+const configuredApiUrl: unknown = import.meta.env.VITE_API_URL;
+const apiUrl = typeof configuredApiUrl === "string" ? configuredApiUrl : "http://localhost:4100";
 
 async function request<T>(path: string): Promise<T> {
   const response = await fetch(`${apiUrl}${path}`, {

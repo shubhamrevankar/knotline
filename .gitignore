@@ -4,8 +4,16 @@ dist
 .turbo
 .vite
 coverage
+test-results
+playwright-report
+blob-report
+artifacts/attestation/
+artifacts/coverage/
+artifacts/scans/
+artifacts/verification/*/manifest.json
 .env
-.env.local
+.env.*
+!.env.example
 *.log
 *.tsbuildinfo
 .DS_Store

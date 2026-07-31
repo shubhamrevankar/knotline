@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -p tsconfig.json --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -b --pretty false",
-    "test": "vitest run --passWithNoTests",
-    "lint": "tsc -b --pretty false"
+    "pretypecheck": "pnpm --filter @knotline/contracts build",
+    "typecheck": "tsc -p tsconfig.json --noEmit --pretty false",
+    "test": "vitest run src",
+    "test:unit": "vitest run src",
+    "lint": "eslint src --max-warnings 0"
   },
   "dependencies": {
     "@knotline/contracts": "workspace:*",
@@ -22,8 +24,8 @@
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "@vitejs/plugin-react": "5.1.1",
-    "typescript": "7.0.2",
-    "vite": "8.2.0",
-    "vitest": "4.0.8"
+    "typescript": "catalog:",
+    "vite": "7.3.1",
+    "vitest": "catalog:"
   }
 }

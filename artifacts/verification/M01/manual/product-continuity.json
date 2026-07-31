@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "m01-product-continuity",
+  "kind": "manual",
+  "status": "PASS",
+  "recordedAt": "2026-07-31T20:15:00.000Z",
+  "summary": "The current responsive demo was reviewed at desktop and mobile widths; workflow navigation, the canvas, explicit DEMO disclosure, keyboard drawer focus restoration, console cleanliness, axe checks, and reviewed visual baselines all passed.",
+  "owner": "shurevan"
+}

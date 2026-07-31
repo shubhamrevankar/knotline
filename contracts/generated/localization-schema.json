@@ -1,0 +1,24 @@
+{
+  "canonicalLocale": "en",
+  "locales": [
+    "en"
+  ],
+  "messages": [
+    {
+      "key": "app.demo.label",
+      "placeholders": [],
+      "usedBy": []
+    },
+    {
+      "key": "app.error.retry",
+      "placeholders": [],
+      "usedBy": []
+    },
+    {
+      "key": "app.loading",
+      "placeholders": [],
+      "usedBy": []
+    }
+  ],
+  "schemaVersion": 1
+}

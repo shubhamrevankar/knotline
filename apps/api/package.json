@@ -3,24 +3,34 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "predev": "pnpm --filter @knotline/config --filter @knotline/contracts --filter @knotline/operations build",
     "dev": "tsx watch src/server.ts",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json",
     "start": "node dist/server.js",
+    "pretypecheck": "pnpm --filter @knotline/config --filter @knotline/contracts --filter @knotline/operations build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run",
-    "lint": "tsc -p tsconfig.json --noEmit"
+    "pretest": "pnpm --filter @knotline/config --filter @knotline/contracts --filter @knotline/operations build",
+    "test": "vitest run src",
+    "pretest:unit": "pnpm --filter @knotline/config --filter @knotline/contracts --filter @knotline/operations build",
+    "test:unit": "vitest run src",
+    "lint": "eslint src --max-warnings 0"
   },
   "dependencies": {
     "@fastify/cors": "11.1.0",
+    "@knotline/config": "workspace:*",
     "@knotline/contracts": "workspace:*",
+    "@knotline/operations": "workspace:*",
     "fastify": "5.11.0",
     "zod": "4.1.12"
   },
   "devDependencies": {
-    "@types/node": "24.10.1",
+    "@types/node": "catalog:",
     "tsx": "4.20.6",
-    "typescript": "7.0.2",
-    "vitest": "4.0.8"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

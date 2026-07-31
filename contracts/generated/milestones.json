@@ -1,0 +1,440 @@
+{
+  "entries": [
+    {
+      "dependencies": [],
+      "id": "M00",
+      "requiredCommit": "chore: establish Knotline product foundation",
+      "status": "COMMITTED",
+      "title": "Knotline visual and repository baseline"
+    },
+    {
+      "dependencies": [
+        "M00"
+      ],
+      "id": "M01",
+      "requiredCommit": "chore: establish the verified Knotline engineering system",
+      "status": "COMMITTED",
+      "title": "Engineering quality system and implementation contract"
+    },
+    {
+      "dependencies": [
+        "M01"
+      ],
+      "id": "M02",
+      "requiredCommit": "feat: deliver the responsive Knotline product shell",
+      "status": "NOT_STARTED",
+      "title": "Design system, route architecture, responsive shell, and public truth"
+    },
+    {
+      "dependencies": [
+        "M01"
+      ],
+      "id": "M03",
+      "requiredCommit": "feat: persist Knotline data with enforced tenant isolation",
+      "status": "NOT_STARTED",
+      "title": "PostgreSQL, tenant isolation, migrations, and repository foundation"
+    },
+    {
+      "dependencies": [
+        "M02",
+        "M03"
+      ],
+      "id": "M04",
+      "requiredCommit": "feat: add secure passwordless and Google authentication",
+      "status": "NOT_STARTED",
+      "title": "Authentication, secure sessions, and personal account controls"
+    },
+    {
+      "dependencies": [
+        "M04"
+      ],
+      "id": "M05",
+      "requiredCommit": "feat: enable complete workspace onboarding and access control",
+      "status": "NOT_STARTED",
+      "title": "Workspaces, invitations, onboarding, members, roles, and groups"
+    },
+    {
+      "dependencies": [
+        "M05"
+      ],
+      "id": "M06",
+      "requiredCommit": "feat: deliver versioned workflow definitions and publishing",
+      "status": "NOT_STARTED",
+      "title": "Workflow definitions, typed nodes, validation, versions, and templates"
+    },
+    {
+      "dependencies": [
+        "M02",
+        "M06"
+      ],
+      "id": "M07",
+      "requiredCommit": "feat: deliver the complete responsive workflow studio",
+      "status": "NOT_STARTED",
+      "title": "Complete accessible workflow studio"
+    },
+    {
+      "dependencies": [
+        "M07"
+      ],
+      "id": "M08",
+      "requiredCommit": "feat: add guided workflow generation and safe test mode",
+      "status": "NOT_STARTED",
+      "title": "Workflow generation, import, dry run, and policy preflight"
+    },
+    {
+      "dependencies": [
+        "M07"
+      ],
+      "id": "M09",
+      "requiredCommit": "feat: add collaborative workflow and work discussions",
+      "status": "NOT_STARTED",
+      "title": "Collaboration, comments, mentions, activity, and edit conflict model"
+    },
+    {
+      "dependencies": [
+        "M06"
+      ],
+      "id": "M10",
+      "requiredCommit": "feat: execute workflows durably across failures",
+      "status": "NOT_STARTED",
+      "title": "Durable workflow runtime, outbox, orchestration, and reconciliation"
+    },
+    {
+      "dependencies": [
+        "M02",
+        "M10"
+      ],
+      "id": "M11",
+      "requiredCommit": "feat: deliver the live Knotline run room",
+      "status": "NOT_STARTED",
+      "title": "Run room and live operations"
+    },
+    {
+      "dependencies": [
+        "M05",
+        "M10",
+        "M11"
+      ],
+      "id": "M12",
+      "requiredCommit": "feat: deliver complete human task execution",
+      "status": "NOT_STARTED",
+      "title": "Human task inbox, forms, queues, and assignment"
+    },
+    {
+      "dependencies": [
+        "M12"
+      ],
+      "id": "M13",
+      "requiredCommit": "feat: add durable approvals and escalation policies",
+      "status": "NOT_STARTED",
+      "title": "Approval policies, SLA timers, delegation, and escalation"
+    },
+    {
+      "dependencies": [
+        "M05",
+        "M07"
+      ],
+      "id": "M14",
+      "requiredCommit": "feat: deliver the Knotline agent foundry",
+      "status": "NOT_STARTED",
+      "title": "Agent foundry, versioning, prompt studio, and catalog"
+    },
+    {
+      "dependencies": [
+        "M08",
+        "M10",
+        "M14"
+      ],
+      "id": "M15",
+      "requiredCommit": "feat: integrate the governed OpenAI model gateway",
+      "status": "NOT_STARTED",
+      "title": "Provider-neutral model gateway and OpenAI Responses integration"
+    },
+    {
+      "dependencies": [
+        "M14",
+        "M15"
+      ],
+      "id": "M16",
+      "requiredCommit": "feat: secure agent tools with isolated execution",
+      "status": "NOT_STARTED",
+      "title": "Tool broker, credential vault, policy, and isolated sandbox"
+    },
+    {
+      "dependencies": [
+        "M10",
+        "M13",
+        "M15",
+        "M16"
+      ],
+      "id": "M17",
+      "requiredCommit": "feat: execute governed agents with full provenance",
+      "status": "NOT_STARTED",
+      "title": "Governed agent execution, provenance, memory, and workflow integration"
+    },
+    {
+      "dependencies": [
+        "M17"
+      ],
+      "id": "M18",
+      "requiredCommit": "feat: add agent evaluations and controlled releases",
+      "status": "NOT_STARTED",
+      "title": "Agent evaluation, regression, release, and monitoring"
+    },
+    {
+      "dependencies": [
+        "M03",
+        "M12",
+        "M16"
+      ],
+      "id": "M19",
+      "requiredCommit": "feat: add secure file ingestion and document processing",
+      "status": "NOT_STARTED",
+      "title": "Secure files, uploads, previews, and document processing"
+    },
+    {
+      "dependencies": [
+        "M15",
+        "M17",
+        "M19"
+      ],
+      "id": "M20",
+      "requiredCommit": "feat: deliver permission-aware hybrid retrieval",
+      "status": "NOT_STARTED",
+      "title": "Permission-aware hybrid retrieval, citations, and reindexing"
+    },
+    {
+      "dependencies": [
+        "M20"
+      ],
+      "id": "M21",
+      "requiredCommit": "feat: add the provenance-backed knowledge graph",
+      "status": "NOT_STARTED",
+      "title": "Entity graph, provenance explorer, and knowledge administration"
+    },
+    {
+      "dependencies": [
+        "M03",
+        "M16",
+        "M19",
+        "M20"
+      ],
+      "id": "M22",
+      "requiredCommit": "feat: establish the secure connector platform",
+      "status": "NOT_STARTED",
+      "title": "Secure connector framework, OAuth, sync engine, and SDK"
+    },
+    {
+      "dependencies": [
+        "M22"
+      ],
+      "id": "M23",
+      "requiredCommit": "feat: connect Google Notion and Confluence knowledge",
+      "status": "NOT_STARTED",
+      "title": "Google, Notion, and Confluence knowledge connectors"
+    },
+    {
+      "dependencies": [
+        "M22"
+      ],
+      "id": "M24",
+      "requiredCommit": "feat: connect Linear Jira GitHub and collaboration systems",
+      "status": "NOT_STARTED",
+      "title": "Work tracking, source control, collaboration, and X connectors"
+    },
+    {
+      "dependencies": [
+        "M22"
+      ],
+      "id": "M25",
+      "requiredCommit": "feat: add Microsoft CRM and generic data connectors",
+      "status": "NOT_STARTED",
+      "title": "Microsoft 365, email/calendar, CRM, and generic data connectors"
+    },
+    {
+      "dependencies": [
+        "M10",
+        "M13",
+        "M22"
+      ],
+      "id": "M26",
+      "requiredCommit": "feat: add production triggers and reconciled outbound sync",
+      "status": "NOT_STARTED",
+      "title": "Production triggers, schedules, inbound events, and outbound sync"
+    },
+    {
+      "dependencies": [
+        "M09",
+        "M12",
+        "M13",
+        "M24",
+        "M26"
+      ],
+      "id": "M27",
+      "requiredCommit": "feat: deliver multichannel notifications and escalation delivery",
+      "status": "NOT_STARTED",
+      "title": "In-app, email, chat, webhook, digest, and escalation notifications"
+    },
+    {
+      "dependencies": [
+        "M11",
+        "M12",
+        "M18",
+        "M21",
+        "M27"
+      ],
+      "id": "M28",
+      "requiredCommit": "feat: deliver global search saved views and operational analytics",
+      "status": "NOT_STARTED",
+      "title": "Global search, saved views, operational analytics, and reporting"
+    },
+    {
+      "dependencies": [
+        "M05",
+        "M10",
+        "M15",
+        "M19",
+        "M28"
+      ],
+      "id": "M29",
+      "requiredCommit": "feat: add Stripe billing usage and enforced entitlements",
+      "status": "NOT_STARTED",
+      "title": "Stripe billing, plans, entitlements, usage, and spend controls"
+    },
+    {
+      "dependencies": [
+        "M05",
+        "M10",
+        "M22",
+        "M26",
+        "M29"
+      ],
+      "id": "M30",
+      "requiredCommit": "feat: deliver the Knotline developer platform",
+      "status": "NOT_STARTED",
+      "title": "Public API, service accounts, webhooks, SDKs, and developer portal"
+    },
+    {
+      "dependencies": [
+        "M21",
+        "M27",
+        "M29",
+        "M30"
+      ],
+      "id": "M31",
+      "requiredCommit": "feat: deliver audit privacy export and deletion governance",
+      "status": "NOT_STARTED",
+      "title": "Governance, immutable audit, privacy, retention, export, and deletion"
+    },
+    {
+      "dependencies": [
+        "M04",
+        "M05",
+        "M31"
+      ],
+      "id": "M32",
+      "requiredCommit": "feat: add enterprise identity provisioning and data policy",
+      "status": "NOT_STARTED",
+      "title": "Enterprise SSO, domain control, SCIM, policy, and residency"
+    },
+    {
+      "dependencies": [
+        "M02",
+        "M12",
+        "M27",
+        "M31",
+        "M32"
+      ],
+      "id": "M33",
+      "requiredCommit": "feat: deliver the installable accessible global Knotline experience",
+      "status": "NOT_STARTED",
+      "title": "Installable PWA, guest collaboration, localization, help, and support"
+    },
+    {
+      "dependencies": [
+        "M18",
+        "M23",
+        "M24",
+        "M25",
+        "M33"
+      ],
+      "id": "M34",
+      "requiredCommit": "feat: operationalize Knotline with SLOs and kill switches",
+      "status": "NOT_STARTED",
+      "title": "AWS staging foundation, observability, operator controls, and on-call"
+    },
+    {
+      "dependencies": [
+        "M30",
+        "M31",
+        "M32",
+        "M33",
+        "M34"
+      ],
+      "id": "M35",
+      "requiredCommit": "security: complete product and supply-chain assurance",
+      "status": "NOT_STARTED",
+      "title": "Application, infrastructure, supply-chain, and compliance assurance"
+    },
+    {
+      "dependencies": [
+        "M18",
+        "M21",
+        "M26",
+        "M28",
+        "M29",
+        "M34",
+        "M35"
+      ],
+      "id": "M36",
+      "requiredCommit": "perf: prove Knotline capacity resilience and recovery",
+      "status": "NOT_STARTED",
+      "title": "Performance, scale, chaos, backup, resilience, and disaster recovery"
+    },
+    {
+      "dependencies": [
+        "M32",
+        "M34",
+        "M35",
+        "M36"
+      ],
+      "id": "M37",
+      "requiredCommit": "infra: deliver reproducible AWS production environments",
+      "status": "NOT_STARTED",
+      "title": "AWS infrastructure as code, environments, delivery, and rollback"
+    },
+    {
+      "dependencies": [
+        "M08",
+        "M09",
+        "M11",
+        "M12",
+        "M13",
+        "M18",
+        "M21",
+        "M23",
+        "M24",
+        "M25",
+        "M26",
+        "M27",
+        "M28",
+        "M29",
+        "M30",
+        "M31",
+        "M32",
+        "M33",
+        "M34",
+        "M35",
+        "M36",
+        "M37"
+      ],
+      "id": "M38",
+      "requiredCommit": "release: certify Knotline for general availability",
+      "status": "NOT_STARTED",
+      "title": "Final release assurance, migration, launch, and general availability"
+    }
+  ],
+  "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
+  "planDigest": "sha256:2d5a5a71365fa03169b00a30f4dee979cadb8d47be6a847a6851faecc38cc41b",
+  "schemaVersion": 1
+}

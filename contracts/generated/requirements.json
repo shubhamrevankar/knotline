@@ -1,0 +1,1002 @@
+{
+  "entries": [
+    {
+      "id": "AD-001",
+      "sourceSection": "3",
+      "statement": "Audit events capture actor, action, resource, tenant, result, request, trace, metadata hash, and time"
+    },
+    {
+      "id": "AD-002",
+      "sourceSection": "3",
+      "statement": "Ordinary application roles cannot update or delete audit events"
+    },
+    {
+      "id": "AD-003",
+      "sourceSection": "3",
+      "statement": "Audit search and export support permissioned filters and integrity evidence"
+    },
+    {
+      "id": "AD-004",
+      "sourceSection": "3",
+      "statement": "Workspace admins can configure retention by data class"
+    },
+    {
+      "id": "AD-005",
+      "sourceSection": "3",
+      "statement": "Users and tenants can export their data in documented formats"
+    },
+    {
+      "id": "AD-006",
+      "sourceSection": "3",
+      "statement": "User deletion and tenant deletion are durable jobs with legal-hold and completion evidence"
+    },
+    {
+      "id": "AD-007",
+      "sourceSection": "3",
+      "statement": "Data deletion propagates to caches, indexes, object storage, providers, and backups according to policy"
+    },
+    {
+      "id": "AD-008",
+      "sourceSection": "3",
+      "statement": "Admins can configure region, model processing policy, telemetry policy, and connector allowlist"
+    },
+    {
+      "id": "AD-009",
+      "sourceSection": "3",
+      "statement": "Support access is time-limited, reason-bound, approval-aware, and audited"
+    },
+    {
+      "id": "AD-010",
+      "sourceSection": "3",
+      "statement": "Security center displays sessions, SSO, SCIM, domains, API credentials, webhooks, and recent risk events"
+    },
+    {
+      "id": "AG-001",
+      "sourceSection": "3",
+      "statement": "Agents have stable definitions and immutable versions"
+    },
+    {
+      "id": "AG-002",
+      "sourceSection": "3",
+      "statement": "Agent versions include instructions, input/output schemas, model policy, retrieval policy, tools, budgets, and guardrails"
+    },
+    {
+      "id": "AG-003",
+      "sourceSection": "3",
+      "statement": "Model policies map roles to provider/model versions, fallback, residency, latency, and cost limits"
+    },
+    {
+      "id": "AG-004",
+      "sourceSection": "3",
+      "statement": "Prompt and model changes are independently versioned and attributable"
+    },
+    {
+      "id": "AG-005",
+      "sourceSection": "3",
+      "statement": "The model gateway normalizes requests, streaming, usage, errors, refusal, timeout, and retry behavior"
+    },
+    {
+      "id": "AG-006",
+      "sourceSection": "3",
+      "statement": "Model output consumed by code must pass strict schema validation"
+    },
+    {
+      "id": "AG-007",
+      "sourceSection": "3",
+      "statement": "Agent context is assembled from authorized inputs and a recorded retrieval manifest"
+    },
+    {
+      "id": "AG-008",
+      "sourceSection": "3",
+      "statement": "Agent authority is a short-lived per-task capability set narrower than the initiating user"
+    },
+    {
+      "id": "AG-009",
+      "sourceSection": "3",
+      "statement": "Tools have immutable versions, strict schemas, risk level, scopes, timeout, network policy, and idempotency behavior"
+    },
+    {
+      "id": "AG-010",
+      "sourceSection": "3",
+      "statement": "Secrets are injected by a credential proxy and never enter prompts or model-visible arguments"
+    },
+    {
+      "id": "AG-011",
+      "sourceSection": "3",
+      "statement": "Agent loops have maximum model calls, tool calls, tokens, time, cost, and handoffs"
+    },
+    {
+      "id": "AG-012",
+      "sourceSection": "3",
+      "statement": "Tool calls are validated, authorized, approved when needed, executed, and output-scanned"
+    },
+    {
+      "id": "AG-013",
+      "sourceSection": "3",
+      "statement": "Runtime code execution is isolated by CPU, memory, filesystem, network, and duration"
+    },
+    {
+      "id": "AG-014",
+      "sourceSection": "3",
+      "statement": "Every output records model, prompt, agent, tool, context, citation, usage, cost, and reviewer lineage"
+    },
+    {
+      "id": "AG-015",
+      "sourceSection": "3",
+      "statement": "Evals cover instruction following, schema validity, correctness, retrieval, tool selection, arguments, safety, handoff, latency, and cost"
+    },
+    {
+      "id": "AG-016",
+      "sourceSection": "3",
+      "statement": "Agent releases require held-out deterministic, adversarial, and human-calibrated eval gates"
+    },
+    {
+      "id": "AG-017",
+      "sourceSection": "3",
+      "statement": "Production feedback can be curated into versioned eval cases without leaking tenant data"
+    },
+    {
+      "id": "AG-018",
+      "sourceSection": "3",
+      "statement": "Administrators can disable one agent, tool, model, tenant, or global execution class within 60 seconds"
+    },
+    {
+      "id": "AG-019",
+      "sourceSection": "3",
+      "statement": "Agent memory scopes are none, execution, user-private, or workspace-shared with explicit ACL, retention, and purpose"
+    },
+    {
+      "id": "AG-020",
+      "sourceSection": "3",
+      "statement": "Durable memory writes are explicit, typed, versioned, provenance-backed operations and never an implicit side effect of model text"
+    },
+    {
+      "id": "AG-021",
+      "sourceSection": "3",
+      "statement": "Authorized users can inspect, correct, export, and delete durable memory without rewriting historical run evidence"
+    },
+    {
+      "id": "AG-022",
+      "sourceSection": "3",
+      "statement": "User, source, permission, retention, and workspace deletion propagates to memory and all memory-derived context"
+    },
+    {
+      "id": "BL-001",
+      "sourceSection": "3",
+      "statement": "Plans and prices are versioned platform data"
+    },
+    {
+      "id": "BL-002",
+      "sourceSection": "3",
+      "statement": "Stripe Checkout creates subscriptions using server-selected price mappings"
+    },
+    {
+      "id": "BL-003",
+      "sourceSection": "3",
+      "statement": "Stripe webhooks authoritatively update customer, subscription, invoice, and payment state"
+    },
+    {
+      "id": "BL-004",
+      "sourceSection": "3",
+      "statement": "Entitlements enforce features, seats, storage, runs, tasks, model spend, connectors, and retention"
+    },
+    {
+      "id": "BL-005",
+      "sourceSection": "3",
+      "statement": "Usage reservations prevent concurrent work from overspending a limit"
+    },
+    {
+      "id": "BL-006",
+      "sourceSection": "3",
+      "statement": "Usage and credits use append-only idempotent ledgers"
+    },
+    {
+      "id": "BL-007",
+      "sourceSection": "3",
+      "statement": "Billing admins can view current usage, forecast, limits, invoices, plan, and payment status"
+    },
+    {
+      "id": "BL-008",
+      "sourceSection": "3",
+      "statement": "Trials, upgrades, downgrades, cancellation, grace periods, and payment failure have explicit behavior"
+    },
+    {
+      "id": "BL-009",
+      "sourceSection": "3",
+      "statement": "Product access degrades safely during billing-provider failure"
+    },
+    {
+      "id": "BL-010",
+      "sourceSection": "3",
+      "statement": "Every billable event traces to its source run, task, integration, or storage object"
+    },
+    {
+      "id": "CN-001",
+      "sourceSection": "3",
+      "statement": "Integrations use one provider-neutral lifecycle and health model"
+    },
+    {
+      "id": "CN-002",
+      "sourceSection": "3",
+      "statement": "OAuth uses server-generated state, PKCE where supported, clean callbacks, least privilege, and encrypted credentials"
+    },
+    {
+      "id": "CN-003",
+      "sourceSection": "3",
+      "statement": "API-key integrations validate, encrypt, rotate, revoke, and never return raw secrets"
+    },
+    {
+      "id": "CN-004",
+      "sourceSection": "3",
+      "statement": "Initial and incremental sync use durable cursors and generation fencing"
+    },
+    {
+      "id": "CN-005",
+      "sourceSection": "3",
+      "statement": "Signed webhooks are verified against raw body, timestamp checked, deduplicated, and replayable"
+    },
+    {
+      "id": "CN-006",
+      "sourceSection": "3",
+      "statement": "Provider rate limits, pagination, backoff, token expiry, and partial failures are normalized"
+    },
+    {
+      "id": "CN-007",
+      "sourceSection": "3",
+      "statement": "Outbound writes use stable idempotency keys and reconciliation"
+    },
+    {
+      "id": "CN-008",
+      "sourceSection": "3",
+      "statement": "Connection removal revokes provider access where possible and follows configured data-deletion policy"
+    },
+    {
+      "id": "CN-009",
+      "sourceSection": "3",
+      "statement": "Admins can pause, resume, resync, reauthorize, inspect, and remove connections"
+    },
+    {
+      "id": "CN-010",
+      "sourceSection": "3",
+      "statement": "Supported providers pass recorded contract tests and real sandbox acceptance"
+    },
+    {
+      "id": "CO-001",
+      "sourceSection": "3",
+      "statement": "Comments support mentions, reactions, editing policy, deletion policy, and attachment references"
+    },
+    {
+      "id": "CO-002",
+      "sourceSection": "3",
+      "statement": "Users can follow workflows and runs and configure notification preferences"
+    },
+    {
+      "id": "CO-003",
+      "sourceSection": "3",
+      "statement": "Activity feeds distinguish product activity from immutable audit events"
+    },
+    {
+      "id": "CO-004",
+      "sourceSection": "3",
+      "statement": "Global search covers workflows, runs, tasks, agents, people, documents, entities, and settings allowed to the user"
+    },
+    {
+      "id": "CO-005",
+      "sourceSection": "3",
+      "statement": "Command palette provides keyboard-accessible navigation and safe actions"
+    },
+    {
+      "id": "CO-006",
+      "sourceSection": "3",
+      "statement": "Saved views support filters, columns, sorting, sharing, and ownership"
+    },
+    {
+      "id": "CO-007",
+      "sourceSection": "3",
+      "statement": "Dashboard cards drill into the exact filtered data behind the metric"
+    },
+    {
+      "id": "CO-008",
+      "sourceSection": "3",
+      "statement": "Reports cover throughput, cycle time, wait time, failure, automation, agent quality, cost, SLA, and returned time"
+    },
+    {
+      "id": "CO-009",
+      "sourceSection": "3",
+      "statement": "Report data can be filtered, exported, and scheduled according to permissions"
+    },
+    {
+      "id": "EX-001",
+      "sourceSection": "3",
+      "statement": "The web application is installable and safely updates without interrupting active work"
+    },
+    {
+      "id": "EX-002",
+      "sourceSection": "3",
+      "statement": "Offline behavior is explicit, policy-aware, and limited to safe cached data and drafts"
+    },
+    {
+      "id": "EX-003",
+      "sourceSection": "3",
+      "statement": "Push subscriptions are device-scoped, revocable, payload-minimized, and permission checked at delivery and click"
+    },
+    {
+      "id": "EX-004",
+      "sourceSection": "3",
+      "statement": "Guests receive expiring, revocable access to one exact resource/action and cannot browse workspace metadata"
+    },
+    {
+      "id": "EX-005",
+      "sourceSection": "3",
+      "statement": "Guest identity, invitation, session, action, download, and revocation are auditable"
+    },
+    {
+      "id": "EX-006",
+      "sourceSection": "3",
+      "statement": "All first-party UI strings, formatting, validation, email, help, and exports use the localization system"
+    },
+    {
+      "id": "EX-007",
+      "sourceSection": "3",
+      "statement": "English, Hindi, Spanish, French, German, and Japanese complete production translation and linguistic QA"
+    },
+    {
+      "id": "EX-008",
+      "sourceSection": "3",
+      "statement": "Current and previous major Chrome, Edge, Firefox, and Safari plus current iOS Safari and Android Chrome are supported"
+    },
+    {
+      "id": "EX-009",
+      "sourceSection": "3",
+      "statement": "Every critical journey passes the defined keyboard, zoom/reflow, voice-control, and screen-reader matrix"
+    },
+    {
+      "id": "EX-010",
+      "sourceSection": "3",
+      "statement": "Users can search versioned help, view current status and changelog, replay onboarding, and submit contextual feedback"
+    },
+    {
+      "id": "EX-011",
+      "sourceSection": "3",
+      "statement": "Customers can open and follow permissioned support tickets with attachments and service targets"
+    },
+    {
+      "id": "EX-012",
+      "sourceSection": "3",
+      "statement": "Diagnostic bundles require preview and consent and are redacted, encrypted, expiring, checksummed, and access logged"
+    },
+    {
+      "id": "EX-013",
+      "sourceSection": "3",
+      "statement": "Product incident banners are authenticated, resilient to status-feed failure, accessible, and dismissible according to severity"
+    },
+    {
+      "id": "EX-014",
+      "sourceSection": "3",
+      "statement": "Pricing, terms, privacy, DPA, acceptable use, accessibility, subprocessors, and security claims are current and owner approved"
+    },
+    {
+      "id": "EX-015",
+      "sourceSection": "3",
+      "statement": "Every visible feature or integration is labelled LIVE, BETA, DEMO, PLANNED, unavailable, or degraded according to verified reality"
+    },
+    {
+      "id": "EX-016",
+      "sourceSection": "3",
+      "statement": "A scoped citation-quality or unsafe-output report preserves relevant provenance without granting support broader content access"
+    },
+    {
+      "id": "EX-017",
+      "sourceSection": "3",
+      "statement": "The public contact flow validates consent, resists abuse, persists and routes the request, acknowledges honestly, and follows retention/deletion policy"
+    },
+    {
+      "id": "HU-001",
+      "sourceSection": "3",
+      "statement": "Users have a unified inbox for tasks, approvals, mentions, and exceptions"
+    },
+    {
+      "id": "HU-002",
+      "sourceSection": "3",
+      "statement": "Human tasks support assignee, watchers, due date, priority, SLA, form schema, rich instructions, comments, and attachments"
+    },
+    {
+      "id": "HU-003",
+      "sourceSection": "3",
+      "statement": "Users can claim, reassign, delegate, complete, reopen, or request clarification"
+    },
+    {
+      "id": "HU-004",
+      "sourceSection": "3",
+      "statement": "Task forms validate typed data and preserve drafts"
+    },
+    {
+      "id": "HU-005",
+      "sourceSection": "3",
+      "statement": "Bulk task actions are permission checked and audited"
+    },
+    {
+      "id": "HU-006",
+      "sourceSection": "3",
+      "statement": "Approvals bind to an exact payload hash and policy version"
+    },
+    {
+      "id": "HU-007",
+      "sourceSection": "3",
+      "statement": "Approvers can approve, reject, request revision, delegate, or abstain"
+    },
+    {
+      "id": "HU-008",
+      "sourceSection": "3",
+      "statement": "Approval policies support any-one, all, quorum, ordered, role, group, and separation-of-duties rules"
+    },
+    {
+      "id": "HU-009",
+      "sourceSection": "3",
+      "statement": "Expiry, reminders, quiet hours, escalations, and fallback approvers are durable"
+    },
+    {
+      "id": "HU-010",
+      "sourceSection": "3",
+      "statement": "High-risk or irreversible tool actions require explicit approval unless policy forbids them entirely"
+    },
+    {
+      "id": "HU-011",
+      "sourceSection": "3",
+      "statement": "Mobile task and approval flows require no canvas interaction"
+    },
+    {
+      "id": "ID-001",
+      "sourceSection": "3",
+      "statement": "Users can request and exchange a single-use email magic link"
+    },
+    {
+      "id": "ID-002",
+      "sourceSection": "3",
+      "statement": "Users can sign in with Google OIDC"
+    },
+    {
+      "id": "ID-003",
+      "sourceSection": "3",
+      "statement": "Enterprise users can sign in through configured SAML or OIDC SSO"
+    },
+    {
+      "id": "ID-004",
+      "sourceSection": "3",
+      "statement": "Sessions use rotating HttpOnly Secure SameSite cookies and can be individually revoked"
+    },
+    {
+      "id": "ID-005",
+      "sourceSection": "3",
+      "statement": "A user can view and revoke active sessions"
+    },
+    {
+      "id": "ID-006",
+      "sourceSection": "3",
+      "statement": "A user can belong to multiple workspaces and switch active workspace"
+    },
+    {
+      "id": "ID-007",
+      "sourceSection": "3",
+      "statement": "A new user can create a workspace or accept an invitation"
+    },
+    {
+      "id": "ID-008",
+      "sourceSection": "3",
+      "statement": "Administrators can invite, resend, cancel, suspend, restore, and remove members"
+    },
+    {
+      "id": "ID-009",
+      "sourceSection": "3",
+      "statement": "Roles include owner, admin, builder, member, approver, billing, auditor, and custom roles"
+    },
+    {
+      "id": "ID-010",
+      "sourceSection": "3",
+      "statement": "Fine-grained permissions apply to resources and actions, not only pages"
+    },
+    {
+      "id": "ID-011",
+      "sourceSection": "3",
+      "statement": "Service principals and scoped API credentials support rotation, expiry, and revocation"
+    },
+    {
+      "id": "ID-012",
+      "sourceSection": "3",
+      "statement": "SCIM provisions, updates, suspends, and deprovisions enterprise users and groups"
+    },
+    {
+      "id": "ID-013",
+      "sourceSection": "3",
+      "statement": "Domain capture and enforced SSO can be configured safely"
+    },
+    {
+      "id": "ID-014",
+      "sourceSection": "3",
+      "statement": "Every tenant-owned resource has one immutable workspace owner"
+    },
+    {
+      "id": "ID-015",
+      "sourceSection": "3",
+      "statement": "The server derives and verifies tenant membership on every protected operation"
+    },
+    {
+      "id": "KN-001",
+      "sourceSection": "3",
+      "statement": "Users can upload supported files with progress, cancellation, size/type validation, and malware scanning"
+    },
+    {
+      "id": "KN-002",
+      "sourceSection": "3",
+      "statement": "Raw source, normalized content, versions, and parsed artifacts are preserved according to policy"
+    },
+    {
+      "id": "KN-003",
+      "sourceSection": "3",
+      "statement": "Parsers support PDF, DOCX, PPTX, XLSX, CSV, TXT, Markdown, HTML, images with OCR, and common email exports"
+    },
+    {
+      "id": "KN-004",
+      "sourceSection": "3",
+      "statement": "Every source object preserves provider ID, version, permissions, provenance, and deletion state"
+    },
+    {
+      "id": "KN-005",
+      "sourceSection": "3",
+      "statement": "Documents are chunked using versioned parsing and chunking policies"
+    },
+    {
+      "id": "KN-006",
+      "sourceSection": "3",
+      "statement": "Embeddings are versioned and can be re-indexed without losing current serving state"
+    },
+    {
+      "id": "KN-007",
+      "sourceSection": "3",
+      "statement": "Search combines lexical, semantic, metadata, freshness, authority, and relationship signals"
+    },
+    {
+      "id": "KN-008",
+      "sourceSection": "3",
+      "statement": "Retrieval applies tenant and source permissions before content reaches a model"
+    },
+    {
+      "id": "KN-009",
+      "sourceSection": "3",
+      "statement": "Results include citations to exact source version and location"
+    },
+    {
+      "id": "KN-010",
+      "sourceSection": "3",
+      "statement": "Users can inspect sources, sync status, parsing status, permissions, and use lineage"
+    },
+    {
+      "id": "KN-011",
+      "sourceSection": "3",
+      "statement": "Entity resolution creates canonical people, teams, projects, customers, products, and custom entities"
+    },
+    {
+      "id": "KN-012",
+      "sourceSection": "3",
+      "statement": "Relationships preserve type, confidence, temporal validity, and provenance"
+    },
+    {
+      "id": "KN-013",
+      "sourceSection": "3",
+      "statement": "Source changes and deletion propagate to chunks, embeddings, entities, caches, and citations"
+    },
+    {
+      "id": "KN-014",
+      "sourceSection": "3",
+      "statement": "Retrieval quality has offline and production-shadow evaluation"
+    },
+    {
+      "id": "NFR-001",
+      "sourceSection": "4",
+      "statement": "99.9% monthly availability for interactive API and workflow control plane"
+    },
+    {
+      "id": "NFR-002",
+      "sourceSection": "4",
+      "statement": "99.5% monthly availability for non-critical connector ingestion"
+    },
+    {
+      "id": "NFR-003",
+      "sourceSection": "4",
+      "statement": "p95 cached metadata reads under 400 ms at reference load"
+    },
+    {
+      "id": "NFR-004",
+      "sourceSection": "4",
+      "statement": "p95 accepted mutations under 750 ms, excluding asynchronous completion"
+    },
+    {
+      "id": "NFR-005",
+      "sourceSection": "4",
+      "statement": "p95 task dispatch within 5 seconds of dependency readiness"
+    },
+    {
+      "id": "NFR-006",
+      "sourceSection": "4",
+      "statement": "p95 SSE event delivery within 2 seconds of durable event commit"
+    },
+    {
+      "id": "NFR-007",
+      "sourceSection": "4",
+      "statement": "No cross-tenant access in automated, adversarial, or manual isolation tests"
+    },
+    {
+      "id": "NFR-008",
+      "sourceSection": "4",
+      "statement": "Transactional-data RPO no greater than 15 minutes"
+    },
+    {
+      "id": "NFR-009",
+      "sourceSection": "4",
+      "statement": "Regional recovery RTO no greater than 4 hours"
+    },
+    {
+      "id": "NFR-010",
+      "sourceSection": "4",
+      "statement": "WCAG 2.2 AA for all supported product and marketing flows"
+    },
+    {
+      "id": "NFR-011",
+      "sourceSection": "4",
+      "statement": "No critical or high exploitable security finding at release"
+    },
+    {
+      "id": "NFR-012",
+      "sourceSection": "4",
+      "statement": "No unbounded agent loop, connector retry, queue growth, or tenant spend path"
+    },
+    {
+      "id": "NFR-013",
+      "sourceSection": "4",
+      "statement": "Tenant execution kill switch takes effect within 60 seconds"
+    },
+    {
+      "id": "NFR-014",
+      "sourceSection": "4",
+      "statement": "All acknowledged mutations survive process and single-AZ failure"
+    },
+    {
+      "id": "NFR-015",
+      "sourceSection": "4",
+      "statement": "At-least-once delivery never automatically repeats an UNCERTAIN non-idempotent external effect; certified idempotent or authoritatively reconcilable operations produce zero logical duplicate"
+    },
+    {
+      "id": "NFR-016",
+      "sourceSection": "4",
+      "statement": "Core mobile flows work at 320 CSS px without horizontal page overflow"
+    },
+    {
+      "id": "NFR-017",
+      "sourceSection": "4",
+      "statement": "Core desktop flows work from 1024 through 2560 CSS px"
+    },
+    {
+      "id": "NFR-018",
+      "sourceSection": "4",
+      "statement": "Initial authenticated shell LCP under 2.5 seconds at p75 on reference mobile profile"
+    },
+    {
+      "id": "NFR-019",
+      "sourceSection": "4",
+      "statement": "Interaction to Next Paint under 200 ms at p75 for ordinary UI actions"
+    },
+    {
+      "id": "NFR-020",
+      "sourceSection": "4",
+      "statement": "Cumulative Layout Shift below 0.1 at p75"
+    },
+    {
+      "id": "NFR-021",
+      "sourceSection": "4",
+      "statement": "Telemetry excludes secrets and configured sensitive customer content"
+    },
+    {
+      "id": "NFR-022",
+      "sourceSection": "4",
+      "statement": "Critical operational alerts reach the on-call path within 5 minutes"
+    },
+    {
+      "id": "NFR-023",
+      "sourceSection": "4",
+      "statement": "Knotline-admin permission revocation is effective on the committing transaction; connected-source ACL revocation disappears from all online serving caches, search, citations, and agent context within 5 minutes; server and browser clients fail closed whenever current ACL proof is older than that bound, including while offline, with disconnected ciphertext governed by Section 6.7 rather than presented as remotely erased"
+    },
+    {
+      "id": "ON-001",
+      "sourceSection": "3",
+      "statement": "Onboarding adapts to role, use case, team size, and connected systems"
+    },
+    {
+      "id": "ON-002",
+      "sourceSection": "3",
+      "statement": "Users can start from a pattern, natural-language prompt, or blank workflow"
+    },
+    {
+      "id": "ON-003",
+      "sourceSection": "3",
+      "statement": "The product includes a guided but real first-run experience"
+    },
+    {
+      "id": "ON-004",
+      "sourceSection": "3",
+      "statement": "Sample data is isolated, labeled, removable, and never confused with production data"
+    },
+    {
+      "id": "ON-005",
+      "sourceSection": "3",
+      "statement": "Setup progress survives logout and device changes"
+    },
+    {
+      "id": "ON-006",
+      "sourceSection": "3",
+      "statement": "Every onboarding step can be skipped and resumed"
+    },
+    {
+      "id": "ON-007",
+      "sourceSection": "3",
+      "statement": "Empty states teach the next useful action without blocking expert users"
+    },
+    {
+      "id": "OP-001",
+      "sourceSection": "3",
+      "statement": "Local development starts all required dependencies from documented commands"
+    },
+    {
+      "id": "OP-002",
+      "sourceSection": "3",
+      "statement": "CI reproduces schema, API, worker, web, and end-to-end tests"
+    },
+    {
+      "id": "OP-003",
+      "sourceSection": "3",
+      "statement": "Infrastructure is fully represented in Terraform"
+    },
+    {
+      "id": "OP-004",
+      "sourceSection": "3",
+      "statement": "Staging mirrors production topology at smaller capacity"
+    },
+    {
+      "id": "OP-005",
+      "sourceSection": "3",
+      "statement": "Deployments are progressive, observable, reversible, and compatible with active runs"
+    },
+    {
+      "id": "OP-006",
+      "sourceSection": "3",
+      "statement": "Database migrations are backward compatible across the deployment window"
+    },
+    {
+      "id": "OP-007",
+      "sourceSection": "3",
+      "statement": "Metrics, logs, traces, errors, and audit correlation share stable identifiers"
+    },
+    {
+      "id": "OP-008",
+      "sourceSection": "3",
+      "statement": "Alerts are tied to service objectives and actionable runbooks"
+    },
+    {
+      "id": "OP-009",
+      "sourceSection": "3",
+      "statement": "Backups, point-in-time recovery, object versioning, and restore procedures are tested"
+    },
+    {
+      "id": "OP-010",
+      "sourceSection": "3",
+      "statement": "Regional recovery meets the stated RPO and RTO in an exercise"
+    },
+    {
+      "id": "OP-011",
+      "sourceSection": "3",
+      "statement": "Capacity, fairness, and spend controls are load-tested"
+    },
+    {
+      "id": "OP-012",
+      "sourceSection": "3",
+      "statement": "Dependency, container, secret, IaC, SAST, DAST, and SBOM controls run in CI"
+    },
+    {
+      "id": "OP-013",
+      "sourceSection": "3",
+      "statement": "Platform operators authenticate through an origin- and session-isolated workforce identity plane with phishing-resistant MFA, least-privilege duty scopes, prompt offboarding, periodic access review, controlled break glass, and zero workspace-credential acceptance"
+    },
+    {
+      "id": "RN-001",
+      "sourceSection": "3",
+      "statement": "Runs can start manually, by schedule, webhook, connector event, API, or parent workflow"
+    },
+    {
+      "id": "RN-002",
+      "sourceSection": "3",
+      "statement": "A run pins one immutable workflow version, policy snapshot, and input set"
+    },
+    {
+      "id": "RN-003",
+      "sourceSection": "3",
+      "statement": "Dependency-ready tasks dispatch durably and idempotently"
+    },
+    {
+      "id": "RN-004",
+      "sourceSection": "3",
+      "statement": "Run states include queued, running, waiting, paused, cancelling, cancelled, succeeded, failed, and timed out"
+    },
+    {
+      "id": "RN-005",
+      "sourceSection": "3",
+      "statement": "Task states include pending, ready, running, waiting, retry-wait, succeeded, failed, skipped, cancelled, and timed out"
+    },
+    {
+      "id": "RN-006",
+      "sourceSection": "3",
+      "statement": "Attempts preserve worker, timing, input/output references, usage, trace, and error classification"
+    },
+    {
+      "id": "RN-007",
+      "sourceSection": "3",
+      "statement": "Retries use explicit per-node policies with jitter, limits, and retryable error classes"
+    },
+    {
+      "id": "RN-008",
+      "sourceSection": "3",
+      "statement": "A failed run can retry from failure or fork while reusing only validated safe outputs"
+    },
+    {
+      "id": "RN-009",
+      "sourceSection": "3",
+      "statement": "Pause stops new dispatch while preserving in-flight result reconciliation"
+    },
+    {
+      "id": "RN-010",
+      "sourceSection": "3",
+      "statement": "Cancellation propagates without silently repeating or losing uncertain external effects"
+    },
+    {
+      "id": "RN-011",
+      "sourceSection": "3",
+      "statement": "Delays, deadlines, recurring schedules, and human waits survive restarts and deployments"
+    },
+    {
+      "id": "RN-012",
+      "sourceSection": "3",
+      "statement": "Conditions and mappings evaluate deterministically in a restricted expression engine"
+    },
+    {
+      "id": "RN-013",
+      "sourceSection": "3",
+      "statement": "Loops have explicit maximum iterations and spend/time budgets"
+    },
+    {
+      "id": "RN-014",
+      "sourceSection": "3",
+      "statement": "Subworkflows preserve correlation, cancellation, usage, and lineage"
+    },
+    {
+      "id": "RN-015",
+      "sourceSection": "3",
+      "statement": "Every run exposes a monotonically sequenced append-only event timeline"
+    },
+    {
+      "id": "RN-016",
+      "sourceSection": "3",
+      "statement": "Live state uses SSE with resume and bounded polling fallback"
+    },
+    {
+      "id": "RN-017",
+      "sourceSection": "3",
+      "statement": "Operators can reconcile stuck work, uncertain operations, and dead-letter items"
+    },
+    {
+      "id": "RN-018",
+      "sourceSection": "3",
+      "statement": "Per-tenant fairness and concurrency limits prevent noisy-neighbor starvation"
+    },
+    {
+      "id": "WF-001",
+      "sourceSection": "3",
+      "statement": "Workflows have metadata, owner, tags, status, draft, and published-version pointers"
+    },
+    {
+      "id": "WF-002",
+      "sourceSection": "3",
+      "statement": "Builders can create, duplicate, import, export, archive, restore, and delete workflows"
+    },
+    {
+      "id": "WF-003",
+      "sourceSection": "3",
+      "statement": "Builders can generate a workflow from natural language using schema-valid model output"
+    },
+    {
+      "id": "WF-004",
+      "sourceSection": "3",
+      "statement": "Builders can create workflows from first-party or workspace templates"
+    },
+    {
+      "id": "WF-005",
+      "sourceSection": "3",
+      "statement": "Node types include trigger, human, agent, approval, condition, delay, loop, subworkflow, transform, and integration action"
+    },
+    {
+      "id": "WF-006",
+      "sourceSection": "3",
+      "statement": "Builders can add, move, connect, duplicate, group, split, disable, and remove nodes"
+    },
+    {
+      "id": "WF-007",
+      "sourceSection": "3",
+      "statement": "Edges support conditions, mappings, labels, success paths, failure paths, and default paths"
+    },
+    {
+      "id": "WF-008",
+      "sourceSection": "3",
+      "statement": "Node inputs and outputs use versioned JSON Schemas"
+    },
+    {
+      "id": "WF-009",
+      "sourceSection": "3",
+      "statement": "The studio supports zoom, pan, minimap, fit, auto-layout, alignment, multiselect, undo, redo, and keyboard shortcuts"
+    },
+    {
+      "id": "WF-010",
+      "sourceSection": "3",
+      "statement": "The studio provides a synchronized accessible outline/table view"
+    },
+    {
+      "id": "WF-011",
+      "sourceSection": "3",
+      "statement": "Edits use optimistic concurrency and display resolvable conflicts"
+    },
+    {
+      "id": "WF-012",
+      "sourceSection": "3",
+      "statement": "Drafts autosave and visibly indicate saved, saving, offline, or conflict state"
+    },
+    {
+      "id": "WF-013",
+      "sourceSection": "3",
+      "statement": "Validation detects cycles where forbidden, unreachable nodes, invalid mappings, missing assignments, unavailable agents/tools, policy violations, and absent terminal paths"
+    },
+    {
+      "id": "WF-014",
+      "sourceSection": "3",
+      "statement": "Builders can dry-run a draft using fixtures without external side effects"
+    },
+    {
+      "id": "WF-015",
+      "sourceSection": "3",
+      "statement": "Publishing creates an immutable version with content hash and release note"
+    },
+    {
+      "id": "WF-016",
+      "sourceSection": "3",
+      "statement": "Version history provides visual and semantic diff"
+    },
+    {
+      "id": "WF-017",
+      "sourceSection": "3",
+      "statement": "Rollback creates a new draft from a previous immutable version"
+    },
+    {
+      "id": "WF-018",
+      "sourceSection": "3",
+      "statement": "Reusable subworkflows have typed contracts and pinned or compatible version policies"
+    },
+    {
+      "id": "WF-019",
+      "sourceSection": "3",
+      "statement": "Templates include variables, setup instructions, preview, category, author, and version"
+    },
+    {
+      "id": "WF-020",
+      "sourceSection": "3",
+      "statement": "Workflows support folders, tags, favorites, saved filters, ownership transfer, and bulk actions"
+    }
+  ],
+  "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
+  "planDigest": "sha256:2d5a5a71365fa03169b00a30f4dee979cadb8d47be6a847a6851faecc38cc41b",
+  "schemaVersion": 1
+}

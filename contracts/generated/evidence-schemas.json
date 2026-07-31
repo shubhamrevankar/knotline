@@ -1,0 +1,686 @@
+{
+  "entries": [
+    {
+      "id": "evidence-declaration-v1",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "activeGateRows": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "declaredEnvironmentState": {
+            "enum": [
+              "NOT_DEPLOYED",
+              "STAGING_VERIFIED",
+              "PRODUCTION_VERIFIED"
+            ]
+          },
+          "deployments": {
+            "type": "array"
+          },
+          "environmentGates": {
+            "type": "array"
+          },
+          "evidenceUris": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "externalGates": {
+            "type": "array"
+          },
+          "flags": {
+            "type": "array"
+          },
+          "knownRisks": {
+            "type": "array"
+          },
+          "manualReviews": {
+            "type": "array"
+          },
+          "migrations": {
+            "type": "array"
+          },
+          "milestone": {
+            "pattern": "^M[0-9]{2}$",
+            "type": "string"
+          },
+          "notYetApplicable": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "activationMilestone": {
+                  "pattern": "^M[0-9]{2}$",
+                  "type": "string"
+                },
+                "reason": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "row": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "row",
+                "activationMilestone",
+                "reason"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "owners": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "requirements": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "schemaVersion": {
+            "const": 1
+          },
+          "targetEngineeringState": {
+            "enum": [
+              "VERIFIED",
+              "COMMITTED"
+            ]
+          },
+          "testRuns": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "milestone",
+          "targetEngineeringState",
+          "declaredEnvironmentState",
+          "owners",
+          "requirements",
+          "activeGateRows",
+          "notYetApplicable",
+          "environmentGates",
+          "externalGates",
+          "testRuns",
+          "manualReviews",
+          "deployments",
+          "migrations",
+          "flags",
+          "knownRisks",
+          "evidenceUris"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "id": "postcommit-manifest-v1",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "artifactDigests": {
+            "additionalProperties": {
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "minProperties": 1,
+            "type": "object"
+          },
+          "declarationDigest": {
+            "pattern": "^sha256:[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "deployments": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "endedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "evidenceUris": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "imageDigests": {
+            "additionalProperties": {
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "minProperties": 1,
+            "type": "object"
+          },
+          "jobId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "milestone": {
+            "pattern": "^M[0-9]{2}$",
+            "type": "string"
+          },
+          "provenanceDigests": {
+            "additionalProperties": {
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "minProperties": 1,
+            "type": "object"
+          },
+          "reviewerAttestations": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "sbomDigests": {
+            "additionalProperties": {
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "minProperties": 1,
+            "type": "object"
+          },
+          "schemaVersion": {
+            "const": 1
+          },
+          "signature": {
+            "additionalProperties": false,
+            "properties": {
+              "algorithm": {
+                "const": "sigstore"
+              },
+              "bundleDigest": {
+                "pattern": "^sha256:[a-f0-9]{64}$",
+                "type": "string"
+              },
+              "bundleUri": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "identity": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "algorithm",
+              "identity",
+              "bundleUri",
+              "bundleDigest"
+            ],
+            "type": "object"
+          },
+          "sourceCommit": {
+            "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$",
+            "type": "string"
+          },
+          "startedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "testResults": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "artifactDigest": {
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "durationMs": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "evidenceUri": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "status": {
+                  "const": "PASS"
+                }
+              },
+              "required": [
+                "id",
+                "status",
+                "evidenceUri"
+              ],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "workflowId": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "milestone",
+          "declarationDigest",
+          "sourceCommit",
+          "workflowId",
+          "jobId",
+          "startedAt",
+          "endedAt",
+          "artifactDigests",
+          "testResults",
+          "evidenceUris",
+          "signature"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "id": "route-coverage-v1",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "milestone": {
+            "pattern": "^M[0-9]{2}$",
+            "type": "string"
+          },
+          "planDigest": {
+            "pattern": "^sha256:[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "routeRegistryDigest": {
+            "pattern": "^sha256:[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "routes": {
+            "type": "array"
+          },
+          "schemaVersion": {
+            "const": 1
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "milestone",
+          "planDigest",
+          "routeRegistryDigest",
+          "routes"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "id": "requirement-traceability-v1",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "planDigest": {
+            "pattern": "^sha256:[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "requirements": {
+            "type": "array"
+          },
+          "schemaVersion": {
+            "const": 1
+          },
+          "traceabilityRegistryDigest": {
+            "pattern": "^sha256:[a-f0-9]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "planDigest",
+          "traceabilityRegistryDigest",
+          "requirements"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "id": "external-gate-ledger-v1",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "gates": {
+            "type": "array"
+          },
+          "planDigest": {
+            "pattern": "^sha256:[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "schemaVersion": {
+            "const": 1
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "planDigest",
+          "gates"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "id": "capability-metadata-v1",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "evidence": {
+            "additionalProperties": false,
+            "properties": {
+              "environment": {
+                "enum": [
+                  "local",
+                  "development",
+                  "staging",
+                  "production"
+                ]
+              },
+              "reference": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "verifiedAt": {
+                "format": "date-time",
+                "type": "string"
+              }
+            },
+            "required": [
+              "environment",
+              "verifiedAt",
+              "reference"
+            ],
+            "type": "object"
+          },
+          "externalGates": {
+            "items": {
+              "pattern": "^EXT-[0-9]{3}$",
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "id": {
+            "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z0-9_]+)+$",
+            "type": "string"
+          },
+          "owner": {
+            "additionalProperties": false,
+            "properties": {
+              "contact": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "team": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "team",
+              "contact"
+            ],
+            "type": "object"
+          },
+          "runbook": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "LIVE",
+              "BETA",
+              "DEMO",
+              "PLANNED"
+            ]
+          },
+          "summary": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "summary",
+          "owner",
+          "runbook",
+          "externalGates"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "id": "environment-promotion-v1",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "alerts": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "artifact": {
+            "additionalProperties": false,
+            "properties": {
+              "commitSha": {
+                "pattern": "^[a-f0-9]{40}$",
+                "type": "string"
+              },
+              "sha256": {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "commitSha",
+              "sha256"
+            ],
+            "type": "object"
+          },
+          "externalGates": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "pattern": "^EXT-[0-9]{3}$",
+                  "type": "string"
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "state": {
+                  "enum": [
+                    "NOT_APPLICABLE",
+                    "BLOCKED_EXTERNAL",
+                    "SIMULATED",
+                    "SANDBOX_VERIFIED",
+                    "PRODUCTION_VERIFIED"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "state",
+                "required"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "owner": {
+            "additionalProperties": false,
+            "properties": {
+              "contact": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "team": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "team",
+              "contact"
+            ],
+            "type": "object"
+          },
+          "publicStatus": {
+            "enum": [
+              "LIVE",
+              "BETA",
+              "DEMO",
+              "PLANNED"
+            ]
+          },
+          "rollback": {
+            "additionalProperties": false,
+            "properties": {
+              "procedure": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "triggers": {
+                "items": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array",
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "procedure",
+              "triggers"
+            ],
+            "type": "object"
+          },
+          "runbook": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "safeDefault": {
+            "additionalProperties": false,
+            "properties": {
+              "expensiveWorkEnabled": {
+                "const": false
+              },
+              "externalWritesEnabled": {
+                "const": false
+              },
+              "featureFlags": {
+                "additionalProperties": {
+                  "type": "boolean"
+                },
+                "type": "object"
+              }
+            },
+            "required": [
+              "externalWritesEnabled",
+              "expensiveWorkEnabled",
+              "featureFlags"
+            ],
+            "type": "object"
+          },
+          "schemaVersion": {
+            "const": 1
+          },
+          "smoke": {
+            "additionalProperties": false,
+            "properties": {
+              "command": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "expectedResult": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "journeyId": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "syntheticTenantId": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "journeyId",
+              "command",
+              "syntheticTenantId",
+              "expectedResult"
+            ],
+            "type": "object"
+          },
+          "targetEnvironment": {
+            "enum": [
+              "development",
+              "staging",
+              "production"
+            ]
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "artifact",
+          "targetEnvironment",
+          "safeDefault",
+          "smoke",
+          "rollback",
+          "alerts",
+          "owner",
+          "runbook",
+          "externalGates",
+          "publicStatus"
+        ],
+        "type": "object"
+      }
+    }
+  ],
+  "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
+  "planDigest": "sha256:2d5a5a71365fa03169b00a30f4dee979cadb8d47be6a847a6851faecc38cc41b",
+  "schemaVersion": 1
+}

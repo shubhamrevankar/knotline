@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://apps/web/src/demo.ts",
+      "verifiedAt": "2026-07-31T00:00:00.000Z"
+    },
+    "externalGates": [],
+    "id": "workflow.demo_library",
+    "owner": {
+      "contact": "shurevan",
+      "team": "product-engineering"
+    },
+    "runbook": "docs/operations/knotline/production-controls.md",
+    "status": "DEMO",
+    "summary": "M00 workflow library and map use explicitly labelled demonstration data."
+  }
+]

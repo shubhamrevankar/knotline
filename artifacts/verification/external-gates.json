@@ -1,0 +1,231 @@
+{
+  "gates": [
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-001",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-002",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-003",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-004",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-005",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-006",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-007",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-008",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-009",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-010",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-011",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-012",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-013",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-014",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-015",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-016",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-017",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": false,
+      "gateId": "EXT-018",
+      "requiredTerminalState": "NOT_APPLICABLE",
+      "reviewExpiresAt": null,
+      "state": "NOT_APPLICABLE"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-019",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-020",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-021",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-022",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-023",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-024",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-025",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    }
+  ],
+  "planDigest": "sha256:2d5a5a71365fa03169b00a30f4dee979cadb8d47be6a847a6851faecc38cc41b",
+  "schemaVersion": 1
+}

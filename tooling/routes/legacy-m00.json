@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "method": "GET",
+      "codePath": "/v1/bootstrap",
+      "contractPath": "/v1/me/bootstrap",
+      "reason": "M00 bootstrap predates the authenticated identity contract.",
+      "removeByMilestone": "M04"
+    },
+    {
+      "method": "GET",
+      "codePath": "/v1/teams/:teamId/workflows",
+      "contractPath": "/v1/workspaces/:workspaceId/workflows",
+      "reason": "M00 used team vocabulary before the canonical workspace contract.",
+      "removeByMilestone": "M06"
+    },
+    {
+      "method": "POST",
+      "codePath": "/v1/teams/:teamId/workflows",
+      "contractPath": "/v1/workspaces/:workspaceId/workflows",
+      "reason": "M00 used team vocabulary before the canonical workspace contract.",
+      "removeByMilestone": "M06"
+    }
+  ]
+}

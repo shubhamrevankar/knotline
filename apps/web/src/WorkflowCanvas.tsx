@@ -37,17 +37,21 @@ function OperationNode({ data }: NodeProps<Node<OperationNodeData>>) {
       <Handle type="target" position={Position.Left} />
       <header>
         <span className="node-kind">
-          <Icon size={13} strokeWidth={2.2} />
+          <Icon aria-hidden="true" size={13} strokeWidth={2.2} />
           {data.kind}
         </span>
-        <span className={`status-dot status-dot--${data.status}`} />
+        <span aria-hidden="true" className={`status-dot status-dot--${data.status}`} />
       </header>
       <h3>{data.title}</h3>
       <p>{data.description}</p>
       <footer>
-        <span className="avatar">{data.owner.charAt(0)}</span>
+        <span aria-hidden="true" className="avatar">
+          {data.owner.charAt(0)}
+        </span>
         <span>{data.owner}</span>
-        {data.status === "complete" && <Check className="node-check" size={14} />}
+        {data.status === "complete" && (
+          <Check aria-hidden="true" className="node-check" size={14} />
+        )}
       </footer>
       <Handle type="source" position={Position.Right} />
     </article>
@@ -58,6 +62,7 @@ const nodeTypes = { operation: OperationNode };
 
 export function WorkflowCanvas({ workflow }: { workflow: Workflow }) {
   const nodes: Node<OperationNodeData>[] = workflow.nodes.map((node) => ({
+    ariaLabel: `${node.title}, ${node.kind}, ${node.status}, owned by ${node.owner}`,
     id: node.id,
     type: "operation",
     position: { x: node.x, y: node.y },
@@ -79,7 +84,15 @@ export function WorkflowCanvas({ workflow }: { workflow: Workflow }) {
   }));
 
   return (
-    <div className="canvas">
+    <div
+      aria-label={`${workflow.name} visual workflow map with ${nodes.length} steps`}
+      className="canvas"
+      role="region"
+    >
+      <p className="sr-only">
+        Use Tab to reach workflow steps and map controls. The workflow contains {nodes.length}{" "}
+        steps.
+      </p>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -100,9 +113,7 @@ export function WorkflowCanvas({ workflow }: { workflow: Workflow }) {
         <MiniMap
           pannable
           zoomable
-          nodeColor={(node) =>
-            node.data.status === "running" ? "#c8ff52" : "#5e6b70"
-          }
+          nodeColor={(node) => (node.data.status === "running" ? "#c8ff52" : "#5e6b70")}
           maskColor="rgba(17, 19, 21, 0.78)"
         />
       </ReactFlow>

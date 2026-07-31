@@ -1,0 +1,349 @@
+name: verified-change
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verified-change-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: "true"
+  NODE_VERSION: 24.18.1
+  PNPM_VERSION: 11.9.0
+
+jobs:
+  static:
+    name: Static contracts and policy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm verify:brand
+      - run: pnpm verify:boundaries
+      - run: pnpm verify:contracts
+      - run: pnpm verify:openapi
+      - run: pnpm verify:events
+      - run: pnpm verify:evidence
+      - name: Exercise contract and evidence rejection fixtures
+        run: pnpm test:contracts
+      - name: Validate documentation-derived registries
+        run: pnpm contracts:check
+      - run: node tooling/gate/lane-result.mjs static pnpm-lock.yaml contracts/generated packages/contracts/generated
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: lane-static-${{ github.sha }}
+          path: |
+            artifacts/lane-evidence/static/
+            pnpm-lock.yaml
+            contracts/generated/
+            packages/contracts/generated/
+          if-no-files-found: error
+          retention-days: 14
+
+  unit:
+    name: Unit and coverage
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:unit
+      - run: node tooling/gate/lane-result.mjs unit artifacts/coverage/unit
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: lane-unit-${{ github.sha }}
+          path: |
+            artifacts/coverage/unit/
+            artifacts/lane-evidence/unit/
+          if-no-files-found: error
+          retention-days: 14
+
+  integration:
+    name: Dependency integration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:integration
+      - run: node tooling/gate/lane-result.mjs integration artifacts/integration
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: lane-integration-${{ github.sha }}
+          path: |
+            artifacts/integration/
+            artifacts/lane-evidence/integration/
+          if-no-files-found: error
+          retention-days: 14
+
+  browser:
+    name: Browser and accessibility
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Run browser behavior and accessibility suites
+        run: pnpm exec playwright test --grep-invert @visual --retries=0
+      - run: node tooling/gate/lane-result.mjs browser test-results/html
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: lane-browser-${{ github.sha }}
+          path: |
+            test-results/html/
+            artifacts/lane-evidence/browser/
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: failure()
+        with:
+          name: browser-failure-${{ github.sha }}
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: error
+          retention-days: 14
+
+  visual:
+    name: Platform-pinned visual regression
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install chromium
+      - run: pnpm exec playwright test --grep @visual --retries=0
+      - run: node tooling/gate/lane-result.mjs visual test-results/html tests/e2e/__screenshots__
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: lane-visual-${{ github.sha }}
+          path: |
+            test-results/html/
+            tests/e2e/__screenshots__/
+            artifacts/lane-evidence/visual/
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: failure()
+        with:
+          name: visual-failure-${{ github.sha }}
+          path: |
+            tests/e2e/__screenshots__/
+            test-results/
+          if-no-files-found: error
+          retention-days: 14
+
+  build:
+    name: Reproducible build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Assert clean, reproducible double build
+        run: pnpm verify:reproducible-build
+      - run: node tooling/gate/lane-result.mjs build apps/api/dist apps/web/dist packages/config/dist packages/contracts/dist packages/operations/dist packages/testing/dist
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: build-${{ github.sha }}
+          path: |
+            apps/api/dist/
+            apps/web/dist/
+            packages/*/dist/
+            artifacts/lane-evidence/build/
+          if-no-files-found: error
+          retention-days: 14
+
+  containers:
+    name: Container policy and runtime
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - run: CONTAINER_RUNTIME_TEST=1 bash tooling/containers/test-containers.sh
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: node tooling/gate/lane-result.mjs containers artifacts/containers
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: lane-containers-${{ github.sha }}
+          path: |
+            artifacts/containers/
+            artifacts/lane-evidence/containers/
+          if-no-files-found: error
+          retention-days: 14
+
+  scans:
+    name: Dependency, secret, and license scans
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: bash tooling/scans/test-scanners.sh
+      - run: pnpm verify:secrets
+        env:
+          SCAN_REPORT_DIR: artifacts/scans
+      - run: pnpm verify:dependencies
+        if: always()
+        env:
+          SCAN_REPORT_DIR: artifacts/scans
+      - run: pnpm verify:licenses
+        if: always()
+        env:
+          SCAN_REPORT_DIR: artifacts/scans
+      - run: node tooling/gate/lane-result.mjs scans artifacts/scans
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: lane-scans-${{ github.sha }}
+          path: |
+            artifacts/scans/
+            artifacts/lane-evidence/scans/
+          if-no-files-found: error
+          retention-days: 30
+
+  evidence:
+    name: Versioned evidence manifest
+    needs: [static, unit, integration, browser, visual, build, containers, scans]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Assert all required lanes passed
+        env:
+          REQUIRED_RESULTS: ${{ toJSON(needs) }}
+        run: node --input-type=module --eval "const r=JSON.parse(process.env.REQUIRED_RESULTS); if(Object.values(r).some(x=>x.result!=='success')) process.exit(1)"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: lane-*-${{ github.sha }}
+          path: artifacts/downloaded
+      - name: Create attestation subject
+        run: node .github/scripts/create-attestation-subject.mjs
+      - name: Sign keyless build provenance
+        id: attest
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        with:
+          subject-path: artifacts/attestation/unsigned-manifest.json
+      - name: Write and validate post-commit manifest
+        env:
+          ATTESTATION_BUNDLE_PATH: ${{ steps.attest.outputs.bundle-path }}
+          ATTESTATION_URL: ${{ steps.attest.outputs.attestation-url }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh attestation verify artifacts/attestation/unsigned-manifest.json \
+            --repo "$GITHUB_REPOSITORY" \
+            --bundle "$ATTESTATION_BUNDLE_PATH" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/ci.yml" \
+            --source-digest "$GITHUB_SHA" \
+            --source-ref "$GITHUB_REF" \
+            --deny-self-hosted-runners
+          node .github/scripts/create-postcommit-manifest.mjs
+          node tooling/gate/evidence.mjs postcommit artifacts/verification
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: verified-evidence-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            artifacts/verification/
+            artifacts/attestation/
+            ${{ steps.attest.outputs.bundle-path }}
+          if-no-files-found: error
+          retention-days: 90

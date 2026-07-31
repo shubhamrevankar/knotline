@@ -1,0 +1,6192 @@
+{
+  "entries": [
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "PRIV",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "primaryMilestone": "M31",
+      "primarySurfacesAndContracts": "Audit/data/privacy/support-access routes/APIs; audit/hold/export/delete records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-001",
+      "routeIds": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "PRIV",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "primaryMilestone": "M31",
+      "primarySurfacesAndContracts": "Audit/data/privacy/support-access routes/APIs; audit/hold/export/delete records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-002",
+      "routeIds": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "PRIV",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "primaryMilestone": "M31",
+      "primarySurfacesAndContracts": "Audit/data/privacy/support-access routes/APIs; audit/hold/export/delete records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-003",
+      "routeIds": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "PRIV",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "primaryMilestone": "M31",
+      "primarySurfacesAndContracts": "Audit/data/privacy/support-access routes/APIs; audit/hold/export/delete records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-004",
+      "routeIds": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "PRIV",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "primaryMilestone": "M31",
+      "primarySurfacesAndContracts": "Audit/data/privacy/support-access routes/APIs; audit/hold/export/delete records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-005",
+      "routeIds": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "PRIV",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "primaryMilestone": "M31",
+      "primarySurfacesAndContracts": "Audit/data/privacy/support-access routes/APIs; audit/hold/export/delete records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-006",
+      "routeIds": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "PRIV",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "primaryMilestone": "M31",
+      "primarySurfacesAndContracts": "Audit/data/privacy/support-access routes/APIs; audit/hold/export/delete records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-007",
+      "routeIds": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "PRIV",
+        "E2E",
+        "PROV"
+      ],
+      "externalGates": [
+        "EXT-015",
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-04",
+        "CJ-19"
+      ],
+      "primaryMilestone": "M32",
+      "primarySurfacesAndContracts": "Security/policy/identity/residency admin; policy/identity/migration records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-008",
+      "routeIds": [
+        "route.app.settings.identity",
+        "route.app.settings.policies",
+        "route.app.settings.security"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "PRIV",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "primaryMilestone": "M31",
+      "primarySurfacesAndContracts": "Audit/data/privacy/support-access routes/APIs; audit/hold/export/delete records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-009",
+      "routeIds": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "PRIV",
+        "E2E",
+        "PROV"
+      ],
+      "externalGates": [
+        "EXT-015",
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-04",
+        "CJ-19"
+      ],
+      "primaryMilestone": "M32",
+      "primarySurfacesAndContracts": "Security/policy/identity/residency admin; policy/identity/migration records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-010",
+      "routeIds": [
+        "route.app.settings.identity",
+        "route.app.settings.policies",
+        "route.app.settings.security"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "primaryMilestone": "M14",
+      "primarySurfacesAndContracts": "Agent catalog/builder/version routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-001",
+      "routeIds": [
+        "route.app.agents",
+        "route.app.agents.detail",
+        "route.app.agents.detail.builder",
+        "route.app.agents.new"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "primaryMilestone": "M14",
+      "primarySurfacesAndContracts": "Agent catalog/builder/version routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-002",
+      "routeIds": [
+        "route.app.agents",
+        "route.app.agents.detail",
+        "route.app.agents.detail.builder",
+        "route.app.agents.new"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "SEC",
+        "EVAL",
+        "PROV",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03",
+        "CJ-06"
+      ],
+      "primaryMilestone": "M15",
+      "primarySurfacesAndContracts": "Model policy/gateway; invocation/registry tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-003",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "primaryMilestone": "M14",
+      "primarySurfacesAndContracts": "Agent catalog/builder/version routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-004",
+      "routeIds": [
+        "route.app.agents",
+        "route.app.agents.detail",
+        "route.app.agents.detail.builder",
+        "route.app.agents.new"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "SEC",
+        "EVAL",
+        "PROV",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03",
+        "CJ-06"
+      ],
+      "primaryMilestone": "M15",
+      "primarySurfacesAndContracts": "Model policy/gateway; invocation/registry tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-005",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "SEC",
+        "EVAL",
+        "PROV",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03",
+        "CJ-06"
+      ],
+      "primaryMilestone": "M15",
+      "primarySurfacesAndContracts": "Model policy/gateway; invocation/registry tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-006",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "EVAL"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "primaryMilestone": "M17",
+      "primarySurfacesAndContracts": "Governed execution loop/run inspector; grants/invocations/provenance",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-007",
+      "routeIds": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "EVAL"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "primaryMilestone": "M17",
+      "primarySurfacesAndContracts": "Governed execution loop/run inspector; grants/invocations/provenance",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-008",
+      "routeIds": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M16",
+      "primarySurfacesAndContracts": "Tool/vault/broker/sandbox; tool/grant/operation records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-009",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M16"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M16",
+      "primarySurfacesAndContracts": "Tool/vault/broker/sandbox; tool/grant/operation records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-010",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M16"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "EVAL"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "primaryMilestone": "M17",
+      "primarySurfacesAndContracts": "Governed execution loop/run inspector; grants/invocations/provenance",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-011",
+      "routeIds": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "EVAL"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "primaryMilestone": "M17",
+      "primarySurfacesAndContracts": "Governed execution loop/run inspector; grants/invocations/provenance",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-012",
+      "routeIds": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M16",
+      "primarySurfacesAndContracts": "Tool/vault/broker/sandbox; tool/grant/operation records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-013",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M16"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "EVAL"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "primaryMilestone": "M17",
+      "primarySurfacesAndContracts": "Governed execution loop/run inspector; grants/invocations/provenance",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-014",
+      "routeIds": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVAL",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RELEASE"
+      ],
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "primaryMilestone": "M18",
+      "primarySurfacesAndContracts": "Eval datasets/runs/comparisons/releases; eval/release tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-015",
+      "routeIds": [
+        "route.app.agents.detail.activity",
+        "route.app.agents.detail.evals"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVAL",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RELEASE"
+      ],
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "primaryMilestone": "M18",
+      "primarySurfacesAndContracts": "Eval datasets/runs/comparisons/releases; eval/release tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-016",
+      "routeIds": [
+        "route.app.agents.detail.activity",
+        "route.app.agents.detail.evals"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVAL",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RELEASE"
+      ],
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "primaryMilestone": "M18",
+      "primarySurfacesAndContracts": "Eval datasets/runs/comparisons/releases; eval/release tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-017",
+      "routeIds": [
+        "route.app.agents.detail.activity",
+        "route.app.agents.detail.evals"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "SEC",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M34",
+      "primarySurfacesAndContracts": "Operator console and hierarchical execution kill switches",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-018",
+      "routeIds": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PRIV",
+        "E2E"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "primaryMilestone": "M17",
+      "primarySurfacesAndContracts": "Memory policy/admin routes and APIs; memory record/version/access/use tables and lifecycle events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-019",
+      "routeIds": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PRIV",
+        "E2E"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "primaryMilestone": "M17",
+      "primarySurfacesAndContracts": "Memory policy/admin routes and APIs; memory record/version/access/use tables and lifecycle events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-020",
+      "routeIds": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PRIV",
+        "E2E"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "primaryMilestone": "M17",
+      "primarySurfacesAndContracts": "Memory policy/admin routes and APIs; memory record/version/access/use tables and lifecycle events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-021",
+      "routeIds": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PRIV",
+        "E2E"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "primaryMilestone": "M17",
+      "primarySurfacesAndContracts": "Memory policy/admin routes and APIs; memory record/version/access/use tables and lifecycle events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-022",
+      "routeIds": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "FIN",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "primaryMilestone": "M29",
+      "primarySurfacesAndContracts": "Commercial plan/price/subscription/entitlement projection and billing APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-001",
+      "routeIds": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "FIN",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "primaryMilestone": "M29",
+      "primarySurfacesAndContracts": "Commercial plan/price/subscription/entitlement projection and billing APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-002",
+      "routeIds": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "FIN",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "primaryMilestone": "M29",
+      "primarySurfacesAndContracts": "Commercial plan/price/subscription/entitlement projection and billing APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-003",
+      "routeIds": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "FIN",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "primaryMilestone": "M29",
+      "primarySurfacesAndContracts": "Commercial plan/price/subscription/entitlement projection and billing APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-004",
+      "routeIds": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "FIN",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Provider-neutral hard reservations, immutable usage/debt/credit ledgers, fenced leases, and spend-stop admission",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-005",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "FIN",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Provider-neutral hard reservations, immutable usage/debt/credit ledgers, fenced leases, and spend-stop admission",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-006",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "FIN",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "primaryMilestone": "M29",
+      "primarySurfacesAndContracts": "Customer usage/budget/invoice UX, lifecycle/outage behavior, and source reconciliation",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-007",
+      "routeIds": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "FIN",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "primaryMilestone": "M29",
+      "primarySurfacesAndContracts": "Customer usage/budget/invoice UX, lifecycle/outage behavior, and source reconciliation",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-008",
+      "routeIds": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "FIN",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "primaryMilestone": "M29",
+      "primarySurfacesAndContracts": "Customer usage/budget/invoice UX, lifecycle/outage behavior, and source reconciliation",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-009",
+      "routeIds": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "FIN",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "primaryMilestone": "M29",
+      "primarySurfacesAndContracts": "Customer usage/budget/invoice UX, lifecycle/outage behavior, and source reconciliation",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-010",
+      "routeIds": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "primaryMilestone": "M22",
+      "primarySurfacesAndContracts": "Connection setup/health/sync APIs; connection/credential/cursor/webhook records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-001",
+      "routeIds": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "primaryMilestone": "M22",
+      "primarySurfacesAndContracts": "Connection setup/health/sync APIs; connection/credential/cursor/webhook records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-002",
+      "routeIds": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "primaryMilestone": "M22",
+      "primarySurfacesAndContracts": "Connection setup/health/sync APIs; connection/credential/cursor/webhook records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-003",
+      "routeIds": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "primaryMilestone": "M22",
+      "primarySurfacesAndContracts": "Connection setup/health/sync APIs; connection/credential/cursor/webhook records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-004",
+      "routeIds": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "primaryMilestone": "M22",
+      "primarySurfacesAndContracts": "Connection setup/health/sync APIs; connection/credential/cursor/webhook records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-005",
+      "routeIds": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "primaryMilestone": "M22",
+      "primarySurfacesAndContracts": "Connection setup/health/sync APIs; connection/credential/cursor/webhook records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-006",
+      "routeIds": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "EVT",
+        "SEC",
+        "PROV",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-14.PROVIDERS"
+      ],
+      "journeyIds": [
+        "CJ-14"
+      ],
+      "primaryMilestone": "M26",
+      "primarySurfacesAndContracts": "Brokered outbound action/receipt/reconciliation",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-007",
+      "routeIds": [
+        "route.app.workflows.detail.triggers"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "primaryMilestone": "M22",
+      "primarySurfacesAndContracts": "Connection setup/health/sync APIs; connection/credential/cursor/webhook records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-008",
+      "routeIds": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "primaryMilestone": "M22",
+      "primarySurfacesAndContracts": "Connection setup/health/sync APIs; connection/credential/cursor/webhook records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-009",
+      "routeIds": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PROV",
+        "SEC",
+        "OPS",
+        "MAN"
+      ],
+      "externalGates": [
+        "EXT-007",
+        "EXT-014",
+        "EXT-025"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M38",
+      "primarySurfacesAndContracts": "Complete Section 15.3 certification matrix",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-010",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M38"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M09",
+      "primarySurfacesAndContracts": "Generic threads/comments/follows/activity and notification intents",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-001",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M09"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M09",
+      "primarySurfacesAndContracts": "Generic threads/comments/follows/activity and notification intents",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-002",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M09"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M09",
+      "primarySurfacesAndContracts": "Generic threads/comments/follows/activity and notification intents",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-003",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M09"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "primaryMilestone": "M28",
+      "primarySurfacesAndContracts": "Search/command/saved-view/analytics/report routes/APIs and records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-004",
+      "routeIds": [
+        "route.app",
+        "route.app.analytics",
+        "route.app.analytics.reports.detail",
+        "route.app.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "primaryMilestone": "M28",
+      "primarySurfacesAndContracts": "Search/command/saved-view/analytics/report routes/APIs and records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-005",
+      "routeIds": [
+        "route.app",
+        "route.app.analytics",
+        "route.app.analytics.reports.detail",
+        "route.app.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "primaryMilestone": "M28",
+      "primarySurfacesAndContracts": "Search/command/saved-view/analytics/report routes/APIs and records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-006",
+      "routeIds": [
+        "route.app",
+        "route.app.analytics",
+        "route.app.analytics.reports.detail",
+        "route.app.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "primaryMilestone": "M28",
+      "primarySurfacesAndContracts": "Search/command/saved-view/analytics/report routes/APIs and records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-007",
+      "routeIds": [
+        "route.app",
+        "route.app.analytics",
+        "route.app.analytics.reports.detail",
+        "route.app.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "primaryMilestone": "M28",
+      "primarySurfacesAndContracts": "Search/command/saved-view/analytics/report routes/APIs and records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-008",
+      "routeIds": [
+        "route.app",
+        "route.app.analytics",
+        "route.app.analytics.reports.detail",
+        "route.app.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "primaryMilestone": "M28",
+      "primarySurfacesAndContracts": "Search/command/saved-view/analytics/report routes/APIs and records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-009",
+      "routeIds": [
+        "route.app",
+        "route.app.analytics",
+        "route.app.analytics.reports.detail",
+        "route.app.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-001",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-002",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-003",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-004",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-005",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-006",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-007",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-008",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-009",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-010",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-011",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-012",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-013",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-014",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-015",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "PWA/guest/locales/help/support/legal routes/APIs/tables",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-016",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PRIV",
+        "MAN",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-006",
+        "EXT-013",
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "/contact; contact request/receipt/routing API, table, event, notification, retention, and deletion",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-017",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-08",
+        "CJ-09"
+      ],
+      "primaryMilestone": "M12",
+      "primarySurfacesAndContracts": "Inbox/task/queue/detail/forms; task APIs/tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-001",
+      "routeIds": [
+        "route.app.inbox",
+        "route.app.tasks",
+        "route.app.tasks.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-08",
+        "CJ-09"
+      ],
+      "primaryMilestone": "M12",
+      "primarySurfacesAndContracts": "Inbox/task/queue/detail/forms; task APIs/tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-002",
+      "routeIds": [
+        "route.app.inbox",
+        "route.app.tasks",
+        "route.app.tasks.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-08",
+        "CJ-09"
+      ],
+      "primaryMilestone": "M12",
+      "primarySurfacesAndContracts": "Inbox/task/queue/detail/forms; task APIs/tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-003",
+      "routeIds": [
+        "route.app.inbox",
+        "route.app.tasks",
+        "route.app.tasks.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-08",
+        "CJ-09"
+      ],
+      "primaryMilestone": "M12",
+      "primarySurfacesAndContracts": "Inbox/task/queue/detail/forms; task APIs/tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-004",
+      "routeIds": [
+        "route.app.inbox",
+        "route.app.tasks",
+        "route.app.tasks.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-08",
+        "CJ-09"
+      ],
+      "primaryMilestone": "M12",
+      "primarySurfacesAndContracts": "Inbox/task/queue/detail/forms; task APIs/tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-005",
+      "routeIds": [
+        "route.app.inbox",
+        "route.app.tasks",
+        "route.app.tasks.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-09"
+      ],
+      "primaryMilestone": "M13",
+      "primarySurfacesAndContracts": "Approval/SLA/delegation routes/APIs/tables/timers",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-006",
+      "routeIds": [
+        "route.app.approvals",
+        "route.app.approvals.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-09"
+      ],
+      "primaryMilestone": "M13",
+      "primarySurfacesAndContracts": "Approval/SLA/delegation routes/APIs/tables/timers",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-007",
+      "routeIds": [
+        "route.app.approvals",
+        "route.app.approvals.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-09"
+      ],
+      "primaryMilestone": "M13",
+      "primarySurfacesAndContracts": "Approval/SLA/delegation routes/APIs/tables/timers",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-008",
+      "routeIds": [
+        "route.app.approvals",
+        "route.app.approvals.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-09"
+      ],
+      "primaryMilestone": "M13",
+      "primarySurfacesAndContracts": "Approval/SLA/delegation routes/APIs/tables/timers",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-009",
+      "routeIds": [
+        "route.app.approvals",
+        "route.app.approvals.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-09"
+      ],
+      "primaryMilestone": "M13",
+      "primarySurfacesAndContracts": "Approval/SLA/delegation routes/APIs/tables/timers",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-010",
+      "routeIds": [
+        "route.app.approvals",
+        "route.app.approvals.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-08",
+        "CJ-09"
+      ],
+      "primaryMilestone": "M12",
+      "primarySurfacesAndContracts": "Inbox/task/queue/detail/forms; task APIs/tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-011",
+      "routeIds": [
+        "route.app.inbox",
+        "route.app.tasks",
+        "route.app.tasks.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [
+        "EXT-006"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "primaryMilestone": "M04",
+      "primarySurfacesAndContracts": "Auth/profile/session routes; auth/session APIs; magic_link_tokens, sessions; auth/session events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-001",
+      "routeIds": [
+        "route.app.profile",
+        "route.app.profile.sessions",
+        "route.auth.check-email",
+        "route.auth.google.callback",
+        "route.auth.magic.callback",
+        "route.auth.sign-in"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "SEC",
+        "E2E",
+        "PROV"
+      ],
+      "externalGates": [
+        "EXT-007"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "primaryMilestone": "M04",
+      "primarySurfacesAndContracts": "Google sign-in/callback; OIDC exchange; identity_links",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-002",
+      "routeIds": [
+        "route.app.profile",
+        "route.app.profile.sessions",
+        "route.auth.check-email",
+        "route.auth.google.callback",
+        "route.auth.magic.callback",
+        "route.auth.sign-in"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "SEC",
+        "E2E",
+        "PROV"
+      ],
+      "externalGates": [
+        "EXT-015"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-04",
+        "CJ-19"
+      ],
+      "primaryMilestone": "M32",
+      "primarySurfacesAndContracts": "SSO discovery/admin; SAML/OIDC exchange; sso_connections",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-003",
+      "routeIds": [
+        "route.app.settings.identity",
+        "route.app.settings.policies",
+        "route.app.settings.security"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [
+        "EXT-006"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "primaryMilestone": "M04",
+      "primarySurfacesAndContracts": "Auth/profile/session routes; auth/session APIs; magic_link_tokens, sessions; auth/session events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-004",
+      "routeIds": [
+        "route.app.profile",
+        "route.app.profile.sessions",
+        "route.auth.check-email",
+        "route.auth.google.callback",
+        "route.auth.magic.callback",
+        "route.auth.sign-in"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [
+        "EXT-006"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "primaryMilestone": "M04",
+      "primarySurfacesAndContracts": "Auth/profile/session routes; auth/session APIs; magic_link_tokens, sessions; auth/session events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-005",
+      "routeIds": [
+        "route.app.profile",
+        "route.app.profile.sessions",
+        "route.auth.check-email",
+        "route.auth.google.callback",
+        "route.auth.magic.callback",
+        "route.auth.sign-in"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "primaryMilestone": "M05",
+      "primarySurfacesAndContracts": "Workspace/member/role/group/onboarding routes and APIs; tenant/RBAC tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-006",
+      "routeIds": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "primaryMilestone": "M05",
+      "primarySurfacesAndContracts": "Workspace/member/role/group/onboarding routes and APIs; tenant/RBAC tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-007",
+      "routeIds": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "primaryMilestone": "M05",
+      "primarySurfacesAndContracts": "Workspace/member/role/group/onboarding routes and APIs; tenant/RBAC tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-008",
+      "routeIds": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "primaryMilestone": "M05",
+      "primarySurfacesAndContracts": "Workspace/member/role/group/onboarding routes and APIs; tenant/RBAC tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-009",
+      "routeIds": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "primaryMilestone": "M05",
+      "primarySurfacesAndContracts": "Workspace/member/role/group/onboarding routes and APIs; tenant/RBAC tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-010",
+      "routeIds": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-18"
+      ],
+      "primaryMilestone": "M30",
+      "primarySurfacesAndContracts": "Developer credentials/service accounts; public API; credential tables/audit",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-011",
+      "routeIds": [
+        "route.app.developer.api",
+        "route.app.developer.apps",
+        "route.app.developer.webhooks",
+        "route.app.settings.developers",
+        "route.app.settings.webhooks"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "PROV"
+      ],
+      "externalGates": [
+        "EXT-015"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-04",
+        "CJ-19"
+      ],
+      "primaryMilestone": "M32",
+      "primarySurfacesAndContracts": "Identity/domain/SCIM routes and standards endpoints; SCIM/domain tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-012",
+      "routeIds": [
+        "route.app.settings.identity",
+        "route.app.settings.policies",
+        "route.app.settings.security"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "PROV"
+      ],
+      "externalGates": [
+        "EXT-015"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-04",
+        "CJ-19"
+      ],
+      "primaryMilestone": "M32",
+      "primarySurfacesAndContracts": "Identity/domain/SCIM routes and standards endpoints; SCIM/domain tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-013",
+      "routeIds": [
+        "route.app.settings.identity",
+        "route.app.settings.policies",
+        "route.app.settings.security"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "DB",
+        "API",
+        "SEC"
+      ],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M03",
+      "primarySurfacesAndContracts": "Tenant-inclusive schema, transaction context, RLS, repositories",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-014",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M03"
+    },
+    {
+      "evidenceFamilies": [
+        "DB",
+        "API",
+        "SEC"
+      ],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M03",
+      "primarySurfacesAndContracts": "Tenant-inclusive schema, transaction context, RLS, repositories",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-015",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M03"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M19",
+      "primarySurfacesAndContracts": "Files/source/document views/APIs; upload/file/document records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-001",
+      "routeIds": [
+        "route.app.knowledge.documents.detail",
+        "route.app.knowledge.sources"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M19",
+      "primarySurfacesAndContracts": "Files/source/document views/APIs; upload/file/document records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-002",
+      "routeIds": [
+        "route.app.knowledge.documents.detail",
+        "route.app.knowledge.sources"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M19",
+      "primarySurfacesAndContracts": "Files/source/document views/APIs; upload/file/document records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-003",
+      "routeIds": [
+        "route.app.knowledge.documents.detail",
+        "route.app.knowledge.sources"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M19",
+      "primarySurfacesAndContracts": "Files/source/document views/APIs; upload/file/document records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-004",
+      "routeIds": [
+        "route.app.knowledge.documents.detail",
+        "route.app.knowledge.sources"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "EVAL",
+        "PERF",
+        "PRIV"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M20",
+      "primarySurfacesAndContracts": "Search/debug/citation API; chunks/embeddings/manifests/tombstones",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-005",
+      "routeIds": [
+        "route.app.knowledge.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "EVAL",
+        "PERF",
+        "PRIV"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M20",
+      "primarySurfacesAndContracts": "Search/debug/citation API; chunks/embeddings/manifests/tombstones",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-006",
+      "routeIds": [
+        "route.app.knowledge.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "EVAL",
+        "PERF",
+        "PRIV"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M20",
+      "primarySurfacesAndContracts": "Search/debug/citation API; chunks/embeddings/manifests/tombstones",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-007",
+      "routeIds": [
+        "route.app.knowledge.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "EVAL",
+        "PERF",
+        "PRIV"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M20",
+      "primarySurfacesAndContracts": "Search/debug/citation API; chunks/embeddings/manifests/tombstones",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-008",
+      "routeIds": [
+        "route.app.knowledge.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "EVAL",
+        "PERF",
+        "PRIV"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M20",
+      "primarySurfacesAndContracts": "Search/debug/citation API; chunks/embeddings/manifests/tombstones",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-009",
+      "routeIds": [
+        "route.app.knowledge.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-12.CONNECTED"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M21",
+      "primarySurfacesAndContracts": "Knowledge admin/entity/provenance routes/APIs; entity/relation records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-010",
+      "routeIds": [
+        "route.app.knowledge",
+        "route.app.knowledge.entities",
+        "route.app.knowledge.entities.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-12.CONNECTED"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M21",
+      "primarySurfacesAndContracts": "Knowledge admin/entity/provenance routes/APIs; entity/relation records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-011",
+      "routeIds": [
+        "route.app.knowledge",
+        "route.app.knowledge.entities",
+        "route.app.knowledge.entities.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-12.CONNECTED"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M21",
+      "primarySurfacesAndContracts": "Knowledge admin/entity/provenance routes/APIs; entity/relation records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-012",
+      "routeIds": [
+        "route.app.knowledge",
+        "route.app.knowledge.entities",
+        "route.app.knowledge.entities.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "EVAL",
+        "PERF",
+        "PRIV"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M20",
+      "primarySurfacesAndContracts": "Search/debug/citation API; chunks/embeddings/manifests/tombstones",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-013",
+      "routeIds": [
+        "route.app.knowledge.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "EVAL",
+        "PERF",
+        "PRIV"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M20",
+      "primarySurfacesAndContracts": "Search/debug/citation API; chunks/embeddings/manifests/tombstones",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-014",
+      "routeIds": [
+        "route.app.knowledge.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-019"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M34",
+      "primarySurfacesAndContracts": "SLI/SLO/error budgets and seven-day staging qualification",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-001",
+      "routeIds": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-019"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M34",
+      "primarySurfacesAndContracts": "SLI/SLO/error budgets and seven-day staging qualification",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-002",
+      "routeIds": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "API-MIX-1, RUNTIME-1, SSE profile",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-003",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "API-MIX-1, RUNTIME-1, SSE profile",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-004",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "API-MIX-1, RUNTIME-1, SSE profile",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-005",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "API-MIX-1, RUNTIME-1, SSE profile",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-006",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "DB",
+        "API",
+        "SEC"
+      ],
+      "externalGates": [
+        "EXT-017"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M35",
+      "primarySurfacesAndContracts": "Complete tenant-isolation attack corpus",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-007",
+      "routeIds": [
+        "route.ops.security"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PERF",
+        "OPS",
+        "PRIV"
+      ],
+      "externalGates": [
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "DR-REGION-1 restore/recovery",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-008",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PERF",
+        "OPS",
+        "PRIV"
+      ],
+      "externalGates": [
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "DR-REGION-1 restore/recovery",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-009",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "A11Y",
+        "E2E",
+        "MAN"
+      ],
+      "externalGates": [
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "Full WCAG/browser/AT matrix",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-010",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "SEC"
+      ],
+      "externalGates": [
+        "EXT-017"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M35",
+      "primarySurfacesAndContracts": "Scanners, threat models, penetration retest",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-011",
+      "routeIds": [
+        "route.ops.security"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PT",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "Bounded loop/retry/queue/spend fault and load profiles",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-012",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M34",
+      "primarySurfacesAndContracts": "Timed tenant kill-switch exercise",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-013",
+      "routeIds": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PT",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "Crash/AZ/duplicate external-effect profiles",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-014",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PT",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "Crash/AZ/duplicate external-effect profiles",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-015",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "E2E",
+        "A11Y",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "Complete responsive browser/device matrix",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-016",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "E2E",
+        "A11Y",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "primaryMilestone": "M33",
+      "primarySurfacesAndContracts": "Complete responsive browser/device matrix",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-017",
+      "routeIds": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PERF",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "WEB-MOBILE-1 Web Vitals profile",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-018",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PERF",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "WEB-MOBILE-1 Web Vitals profile",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-019",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PERF",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "WEB-MOBILE-1 Web Vitals profile",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-020",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "SEC",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-019"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M34",
+      "primarySurfacesAndContracts": "Telemetry redaction and alert-delivery exercise",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-021",
+      "routeIds": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "SEC",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-019"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M34",
+      "primarySurfacesAndContracts": "Telemetry redaction and alert-delivery exercise",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-022",
+      "routeIds": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "EVAL",
+        "PERF",
+        "PRIV",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "primaryMilestone": "M20",
+      "primarySurfacesAndContracts": "ACL-REVOKE-1 across local grants, every LIVE connector, retrieval, citation, entity, cache, and agent context",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-023",
+      "routeIds": [
+        "route.app.knowledge.search"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "primaryMilestone": "M05",
+      "primarySurfacesAndContracts": "/app/onboarding, bootstrap/onboarding APIs, progress/sample data",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-001",
+      "routeIds": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "E2E",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-06"
+      ],
+      "primaryMilestone": "M08",
+      "primarySurfacesAndContracts": "New-workflow prompt/template/blank/import and generation/dry-run APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-002",
+      "routeIds": [
+        "route.app.workflows.new"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "API",
+        "E2E",
+        "PROV",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03",
+        "CJ-06"
+      ],
+      "primaryMilestone": "M15",
+      "primarySurfacesAndContracts": "Real provider or blank/template onboarding through durable run result",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-003",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "primaryMilestone": "M05",
+      "primarySurfacesAndContracts": "/app/onboarding, bootstrap/onboarding APIs, progress/sample data",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-004",
+      "routeIds": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "primaryMilestone": "M05",
+      "primarySurfacesAndContracts": "/app/onboarding, bootstrap/onboarding APIs, progress/sample data",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-005",
+      "routeIds": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "primaryMilestone": "M05",
+      "primarySurfacesAndContracts": "/app/onboarding, bootstrap/onboarding APIs, progress/sample data",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-006",
+      "routeIds": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "DB",
+        "API",
+        "E2E",
+        "A11Y",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "primaryMilestone": "M05",
+      "primarySurfacesAndContracts": "/app/onboarding, bootstrap/onboarding APIs, progress/sample data",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-007",
+      "routeIds": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "E2E",
+        "SEC",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M01",
+      "primarySurfacesAndContracts": "Local stack, scripts, CI, evidence manifest",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-001",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M01"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "E2E",
+        "SEC",
+        "OPS"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M01",
+      "primarySurfacesAndContracts": "Local stack, scripts, CI, evidence manifest",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-002",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M01"
+    },
+    {
+      "evidenceFamilies": [
+        "DB",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003",
+        "EXT-021",
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.PRODUCTION",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M37",
+      "primarySurfacesAndContracts": "Terraform/environments/delivery/migrations/rollback",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-003",
+      "routeIds": [
+        "route.ops.releases"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "DB",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003",
+        "EXT-021",
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.PRODUCTION",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M37",
+      "primarySurfacesAndContracts": "Terraform/environments/delivery/migrations/rollback",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-004",
+      "routeIds": [
+        "route.ops.releases"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "DB",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003",
+        "EXT-021",
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.PRODUCTION",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M37",
+      "primarySurfacesAndContracts": "Terraform/environments/delivery/migrations/rollback",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-005",
+      "routeIds": [
+        "route.ops.releases"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "DB",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003",
+        "EXT-021",
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.PRODUCTION",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M37",
+      "primarySurfacesAndContracts": "Terraform/environments/delivery/migrations/rollback",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-006",
+      "routeIds": [
+        "route.ops.releases"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "EVT",
+        "SEC",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-019"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M34",
+      "primarySurfacesAndContracts": "Telemetry correlation, SLO alerts, dashboards, runbooks",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-007",
+      "routeIds": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "EVT",
+        "SEC",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-019"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M34",
+      "primarySurfacesAndContracts": "Telemetry correlation, SLO alerts, dashboards, runbooks",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-008",
+      "routeIds": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PT",
+        "DB",
+        "SEC",
+        "PERF",
+        "OPS",
+        "PRIV"
+      ],
+      "externalGates": [
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "Backup/restore/DR/capacity/fairness/spend",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-009",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PT",
+        "DB",
+        "SEC",
+        "PERF",
+        "OPS",
+        "PRIV"
+      ],
+      "externalGates": [
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "Backup/restore/DR/capacity/fairness/spend",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-010",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "PT",
+        "DB",
+        "SEC",
+        "PERF",
+        "OPS",
+        "PRIV"
+      ],
+      "externalGates": [
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "primaryMilestone": "M36",
+      "primarySurfacesAndContracts": "Backup/restore/DR/capacity/fairness/spend",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-011",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "SEC",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-017",
+        "EXT-018"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M35",
+      "primarySurfacesAndContracts": "Supply-chain and application security assurance",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-012",
+      "routeIds": [
+        "route.ops.security"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "SEC",
+        "E2E",
+        "OPS",
+        "MAN"
+      ],
+      "externalGates": [
+        "EXT-019",
+        "EXT-024"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "primaryMilestone": "M34",
+      "primarySurfacesAndContracts": "Isolated workforce OIDC/session/step-up/directory/role/review/break-glass plane and operator APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-013",
+      "routeIds": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-14.PROVIDERS"
+      ],
+      "journeyIds": [
+        "CJ-14"
+      ],
+      "primaryMilestone": "M26",
+      "primarySurfacesAndContracts": "Trigger/schedule/webhook UI and APIs; endpoint/delivery/schedule records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-001",
+      "routeIds": [
+        "route.app.workflows.detail.triggers"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-002",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-003",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-004",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-005",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-006",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-007",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-008",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-009",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-010",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-011",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-012",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-013",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-014",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-015",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "API",
+        "EVT",
+        "E2E",
+        "A11Y",
+        "PERF"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-07"
+      ],
+      "primaryMilestone": "M11",
+      "primarySurfacesAndContracts": "Run room stream/polling; run_events sequence",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-016",
+      "routeIds": [
+        "route.app.runs",
+        "route.app.runs.detail",
+        "route.app.runs.detail.tasks.detail",
+        "route.app.runs.detail.timeline"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-017",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "SEC",
+        "PERF",
+        "OPS"
+      ],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "primaryMilestone": "M10",
+      "primarySurfacesAndContracts": "Run/task APIs, Temporal/outbox/reconcilers; runtime tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-018",
+      "routeIds": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10"
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M06",
+      "primarySurfacesAndContracts": "Workflow library/settings/version/template routes and APIs; workflow/version tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-001",
+      "routeIds": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M06",
+      "primarySurfacesAndContracts": "Workflow library/settings/version/template routes and APIs; workflow/version tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-002",
+      "routeIds": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "API",
+        "EVAL",
+        "E2E",
+        "PROV"
+      ],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03",
+        "CJ-06"
+      ],
+      "primaryMilestone": "M15",
+      "primarySurfacesAndContracts": "Prompt generation UI/API; model gateway; generation/model records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-003",
+      "routeIds": [],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M06",
+      "primarySurfacesAndContracts": "Workflow library/settings/version/template routes and APIs; workflow/version tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-004",
+      "routeIds": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M07",
+      "primarySurfacesAndContracts": "Studio canvas/outline/inspectors; draft node/edge/operation APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-005",
+      "routeIds": [
+        "route.app.workflows.detail.studio"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M07",
+      "primarySurfacesAndContracts": "Studio canvas/outline/inspectors; draft node/edge/operation APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-006",
+      "routeIds": [
+        "route.app.workflows.detail.studio"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M07",
+      "primarySurfacesAndContracts": "Studio canvas/outline/inspectors; draft node/edge/operation APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-007",
+      "routeIds": [
+        "route.app.workflows.detail.studio"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M07",
+      "primarySurfacesAndContracts": "Studio canvas/outline/inspectors; draft node/edge/operation APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-008",
+      "routeIds": [
+        "route.app.workflows.detail.studio"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M07",
+      "primarySurfacesAndContracts": "Studio canvas/outline/inspectors; draft node/edge/operation APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-009",
+      "routeIds": [
+        "route.app.workflows.detail.studio"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M07",
+      "primarySurfacesAndContracts": "Studio canvas/outline/inspectors; draft node/edge/operation APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-010",
+      "routeIds": [
+        "route.app.workflows.detail.studio"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M07",
+      "primarySurfacesAndContracts": "Studio canvas/outline/inspectors; draft node/edge/operation APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-011",
+      "routeIds": [
+        "route.app.workflows.detail.studio"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "E2E",
+        "A11Y",
+        "PERF",
+        "MAN"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M07",
+      "primarySurfacesAndContracts": "Studio canvas/outline/inspectors; draft node/edge/operation APIs",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-012",
+      "routeIds": [
+        "route.app.workflows.detail.studio"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M06",
+      "primarySurfacesAndContracts": "Workflow library/settings/version/template routes and APIs; workflow/version tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-013",
+      "routeIds": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "API",
+        "E2E",
+        "SEC"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-06"
+      ],
+      "primaryMilestone": "M08",
+      "primarySurfacesAndContracts": "Dry-run/preflight UI/API and fixture execution records",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-014",
+      "routeIds": [
+        "route.app.workflows.new"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M06",
+      "primarySurfacesAndContracts": "Workflow library/settings/version/template routes and APIs; workflow/version tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-015",
+      "routeIds": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M06",
+      "primarySurfacesAndContracts": "Workflow library/settings/version/template routes and APIs; workflow/version tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-016",
+      "routeIds": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M06",
+      "primarySurfacesAndContracts": "Workflow library/settings/version/template routes and APIs; workflow/version tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-017",
+      "routeIds": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M06",
+      "primarySurfacesAndContracts": "Workflow library/settings/version/template routes and APIs; workflow/version tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-018",
+      "routeIds": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M06",
+      "primarySurfacesAndContracts": "Workflow library/settings/version/template routes and APIs; workflow/version tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-019",
+      "routeIds": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "supportContractReason": null
+    },
+    {
+      "evidenceFamilies": [
+        "UT",
+        "PT",
+        "DB",
+        "API",
+        "EVT",
+        "E2E"
+      ],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "primaryMilestone": "M06",
+      "primarySurfacesAndContracts": "Workflow library/settings/version/template routes and APIs; workflow/version tables/events",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-020",
+      "routeIds": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "supportContractReason": null
+    }
+  ],
+  "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
+  "planDigest": "sha256:2d5a5a71365fa03169b00a30f4dee979cadb8d47be6a847a6851faecc38cc41b",
+  "schemaVersion": 1
+}

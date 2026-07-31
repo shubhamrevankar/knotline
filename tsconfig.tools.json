@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "declaration": false,
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": [
+    "scripts/**/*.ts",
+    "tooling/**/*.ts",
+    "tests/**/*.ts",
+    "packages/*/vitest.config.ts",
+    "*.config.ts",
+    "*.config.d.mts"
+  ]
+}
