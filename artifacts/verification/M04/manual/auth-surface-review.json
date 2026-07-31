@@ -1,0 +1,9 @@
+{
+  "id": "m04-auth-surface-review",
+  "kind": "manual",
+  "owner": "shurevan",
+  "recordedAt": "2026-07-31T23:05:00.000Z",
+  "schemaVersion": 1,
+  "status": "PASS",
+  "summary": "Reviewed desktop/mobile sign-in, check-email, clean callbacks, error states, session inventory, revocation, cookie attributes, redaction, and external-gate labels."
+}

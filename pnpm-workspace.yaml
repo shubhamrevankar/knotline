@@ -13,3 +13,5 @@ allowBuilds:
   unrs-resolver: false
 minimumReleaseAgeExclude:
   - fastify@5.11.0
+overrides:
+  fast-xml-parser: 5.5.6

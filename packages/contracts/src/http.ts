@@ -92,8 +92,36 @@ export const apiErrorSchema = z
 
 export const apiEnvelope = <T extends z.ZodType>(schema: T) => z.object({ data: schema }).strict();
 
+export const identityUserSchema = z
+  .object({
+    id: z.string().uuid(),
+    email: z.email(),
+    displayName: z.string().min(1).max(160),
+    status: z.enum(["active", "suspended", "deleted"]),
+    locale: z.string(),
+    timezone: z.string()
+  })
+  .strict();
+
+export const sessionSummarySchema = z
+  .object({
+    id: z.string().uuid(),
+    current: z.boolean(),
+    deviceSummary: z.string().min(1).max(180),
+    issuedAt: z.iso.datetime(),
+    lastUsedAt: z.iso.datetime(),
+    idleExpiresAt: z.iso.datetime(),
+    absoluteExpiresAt: z.iso.datetime(),
+    revokedAt: z.iso.datetime().optional(),
+    revocationReason: z.string().optional()
+  })
+  .strict();
+
+const returnTargetSchema = z.object({ returnTarget: z.string().startsWith("/") }).strict();
+const emptySchema = z.undefined();
+
 export interface HttpRouteContract {
-  readonly method: "GET" | "POST";
+  readonly method: "GET" | "POST" | "PATCH" | "DELETE";
   readonly path: string;
   readonly operationId: string;
   readonly summary: string;
@@ -130,6 +158,222 @@ export const OPERATIONAL_PROBE_CONTRACTS = [
 ] as const;
 
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  {
+    method: "POST",
+    path: "/edge/v1/auth/magic-links",
+    operationId: "requestMagicLink",
+    summary: "Request a non-enumerating one-time email sign-in link",
+    tags: ["Authentication"],
+    exposure: "public_anonymous",
+    requestBody: z
+      .object({
+        email: z.email(),
+        intent: z.enum(["login", "step_up"]).default("login"),
+        returnTargetId: z.string().max(40).default("workflows")
+      })
+      .strict(),
+    responses: {
+      202: z.object({ accepted: z.literal(true) }).strict(),
+      400: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/edge/v1/auth/magic-links/exchange",
+    operationId: "exchangeMagicLink",
+    summary: "Atomically exchange a one-time email credential",
+    tags: ["Authentication"],
+    exposure: "public_anonymous",
+    requestBody: z
+      .object({ token: z.string().min(1).max(256), intent: z.enum(["login", "step_up"]) })
+      .strict(),
+    responses: {
+      200: returnTargetSchema,
+      400: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/edge/v1/auth/google/authorizations",
+    operationId: "startGoogleAuthorization",
+    summary: "Start a browser-bound Google OIDC authorization",
+    tags: ["Authentication"],
+    exposure: "public_anonymous",
+    requestBody: z.object({ returnTargetId: z.string().max(40).default("workflows") }).strict(),
+    responses: {
+      200: z.object({ authorizationUrl: z.url(), expiresAt: z.iso.datetime() }).strict(),
+      400: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/edge/v1/auth/google/exchange",
+    operationId: "exchangeGoogleAuthorizationResult",
+    summary: "Exchange a browser-bound one-time authorization result",
+    tags: ["Authentication"],
+    exposure: "public_anonymous",
+    requestBody: z.object({ resultHandle: z.string().min(1).max(256) }).strict(),
+    responses: {
+      200: returnTargetSchema,
+      400: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/callbacks/v1/identity/oauth/{provider}",
+    operationId: "completeIdentityOauthCallback",
+    summary: "Validate and consume an isolated provider callback",
+    tags: ["Authentication callbacks"],
+    exposure: "provider_callback",
+    responses: { 303: emptySchema, 400: apiErrorSchema, 500: apiErrorSchema }
+  },
+  {
+    method: "POST",
+    path: "/v1/auth/sessions/refresh",
+    operationId: "refreshSession",
+    summary: "Rotate the server-side session verifier",
+    tags: ["Sessions"],
+    exposure: "browser_internal",
+    responses: {
+      200: z.object({ user: identityUserSchema }).strict(),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/auth/logout",
+    operationId: "logout",
+    summary: "Revoke the current session and clear protected cookies",
+    tags: ["Sessions"],
+    exposure: "browser_internal",
+    responses: { 204: emptySchema, 401: apiErrorSchema, 403: apiErrorSchema, 500: apiErrorSchema }
+  },
+  {
+    method: "GET",
+    path: "/v1/auth/sessions",
+    operationId: "listSessions",
+    summary: "List current and revoked personal sessions",
+    tags: ["Sessions"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(z.array(sessionSummarySchema)),
+      401: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "DELETE",
+    path: "/v1/auth/sessions/{sessionId}",
+    operationId: "revokeSession",
+    summary: "Revoke one personal session",
+    tags: ["Sessions"],
+    exposure: "browser_internal",
+    responses: {
+      204: emptySchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/auth/sessions/revoke-others",
+    operationId: "revokeOtherSessions",
+    summary: "Revoke every personal session except the current session",
+    tags: ["Sessions"],
+    exposure: "browser_internal",
+    responses: {
+      200: z.object({ revoked: z.number().int().nonnegative() }).strict(),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/me/bootstrap",
+    operationId: "getAuthenticatedBootstrap",
+    summary: "Read the current identity and authorized workspace bootstrap",
+    tags: ["Profile"],
+    exposure: "browser_internal",
+    responses: {
+      200: z.object({ user: identityUserSchema }).passthrough(),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/me",
+    operationId: "getProfile",
+    summary: "Read the personal profile",
+    tags: ["Profile"],
+    exposure: "browser_internal",
+    responses: { 200: apiEnvelope(identityUserSchema), 401: apiErrorSchema, 500: apiErrorSchema }
+  },
+  {
+    method: "PATCH",
+    path: "/v1/me",
+    operationId: "updateProfile",
+    summary: "Update personal profile fields",
+    tags: ["Profile"],
+    exposure: "browser_internal",
+    requestBody: z
+      .object({
+        displayName: z.string().min(1).max(160).optional(),
+        locale: z.string().optional(),
+        timezone: z.string().optional()
+      })
+      .strict(),
+    responses: {
+      200: apiEnvelope(identityUserSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/me/preferences",
+    operationId: "getProfilePreferences",
+    summary: "Read personal locale and timezone preferences",
+    tags: ["Profile"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(z.object({ locale: z.string(), timezone: z.string() }).strict()),
+      401: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "PATCH",
+    path: "/v1/me/preferences",
+    operationId: "updateProfilePreferences",
+    summary: "Update personal locale and timezone preferences",
+    tags: ["Profile"],
+    exposure: "browser_internal",
+    requestBody: z
+      .object({ locale: z.string().optional(), timezone: z.string().optional() })
+      .strict(),
+    responses: {
+      200: apiEnvelope(z.object({ locale: z.string(), timezone: z.string() }).strict()),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
   {
     method: "GET",
     path: "/v1/bootstrap",

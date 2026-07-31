@@ -79,6 +79,69 @@
       "retentionDays": 36500,
       "exportHandler": "schema-export",
       "deleteHandler": "never-delete"
+    },
+    {
+      "name": "identity_links",
+      "class": "identity.link",
+      "retentionDays": 2555,
+      "exportHandler": "identity-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "magic_link_tokens",
+      "class": "identity.credential",
+      "retentionDays": 30,
+      "exportHandler": "security-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "identity_authorization_transactions",
+      "class": "identity.authorization",
+      "retentionDays": 30,
+      "exportHandler": "security-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "identity_authorization_results",
+      "class": "identity.authorization_result",
+      "retentionDays": 30,
+      "exportHandler": "security-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "sessions",
+      "class": "identity.session",
+      "retentionDays": 365,
+      "exportHandler": "security-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "session_verifiers",
+      "class": "identity.credential",
+      "retentionDays": 365,
+      "exportHandler": "security-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "auth_rate_limits",
+      "class": "security.abuse_control",
+      "retentionDays": 7,
+      "exportHandler": "security-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "security_notifications",
+      "class": "security.notification",
+      "retentionDays": 365,
+      "exportHandler": "security-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "auth_email_deliveries",
+      "class": "identity.delivery",
+      "retentionDays": 90,
+      "exportHandler": "security-export",
+      "deleteHandler": "retention-delete"
     }
   ],
   "indexes": [
@@ -101,7 +164,32 @@
     "audit_events_workspace_time_idx",
     "outbox_events_pkey",
     "outbox_unpublished_idx",
-    "knotline_schema_migrations_pkey"
+    "knotline_schema_migrations_pkey",
+    "identity_links_pkey",
+    "identity_links_provider_issuer_subject_key",
+    "identity_links_user_idx",
+    "magic_link_tokens_pkey",
+    "magic_link_tokens_token_verifier_hash_key",
+    "magic_link_tokens_email_created_idx",
+    "identity_authorization_transactions_pkey",
+    "identity_authorization_transactions_authorization_locator_hash_key",
+    "identity_authorization_transactions_state_hash_key",
+    "identity_authorization_transactions_expiry_idx",
+    "identity_authorization_results_pkey",
+    "identity_authorization_results_authorization_transaction_id_key",
+    "identity_authorization_results_result_handle_hash_key",
+    "identity_authorization_results_expiry_idx",
+    "sessions_pkey",
+    "sessions_user_active_idx",
+    "sessions_family_idx",
+    "session_verifiers_pkey",
+    "session_verifiers_verifier_hash_key",
+    "session_verifiers_one_active_idx",
+    "auth_rate_limits_pkey",
+    "security_notifications_pkey",
+    "security_notifications_user_created_idx",
+    "auth_email_deliveries_pkey",
+    "auth_email_deliveries_provider_message_id_key"
   ],
   "caches": []
 }

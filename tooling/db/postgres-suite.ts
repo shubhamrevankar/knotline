@@ -4,9 +4,11 @@ import { resolve } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 
 import { buildApp } from "../../apps/api/src/app.js";
+import type { AuthService } from "../../apps/api/src/auth.js";
 import {
   createPool,
   generateRealisticData,
+  loadMigrations,
   migrate,
   migrationCompatibility,
   PostgresWorkflowRepository,
@@ -93,7 +95,10 @@ async function migrationSuite(
 ): Promise<Record<string, unknown>> {
   const first = await migrate(adminUrl);
   const second = await migrate(adminUrl);
-  assert(first.length === 1, "Empty-database migration did not apply exactly once");
+  assert(
+    first.length === (await loadMigrations()).length,
+    "Empty-database migration did not apply every migration exactly once"
+  );
   assert(second.length === 0, "Migration rerun was not idempotent");
   const checksum = await pool.query<{ checksum: string }>(
     "SELECT checksum FROM knotline_schema_migrations WHERE id = '0001_tenant_foundation.sql'"
@@ -333,13 +338,37 @@ async function integrationSuite(
   await migrate(adminUrl);
   await seedSyntheticTenants(pool);
   const repository = new PostgresWorkflowRepository(pool);
+  const testAuth = {
+    authenticate: () =>
+      Promise.resolve({
+        identity: {
+          sessionId: "30000000-0000-4000-8000-000000000001",
+          familyId: "30000000-0000-4000-8000-000000000002",
+          user: {
+            id: SEED.userA,
+            email: "ava@northstar.example",
+            displayName: "Ava North",
+            status: "active",
+            locale: "en",
+            timezone: "UTC"
+          },
+          activeWorkspaceId: SEED.workspaceA,
+          issuedAt: new Date(0).toISOString(),
+          lastUsedAt: new Date(0).toISOString(),
+          idleExpiresAt: new Date(86_400_000).toISOString(),
+          absoluteExpiresAt: new Date(86_400_000).toISOString(),
+          deviceSummary: "Database test"
+        },
+        csrfToken: "local-only-database-test-csrf"
+      }),
+    verifyMutation: () => undefined
+  } as unknown as AuthService;
   const appA = await buildApp({
     environment: "test",
     logLevel: false,
     webOrigin: "http://localhost:5173",
     repository,
-    workspaceId: SEED.workspaceA,
-    principalId: SEED.userA
+    auth: testAuth
   });
   const bootstrapResponse = await appA.inject({ method: "GET", url: "/v1/bootstrap" });
   assert(
@@ -366,8 +395,7 @@ async function integrationSuite(
       logLevel: false,
       webOrigin: "http://localhost:5173",
       repository: repositoryAfterRestart,
-      workspaceId: SEED.workspaceA,
-      principalId: SEED.userA
+      auth: testAuth
     });
     const response = await appB.inject({ method: "GET", url: `/v1/workflows/${created.id}` });
     assert(response.statusCode === 200, "Workflow did not persist across API restart");

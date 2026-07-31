@@ -11,6 +11,7 @@ import type { TenantContext, WorkflowRepository, WorkspaceBootstrap } from "@kno
 import type { Workflow, WorkflowSummary } from "@knotline/contracts";
 
 import { buildApp } from "./app.js";
+import type { AuthService } from "./auth.js";
 
 const apps: Awaited<ReturnType<typeof buildApp>>[] = [];
 const workspaceId = "10000000-0000-4000-8000-000000000001";
@@ -85,8 +86,31 @@ async function app(isReady = true) {
     logLevel: false,
     webOrigin: "http://localhost:5173",
     repository,
-    workspaceId,
-    principalId
+    auth: {
+      authenticate: () =>
+        Promise.resolve({
+          identity: {
+            sessionId: "30000000-0000-4000-8000-000000000001",
+            familyId: "30000000-0000-4000-8000-000000000002",
+            user: {
+              id: principalId,
+              email: "maya@northstar.example",
+              displayName: "Maya Chen",
+              status: "active",
+              locale: "en",
+              timezone: "UTC"
+            },
+            activeWorkspaceId: workspaceId,
+            issuedAt: new Date(0).toISOString(),
+            lastUsedAt: new Date(0).toISOString(),
+            idleExpiresAt: new Date(86_400_000).toISOString(),
+            absoluteExpiresAt: new Date(86_400_000).toISOString(),
+            deviceSummary: "Test browser"
+          },
+          csrfToken: "test-csrf"
+        }),
+      verifyMutation: () => undefined
+    } as unknown as AuthService
   });
   apps.push(selected);
   return selected;

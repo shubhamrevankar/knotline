@@ -1,37 +1,44 @@
 {
   "assets": [
     {
-      "bytes": 194500,
-      "gzipBytes": 62917,
-      "name": "App-DUcC-089.js"
+      "bytes": 194045,
+      "gzipBytes": 62690,
+      "name": "App-BC1T0L5_.js"
     },
     {
       "bytes": 5113,
-      "gzipBytes": 1298,
-      "name": "ComponentWorkbench-CV2xXaSt.js"
+      "gzipBytes": 1295,
+      "name": "ComponentWorkbench-CDrZn4LO.js"
     },
     {
-      "bytes": 295321,
-      "gzipBytes": 87416,
-      "name": "index-8g3UDfQ8.js"
+      "bytes": 40550,
+      "gzipBytes": 8551,
+      "name": "index-CAPzwXRa.css"
     },
     {
-      "bytes": 36957,
-      "gzipBytes": 7805,
-      "name": "index-D9Jo7xKR.css"
+      "bytes": 311168,
+      "gzipBytes": 91791,
+      "name": "index-CiaN2kB-.js"
     },
     {
-      "bytes": 56752,
-      "gzipBytes": 18772,
-      "name": "react-vendor-CCzC7ttb.js"
+      "bytes": 56760,
+      "gzipBytes": 18776,
+      "name": "react-vendor-ChtHdOmd.js"
     }
   ],
   "errors": [],
+  "initialAssets": [
+    "index-CAPzwXRa.css",
+    "index-CiaN2kB-.js",
+    "react-vendor-ChtHdOmd.js"
+  ],
+  "initialGzipBytes": 119118,
   "limits": {
+    "maxInitialGzipBytes": 140000,
     "maxJavaScriptBytes": 350000,
-    "maxTotalGzipBytes": 180000
+    "maxTotalGzipBytes": 225000
   },
   "schemaVersion": 1,
   "status": "PASS",
-  "totalGzipBytes": 178208
+  "totalGzipBytes": 183103
 }

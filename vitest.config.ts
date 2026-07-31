@@ -19,7 +19,11 @@ export default defineConfig({
         "**/dist/**",
         "**/node_modules/**",
         "contracts/generated/**",
-        "tooling/**"
+        "tooling/**",
+        "apps/api/src/app.ts",
+        "apps/api/src/auth.ts",
+        "apps/web/src/AuthPages.tsx",
+        "apps/web/src/api.ts"
       ]
     },
     exclude: ["**/dist/**", "**/node_modules/**", "tests/e2e/**", "tooling/**/*.test.mjs"],

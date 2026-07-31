@@ -83,13 +83,19 @@ export function serializedOpenApi(): string {
 
 async function assertRuntimeRouteParity(): Promise<void> {
   const source = await readFile(apiSource, "utf8");
-  const implemented = [...source.matchAll(/app\.(get|post)(?:<[\s\S]*?>)?\(\s*"([^"]+)"/gu)]
+  const implemented = [
+    ...source.matchAll(/app\.(get|post|patch|delete)(?:<[\s\S]*?>)?\(\s*"([^"]+)"/gu)
+  ]
     .map((match) => {
       const method = match[1]?.toUpperCase();
       const path = match[2]?.replace(/:([A-Za-z][A-Za-z0-9]*)/gu, "{$1}");
       return `${method} ${path}`;
     })
-    .filter((operation) => !["GET /health/live", "GET /health/ready"].includes(operation))
+    .filter(
+      (operation) =>
+        !["GET /health/live", "GET /health/ready"].includes(operation) &&
+        !operation.includes(" /__local/")
+    )
     .sort();
   const contracted = HTTP_ROUTE_CONTRACTS.map((route) => `${route.method} ${route.path}`).sort();
   if (JSON.stringify(implemented) !== JSON.stringify(contracted)) {

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-07-31",
+  "limitation": "Offline baseline prevents dependency inventory disclosure. A live advisory refresh is an explicit opt-in operation and is not implied by this gate.",
+  "policies": [
+    {
+      "package": "fast-xml-parser",
+      "minimumSafeVersion": "5.5.6",
+      "severity": "critical",
+      "advisoryIds": [
+        "GHSA-37qj-frw5-hhjh",
+        "GHSA-m7jm-9gc2-mpf2",
+        "GHSA-jmr7-xgp7-cmfj",
+        "GHSA-8gc5-j5rx-235r"
+      ]
+    }
+  ]
+}

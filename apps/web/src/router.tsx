@@ -4,6 +4,15 @@ import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import { Link, Route, Routes, useLocation, useParams, useSearchParams } from "react-router-dom";
 
 import { readConsent, writeConsent, type ConsentPreference } from "./consent.js";
+import {
+  AuthGate,
+  CheckEmailPage,
+  GoogleCallbackPage,
+  MagicCallbackPage,
+  ProfilePage,
+  SessionsPage,
+  SignInPage
+} from "./AuthPages.js";
 import { msg } from "./i18n.js";
 import { WEB_ROUTE_MANIFEST, type WebRouteManifestEntry } from "./routes/manifest.js";
 
@@ -300,34 +309,40 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
   if (systemState(search.get("state"))) return <CustomerSystemState />;
   if (route.path === "/app/workflows")
     return (
-      <Suspense fallback={<Skeleton label={msg("app.loading.workspace")} />}>
-        <WorkflowApp />
-      </Suspense>
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("app.loading.workspace")} />}>
+          <WorkflowApp />
+        </Suspense>
+      </AuthGate>
     );
+  if (route.id === "route.app.profile.sessions") return <SessionsPage />;
+  if (route.id === "route.app.profile") return <ProfilePage />;
   return (
-    <div className="registered-shell">
-      <aside aria-label={msg("customer.nav.label")}>
-        <Link to="/app/workflows">
-          <Waypoints aria-hidden="true" />
-          {msg("brand.name")}
-        </Link>
-        <Link to="/app/workflows">
-          <Blocks aria-hidden="true" />
-          {msg("customer.nav.workflows")}
-        </Link>
-      </aside>
-      <main>
-        <Badge tone="warning">
-          {msg("public.page.planned", { milestone: route.ownerMilestone })}
-        </Badge>
-        <h1>{msg("customer.route.heading")}</h1>
-        <p>{msg("customer.route.body")}</p>
-        <Button>
-          <Menu aria-hidden="true" />
-          {msg("customer.nav.open")}
-        </Button>
-      </main>
-    </div>
+    <AuthGate>
+      <div className="registered-shell">
+        <aside aria-label={msg("customer.nav.label")}>
+          <Link to="/app/workflows">
+            <Waypoints aria-hidden="true" />
+            {msg("brand.name")}
+          </Link>
+          <Link to="/app/workflows">
+            <Blocks aria-hidden="true" />
+            {msg("customer.nav.workflows")}
+          </Link>
+        </aside>
+        <main>
+          <Badge tone="warning">
+            {msg("public.page.planned", { milestone: route.ownerMilestone })}
+          </Badge>
+          <h1>{msg("customer.route.heading")}</h1>
+          <p>{msg("customer.route.body")}</p>
+          <Button>
+            <Menu aria-hidden="true" />
+            {msg("customer.nav.open")}
+          </Button>
+        </main>
+      </div>
+    </AuthGate>
   );
 }
 
@@ -349,6 +364,10 @@ function OperatorRoute({ route }: { route: WebRouteManifestEntry }) {
 }
 
 function CanonicalRoute({ route }: { route: WebRouteManifestEntry }) {
+  if (route.id === "route.auth.sign-in") return <SignInPage />;
+  if (route.id === "route.auth.check-email") return <CheckEmailPage />;
+  if (route.id === "route.auth.magic.callback") return <MagicCallbackPage />;
+  if (route.id === "route.auth.google.callback") return <GoogleCallbackPage />;
   if (route.plane === "operator") return <OperatorRoute route={route} />;
   if (route.plane === "customer") return <CustomerRoute route={route} />;
   return <PublicRoute route={route} />;

@@ -36,7 +36,7 @@ describe("canonical web router", () => {
         </MemoryRouter>
       );
     expect(render("/ops")).toContain("operator plane");
-    expect(render("/app/runs")).toContain("Registered workspace surface");
+    expect(render("/app/runs")).toContain("Checking secure session");
     expect(render("/app/runs")).not.toContain("operator plane");
   });
 
@@ -75,7 +75,7 @@ describe("canonical web router", () => {
     expect(render("/templates/incident-response")).toContain("Available preview");
     expect(render("/templates/not-real")).toContain("Page not found");
     expect(render("/help/topic")).toContain("Planned product surface");
-    expect(render("/app/runs?state=unknown")).toContain("Registered workspace surface");
+    expect(render("/app/runs?state=unknown")).toContain("Checking secure session");
     expect(render("/app/not-real")).toContain("Page not found");
     expect(render("/not-real")).toContain("Return to a known page");
   });

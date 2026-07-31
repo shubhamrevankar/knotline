@@ -1,0 +1,54 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/security/M04/auth-security.json",
+      "verifiedAt": "2026-07-31T23:05:00.000Z"
+    },
+    "externalGates": [
+      "EXT-006"
+    ],
+    "id": "identity.passwordless",
+    "owner": {
+      "contact": "shurevan",
+      "team": "identity-platform"
+    },
+    "runbook": "docs/operations/knotline/authentication-security.md",
+    "status": "DEMO",
+    "summary": "Single-use non-enumerating email authentication is fully verified locally; production SES delivery remains external."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/security/M04/auth-security.json",
+      "verifiedAt": "2026-07-31T23:05:00.000Z"
+    },
+    "externalGates": [
+      "EXT-007"
+    ],
+    "id": "identity.google_oidc",
+    "owner": {
+      "contact": "shurevan",
+      "team": "identity-platform"
+    },
+    "runbook": "docs/operations/knotline/authentication-security.md",
+    "status": "DEMO",
+    "summary": "The complete OIDC protocol and browser flow use a deterministic local provider; production Google application approval remains external."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/security/M04/auth-security.json",
+      "verifiedAt": "2026-07-31T23:05:00.000Z"
+    },
+    "externalGates": [],
+    "id": "identity.sessions",
+    "owner": {
+      "contact": "shurevan",
+      "team": "identity-platform"
+    },
+    "runbook": "docs/operations/knotline/authentication-security.md",
+    "status": "DEMO",
+    "summary": "Rotating HttpOnly sessions, CSRF, family reuse detection, inventory, and revocation are verified against local PostgreSQL and browsers."
+  }
+]

@@ -26,7 +26,16 @@ export const REQUIRED_STORES = [
   "idempotency_records",
   "audit_events",
   "outbox_events",
-  "knotline_schema_migrations"
+  "knotline_schema_migrations",
+  "identity_links",
+  "magic_link_tokens",
+  "identity_authorization_transactions",
+  "identity_authorization_results",
+  "sessions",
+  "session_verifiers",
+  "auth_rate_limits",
+  "security_notifications",
+  "auth_email_deliveries"
 ] as const;
 
 export async function validateDataStoreRegistry(): Promise<Registry> {

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "milestone": "M03",
+  "milestone": "M04",
   "rows": [
     {
       "name": "format:check",
@@ -160,8 +160,10 @@
     },
     {
       "name": "test:security",
-      "status": "NOT_YET_APPLICABLE",
-      "activationMilestone": "M04"
+      "status": "ACTIVE",
+      "script": "test:auth",
+      "declarationRow": "auth/session/CSRF/CORS/abuse security suite",
+      "requiredTestFiles": ["tooling/auth/postgres-suite.ts"]
     },
     {
       "name": "test:evals",

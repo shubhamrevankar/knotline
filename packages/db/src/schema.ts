@@ -8,8 +8,10 @@ import {
   text,
   timestamp,
   unique,
+  uniqueIndex,
   uuid
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 const timestamps = {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -20,6 +22,174 @@ export const users = pgTable("users", {
   id: uuid("id").primaryKey(),
   email: text("email").notNull().unique(),
   displayName: text("display_name").notNull(),
+  status: text("status").notNull().default("active"),
+  locale: text("locale").notNull().default("en"),
+  timezone: text("timezone").notNull().default("UTC"),
+  ...timestamps
+});
+
+export const identityLinks = pgTable(
+  "identity_links",
+  {
+    id: uuid("id").primaryKey(),
+    userId: uuid("user_id").notNull(),
+    provider: text("provider").notNull(),
+    issuer: text("issuer").notNull(),
+    subject: text("subject").notNull(),
+    emailAtLink: text("email_at_link"),
+    claimsMetadata: jsonb("claims_metadata").notNull().default({}),
+    ...timestamps
+  },
+  (table) => [
+    unique("identity_links_provider_subject_unique").on(
+      table.provider,
+      table.issuer,
+      table.subject
+    ),
+    index("identity_links_user_idx").on(table.userId, table.provider)
+  ]
+);
+
+export const magicLinkTokens = pgTable(
+  "magic_link_tokens",
+  {
+    id: uuid("id").primaryKey(),
+    normalizedEmailHash: text("normalized_email_hash").notNull(),
+    tokenVerifierHash: text("token_verifier_hash").notNull().unique(),
+    intent: text("intent").notNull(),
+    returnTargetId: text("return_target_id").notNull(),
+    requestedIpHash: text("requested_ip_hash").notNull(),
+    userId: uuid("user_id"),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    consumedAt: timestamp("consumed_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [
+    index("magic_link_tokens_email_created_idx").on(table.normalizedEmailHash, table.createdAt)
+  ]
+);
+
+export const sessions = pgTable(
+  "sessions",
+  {
+    id: uuid("id").primaryKey(),
+    userId: uuid("user_id").notNull(),
+    familyId: uuid("family_id").notNull(),
+    activeWorkspaceId: uuid("active_workspace_id"),
+    issuedAt: timestamp("issued_at", { withTimezone: true }).notNull().defaultNow(),
+    lastUsedAt: timestamp("last_used_at", { withTimezone: true }).notNull().defaultNow(),
+    idleExpiresAt: timestamp("idle_expires_at", { withTimezone: true }).notNull(),
+    absoluteExpiresAt: timestamp("absolute_expires_at", { withTimezone: true }).notNull(),
+    lastStepUpAt: timestamp("last_step_up_at", { withTimezone: true }),
+    ipHash: text("ip_hash").notNull(),
+    deviceSummary: text("device_summary").notNull(),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+    revocationReason: text("revocation_reason")
+  },
+  (table) => [
+    index("sessions_user_active_idx").on(table.userId, table.lastUsedAt),
+    index("sessions_family_idx").on(table.familyId)
+  ]
+);
+
+export const identityAuthorizationTransactions = pgTable(
+  "identity_authorization_transactions",
+  {
+    id: uuid("id").primaryKey(),
+    provider: text("provider").notNull(),
+    connectionLocator: text("connection_locator"),
+    applicationId: text("application_id").notNull(),
+    environment: text("environment").notNull(),
+    authorizationLocatorHash: text("authorization_locator_hash").notNull().unique(),
+    stateHash: text("state_hash").notNull().unique(),
+    nonceHash: text("nonce_hash").notNull(),
+    pkceVerifierHash: text("pkce_verifier_hash").notNull(),
+    pkceVerifierCiphertext: text("pkce_verifier_ciphertext").notNull(),
+    samlRequestIdHash: text("saml_request_id_hash"),
+    relayStateHash: text("relay_state_hash"),
+    browserBindingHash: text("browser_binding_hash").notNull(),
+    callbackUri: text("callback_uri").notNull(),
+    returnTargetId: text("return_target_id").notNull(),
+    requestedScopes: text("requested_scopes").array().notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    callbackConsumedAt: timestamp("callback_consumed_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [
+    index("identity_authorization_transactions_expiry_idx")
+      .on(table.expiresAt)
+      .where(sql`${table.callbackConsumedAt} IS NULL`)
+  ]
+);
+
+export const identityAuthorizationResults = pgTable(
+  "identity_authorization_results",
+  {
+    id: uuid("id").primaryKey(),
+    authorizationTransactionId: uuid("authorization_transaction_id").notNull().unique(),
+    resultHandleHash: text("result_handle_hash").notNull().unique(),
+    browserBindingHash: text("browser_binding_hash").notNull(),
+    userId: uuid("user_id"),
+    returnTargetId: text("return_target_id").notNull(),
+    resultCode: text("result_code").notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    exchangedAt: timestamp("exchanged_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [
+    index("identity_authorization_results_expiry_idx")
+      .on(table.expiresAt)
+      .where(sql`${table.exchangedAt} IS NULL`)
+  ]
+);
+
+export const sessionVerifiers = pgTable(
+  "session_verifiers",
+  {
+    id: uuid("id").primaryKey(),
+    sessionId: uuid("session_id").notNull(),
+    verifierHash: text("verifier_hash").notNull().unique(),
+    state: text("state").notNull(),
+    issuedAt: timestamp("issued_at", { withTimezone: true }).notNull().defaultNow(),
+    consumedAt: timestamp("consumed_at", { withTimezone: true })
+  },
+  (table) => [
+    uniqueIndex("session_verifiers_one_active_idx")
+      .on(table.sessionId)
+      .where(sql`${table.state} = 'active'`)
+  ]
+);
+
+export const authRateLimits = pgTable(
+  "auth_rate_limits",
+  {
+    scope: text("scope").notNull(),
+    subjectHash: text("subject_hash").notNull(),
+    windowStartedAt: timestamp("window_started_at", { withTimezone: true }).notNull(),
+    requestCount: integer("request_count").notNull()
+  },
+  (table) => [primaryKey({ columns: [table.scope, table.subjectHash, table.windowStartedAt] })]
+);
+
+export const securityNotifications = pgTable(
+  "security_notifications",
+  {
+    id: uuid("id").primaryKey(),
+    userId: uuid("user_id").notNull(),
+    kind: text("kind").notNull(),
+    safeMetadata: jsonb("safe_metadata").notNull().default({}),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    deliveredAt: timestamp("delivered_at", { withTimezone: true })
+  },
+  (table) => [index("security_notifications_user_created_idx").on(table.userId, table.createdAt)]
+);
+
+export const authEmailDeliveries = pgTable("auth_email_deliveries", {
+  id: uuid("id").primaryKey(),
+  userId: uuid("user_id"),
+  normalizedEmailHash: text("normalized_email_hash").notNull(),
+  providerMessageId: text("provider_message_id").unique(),
+  state: text("state").notNull(),
   ...timestamps
 });
 
@@ -188,6 +358,15 @@ export const outboxEvents = pgTable(
 
 export const schema = {
   users,
+  identityLinks,
+  magicLinkTokens,
+  sessions,
+  identityAuthorizationTransactions,
+  identityAuthorizationResults,
+  sessionVerifiers,
+  authRateLimits,
+  securityNotifications,
+  authEmailDeliveries,
   workspaces,
   memberships,
   workflows,

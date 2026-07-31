@@ -18,6 +18,7 @@ import {
   UsersRound
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import type { Workflow, WorkflowSummary } from "@knotline/contracts";
 import { fetchWorkflow, fetchWorkflows } from "./api";
 import { i18n, msg } from "./i18n.js";
@@ -169,7 +170,7 @@ export function App() {
             <Settings2 aria-hidden="true" size={17} />
             {msg("customer.settings")}
           </button>
-          <div className="profile">
+          <Link className="profile" to="/app/profile/sessions">
             <span aria-hidden="true" className="profile-avatar">
               {msg("customer.user.initials")}
             </span>
@@ -178,7 +179,7 @@ export function App() {
               <small>{msg("customer.user.handle")}</small>
             </span>
             <ChevronDown aria-hidden="true" size={14} />
-          </div>
+          </Link>
         </div>
       </aside>
 

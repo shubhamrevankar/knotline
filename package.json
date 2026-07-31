@@ -30,6 +30,7 @@
     "test:e2e": "playwright test",
     "pretest:e2e": "pnpm build:packages",
     "test:integration": "bash tooling/containers/test-services.sh",
+    "test:auth": "tsx tooling/auth/postgres-suite.ts",
     "test:db": "tsx tooling/db/postgres-suite.ts integration",
     "test:rls": "tsx tooling/db/postgres-suite.ts rls",
     "test:unit": "tsx scripts/quality/assert-test-suites.ts && vitest run --coverage",

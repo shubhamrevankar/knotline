@@ -15,7 +15,8 @@ export class RequestFailure extends Error {
     message: string,
     readonly kind: FailureKind,
     readonly requestId?: string,
-    readonly retryAfterMs?: number
+    readonly retryAfterMs?: number,
+    readonly code?: string
   ) {
     super(message);
   }

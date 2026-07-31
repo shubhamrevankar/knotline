@@ -2198,6 +2198,7 @@ POST   /v1/auth/sessions/refresh
 POST   /v1/auth/logout
 GET    /v1/auth/sessions
 DELETE /v1/auth/sessions/:sessionId
+POST   /v1/auth/sessions/revoke-others
 GET    /v1/me/bootstrap
 GET    /v1/me
 PATCH  /v1/me
@@ -5656,7 +5657,7 @@ separation.
 
 ### M04 — Authentication, secure sessions, and personal account controls
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M02, M03\
 **Required commit:** `feat: add secure passwordless and Google authentication`
 
@@ -9210,7 +9211,7 @@ must appear in that milestone's boundary cell.
 | M01 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `chore: establish the verified Knotline engineering system` |
 | M02 | `COMMITTED` | `NOT_DEPLOYED` | EXT-001 | `feat: deliver the responsive Knotline product shell` |
 | M03 | `COMMITTED` | `NOT_DEPLOYED` | EXT-002 | `feat: persist Knotline data with enforced tenant isolation` |
-| M04 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006, EXT-007 | `feat: add secure passwordless and Google authentication` |
+| M04 | `COMMITTED` | `NOT_DEPLOYED` | EXT-006, EXT-007 | `feat: add secure passwordless and Google authentication` |
 | M05 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006 | `feat: enable complete workspace onboarding and access control` |
 | M06 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver versioned workflow definitions and publishing` |
 | M07 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the complete responsive workflow studio` |

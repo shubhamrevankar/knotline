@@ -41,12 +41,61 @@ export const workflowCreatedPayloadV1Schema = z
   })
   .passthrough();
 
+export const identityAuthorizationPayloadV1Schema = z
+  .object({
+    authorizationId: z.string().uuid(),
+    provider: z.enum(["email", "google", "saml", "oidc"]),
+    result: z.enum(["started", "consumed", "failed"]),
+    occurredAt: z.iso.datetime()
+  })
+  .passthrough();
+
+export const identitySessionPayloadV1Schema = z
+  .object({
+    sessionId: z.string().uuid(),
+    familyId: z.string().uuid(),
+    userId: z.string().uuid(),
+    reason: z.string().max(80).optional(),
+    occurredAt: z.iso.datetime()
+  })
+  .passthrough();
+
 export const EVENT_SCHEMA_REGISTRY = [
   {
     eventType: "workflow.created",
     eventVersion: 1,
     owner: "workflow-platform",
     schema: workflowCreatedPayloadV1Schema
+  },
+  {
+    eventType: "identity.authorization_started",
+    eventVersion: 1,
+    owner: "identity-platform",
+    schema: identityAuthorizationPayloadV1Schema
+  },
+  {
+    eventType: "identity.authorization_consumed",
+    eventVersion: 1,
+    owner: "identity-platform",
+    schema: identityAuthorizationPayloadV1Schema
+  },
+  {
+    eventType: "identity.authorization_failed",
+    eventVersion: 1,
+    owner: "identity-platform",
+    schema: identityAuthorizationPayloadV1Schema
+  },
+  {
+    eventType: "identity.session_created",
+    eventVersion: 1,
+    owner: "identity-platform",
+    schema: identitySessionPayloadV1Schema
+  },
+  {
+    eventType: "identity.session_revoked",
+    eventVersion: 1,
+    owner: "identity-platform",
+    schema: identitySessionPayloadV1Schema
   }
 ] as const;
 
