@@ -1962,6 +1962,13 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "put-v1-task-runs-by-task-run-id-draft",
+      "method": "PUT",
+      "path": "/v1/task-runs/:taskRunId/draft",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "post-v1-task-runs-by-task-run-id-reassignments",
       "method": "POST",
       "path": "/v1/task-runs/:taskRunId/reassignments",
@@ -3159,6 +3166,6 @@
     }
   ],
   "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
-  "planDigest": "sha256:bae739fca4028c8dd8439c29feceae0a771594839dd8ea97f929284021e0cc71",
+  "planDigest": "sha256:e89fb9fd6245e21cd037c63d2ddf02cab7a0b001017428c9fc3683c3bcf568f8",
   "schemaVersion": 1
 }

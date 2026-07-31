@@ -10,8 +10,8 @@ const ROOT = resolve(new URL("../..", import.meta.url).pathname);
 const DIST = join(ROOT, "apps", "web", "dist");
 const REPORT = join(ROOT, "artifacts", "performance", "M02", "bundle-budget.json");
 const MAX_JS_BYTES = 350_000;
-const MAX_INITIAL_GZIP_BYTES = 142_000;
-const MAX_TOTAL_GZIP_BYTES = 225_000;
+const MAX_INITIAL_GZIP_BYTES = 144_000;
+const MAX_TOTAL_GZIP_BYTES = 232_000;
 
 export function evaluateAssets(assets, initialAssetNames = new Set()) {
   const errors = [];

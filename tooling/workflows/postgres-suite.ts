@@ -13,6 +13,8 @@ import {
   migrate,
   PostgresCollaborationRepository,
   PostgresRuntimeRepository,
+  PostgresHumanTaskRepository,
+  PostgresTaskAdministrationRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -118,6 +120,8 @@ async function runSuite(pool: DatabasePool) {
   const generationRepository = new PostgresWorkflowGenerationRepository(pool);
   const collaborationRepository = new PostgresCollaborationRepository(pool);
   const runtimeRepository = new PostgresRuntimeRepository(pool);
+  const humanTaskRepository = new PostgresHumanTaskRepository(pool);
+  const taskAdministration = new PostgresTaskAdministrationRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -296,6 +300,142 @@ async function runSuite(pool: DatabasePool) {
   });
   assert(duplicateRun.id === durableRun.id, "Idempotent run start created a duplicate");
   assert(durableRun.plan?.length === 3, "Published workflow did not compile into durable tasks");
+  const taskRows = await humanTaskRepository.list(contextA, { view: "all" });
+  const triageTask = taskRows.find((task) => task.node_key === "triage");
+  assert(typeof triageTask?.id === "string", "Human task projection was not created");
+  assert(
+    (await humanTaskRepository.list(contextB, { view: "all" })).length === 0,
+    "Human task inbox crossed a tenant boundary"
+  );
+  await withTenantTransaction(pool, contextA, (client) =>
+    client.query(
+      "UPDATE task_runs SET state='ready',state_version=state_version+1 WHERE workspace_id=$1 AND id=$2",
+      [contextA.workspaceId, triageTask.id]
+    )
+  );
+  const claim = await humanTaskRepository.claim(contextA, triageTask.id, {
+    expectedVersion: 1,
+    idempotencyKey: "human-task-claim-fixture-0001"
+  });
+  assert(claim.assignmentVersion === 2, "Atomic task claim did not advance its fence");
+  const savedDraft = await humanTaskRepository.saveDraft(contextA, triageTask.id, {
+    schemaVersion: 1,
+    expectedVersion: 0,
+    values: { response: "Investigated" }
+  });
+  assert(savedDraft.version === 1, "Human task draft was not versioned");
+  const submitted = await humanTaskRepository.submit(contextA, triageTask.id, {
+    schemaVersion: 1,
+    expectedVersion: 3,
+    idempotencyKey: "human-task-submit-fixture-0001",
+    values: { response: "Proceed" }
+  });
+  const repeatedSubmission = await humanTaskRepository.submit(contextA, triageTask.id, {
+    schemaVersion: 1,
+    expectedVersion: 3,
+    idempotencyKey: "human-task-submit-fixture-0001",
+    values: { response: "Proceed" }
+  });
+  assert(submitted.id === repeatedSubmission.id, "Task submission was not idempotent");
+  const queue = await taskAdministration.createQueue(contextA, {
+    name: "Renewal operations",
+    routingMode: "least_loaded",
+    capacity: 100,
+    fallbackOwnerId: SEED.userA
+  });
+  assert(typeof queue.id === "string", "Task queue was not created");
+  await taskAdministration.putQueueMember(contextA, String(queue.id), SEED.userA, {
+    principalType: "user",
+    skills: ["renewals"],
+    capacity: 20
+  });
+  const policy = await taskAdministration.publishRoutingPolicy(contextA, String(queue.id), {
+    version: 1,
+    rules: [{ field: "category", operator: "equals", value: "renewal", skill: "renewals" }]
+  });
+  const simulation = await taskAdministration.simulateRouting(contextA, String(queue.id), {
+    category: "renewal"
+  });
+  assert(
+    policy.version === 1 && simulation.selectedPrincipalId === SEED.userA,
+    "Task routing was not deterministic"
+  );
+  assert(
+    (await taskAdministration.listQueues(contextB)).length === 0,
+    "Task queues crossed a tenant boundary"
+  );
+
+  const taskTemplate = await taskAdministration.createTemplate(contextA, {
+    name: "Renewal decision",
+    formSchema: {
+      schemaVersion: 1,
+      title: "Decision",
+      fields: [
+        {
+          key: "decision",
+          label: "Decision",
+          type: "choice",
+          required: true,
+          options: [{ value: "approve", label: "Approve" }]
+        }
+      ]
+    },
+    outputSchema: { type: "object" },
+    defaults: { decision: "approve" }
+  });
+  const templatePublication = await taskAdministration.publishTemplate(
+    contextA,
+    String(taskTemplate.id)
+  );
+  const templatePreview = await taskAdministration.previewTemplate(
+    contextA,
+    String(taskTemplate.id)
+  );
+  assert(
+    templatePublication.version === 1 && templatePreview.sideEffects === false,
+    "Task template preview or publication failed"
+  );
+
+  const cleanChecksum = `sha256:${"a".repeat(64)}`;
+  const upload = await taskAdministration.createUpload(contextA, triageTask.id, {
+    purpose: "task_attachment",
+    mediaType: "application/pdf",
+    sizeBytes: 128,
+    checksum: cleanChecksum,
+    idempotencyKey: "task-upload-fixture-clean-0001"
+  });
+  const completedUpload = await taskAdministration.completeUpload(
+    contextA,
+    String(upload.upload_id),
+    {
+      checksum: cleanChecksum,
+      sizeBytes: 128,
+      malwareResult: "clean"
+    }
+  );
+  const download = await taskAdministration.download(contextA, String(completedUpload.artifactId));
+  assert(download.expiresInSeconds === 60, "Clean task artifact was not reauthorized for download");
+  const maliciousChecksum = `sha256:${"b".repeat(64)}`;
+  const maliciousUpload = await taskAdministration.createUpload(contextA, triageTask.id, {
+    purpose: "task_attachment",
+    mediaType: "text/plain",
+    sizeBytes: 64,
+    checksum: maliciousChecksum,
+    idempotencyKey: "task-upload-fixture-malware-0001"
+  });
+  const quarantined = await taskAdministration.completeUpload(
+    contextA,
+    String(maliciousUpload.upload_id),
+    {
+      checksum: maliciousChecksum,
+      sizeBytes: 64,
+      malwareResult: "quarantined"
+    }
+  );
+  const blockedDownload = await Promise.allSettled([
+    taskAdministration.download(contextA, String(quarantined.artifactId))
+  ]);
+  assert(blockedDownload[0]?.status === "rejected", "Quarantined artifact became downloadable");
   await runtimeRepository.transitionRun(
     contextA,
     durableRun.id,
@@ -328,7 +468,7 @@ async function runSuite(pool: DatabasePool) {
   );
   const durableProjection = await runtimeRepository.run(contextA, durableRun.id);
   assert(
-    durableProjection?.state === "succeeded" && durableProjection.events.length === 3,
+    durableProjection?.state === "succeeded" && durableProjection.events.length === 5,
     "Durable ordered history was incomplete"
   );
   const admissionSettlement = await withTenantTransaction(pool, contextA, async (client) => {
@@ -365,9 +505,12 @@ async function runSuite(pool: DatabasePool) {
     workflowGeneration: new WorkflowGenerationService(undefined, generationRepository),
     collaboration: collaborationRepository,
     runtime: runtimeRepository,
+    humanTasks: humanTaskRepository,
+    taskAdministration,
     runStarter: {
       start: () => Promise.resolve(),
-      signal: () => Promise.resolve()
+      signal: () => Promise.resolve(),
+      completeTask: () => Promise.resolve()
     },
     auth: {
       authenticate: () =>

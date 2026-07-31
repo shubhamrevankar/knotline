@@ -29,11 +29,14 @@ import {
 } from "@knotline/operations";
 import type {
   CollaborationRepository,
+  HumanTaskRepository,
+  TaskAdministrationRepository,
   RuntimeRepository,
   TenantContext,
   VersionedWorkflowRepository,
   WorkflowRepository
 } from "@knotline/db";
+import { HumanTaskAuthorizationError, HumanTaskConflictError } from "@knotline/db";
 import Fastify, {
   LogController,
   type FastifyInstance,
@@ -69,6 +72,8 @@ export interface BuildAppOptions {
   readonly workflowGeneration?: WorkflowGenerationService;
   readonly collaboration?: CollaborationRepository;
   readonly runtime?: RuntimeRepository;
+  readonly humanTasks?: HumanTaskRepository;
+  readonly taskAdministration?: TaskAdministrationRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -78,6 +83,7 @@ export interface BuildAppOptions {
       readonly plan: readonly unknown[];
     }): Promise<void>;
     signal(temporalWorkflowId: string, signal: "pause" | "resume" | "cancel"): Promise<void>;
+    completeTask(temporalWorkflowId: string, nodeKey: string): Promise<void>;
   };
 }
 
@@ -1839,7 +1845,318 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   app.post("/v1/runs/:runId/resumptions", signalRun("resume"));
   app.post("/v1/runs/:runId/cancellations", signalRun("cancel"));
 
+  const humanTaskAccess = async (
+    request: FastifyRequest,
+    mutation = false,
+    permission: "workflow.read" | "workflow.manage" = "workflow.read"
+  ) => {
+    if (!options.humanTasks) throw new Error("Human tasks are not configured");
+    const authenticated = mutation ? await protectMutation(request) : await authenticate(request);
+    if (!options.workspace) return tenantContext(options, request, authenticated);
+    return (await options.workspace.require(authenticated.identity, request.id, permission))
+      .context;
+  };
+  const humanTaskParams = z.object({ taskRunId: z.string().uuid() }).strict();
+
+  app.get("/v1/task-runs", async (request) => {
+    const context = await humanTaskAccess(request);
+    return { data: await options.humanTasks!.list(context, request.query) };
+  });
+
+  app.get("/v1/task-runs/:taskRunId", async (request, reply) => {
+    const context = await humanTaskAccess(request);
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    const task = await options.humanTasks!.get(context, taskRunId);
+    if (!task)
+      return reply.code(404).send({
+        error: {
+          code: "TASK_NOT_FOUND",
+          message: "The task does not exist.",
+          requestId: request.id
+        }
+      });
+    return { data: task };
+  });
+
+  app.post("/v1/task-runs/:taskRunId/claims", async (request, reply) => {
+    const context = await humanTaskAccess(request, true);
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    return reply
+      .code(201)
+      .send({ data: await options.humanTasks!.claim(context, taskRunId, request.body) });
+  });
+
+  app.put("/v1/task-runs/:taskRunId/draft", async (request) => {
+    const context = await humanTaskAccess(request, true);
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    return { data: await options.humanTasks!.saveDraft(context, taskRunId, request.body) };
+  });
+
+  app.post("/v1/task-runs/:taskRunId/submissions", async (request, reply) => {
+    if (!options.runStarter) throw new Error("Runtime is not configured");
+    const context = await humanTaskAccess(request, true);
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    const submission = await options.humanTasks!.submit(context, taskRunId, request.body);
+    await options.runStarter.completeTask(submission.temporalWorkflowId, submission.nodeKey);
+    return reply.code(201).send({ data: { id: submission.id } });
+  });
+
+  app.get("/v1/task-runs/:taskRunId/attempts", async (request) => {
+    const context = await humanTaskAccess(request);
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    return { data: await options.humanTasks!.attempts(context, taskRunId) };
+  });
+  app.get("/v1/task-runs/:taskRunId/attempts/:attempt", async (request, reply) => {
+    const context = await humanTaskAccess(request);
+    const { taskRunId, attempt } = z
+      .object({ taskRunId: z.string().uuid(), attempt: z.coerce.number().int().positive() })
+      .parse(request.params);
+    const record = (await options.humanTasks!.attempts(context, taskRunId)).find(
+      (item) => Number(item.attempt) === attempt
+    );
+    if (!record)
+      return reply.code(404).send({
+        error: {
+          code: "TASK_ATTEMPT_NOT_FOUND",
+          message: "The task attempt does not exist.",
+          requestId: request.id
+        }
+      });
+    return { data: record };
+  });
+  app.post("/v1/task-runs/bulk-actions", async (request) => {
+    const context = await humanTaskAccess(request, true, "workflow.manage");
+    return { data: await options.humanTasks!.bulk(context, request.body) };
+  });
+
+  app.post("/v1/task-runs/:taskRunId/reassignments", async (request, reply) => {
+    const context = await humanTaskAccess(request, true, "workflow.manage");
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    return reply
+      .code(201)
+      .send({ data: await options.humanTasks!.assign(context, taskRunId, request.body) });
+  });
+
+  app.post("/v1/task-runs/:taskRunId/delegations", async (request, reply) => {
+    const context = await humanTaskAccess(request, true);
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    return reply
+      .code(201)
+      .send({ data: await options.humanTasks!.delegate(context, taskRunId, request.body) });
+  });
+
+  app.post("/v1/task-runs/:taskRunId/clarification-requests", async (request, reply) => {
+    const context = await humanTaskAccess(request, true);
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    return reply.code(202).send({
+      data: await options.humanTasks!.requestClarification(context, taskRunId, request.body)
+    });
+  });
+
+  app.post("/v1/task-runs/:taskRunId/reopenings", async (request, reply) => {
+    const context = await humanTaskAccess(request, true, "workflow.manage");
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    return reply
+      .code(201)
+      .send({ data: await options.humanTasks!.reopen(context, taskRunId, request.body) });
+  });
+
+  const unclaimTask = async (request: FastifyRequest, reply: FastifyReply) => {
+    const context = await humanTaskAccess(request, true);
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    return reply
+      .code(202)
+      .send({ data: await options.humanTasks!.unclaim(context, taskRunId, request.body) });
+  };
+  app.post("/v1/task-runs/:taskRunId/unclaims", unclaimTask);
+  app.post("/v1/task-runs/:taskRunId/returns-to-queue", unclaimTask);
+
+  app.post("/v1/task-runs/:taskRunId/watches", async (request, reply) => {
+    const context = await humanTaskAccess(request, true);
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    await options.humanTasks!.watch(context, taskRunId);
+    return reply.code(204).send();
+  });
+  app.delete("/v1/task-runs/:taskRunId/watches", async (request, reply) => {
+    const context = await humanTaskAccess(request, true);
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    await options.humanTasks!.unwatch(context, taskRunId);
+    return reply.code(204).send();
+  });
+
+  const taskAdmin = () => {
+    if (!options.taskAdministration) throw new Error("Task administration is not configured");
+    return options.taskAdministration;
+  };
+  const taskAdminAccess = (request: FastifyRequest) =>
+    workflowAccess(request, "workflow.manage", true);
+  const queueParams = z.object({ queueId: z.string().uuid() }).strict();
+  const templateParams = z.object({ templateId: z.string().uuid() }).strict();
+  const principalParams = z
+    .object({ queueId: z.string().uuid(), principalId: z.string().uuid() })
+    .strict();
+
+  app.get("/v1/workspaces/:workspaceId/task-queues", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const context = await workflowAccess(request, "workflow.read");
+    return { data: await taskAdmin().listQueues(context) };
+  });
+  app.post("/v1/workspaces/:workspaceId/task-queues", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const context = await taskAdminAccess(request);
+    return reply.code(201).send({ data: await taskAdmin().createQueue(context, request.body) });
+  });
+  app.get("/v1/task-queues/:queueId", async (request, reply) => {
+    const context = await workflowAccess(request, "workflow.read");
+    const { queueId } = queueParams.parse(request.params);
+    const queue = await taskAdmin().getQueue(context, queueId);
+    if (!queue)
+      return reply.code(404).send({
+        error: {
+          code: "TASK_QUEUE_NOT_FOUND",
+          message: "The task queue does not exist.",
+          requestId: request.id
+        }
+      });
+    return { data: queue };
+  });
+  app.patch("/v1/task-queues/:queueId", async (request) => {
+    const context = await taskAdminAccess(request);
+    const { queueId } = queueParams.parse(request.params);
+    return { data: await taskAdmin().updateQueue(context, queueId, request.body) };
+  });
+  app.delete("/v1/task-queues/:queueId", async (request, reply) => {
+    const context = await taskAdminAccess(request);
+    const { queueId } = queueParams.parse(request.params);
+    await taskAdmin().deleteQueue(context, queueId);
+    return reply.code(204).send();
+  });
+  app.put("/v1/task-queues/:queueId/members/:principalId", async (request, reply) => {
+    const context = await taskAdminAccess(request);
+    const { queueId, principalId } = principalParams.parse(request.params);
+    await taskAdmin().putQueueMember(context, queueId, principalId, request.body);
+    return reply.code(204).send();
+  });
+  app.delete("/v1/task-queues/:queueId/members/:principalId", async (request, reply) => {
+    const context = await taskAdminAccess(request);
+    const { queueId, principalId } = principalParams.parse(request.params);
+    await taskAdmin().deleteQueueMember(context, queueId, principalId);
+    return reply.code(204).send();
+  });
+  app.put("/v1/task-queues/:queueId/routing-policy", async (request) => {
+    const context = await taskAdminAccess(request);
+    const { queueId } = queueParams.parse(request.params);
+    return { data: await taskAdmin().publishRoutingPolicy(context, queueId, request.body) };
+  });
+  app.post("/v1/task-queues/:queueId/routing-simulations", async (request) => {
+    const context = await taskAdminAccess(request);
+    const { queueId } = queueParams.parse(request.params);
+    return { data: await taskAdmin().simulateRouting(context, queueId, request.body) };
+  });
+
+  app.get("/v1/workspaces/:workspaceId/task-templates", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return {
+      data: await taskAdmin().listTemplates(await workflowAccess(request, "workflow.read"))
+    };
+  });
+  app.post("/v1/workspaces/:workspaceId/task-templates", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await taskAdmin().createTemplate(await taskAdminAccess(request), request.body)
+    });
+  });
+  app.get("/v1/task-templates/:templateId", async (request, reply) => {
+    const context = await workflowAccess(request, "workflow.read");
+    const { templateId } = templateParams.parse(request.params);
+    const template = await taskAdmin().getTemplate(context, templateId);
+    if (!template)
+      return reply.code(404).send({
+        error: {
+          code: "TASK_TEMPLATE_NOT_FOUND",
+          message: "The task template does not exist.",
+          requestId: request.id
+        }
+      });
+    return { data: template };
+  });
+  app.patch("/v1/task-templates/:templateId", async (request) => {
+    const context = await taskAdminAccess(request);
+    const { templateId } = templateParams.parse(request.params);
+    return { data: await taskAdmin().updateTemplate(context, templateId, request.body) };
+  });
+  app.post("/v1/task-templates/:templateId/publications", async (request, reply) => {
+    const context = await taskAdminAccess(request);
+    const { templateId } = templateParams.parse(request.params);
+    return reply.code(201).send({ data: await taskAdmin().publishTemplate(context, templateId) });
+  });
+  app.post("/v1/task-templates/:templateId/versions", async (request, reply) => {
+    const context = await taskAdminAccess(request);
+    const { templateId } = templateParams.parse(request.params);
+    return reply.code(201).send({ data: await taskAdmin().publishTemplate(context, templateId) });
+  });
+  app.post("/v1/task-templates/:templateId/previews", async (request) => {
+    const context = await workflowAccess(request, "workflow.read");
+    const { templateId } = templateParams.parse(request.params);
+    return { data: await taskAdmin().previewTemplate(context, templateId) };
+  });
+  app.delete("/v1/task-templates/:templateId", async (request, reply) => {
+    const context = await taskAdminAccess(request);
+    const { templateId } = templateParams.parse(request.params);
+    await taskAdmin().deleteTemplate(context, templateId);
+    return reply.code(204).send();
+  });
+
+  app.get("/v1/task-runs/:taskRunId/artifacts", async (request) => {
+    const context = await humanTaskAccess(request);
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    return { data: await taskAdmin().listArtifacts(context, taskRunId) };
+  });
+  app.post("/v1/task-runs/:taskRunId/artifact-uploads", async (request, reply) => {
+    const context = await humanTaskAccess(request, true);
+    const { taskRunId } = humanTaskParams.parse(request.params);
+    return reply
+      .code(201)
+      .send({ data: await taskAdmin().createUpload(context, taskRunId, request.body) });
+  });
+  app.post("/v1/artifact-uploads/:uploadId/completions", async (request) => {
+    const context = await humanTaskAccess(request, true);
+    const { uploadId } = z.object({ uploadId: z.string().uuid() }).parse(request.params);
+    return { data: await taskAdmin().completeUpload(context, uploadId, request.body) };
+  });
+  app.get("/v1/artifacts/:artifactId/download", async (request) => {
+    const context = await humanTaskAccess(request);
+    const { artifactId } = z.object({ artifactId: z.string().uuid() }).parse(request.params);
+    return { data: await taskAdmin().download(context, artifactId) };
+  });
+  app.delete("/v1/artifacts/:artifactId", async (request, reply) => {
+    const context = await humanTaskAccess(request, true);
+    const { artifactId } = z.object({ artifactId: z.string().uuid() }).parse(request.params);
+    await taskAdmin().deleteArtifact(context, artifactId);
+    return reply.code(204).send();
+  });
+
   app.setErrorHandler((error, request, reply) => {
+    if (error instanceof HumanTaskConflictError)
+      return reply
+        .code(409)
+        .send({ error: { code: "TASK_CONFLICT", message: error.message, requestId: request.id } });
+    if (error instanceof HumanTaskAuthorizationError)
+      return reply.code(403).send({
+        error: {
+          code: "TASK_FORBIDDEN",
+          message: "The task cannot be changed by this identity.",
+          requestId: request.id
+        }
+      });
     if (error instanceof AuthFailure) {
       if (error.statusCode === 401) reply.header("set-cookie", clearAuthCookies());
       return reply.code(error.statusCode).send({

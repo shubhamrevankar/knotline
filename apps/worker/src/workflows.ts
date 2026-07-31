@@ -7,6 +7,7 @@ import type * as activities from "./activities.js";
 const pauseSignal = defineSignal("pause");
 const resumeSignal = defineSignal("resume");
 const cancelSignal = defineSignal("cancel");
+const completeHumanTaskSignal = defineSignal<[string]>("completeHumanTask");
 const { recordRunTransition, executeSyntheticTask } = proxyActivities<typeof activities>({
   startToCloseTimeout: "2 minutes",
   retry: { maximumAttempts: 3, initialInterval: "1 second" }
@@ -41,6 +42,10 @@ export async function durableWorkflowRun(input: DurableRunInput) {
     expectedVersion: stateVersion++
   });
   const complete = new Set<string>();
+  const completedHumanTasks = new Set<string>();
+  setHandler(completeHumanTaskSignal, (nodeKey) => {
+    completedHumanTasks.add(nodeKey);
+  });
   while (complete.size < input.plan.length && !cancelled) {
     if (paused && currentState === "running") {
       await recordRunTransition({
@@ -66,7 +71,10 @@ export async function durableWorkflowRun(input: DurableRunInput) {
     );
     if (ready.length === 0) throw new Error("RUNTIME_GRAPH_STALLED");
     for (const node of ready) {
-      if (node.kind === "delay") {
+      if (node.kind === "human" || node.kind === "approval") {
+        await condition(() => completedHumanTasks.has(node.key) || cancelled);
+        if (cancelled) break;
+      } else if (node.kind === "delay") {
         await sleep(Math.min(Number(node.configuration.delayMs ?? 1), 86_400_000));
         await executeSyntheticTask({ ...input, node });
       } else await executeSyntheticTask({ ...input, node });

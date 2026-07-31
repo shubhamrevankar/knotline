@@ -1,6 +1,7 @@
 export * from "./events.js";
 export * from "./collaboration.js";
 export * from "./runtime.js";
+export * from "./human-task.js";
 export * from "./evidence.js";
 export * from "./http.js";
 export * from "./routes.generated.js";

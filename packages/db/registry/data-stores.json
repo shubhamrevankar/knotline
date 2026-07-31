@@ -464,6 +464,125 @@
       "retentionDays": 2555,
       "exportHandler": "runtime-export",
       "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "human_task_details",
+      "class": "tasks.detail",
+      "retentionDays": 2555,
+      "exportHandler": "task-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "human_task_drafts",
+      "class": "tasks.draft",
+      "retentionDays": 90,
+      "exportHandler": "task-export",
+      "deleteHandler": "task-delete"
+    },
+    {
+      "name": "human_task_submissions",
+      "class": "tasks.submission",
+      "retentionDays": 2555,
+      "exportHandler": "task-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "task_delegations",
+      "class": "tasks.delegation",
+      "retentionDays": 2555,
+      "exportHandler": "task-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "task_watchers",
+      "class": "tasks.watcher",
+      "retentionDays": 2555,
+      "exportHandler": "task-export",
+      "deleteHandler": "task-delete"
+    },
+    {
+      "name": "task_queues",
+      "class": "tasks.queue",
+      "retentionDays": 2555,
+      "exportHandler": "task-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "task_queue_members",
+      "class": "tasks.queue_member",
+      "retentionDays": 2555,
+      "exportHandler": "task-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "task_routing_policy_versions",
+      "class": "tasks.routing_policy",
+      "retentionDays": 2555,
+      "exportHandler": "task-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "task_routing_decisions",
+      "class": "tasks.routing_decision",
+      "retentionDays": 2555,
+      "exportHandler": "task-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "business_calendars",
+      "class": "tasks.calendar",
+      "retentionDays": 2555,
+      "exportHandler": "task-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "business_calendar_versions",
+      "class": "tasks.calendar_version",
+      "retentionDays": 2555,
+      "exportHandler": "task-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "task_templates",
+      "class": "tasks.template",
+      "retentionDays": 2555,
+      "exportHandler": "task-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "task_template_versions",
+      "class": "tasks.template_version",
+      "retentionDays": 2555,
+      "exportHandler": "task-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "files",
+      "class": "content.file",
+      "retentionDays": 2555,
+      "exportHandler": "file-export",
+      "deleteHandler": "object-delete"
+    },
+    {
+      "name": "file_versions",
+      "class": "content.file_version",
+      "retentionDays": 2555,
+      "exportHandler": "file-export",
+      "deleteHandler": "object-delete"
+    },
+    {
+      "name": "file_upload_sessions",
+      "class": "content.upload_session",
+      "retentionDays": 7,
+      "exportHandler": "file-export",
+      "deleteHandler": "object-delete"
+    },
+    {
+      "name": "task_file_attachments",
+      "class": "tasks.file_attachment",
+      "retentionDays": 2555,
+      "exportHandler": "task-export",
+      "deleteHandler": "object-delete"
     }
   ],
   "indexes": [
@@ -578,7 +697,26 @@
     "budget_periods_pkey",
     "admission_reservations_pkey",
     "admission_ledger_entries_pkey",
-    "runtime_control_switches_pkey"
+    "runtime_control_switches_pkey",
+    "human_task_details_pkey",
+    "human_task_inbox_idx",
+    "human_task_unassigned_idx",
+    "human_task_drafts_pkey",
+    "human_task_submissions_pkey",
+    "task_delegations_pkey",
+    "task_watchers_pkey",
+    "task_queues_pkey",
+    "task_queue_members_pkey",
+    "task_routing_policy_versions_pkey",
+    "task_routing_decisions_pkey",
+    "business_calendars_pkey",
+    "business_calendar_versions_pkey",
+    "task_templates_pkey",
+    "task_template_versions_pkey",
+    "files_pkey",
+    "file_versions_pkey",
+    "file_upload_sessions_pkey",
+    "task_file_attachments_pkey"
   ],
   "caches": []
 }

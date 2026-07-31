@@ -1,6 +1,17 @@
 import { z } from "zod";
 
 import { runIntentSchema, runStateSchema, startRunSchema, taskStateSchema } from "./runtime.js";
+import {
+  restrictedUploadCompletionSchema,
+  restrictedUploadRequestSchema,
+  taskActionSchema,
+  taskAssignmentSchema,
+  taskBulkActionSchema,
+  taskClaimSchema,
+  taskDelegationSchema,
+  taskDraftSchema,
+  taskSubmissionSchema
+} from "./human-task.js";
 
 export const workflowStatusSchema = z.enum(["draft", "active", "paused", "archived"]);
 export const nodeStatusSchema = z.enum(["queued", "running", "waiting", "complete", "failed"]);
@@ -781,10 +792,258 @@ export const OPERATIONAL_PROBE_CONTRACTS = [
   }
 ] as const;
 
+export const HUMAN_TASK_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  {
+    method: "GET",
+    path: "/v1/task-runs",
+    operationId: "listHumanTasks",
+    summary: "List authorized human tasks and saved inbox views",
+    tags: ["Human tasks"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(z.array(z.record(z.string(), z.unknown()))),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/task-runs/{taskRunId}",
+    operationId: "getHumanTask",
+    summary: "Read a human task form, assignment, drafts, and submission history",
+    tags: ["Human tasks"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(z.record(z.string(), z.unknown())),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/task-runs/{taskRunId}/claims",
+    operationId: "claimHumanTask",
+    summary: "Atomically claim an unassigned human task",
+    tags: ["Human tasks"],
+    exposure: "browser_internal",
+    requestBody: taskClaimSchema,
+    responses: {
+      201: apiEnvelope(z.object({ assignmentVersion: z.number().int().positive() })),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "PUT",
+    path: "/v1/task-runs/{taskRunId}/draft",
+    operationId: "saveHumanTaskDraft",
+    summary: "Optimistically save a personal human task draft",
+    tags: ["Human tasks"],
+    exposure: "browser_internal",
+    requestBody: taskDraftSchema,
+    responses: {
+      200: apiEnvelope(z.object({ version: z.number().int().positive() })),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/task-runs/{taskRunId}/submissions",
+    operationId: "submitHumanTask",
+    summary: "Validate and immutably submit a human task response",
+    tags: ["Human tasks"],
+    exposure: "browser_internal",
+    requestBody: taskSubmissionSchema,
+    responses: {
+      201: apiEnvelope(z.object({ id: z.uuid() })),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  ...(
+    [
+      [
+        "GET",
+        "/v1/task-runs/{taskRunId}/attempts",
+        "listHumanTaskAttempts",
+        "List immutable task attempts",
+        200
+      ],
+      [
+        "GET",
+        "/v1/task-runs/{taskRunId}/attempts/{attempt}",
+        "getHumanTaskAttempt",
+        "Read an immutable task attempt",
+        200
+      ],
+      [
+        "POST",
+        "/v1/task-runs/bulk-actions",
+        "bulkUpdateHumanTasks",
+        "Safely update compatible human tasks",
+        200
+      ],
+      [
+        "POST",
+        "/v1/task-runs/{taskRunId}/reassignments",
+        "reassignHumanTask",
+        "Reassign a human task",
+        201
+      ],
+      [
+        "POST",
+        "/v1/task-runs/{taskRunId}/delegations",
+        "delegateHumanTask",
+        "Delegate a human task without widening access",
+        201
+      ],
+      [
+        "POST",
+        "/v1/task-runs/{taskRunId}/clarification-requests",
+        "requestHumanTaskClarification",
+        "Request additional task information",
+        202
+      ],
+      [
+        "POST",
+        "/v1/task-runs/{taskRunId}/reopenings",
+        "reopenHumanTask",
+        "Create an immutable linked task revision",
+        201
+      ],
+      [
+        "POST",
+        "/v1/task-runs/{taskRunId}/unclaims",
+        "unclaimHumanTask",
+        "Release a claimed task",
+        202
+      ],
+      [
+        "POST",
+        "/v1/task-runs/{taskRunId}/returns-to-queue",
+        "returnHumanTaskToQueue",
+        "Return a task to its queue",
+        202
+      ],
+      ["POST", "/v1/task-runs/{taskRunId}/watches", "watchHumanTask", "Watch task activity", 204],
+      [
+        "DELETE",
+        "/v1/task-runs/{taskRunId}/watches",
+        "unwatchHumanTask",
+        "Stop watching task activity",
+        204
+      ]
+    ] as const
+  ).map(([method, path, operationId, summary, status]) => ({
+    method,
+    path,
+    operationId,
+    summary,
+    tags: ["Human tasks"],
+    exposure: "browser_internal" as const,
+    ...(method === "GET" || method === "DELETE"
+      ? {}
+      : {
+          requestBody: path.includes("delegations")
+            ? taskDelegationSchema
+            : path.includes("reassignments")
+              ? taskAssignmentSchema
+              : path.includes("bulk-actions")
+                ? taskBulkActionSchema
+                : taskActionSchema
+        }),
+    responses: {
+      [status]: genericDataSchema,
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  }))
+];
+
+const TASK_ADMIN_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  ...(
+    [
+      ["GET", "/v1/workspaces/{workspaceId}/task-queues", "listTaskQueues", 200],
+      ["POST", "/v1/workspaces/{workspaceId}/task-queues", "createTaskQueue", 201],
+      ["GET", "/v1/task-queues/{queueId}", "getTaskQueue", 200],
+      ["PATCH", "/v1/task-queues/{queueId}", "updateTaskQueue", 200],
+      ["DELETE", "/v1/task-queues/{queueId}", "deleteTaskQueue", 204],
+      ["PUT", "/v1/task-queues/{queueId}/members/{principalId}", "putTaskQueueMember", 204],
+      ["DELETE", "/v1/task-queues/{queueId}/members/{principalId}", "deleteTaskQueueMember", 204],
+      ["PUT", "/v1/task-queues/{queueId}/routing-policy", "publishTaskRoutingPolicy", 200],
+      ["POST", "/v1/task-queues/{queueId}/routing-simulations", "simulateTaskRouting", 200],
+      ["GET", "/v1/workspaces/{workspaceId}/task-templates", "listTaskTemplates", 200],
+      ["POST", "/v1/workspaces/{workspaceId}/task-templates", "createTaskTemplate", 201],
+      ["GET", "/v1/task-templates/{templateId}", "getTaskTemplate", 200],
+      ["PATCH", "/v1/task-templates/{templateId}", "updateTaskTemplate", 200],
+      ["POST", "/v1/task-templates/{templateId}/versions", "createTaskTemplateVersion", 201],
+      ["POST", "/v1/task-templates/{templateId}/publications", "publishTaskTemplate", 201],
+      ["POST", "/v1/task-templates/{templateId}/previews", "previewTaskTemplate", 200],
+      ["DELETE", "/v1/task-templates/{templateId}", "archiveTaskTemplate", 204],
+      ["GET", "/v1/task-runs/{taskRunId}/artifacts", "listTaskArtifacts", 200],
+      ["POST", "/v1/task-runs/{taskRunId}/artifact-uploads", "createTaskArtifactUpload", 201],
+      ["POST", "/v1/artifact-uploads/{uploadId}/completions", "completeArtifactUpload", 200],
+      ["GET", "/v1/artifacts/{artifactId}/download", "authorizeArtifactDownload", 200],
+      ["DELETE", "/v1/artifacts/{artifactId}", "deleteArtifact", 204]
+    ] as const
+  ).map(([method, path, operationId, status]) => ({
+    method,
+    path,
+    operationId,
+    summary: operationId.replaceAll(/([A-Z])/gu, " $1").trim(),
+    tags: [
+      path.includes("artifact")
+        ? "Restricted artifacts"
+        : path.includes("template")
+          ? "Task templates"
+          : "Task queues"
+    ],
+    exposure: "browser_internal" as const,
+    ...(method === "GET" || method === "DELETE"
+      ? {}
+      : {
+          requestBody: path.includes("artifact-uploads/{uploadId}")
+            ? restrictedUploadCompletionSchema
+            : path.includes("artifact-uploads")
+              ? restrictedUploadRequestSchema
+              : genericDataSchema
+        }),
+    responses: {
+      [status]: genericDataSchema,
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  }))
+];
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
   ...RUNTIME_ROUTE_CONTRACTS,
+  ...HUMAN_TASK_ROUTE_CONTRACTS,
+  ...TASK_ADMIN_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

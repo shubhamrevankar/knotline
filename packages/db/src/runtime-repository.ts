@@ -231,6 +231,28 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
             node.dependencies.length ? "pending" : "ready"
           ]
         );
+        if (node.kind === "human" || node.kind === "approval")
+          await client.query(
+            `INSERT INTO human_task_details(workspace_id,task_id,created_by,priority,form_schema,form_schema_version)
+             VALUES ($1,$2,$3,'normal',$4,1)`,
+            [
+              context.workspaceId,
+              taskId,
+              context.principalId,
+              node.configuration.formSchema ?? {
+                schemaVersion: 1,
+                title: node.key,
+                fields: [
+                  {
+                    key: "response",
+                    label: "Response",
+                    type: "rich_text",
+                    required: true
+                  }
+                ]
+              }
+            ]
+          );
       }
       for (const node of plan)
         for (const dependency of node.dependencies)

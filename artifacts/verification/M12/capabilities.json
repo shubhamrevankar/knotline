@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M12/test-results/human-task-browser.json",
+      "verifiedAt": "2026-08-01T06:00:00.000Z"
+    },
+    "externalGates": [],
+    "id": "tasks.complete-human-work",
+    "owner": {
+      "contact": "shurevan",
+      "team": "workflow-platform"
+    },
+    "runbook": "docs/operations/knotline/durable-runtime.md",
+    "status": "DEMO",
+    "summary": "Responsive inbox and forms, atomic claims, optimistic drafts, immutable submissions, delegation/reopen lineage, deterministic queues, templates, and quarantined restricted artifacts are locally verified."
+  }
+]

@@ -81,7 +81,24 @@ export const REQUIRED_STORES = [
   "runtime_control_switches",
   "run_saved_views",
   "run_follows",
-  "run_artifacts"
+  "run_artifacts",
+  "human_task_details",
+  "human_task_drafts",
+  "human_task_submissions",
+  "task_delegations",
+  "task_watchers",
+  "task_queues",
+  "task_queue_members",
+  "task_routing_policy_versions",
+  "task_routing_decisions",
+  "business_calendars",
+  "business_calendar_versions",
+  "task_templates",
+  "task_template_versions",
+  "files",
+  "file_versions",
+  "file_upload_sessions",
+  "task_file_attachments"
 ] as const;
 
 export async function validateDataStoreRegistry(): Promise<Registry> {

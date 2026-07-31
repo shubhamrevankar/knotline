@@ -6,6 +6,8 @@ import {
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresRuntimeRepository,
+  PostgresHumanTaskRepository,
+  PostgresTaskAdministrationRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -49,6 +51,8 @@ const workflowGeneration = new WorkflowGenerationService(
 );
 const collaboration = new PostgresCollaborationRepository(pool);
 const runtime = new PostgresRuntimeRepository(pool);
+const humanTasks = new PostgresHumanTaskRepository(pool);
+const taskAdministration = new PostgresTaskAdministrationRepository(pool);
 const temporalConnection = await Connection.connect({
   address: process.env.TEMPORAL_ADDRESS ?? "127.0.0.1:7233"
 });
@@ -83,6 +87,11 @@ const runStarter = {
   },
   async signal(temporalWorkflowId: string, signal: "pause" | "resume" | "cancel") {
     await temporalClient.workflow.getHandle(temporalWorkflowId).signal(signal);
+  },
+  async completeTask(temporalWorkflowId: string, nodeKey: string) {
+    await temporalClient.workflow
+      .getHandle(temporalWorkflowId)
+      .signal("completeHumanTask", nodeKey);
   }
 };
 const isLocal = environment.environment === "local" || environment.environment === "ci";
@@ -166,6 +175,8 @@ const app = await buildApp({
   workflowGeneration,
   collaboration,
   runtime,
+  humanTasks,
+  taskAdministration,
   runStarter,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),

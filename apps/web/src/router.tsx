@@ -59,6 +59,16 @@ const RunRoomPage = lazy(async () => {
   return { default: module.RunRoomPage };
 });
 
+const TaskInboxPage = lazy(async () => {
+  const module = await import("./M12Pages.js");
+  return { default: module.TaskInboxPage };
+});
+
+const TaskDetailPage = lazy(async () => {
+  const module = await import("./M12Pages.js");
+  return { default: module.TaskDetailPage };
+});
+
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
   "go-to-market": msg("solution.gotomarket"),
@@ -404,6 +414,22 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label={msg("run.loading")} />}>
           <RunRoomPage view="task" />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.inbox" || route.id === "route.app.tasks")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading task inbox" />}>
+          <TaskInboxPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.tasks.detail")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading task" />}>
+          <TaskDetailPage />
         </Suspense>
       </AuthGate>
     );

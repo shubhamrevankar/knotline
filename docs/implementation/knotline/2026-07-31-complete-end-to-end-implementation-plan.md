@@ -2482,6 +2482,7 @@ DELETE /v1/task-templates/:templateId
 
 GET    /v1/task-runs
 GET    /v1/task-runs/:taskRunId
+PUT    /v1/task-runs/:taskRunId/draft
 GET    /v1/task-runs/:taskRunId/attempts
 GET    /v1/task-runs/:taskRunId/attempts/:attempt
 POST   /v1/task-runs/:taskRunId/claims
@@ -6176,7 +6177,7 @@ mobile.
 
 ### M12 — Human task inbox, forms, queues, and assignment
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M05, M10, M11\
 **Required commit:** `feat: deliver complete human task execution`
 
@@ -9227,7 +9228,7 @@ must appear in that milestone's boundary cell.
 | M09 | `COMMITTED` | `NOT_DEPLOYED` | EXT-006 for email mention delivery later | `feat: add collaborative workflow and work discussions` |
 | M10 | `COMMITTED` | `NOT_DEPLOYED` | EXT-003 | `feat: execute workflows durably across failures` |
 | M11 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the live Knotline run room` |
-| M12 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver complete human task execution` |
+| M12 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver complete human task execution` |
 | M13 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: add durable approvals and escalation policies` |
 | M14 | `NOT_STARTED` | `NOT_DEPLOYED` | `SIMULATED` for test console | `feat: deliver the Knotline agent foundry` |
 | M15 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-004 | `feat: integrate the governed OpenAI model gateway` |
