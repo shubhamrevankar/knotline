@@ -6032,7 +6032,7 @@ handle concurrent editing without confusion.
 
 ### M10 — Durable workflow runtime, outbox, orchestration, and reconciliation
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M06\
 **Required commit:** `feat: execute workflows durably across failures`
 
@@ -9225,7 +9225,7 @@ must appear in that milestone's boundary cell.
 | M07 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the complete responsive workflow studio` |
 | M08 | `COMMITTED` | `NOT_DEPLOYED` | `SIMULATED`; EXT-004 `BLOCKED_EXTERNAL` for real activation | `feat: add guided workflow generation and safe test mode` |
 | M09 | `COMMITTED` | `NOT_DEPLOYED` | EXT-006 for email mention delivery later | `feat: add collaborative workflow and work discussions` |
-| M10 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-003 | `feat: execute workflows durably across failures` |
+| M10 | `COMMITTED` | `NOT_DEPLOYED` | EXT-003 | `feat: execute workflows durably across failures` |
 | M11 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the live Knotline run room` |
 | M12 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver complete human task execution` |
 | M13 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: add durable approvals and escalation policies` |

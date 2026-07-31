@@ -338,6 +338,111 @@
       "retentionDays": 2555,
       "exportHandler": "collaboration-export",
       "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "workflow_runs",
+      "class": "runtime.run",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "task_runs",
+      "class": "runtime.task",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "task_dependencies",
+      "class": "runtime.dependency",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "task_attempts",
+      "class": "runtime.attempt",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "run_events",
+      "class": "runtime.event",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "event_receipts",
+      "class": "runtime.receipt",
+      "retentionDays": 365,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "external_operations",
+      "class": "runtime.external_operation",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "external_operation_attempts",
+      "class": "runtime.external_attempt",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "external_operation_attempt_records",
+      "class": "runtime.external_evidence",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "dead_letter_items",
+      "class": "runtime.dead_letter",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "entitlement_policies",
+      "class": "admission.entitlement",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "budget_periods",
+      "class": "admission.period",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "admission_reservations",
+      "class": "admission.reservation",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "admission_ledger_entries",
+      "class": "admission.ledger",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "runtime_control_switches",
+      "class": "runtime.control",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
     }
   ],
   "indexes": [
@@ -431,7 +536,24 @@
     "resource_activity_resource_idx",
     "notification_intents_pkey",
     "notification_intents_pending_idx",
-    "saved_resource_filters_pkey"
+    "saved_resource_filters_pkey",
+    "workflow_runs_pkey",
+    "workflow_runs_workspace_state_idx",
+    "task_runs_pkey",
+    "task_runs_dispatch_idx",
+    "task_dependencies_pkey",
+    "task_attempts_pkey",
+    "run_events_pkey",
+    "event_receipts_pkey",
+    "external_operations_pkey",
+    "external_operation_attempts_pkey",
+    "external_operation_attempt_records_pkey",
+    "dead_letter_items_pkey",
+    "entitlement_policies_pkey",
+    "budget_periods_pkey",
+    "admission_reservations_pkey",
+    "admission_ledger_entries_pkey",
+    "runtime_control_switches_pkey"
   ],
   "caches": []
 }

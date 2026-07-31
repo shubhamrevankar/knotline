@@ -12,6 +12,7 @@ import {
   createPool,
   migrate,
   PostgresCollaborationRepository,
+  PostgresRuntimeRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -116,6 +117,7 @@ async function runSuite(pool: DatabasePool) {
   const repository = new PostgresVersionedWorkflowRepository(pool);
   const generationRepository = new PostgresWorkflowGenerationRepository(pool);
   const collaborationRepository = new PostgresCollaborationRepository(pool);
+  const runtimeRepository = new PostgresRuntimeRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -280,6 +282,80 @@ async function runSuite(pool: DatabasePool) {
   );
   assert(auditCount >= 5, "Workflow lifecycle audit evidence was incomplete");
 
+  const durableRun = await runtimeRepository.startRun(contextA, workflowId, {
+    input: { incidentId: "fixture-1" },
+    idempotencyKey: "runtime-start-fixture-0001",
+    maximumQuantity: "10",
+    policyVersion: "default-v1"
+  });
+  const duplicateRun = await runtimeRepository.startRun(contextA, workflowId, {
+    input: { incidentId: "fixture-1" },
+    idempotencyKey: "runtime-start-fixture-0001",
+    maximumQuantity: "10",
+    policyVersion: "default-v1"
+  });
+  assert(duplicateRun.id === durableRun.id, "Idempotent run start created a duplicate");
+  assert(durableRun.plan?.length === 3, "Published workflow did not compile into durable tasks");
+  await runtimeRepository.transitionRun(
+    contextA,
+    durableRun.id,
+    "queued",
+    1,
+    1,
+    "running",
+    "run.running"
+  );
+  const staleFence = await Promise.allSettled([
+    runtimeRepository.transitionRun(
+      contextA,
+      durableRun.id,
+      "running",
+      1,
+      1,
+      "succeeded",
+      "run.succeeded"
+    )
+  ]);
+  assert(staleFence[0]?.status === "rejected", "Stale state version committed a transition");
+  await runtimeRepository.transitionRun(
+    contextA,
+    durableRun.id,
+    "running",
+    2,
+    1,
+    "succeeded",
+    "run.succeeded"
+  );
+  const durableProjection = await runtimeRepository.run(contextA, durableRun.id);
+  assert(
+    durableProjection?.state === "succeeded" && durableProjection.events.length === 3,
+    "Durable ordered history was incomplete"
+  );
+  const admissionSettlement = await withTenantTransaction(pool, contextA, async (client) => {
+    const reservation = await client.query<{ state: string; used_units: string }>(
+      "SELECT state,used_units FROM admission_reservations WHERE workspace_id=$1 AND id=$2",
+      [contextA.workspaceId, durableRun.reservationId]
+    );
+    const entries = await client.query<{ entry_type: string }>(
+      "SELECT entry_type FROM admission_ledger_entries WHERE workspace_id=$1 AND reservation_id=$2 ORDER BY occurred_at",
+      [contextA.workspaceId, durableRun.reservationId]
+    );
+    return {
+      reservation: reservation.rows[0],
+      entries: entries.rows.map((entry) => entry.entry_type)
+    };
+  });
+  assert(
+    admissionSettlement.reservation?.state === "finalized" &&
+      admissionSettlement.reservation.used_units === "10" &&
+      admissionSettlement.entries.join(",") === "reserve,finalize",
+    "Terminal run did not settle its immutable admission reservation"
+  );
+  assert(
+    (await runtimeRepository.run(contextB, durableRun.id)) === undefined,
+    "Runtime RLS exposed a run across tenants"
+  );
+
   const app = await buildApp({
     environment: "ci",
     logLevel: false,
@@ -288,6 +364,11 @@ async function runSuite(pool: DatabasePool) {
     workflowDefinitions: repository,
     workflowGeneration: new WorkflowGenerationService(undefined, generationRepository),
     collaboration: collaborationRepository,
+    runtime: runtimeRepository,
+    runStarter: {
+      start: () => Promise.resolve(),
+      signal: () => Promise.resolve()
+    },
     auth: {
       authenticate: () =>
         Promise.resolve({
@@ -437,6 +518,20 @@ async function runSuite(pool: DatabasePool) {
       payload: { body: "Edited review" }
     });
     assert(editResponse.statusCode === 200, "Comment edit policy rejected the author");
+    const runStartResponse = await app.inject({
+      method: "POST",
+      url: `/v1/workflows/${workflowId}/runs`,
+      payload: {
+        input: { incidentId: "fixture-2" },
+        idempotencyKey: "runtime-api-fixture-0002",
+        maximumQuantity: "10",
+        policyVersion: "default-v1"
+      }
+    });
+    assert(runStartResponse.statusCode === 202, "Durable run start API failed");
+    const runtimeId = runStartResponse.json<{ data: { id: string } }>().data.id;
+    const runResponse = await app.inject({ method: "GET", url: `/v1/runs/${runtimeId}` });
+    assert(runResponse.statusCode === 200, "Durable run projection API failed");
   } finally {
     await app.close();
   }
@@ -463,6 +558,13 @@ async function runSuite(pool: DatabasePool) {
       reactions: true,
       follows: true,
       activityAuditSeparated: true
+    },
+    runtime: {
+      idempotentStart: true,
+      staleFenceRejected: true,
+      orderedEvents: true,
+      tenantIsolated: true,
+      api: true
     },
     auditEvents: auditCount
   };

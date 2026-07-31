@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { runIntentSchema, runStateSchema, startRunSchema, taskStateSchema } from "./runtime.js";
+
 export const workflowStatusSchema = z.enum(["draft", "active", "paused", "archived"]);
 export const nodeStatusSchema = z.enum(["queued", "running", "waiting", "complete", "failed"]);
 export const nodeKindSchema = z.enum(["trigger", "human", "agent", "approval", "action"]);
@@ -643,6 +645,92 @@ const VERSIONED_WORKFLOW_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   )
 ];
 
+export const RUNTIME_ROUTE_CONTRACTS = [
+  {
+    method: "POST",
+    path: "/v1/workflows/{workflowId}/runs",
+    operationId: "startWorkflowRun",
+    summary: "Atomically admit and start a durable workflow run",
+    tags: ["Runs"],
+    exposure: "browser_internal",
+    requestBody: startRunSchema,
+    responses: {
+      202: z.object({ data: z.object({ id: z.uuid(), state: runStateSchema }).passthrough() }),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/runs/{runId}",
+    operationId: "getWorkflowRun",
+    summary: "Read a durable run and its task projection",
+    tags: ["Runs"],
+    exposure: "browser_internal",
+    responses: {
+      200: z.object({
+        data: z
+          .object({
+            id: z.uuid(),
+            state: runStateSchema,
+            tasks: z.array(z.object({ state: taskStateSchema }).passthrough())
+          })
+          .passthrough()
+      }),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/runs/{runId}/events",
+    operationId: "getWorkflowRunEvents",
+    summary: "Read the strictly ordered durable run event history",
+    tags: ["Runs"],
+    exposure: "browser_internal",
+    responses: {
+      200: z.object({
+        data: z.array(
+          z.object({ sequence: z.coerce.number(), event_type: z.string() }).passthrough()
+        )
+      }),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  ...(
+    [
+      ["pauses", "pause"],
+      ["resumptions", "resume"],
+      ["cancellations", "cancel"]
+    ] as const
+  ).map(([action, verb]) => ({
+    method: "POST" as const,
+    path: `/v1/runs/{runId}/${action}`,
+    operationId: `${verb}WorkflowRun`,
+    summary: `${verb} a durable workflow run`,
+    tags: ["Runs"] as const,
+    exposure: "browser_internal" as const,
+    requestBody: runIntentSchema.omit({ type: true }),
+    responses: {
+      202: z.object({ accepted: z.literal(true) }).passthrough(),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  }))
+] as const;
+
 export const OPERATIONAL_PROBE_CONTRACTS = [
   {
     method: "GET",
@@ -665,6 +753,7 @@ export const OPERATIONAL_PROBE_CONTRACTS = [
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
+  ...RUNTIME_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

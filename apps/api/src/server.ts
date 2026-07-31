@@ -5,11 +5,13 @@ import {
   PostgresWorkspaceRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
+  PostgresRuntimeRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
   seedSyntheticTenants
 } from "@knotline/db";
+import { Client, Connection, WorkflowExecutionAlreadyStartedError } from "@temporalio/client";
 
 import { buildApp } from "./app.js";
 import {
@@ -46,6 +48,43 @@ const workflowGeneration = new WorkflowGenerationService(
   new PostgresWorkflowGenerationRepository(pool)
 );
 const collaboration = new PostgresCollaborationRepository(pool);
+const runtime = new PostgresRuntimeRepository(pool);
+const temporalConnection = await Connection.connect({
+  address: process.env.TEMPORAL_ADDRESS ?? "127.0.0.1:7233"
+});
+const temporalClient = new Client({
+  connection: temporalConnection,
+  namespace: process.env.TEMPORAL_NAMESPACE ?? "default"
+});
+const runStarter = {
+  async start(input: {
+    readonly workspaceId: string;
+    readonly principalId: string;
+    readonly runId: string;
+    readonly temporalWorkflowId: string;
+    readonly plan: readonly unknown[];
+  }) {
+    try {
+      await temporalClient.workflow.start("durableWorkflowRun", {
+        taskQueue: process.env.TEMPORAL_TASK_QUEUE ?? "knotline-system-v1",
+        workflowId: input.temporalWorkflowId,
+        args: [
+          {
+            workspaceId: input.workspaceId,
+            principalId: input.principalId,
+            runId: input.runId,
+            plan: input.plan
+          }
+        ]
+      });
+    } catch (error) {
+      if (!(error instanceof WorkflowExecutionAlreadyStartedError)) throw error;
+    }
+  },
+  async signal(temporalWorkflowId: string, signal: "pause" | "resume" | "cancel") {
+    await temporalClient.workflow.getHandle(temporalWorkflowId).signal(signal);
+  }
+};
 const isLocal = environment.environment === "local" || environment.environment === "ci";
 const googleIssuer = isLocal
   ? `${environment.api.publicOrigin.origin}/__local/oidc`
@@ -126,6 +165,8 @@ const app = await buildApp({
   workflowDefinitions,
   workflowGeneration,
   collaboration,
+  runtime,
+  runStarter,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),
   ...(process.env.KNOTLINE_TRUSTED_PROXY
@@ -134,6 +175,9 @@ const app = await buildApp({
   mutationsDisabled: process.env.KNOTLINE_MUTATIONS_DISABLED === "true"
 });
 
-app.addHook("onClose", async () => pool.end());
+app.addHook("onClose", async () => {
+  await temporalConnection.close();
+  await pool.end();
+});
 
 await app.listen({ host: "0.0.0.0", port: environment.api.port });

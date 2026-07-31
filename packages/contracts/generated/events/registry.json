@@ -920,6 +920,498 @@
         },
         "additionalProperties": {}
       }
+    },
+    {
+      "eventType": "run.queued",
+      "eventVersion": 1,
+      "owner": "runtime-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "nodeKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "attempt": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "runId"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "run.running",
+      "eventVersion": 1,
+      "owner": "runtime-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "nodeKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "attempt": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "runId"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "run.paused",
+      "eventVersion": 1,
+      "owner": "runtime-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "nodeKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "attempt": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "runId"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "run.cancelling",
+      "eventVersion": 1,
+      "owner": "runtime-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "nodeKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "attempt": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "runId"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "run.cancelled",
+      "eventVersion": 1,
+      "owner": "runtime-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "nodeKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "attempt": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "runId"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "run.succeeded",
+      "eventVersion": 1,
+      "owner": "runtime-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "nodeKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "attempt": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "runId"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "run.failed",
+      "eventVersion": 1,
+      "owner": "runtime-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "nodeKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "attempt": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "runId"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "task.started",
+      "eventVersion": 1,
+      "owner": "runtime-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "nodeKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "attempt": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "runId"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "task.succeeded",
+      "eventVersion": 1,
+      "owner": "runtime-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "nodeKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "attempt": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "runId"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "usage.reservation_created",
+      "eventVersion": 1,
+      "owner": "runtime-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "nodeKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "attempt": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "runId"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "usage.reservation_finalized",
+      "eventVersion": 1,
+      "owner": "runtime-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "nodeKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "attempt": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "runId"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "usage.reservation_released",
+      "eventVersion": 1,
+      "owner": "runtime-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "nodeKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "attempt": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "runId"
+        ],
+        "additionalProperties": {}
+      }
     }
   ]
 }

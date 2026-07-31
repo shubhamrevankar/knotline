@@ -75,6 +75,16 @@ export const workspaceAccessPayloadV1Schema = z
   })
   .passthrough();
 
+export const runtimeTransitionPayloadV1Schema = z
+  .object({
+    runId: z.string().uuid(),
+    from: z.string().min(1).max(40).optional(),
+    to: z.string().min(1).max(40).optional(),
+    nodeKey: z.string().min(1).max(160).optional(),
+    attempt: z.number().int().positive().optional()
+  })
+  .passthrough();
+
 export const EVENT_SCHEMA_REGISTRY = [
   {
     eventType: "workflow.created",
@@ -146,6 +156,25 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "workspace-access",
     schema: workspaceAccessPayloadV1Schema
+  })),
+  ...[
+    "run.queued",
+    "run.running",
+    "run.paused",
+    "run.cancelling",
+    "run.cancelled",
+    "run.succeeded",
+    "run.failed",
+    "task.started",
+    "task.succeeded",
+    "usage.reservation_created",
+    "usage.reservation_finalized",
+    "usage.reservation_released"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "runtime-platform",
+    schema: runtimeTransitionPayloadV1Schema
   }))
 ] as const;
 

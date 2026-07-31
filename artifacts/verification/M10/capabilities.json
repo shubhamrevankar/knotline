@@ -1,0 +1,20 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M10/test-results/temporal-integration.json",
+      "verifiedAt": "2026-08-01T04:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-003"
+    ],
+    "id": "runtime.durable-local-execution",
+    "owner": {
+      "contact": "shurevan",
+      "team": "runtime-platform"
+    },
+    "runbook": "docs/operations/knotline/durable-runtime.md",
+    "status": "DEMO",
+    "summary": "Durable admission, deterministic Temporal execution, task attempts, pause/resume, ordered history, exact reservation settlement, start reconciliation, and scoped repair are verified locally."
+  }
+]

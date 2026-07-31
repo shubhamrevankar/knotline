@@ -55,6 +55,13 @@
       "follows": true,
       "activityAuditSeparated": true
     },
+    "runtime": {
+      "idempotentStart": true,
+      "staleFenceRejected": true,
+      "orderedEvents": true,
+      "tenantIsolated": true,
+      "api": true
+    },
     "auditEvents": 7
   }
 }

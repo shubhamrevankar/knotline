@@ -9,6 +9,8 @@ import {
   reactionSchema,
   renderSafeMarkdown,
   resourceTypeSchema,
+  runIntentSchema,
+  startRunSchema,
   validateWorkflowDefinition,
   workflowDefinitionSchema,
   workflowGenerationRequestSchema,
@@ -27,6 +29,7 @@ import {
 } from "@knotline/operations";
 import type {
   CollaborationRepository,
+  RuntimeRepository,
   TenantContext,
   VersionedWorkflowRepository,
   WorkflowRepository
@@ -65,6 +68,17 @@ export interface BuildAppOptions {
   readonly mutationsDisabled?: boolean;
   readonly workflowGeneration?: WorkflowGenerationService;
   readonly collaboration?: CollaborationRepository;
+  readonly runtime?: RuntimeRepository;
+  readonly runStarter?: {
+    start(input: {
+      readonly workspaceId: string;
+      readonly principalId: string;
+      readonly runId: string;
+      readonly temporalWorkflowId: string;
+      readonly plan: readonly unknown[];
+    }): Promise<void>;
+    signal(temporalWorkflowId: string, signal: "pause" | "resume" | "cancel"): Promise<void>;
+  };
 }
 
 interface ApiErrorReply {
@@ -1701,6 +1715,73 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       return { data: workflow };
     }
   );
+
+  app.post("/v1/workflows/:workflowId/runs", async (request, reply) => {
+    if (!options.runtime || !options.runStarter) throw new Error("Runtime is not configured");
+    const authenticated = await protectMutation(request);
+    const context = await workflowAccess(request, "workflow.create", true);
+    const { workflowId } = workflowParamsSchema.parse(request.params);
+    const body = startRunSchema.parse(request.body);
+    const run = await options.runtime.startRun(context, workflowId, body);
+    await options.runStarter.start({
+      workspaceId: context.workspaceId,
+      principalId: authenticated.identity.user.id,
+      runId: run.id,
+      temporalWorkflowId: run.temporalWorkflowId,
+      plan: run.plan ?? []
+    });
+    await options.runtime.markStartDispatched(context, run.id);
+    return reply.code(202).send({ data: run });
+  });
+
+  app.get("/v1/runs/:runId", async (request, reply) => {
+    if (!options.runtime) throw new Error("Runtime is not configured");
+    const context = await workflowAccess(request, "workflow.read");
+    const { runId } = z.object({ runId: z.string().uuid() }).parse(request.params);
+    const run = await options.runtime.run(context, runId);
+    if (!run)
+      return reply.code(404).send({
+        error: {
+          code: "RUN_NOT_FOUND",
+          message: "The run does not exist.",
+          requestId: request.id
+        }
+      });
+    return { data: run };
+  });
+
+  app.get("/v1/runs/:runId/events", async (request) => {
+    if (!options.runtime) throw new Error("Runtime is not configured");
+    const context = await workflowAccess(request, "workflow.read");
+    const { runId } = z.object({ runId: z.string().uuid() }).parse(request.params);
+    return { data: (await options.runtime.events(context, runId)) ?? [] };
+  });
+
+  const signalRun =
+    (signal: "pause" | "resume" | "cancel") =>
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      if (!options.runtime || !options.runStarter) throw new Error("Runtime is not configured");
+      const context = await workflowAccess(request, "workflow.manage", true);
+      const { runId } = z.object({ runId: z.string().uuid() }).parse(request.params);
+      const intent = runIntentSchema.parse({
+        ...(request.body as object),
+        type: signal === "pause" ? "pause" : signal === "resume" ? "resume" : "cancel"
+      });
+      const run = await options.runtime.run(context, runId);
+      if (!run)
+        return reply.code(404).send({
+          error: {
+            code: "RUN_NOT_FOUND",
+            message: "The run does not exist.",
+            requestId: request.id
+          }
+        });
+      await options.runStarter.signal(String(run.temporal_workflow_id), signal);
+      return reply.code(202).send({ accepted: true, intent });
+    };
+  app.post("/v1/runs/:runId/pauses", signalRun("pause"));
+  app.post("/v1/runs/:runId/resumptions", signalRun("resume"));
+  app.post("/v1/runs/:runId/cancellations", signalRun("cancel"));
 
   app.setErrorHandler((error, request, reply) => {
     if (error instanceof AuthFailure) {

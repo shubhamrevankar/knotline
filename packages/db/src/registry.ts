@@ -63,7 +63,22 @@ export const REQUIRED_STORES = [
   "resource_follows",
   "resource_activity_events",
   "notification_intents",
-  "saved_resource_filters"
+  "saved_resource_filters",
+  "workflow_runs",
+  "task_runs",
+  "task_dependencies",
+  "task_attempts",
+  "run_events",
+  "event_receipts",
+  "external_operations",
+  "external_operation_attempts",
+  "external_operation_attempt_records",
+  "dead_letter_items",
+  "entitlement_policies",
+  "budget_periods",
+  "admission_reservations",
+  "admission_ledger_entries",
+  "runtime_control_switches"
 ] as const;
 
 export async function validateDataStoreRegistry(): Promise<Registry> {

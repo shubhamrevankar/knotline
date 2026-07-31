@@ -2,38 +2,38 @@
   "assets": [
     {
       "bytes": 15372,
-      "gzipBytes": 4459,
-      "name": "App-Dk5bV2Xu.js"
+      "gzipBytes": 4458,
+      "name": "App-Cr45JKY8.js"
     },
     {
       "bytes": 6780,
-      "gzipBytes": 2498,
-      "name": "CollaborationPanel-BvAiHgd1.js"
+      "gzipBytes": 2496,
+      "name": "CollaborationPanel-BfLj94kO.js"
     },
     {
       "bytes": 5113,
-      "gzipBytes": 1296,
-      "name": "ComponentWorkbench-DZSe5M_g.js"
+      "gzipBytes": 1298,
+      "name": "ComponentWorkbench-F515T7Pa.js"
     },
     {
       "bytes": 8610,
-      "gzipBytes": 2817,
-      "name": "GuidedWorkflowCreate-Bghee1Y1.js"
+      "gzipBytes": 2818,
+      "name": "GuidedWorkflowCreate-Cy-XuODR.js"
     },
     {
       "bytes": 24637,
       "gzipBytes": 7168,
-      "name": "StudioPage-bvNy6MAD.js"
+      "name": "StudioPage-BzSBaN_v.js"
     },
     {
       "bytes": 291,
       "gzipBytes": 237,
-      "name": "bell-CJLyGjCE.js"
+      "name": "bell-C6h3geaC.js"
     },
     {
       "bytes": 280,
-      "gzipBytes": 208,
-      "name": "braces-D3uhJtAp.js"
+      "gzipBytes": 207,
+      "name": "braces-CqgPVKpc.js"
     },
     {
       "bytes": 178911,
@@ -46,14 +46,14 @@
       "name": "index-BxfnZxQ3.css"
     },
     {
-      "bytes": 189182,
-      "gzipBytes": 50577,
-      "name": "index-Do2NPR3n.js"
+      "bytes": 191294,
+      "gzipBytes": 50970,
+      "name": "index-LN3E6ajM.js"
     },
     {
       "bytes": 349,
-      "gzipBytes": 251,
-      "name": "plus-CRsK78J9.js"
+      "gzipBytes": 252,
+      "name": "plus-BWK5oLoP.js"
     },
     {
       "bytes": 248730,
@@ -68,16 +68,16 @@
     {
       "bytes": 329,
       "gzipBytes": 215,
-      "name": "trash-2-DQw68JYy.js"
+      "name": "trash-2-xIBkFBPk.js"
     }
   ],
   "errors": [],
   "initialAssets": [
     "index-BxfnZxQ3.css",
-    "index-Do2NPR3n.js",
+    "index-LN3E6ajM.js",
     "react-vendor-Ca2lDvkd.js"
   ],
-  "initialGzipBytes": 139605,
+  "initialGzipBytes": 139998,
   "limits": {
     "maxInitialGzipBytes": 140000,
     "maxJavaScriptBytes": 350000,
@@ -85,5 +85,5 @@
   },
   "schemaVersion": 1,
   "status": "PASS",
-  "totalGzipBytes": 217699
+  "totalGzipBytes": 218092
 }

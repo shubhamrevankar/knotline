@@ -1,5 +1,6 @@
 export * from "./client.js";
 export * from "./collaboration-repository.js";
+export * from "./runtime-repository.js";
 export * from "./auth-repository.js";
 export * from "./context.js";
 export * from "./migrations.js";

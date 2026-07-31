@@ -23,6 +23,7 @@ export default defineConfig({
         "apps/api/src/app.ts",
         "apps/api/src/auth.ts",
         "apps/api/src/workspace.ts",
+        "apps/worker/src/workflows.ts",
         "apps/web/src/AuthPages.tsx",
         "apps/web/src/M05Pages.tsx",
         "apps/web/src/M06Pages.tsx",

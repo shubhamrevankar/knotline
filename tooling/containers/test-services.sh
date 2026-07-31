@@ -42,6 +42,11 @@ docker compose --project-name "${project_name}" --file "${compose_file}" exec --
 docker compose --project-name "${project_name}" --file "${compose_file}" exec --no-TTY redis \
   redis-cli ping | grep --quiet PONG
 
+DB_MIGRATION_URL="postgresql://knotline_local:local-only-postgres-password@127.0.0.1:5432/knotline" \
+DATABASE_URL="postgresql://knotline_runtime:local-only-runtime-password@127.0.0.1:5432/knotline" \
+TEMPORAL_ADDRESS="127.0.0.1:7233" \
+  pnpm exec tsx tooling/runtime/temporal-smoke.ts
+
 mkdir -p "${repository_root}/artifacts/integration"
 docker compose --project-name "${project_name}" --file "${compose_file}" ps --services \
   | node "${repository_root}/tooling/containers/write-services-evidence.mjs" \

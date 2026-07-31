@@ -1,7 +1,7 @@
 {
   "milestone": "M08",
-  "planDigest": "sha256:151f9f247846c311af68e33a3f7e59e2c33cf23b3f736414dcf4418e955a06f6",
-  "routeRegistryDigest": "sha256:196666c59ec56c3a48f02576dda19abc33fce24d5445ea05d6f67162b4007a73",
+  "planDigest": "sha256:884722f67ac7169983a801f6201f6bd9922af51d5ad7febd48201b18b7cbcc5b",
+  "routeRegistryDigest": "sha256:2b6625d39fe0045b6b1cec9f73b8c586874ff76b4fcaefeae4b45decd884664b",
   "routes": [
     {
       "routeId": "route.public.home",

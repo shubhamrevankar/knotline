@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "milestone": "M09",
+  "milestone": "M10",
   "rows": [
     {
       "name": "format:check",
@@ -101,6 +101,8 @@
         "packages/contracts/src/workflow-definition.test.ts",
         "packages/contracts/src/workflow-generation.test.ts",
         "packages/contracts/src/collaboration.test.ts",
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
         "apps/web/src/studio-reducer.test.ts"
       ]
     },
@@ -136,7 +138,8 @@
       "requiredTestFiles": [
         "tooling/workflows/postgres-suite.ts",
         "apps/api/src/workflow-generation.test.ts",
-        "packages/contracts/src/collaboration.test.ts"
+        "packages/contracts/src/collaboration.test.ts",
+        "packages/contracts/src/runtime.test.ts"
       ]
     },
     {
@@ -205,6 +208,37 @@
       "status": "ACTIVE",
       "script": "verify:backup",
       "declarationRow": "backup smoke"
+    },
+    {
+      "name": "temporal replay/restart/concurrency/idempotency",
+      "status": "ACTIVE",
+      "script": "test:integration",
+      "declarationRow": "temporal replay/restart/concurrency/idempotency",
+      "requiredTestFiles": [
+        "tooling/runtime/temporal-smoke.ts",
+        "apps/worker/src/workflows.test.ts"
+      ]
+    },
+    {
+      "name": "outbox/dlq",
+      "status": "ACTIVE",
+      "script": "test:runtime",
+      "declarationRow": "outbox/dlq",
+      "requiredTestFiles": ["tooling/workflows/postgres-suite.ts"]
+    },
+    {
+      "name": "runtime load-lite",
+      "status": "ACTIVE",
+      "script": "test:runtime",
+      "declarationRow": "runtime load-lite",
+      "requiredTestFiles": ["packages/contracts/src/runtime.test.ts"]
+    },
+    {
+      "name": "kill/repair smoke",
+      "status": "ACTIVE",
+      "script": "test:integration",
+      "declarationRow": "kill/repair smoke",
+      "requiredTestFiles": ["tooling/runtime/repair.ts", "tooling/runtime/temporal-smoke.ts"]
     },
     {
       "name": "verify:iac",

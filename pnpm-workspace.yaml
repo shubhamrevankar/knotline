@@ -9,7 +9,9 @@ catalog:
   typescript: 6.0.3
   vitest: 4.1.10
 allowBuilds:
+  "@swc/core": true
   esbuild: true
+  protobufjs: true
   unrs-resolver: false
 minimumReleaseAgeExclude:
   - fastify@5.11.0
