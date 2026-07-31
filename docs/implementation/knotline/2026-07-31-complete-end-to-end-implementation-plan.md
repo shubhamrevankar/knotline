@@ -148,6 +148,16 @@ These decisions remain in force unless this document is explicitly amended.
   source context.
 - Product usefulness and clarity take priority over architectural novelty.
 - The UI is original and does not copy Trace’s appearance or implementation.
+- Trace research may remain under `docs/` as historical design input, but no
+  authored artifact outside `docs/` may retain Trace.so branding, domains,
+  logos, copied assets or copy, product identifiers, UI labels, seed data,
+  package/module names, comments, fixtures, snapshots, or implementation
+  provenance. Knotline code and runtime artifacts must be independently
+  authored and Knotline-branded.
+- Standard non-brand technical usage such as distributed trace/span IDs,
+  OpenTelemetry, Playwright trace output, and immutable third-party package
+  names is permitted. This narrow exception cannot contain or conceal a
+  Trace.so product reference.
 
 ### 1.2 Experience decisions
 
@@ -4853,6 +4863,7 @@ pnpm test:visual
 pnpm test:security
 pnpm test:evals               # once agent milestones begin
 pnpm build
+pnpm verify:brand
 pnpm verify:boundaries
 pnpm verify:openapi
 pnpm verify:events
@@ -4872,7 +4883,7 @@ is prohibited. Once introduced, it remains part of the cumulative gate.
 
 | Category | Required proof |
 |---|---|
-| Static/build | Formatting, real lint, strict types, package boundaries, reproducible build |
+| Static/build | Formatting, real lint, strict types, brand/provenance guard, package boundaries, reproducible build |
 | Unit | State, policy, validation, error classification, pure transformations |
 | Property/model-based | Graphs, branches, joins, concurrency, retry, cancel, ledger properties |
 | Database | Constraints, RLS, tenant FKs, append-only and immutable behavior |
@@ -5052,7 +5063,7 @@ journey it protects. M38 permits zero quarantine or unexplained skip.
 
 | Activated by | Gate capabilities activated and cumulative thereafter |
 |---|---|
-| M01 | Format, lint, strict type, unit coverage, build, package boundaries, license, dependency, secret, evidence, docs validation |
+| M01 | Format, lint, strict type, unit coverage, build, brand/provenance guard, package boundaries, license, dependency, secret, evidence, docs validation |
 | M02 | Browser E2E, automated accessibility, responsive/visual regression, bundle and Web Vitals smoke |
 | M03 | Real PostgreSQL integration, migration, RLS/tenant isolation, query plan, backup smoke |
 | M04 | Auth/session/CSRF/CORS/abuse security suite |
@@ -5397,6 +5408,13 @@ experience.
 - Pin supported Node and pnpm versions using repository configuration.
 - Add Prettier and ESLint with React, accessibility, import, promise, security,
   and TypeScript rules.
+- Add `verify:brand`, enforced locally and in CI, that scans every authored
+  tracked file and generated runtime artifact outside `docs/` for Trace.so
+  domains, brand names, identifiers, copied strings, known source-asset hashes,
+  and prohibited provenance markers. Keep the narrow, reviewed allowlist
+  limited to standard tracing terminology and immutable third-party package
+  metadata; the scanner configuration itself uses neutral rule IDs rather than
+  embedding the prohibited product branding throughout application code.
 - Add package-boundary enforcement.
 - Add root scripts named in the universal gate, initially delegating only to
   suites that exist and failing when a required suite has no tests.
@@ -5450,6 +5468,10 @@ experience.
 - Clean checkout with frozen lockfile.
 - Reproducible local and CI build.
 - Lint has intentional failing fixtures proving rules execute.
+- Brand/provenance verification rejects a synthetic inherited name, domain,
+  source asset, copied-copy fingerprint, fixture, and generated bundle outside
+  `docs/`; it permits the same historical reference under `docs/` and permits
+  standard trace/span terminology and immutable third-party package metadata.
 - Coverage configuration fails a package with no required tests.
 - API OpenAPI output has no uncommitted drift.
 - Event compatibility checker rejects a breaking fixture.
@@ -5471,6 +5493,9 @@ experience.
   and one command to run the complete current verification gate.
 - CI produces a versioned evidence artifact.
 - Product labels the current hard-coded content as demo rather than live.
+- A clean checkout and production build contain no Trace.so-derived branding,
+  identifier, copy, asset, seed content, comment, fixture, snapshot, or
+  implementation provenance outside `docs/`.
 
 ---
 
