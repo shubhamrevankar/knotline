@@ -18,6 +18,9 @@ workspace.
 ```text
 docs/
 ├── README.md
+├── implementation/
+│   └── knotline/
+│       └── 2026-07-31-complete-end-to-end-implementation-plan.md
 ├── product/
 │   └── knotline/
 │       └── 2026-07-31-product-build-blueprint.md
@@ -31,6 +34,9 @@ docs/
 
 ## Documents
 
+- [Knotline complete end-to-end implementation plan](implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md) —
+  authoritative scope, architecture, milestones, test gates, commits, and GA
+  acceptance
 - [Knotline product build blueprint](product/knotline/2026-07-31-product-build-blueprint.md)
 - [Trace.so technical analysis](research/trace-so/2026-07-29-trace-so-technical-analysis.md)
 - [Trace end-to-end system design](system-design/trace/2026-07-29-trace-end-to-end-system-design.md)
