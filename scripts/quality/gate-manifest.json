@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "milestone": "M01",
+  "milestone": "M02",
   "rows": [
     {
       "name": "format:check",
@@ -119,23 +119,40 @@
     },
     {
       "name": "test:e2e",
-      "status": "NOT_YET_APPLICABLE",
-      "activationMilestone": "M02"
+      "status": "ACTIVE",
+      "script": "test:e2e",
+      "declarationRow": "browser e2e",
+      "requiredTestFiles": ["tests/e2e/**/*.spec.ts"]
     },
     {
       "name": "verify:localization",
-      "status": "NOT_YET_APPLICABLE",
-      "activationMilestone": "M02"
+      "status": "ACTIVE",
+      "script": "verify:localization"
     },
     {
       "name": "test:a11y",
-      "status": "NOT_YET_APPLICABLE",
-      "activationMilestone": "M02"
+      "status": "ACTIVE",
+      "script": "test:a11y",
+      "declarationRow": "automated accessibility",
+      "requiredTestFiles": ["tests/e2e/**/*.{spec,test}.ts"]
     },
     {
       "name": "test:visual",
-      "status": "NOT_YET_APPLICABLE",
-      "activationMilestone": "M02"
+      "status": "ACTIVE",
+      "script": "test:visual",
+      "declarationRow": "responsive/visual regression",
+      "requiredTestFiles": ["tests/e2e/**/*.{spec,test}.ts"]
+    },
+    {
+      "name": "verify:web-performance",
+      "status": "ACTIVE",
+      "script": "verify:web-performance",
+      "declarationRow": "bundle and web vitals smoke"
+    },
+    {
+      "name": "verify:web-routes",
+      "status": "ACTIVE",
+      "script": "verify:web-routes"
     },
     {
       "name": "test:security",

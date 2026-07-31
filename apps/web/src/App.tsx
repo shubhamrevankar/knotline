@@ -21,19 +21,26 @@ import { useEffect, useRef, useState } from "react";
 import type { Workflow, WorkflowSummary } from "@knotline/contracts";
 import { fetchWorkflow, fetchWorkflows } from "./api";
 import { demoWorkflow, demoWorkflows } from "./demo";
+import { i18n, msg } from "./i18n.js";
 import { WorkflowCanvas } from "./WorkflowCanvas";
 
 const nav = [
-  { label: "Pulse", icon: Gauge },
-  { label: "Workflows", icon: Blocks, active: true },
-  { label: "Runs", icon: Activity, badge: "21" },
-  { label: "Agents", icon: Bot },
-  { label: "People", icon: UsersRound },
-  { label: "Connections", icon: Cable }
+  { label: msg("customer.nav.pulse"), icon: Gauge },
+  { label: msg("customer.nav.workflows"), icon: Blocks, active: true },
+  { label: msg("customer.nav.runs"), icon: Activity, badge: "21" },
+  { label: msg("customer.nav.agents"), icon: Bot },
+  { label: msg("customer.nav.people"), icon: UsersRound },
+  { label: msg("customer.nav.connections"), icon: Cable }
 ];
 
 function StatusPill({ status }: { status: WorkflowSummary["status"] }) {
-  return <span className={`workflow-status workflow-status--${status}`}>{status}</span>;
+  const label = {
+    active: msg("customer.status.active"),
+    archived: msg("customer.status.archived"),
+    draft: msg("customer.status.draft"),
+    paused: msg("customer.status.paused")
+  }[status];
+  return <span className={`workflow-status workflow-status--${status}`}>{label}</span>;
 }
 
 export function App() {
@@ -77,7 +84,7 @@ export function App() {
   return (
     <div className="app-shell">
       <aside
-        aria-label="Workspace navigation"
+        aria-label={msg("customer.nav.label")}
         className={sidebarOpen ? "sidebar sidebar--open" : "sidebar"}
         id="workspace-navigation"
       >
@@ -87,10 +94,10 @@ export function App() {
             <i />
             <i />
           </span>
-          <span>Knotline</span>
+          <span>{msg("brand.name")}</span>
           <button
             ref={closeButtonRef}
-            aria-label="Close navigation"
+            aria-label={msg("customer.nav.close")}
             className="icon-button mobile-only"
             onClick={closeSidebar}
             type="button"
@@ -104,13 +111,13 @@ export function App() {
             N
           </span>
           <span>
-            <strong>Northstar Studio</strong>
-            <small>DEMO team workspace</small>
+            <strong>{msg("customer.workspace.name")}</strong>
+            <small>{msg("customer.workspace.demo")}</small>
           </span>
           <ChevronDown aria-hidden="true" size={15} />
         </button>
 
-        <nav className="nav-list" aria-label="Main navigation">
+        <nav className="nav-list" aria-label={msg("customer.nav.main")}>
           {nav.map(({ label, icon: Icon, active, badge }) => (
             <button
               aria-current={active ? "page" : undefined}
@@ -126,34 +133,34 @@ export function App() {
         </nav>
 
         <div className="sidebar-section">
-          <span className="eyebrow">Saved views</span>
+          <span className="eyebrow">{msg("customer.saved.heading")}</span>
           <button className="nav-item" type="button">
             <span aria-hidden="true" className="view-dot view-dot--lime" />
-            Needs attention
+            {msg("customer.saved.attention")}
             <b>4</b>
           </button>
           <button className="nav-item" type="button">
             <span aria-hidden="true" className="view-dot view-dot--blue" />
-            Running today
+            {msg("customer.saved.running")}
           </button>
         </div>
 
         <div className="sidebar-footer">
           <button className="nav-item" type="button">
             <CircleHelp aria-hidden="true" size={17} />
-            Help & docs
+            {msg("customer.help")}
           </button>
           <button className="nav-item" type="button">
             <Settings2 aria-hidden="true" size={17} />
-            Workspace settings
+            {msg("customer.settings")}
           </button>
           <div className="profile">
             <span aria-hidden="true" className="profile-avatar">
-              MC
+              {msg("customer.user.initials")}
             </span>
             <span>
-              <strong>Maya Chen</strong>
-              <small>maya@northstar</small>
+              <strong>{msg("customer.user.name")}</strong>
+              <small>{msg("customer.user.handle")}</small>
             </span>
             <ChevronDown aria-hidden="true" size={14} />
           </div>
@@ -166,16 +173,16 @@ export function App() {
             ref={menuButtonRef}
             aria-controls="workspace-navigation"
             aria-expanded={sidebarOpen}
-            aria-label="Open navigation"
+            aria-label={msg("customer.nav.open")}
             className="icon-button mobile-only"
             onClick={() => setSidebarOpen(true)}
             type="button"
           >
             <Menu aria-hidden="true" size={19} />
           </button>
-          <button aria-label="Find anything" className="command-search" type="button">
+          <button aria-label={msg("customer.search")} className="command-search" type="button">
             <Search aria-hidden="true" size={16} />
-            <span>Find anything…</span>
+            <span>{msg("customer.search")}</span>
             <kbd>
               <Command aria-hidden="true" size={12} /> K
             </kbd>
@@ -187,58 +194,60 @@ export function App() {
               role="status"
             >
               <i aria-hidden="true" />
-              {connected ? "Demo API" : "Demo fallback"}
+              {connected ? msg("customer.connection.api") : msg("customer.connection.fallback")}
             </span>
-            <button aria-label="Notifications" className="icon-button" type="button">
+            <button
+              aria-label={msg("customer.notifications")}
+              className="icon-button"
+              type="button"
+            >
               <Bell aria-hidden="true" size={18} />
             </button>
             <button className="primary-button" type="button">
               <Plus aria-hidden="true" size={16} />
-              New workflow
+              {msg("customer.workflow.new")}
             </button>
           </div>
         </header>
 
-        <div aria-label="Demo environment" className="demo-banner" role="note">
-          <strong>DEMO</strong>
-          <span>
-            Sample workspace, identity, workflows, runs, and metrics. No production activity.
-          </span>
+        <div aria-label={msg("customer.demo.environment")} className="demo-banner" role="note">
+          <strong>{msg("customer.demo.label")}</strong>
+          <span>{msg("customer.demo.body")}</span>
         </div>
 
         <section aria-labelledby="workflows-heading" className="page">
           <div className="page-heading">
             <div>
-              <span className="section-index">02 / OPERATIONS</span>
-              <h1 id="workflows-heading">Workflows</h1>
-              <p>Design the path. Assign the judgment. Keep every run legible.</p>
+              <span className="section-index">{msg("customer.section.operations")}</span>
+              <h1 id="workflows-heading">{msg("customer.workflow.heading")}</h1>
+              <p>{msg("customer.workflow.tagline")}</p>
             </div>
             <button className="secondary-button" type="button">
               <Library aria-hidden="true" size={16} />
-              Browse patterns
+              {msg("customer.workflow.patterns")}
             </button>
           </div>
 
-          <div aria-label="Demo activity metrics" className="metric-strip" role="group">
+          <div aria-label={msg("customer.metrics.label")} className="metric-strip" role="group">
             <article>
-              <span>Runs in motion</span>
-              <strong>21</strong>
-              <small>↑ 14% this week</small>
+              <span>{msg("customer.metrics.runs")}</span>
+              <strong>{i18n.number(21)}</strong>
+              <small>{msg("customer.metrics.runsdetail")}</small>
             </article>
             <article>
-              <span>Waiting on people</span>
-              <strong>04</strong>
-              <small>2 due today</small>
+              <span>{msg("customer.metrics.waiting")}</span>
+              <strong>{i18n.number(4, { minimumIntegerDigits: 2 })}</strong>
+              <small>{msg("customer.metrics.waitingdetail")}</small>
             </article>
             <article>
-              <span>Agent success</span>
-              <strong>96.2%</strong>
-              <small>last 30 days</small>
+              <span>{msg("customer.metrics.agent")}</span>
+              <strong>{i18n.number(0.962, { style: "percent", maximumFractionDigits: 1 })}</strong>
+              <small>{msg("customer.metrics.agentdetail")}</small>
             </article>
             <article className="metric-highlight">
               <Sparkles aria-hidden="true" size={17} />
-              <span>Time returned</span>
-              <strong>38h</strong>
+              <span>{msg("customer.metrics.time")}</span>
+              <strong>{msg("customer.metrics.hours", { count: i18n.number(38) })}</strong>
             </article>
           </div>
 
@@ -246,18 +255,24 @@ export function App() {
             <section aria-labelledby="workflow-library-heading" className="workflow-list-panel">
               <div className="panel-heading">
                 <div>
-                  <span className="eyebrow">Library</span>
-                  <strong id="workflow-library-heading">{workflows.length} workflows</strong>
+                  <span className="eyebrow">{msg("customer.library.heading")}</span>
+                  <strong id="workflow-library-heading">
+                    {msg("customer.library.count", { count: workflows.length })}
+                  </strong>
                 </div>
                 <button
-                  aria-label="Workflow library settings"
+                  aria-label={msg("customer.library.settings")}
                   className="icon-button"
                   type="button"
                 >
                   <Settings2 aria-hidden="true" size={16} />
                 </button>
               </div>
-              <div aria-label="Demo workflows" className="workflow-list" role="group">
+              <div
+                aria-label={msg("customer.library.group")}
+                className="workflow-list"
+                role="group"
+              >
                 {workflows.map((item) => (
                   <button
                     aria-pressed={item.id === selectedId}
@@ -277,8 +292,8 @@ export function App() {
                     <strong>{item.name}</strong>
                     <p>{item.description}</p>
                     <span className="workflow-meta">
-                      <span>{item.nodeCount} steps</span>
-                      <span>{item.activeRuns} active runs</span>
+                      <span>{msg("customer.workflow.steps", { count: item.nodeCount })}</span>
+                      <span>{msg("customer.workflow.runs", { count: item.activeRuns })}</span>
                       <ArrowUpRight aria-hidden="true" size={15} />
                     </span>
                   </button>
@@ -289,38 +304,54 @@ export function App() {
             <section aria-labelledby="selected-workflow-heading" className="canvas-panel">
               <div className="canvas-header">
                 <div>
-                  <span className="eyebrow">Demo map / v{workflow.version}</span>
+                  <span className="eyebrow">
+                    {msg("customer.map.version", { version: workflow.version })}
+                  </span>
                   <h2 id="selected-workflow-heading">{workflow.name}</h2>
                 </div>
                 <div className="canvas-actions">
                   <button className="secondary-button" type="button">
-                    Edit map
+                    {msg("customer.map.edit")}
                   </button>
                   <button className="run-button" type="button">
                     <span aria-hidden="true" />
-                    Run workflow
+                    {msg("customer.map.run")}
                   </button>
                 </div>
               </div>
               <WorkflowCanvas workflow={workflow} />
-              <div aria-label="Workflow status legend" className="canvas-legend" role="group">
+              <div aria-label={msg("customer.map.legend")} className="canvas-legend" role="group">
                 <span>
                   <i aria-hidden="true" className="legend-dot legend-dot--running" />
-                  In motion
+                  {msg("customer.map.running")}
                 </span>
                 <span>
                   <i aria-hidden="true" className="legend-dot legend-dot--waiting" />
-                  Waiting
+                  {msg("customer.map.waiting")}
                 </span>
                 <span>
                   <i aria-hidden="true" className="legend-dot legend-dot--complete" />
-                  Complete
+                  {msg("customer.map.complete")}
                 </span>
               </div>
             </section>
           </div>
         </section>
       </main>
+      <nav className="mobile-bottom-nav" aria-label={msg("customer.nav.mobile")}>
+        <button type="button" aria-current="page">
+          <Blocks aria-hidden="true" size={18} />
+          {msg("customer.nav.workflows")}
+        </button>
+        <button type="button">
+          <Activity aria-hidden="true" size={18} />
+          {msg("customer.nav.runs")}
+        </button>
+        <button type="button">
+          <Plus aria-hidden="true" size={18} />
+          {msg("customer.workflow.new")}
+        </button>
+      </nav>
     </div>
   );
 }

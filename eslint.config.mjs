@@ -13,7 +13,7 @@ import { localizationPlugin } from "./tooling/localization/eslint-plugin.mjs";
 
 const typescriptFiles = ["**/*.{ts,tsx}"];
 const reactFiles = ["apps/web/**/*.{ts,tsx}"];
-const userVisibleCopyFiles = ["apps/**/*.{ts,tsx}", "packages/**/*.{ts,tsx}"];
+const userVisibleCopyFiles = ["apps/web/src/**/*.{ts,tsx}", "packages/ui/src/index.tsx"];
 
 export const policyConfig = tseslint.config(
   eslint.configs.recommended,
@@ -78,9 +78,13 @@ export const policyConfig = tseslint.config(
     }
   },
   {
-    files: userVisibleCopyFiles,
     plugins: { knotline: localizationPlugin },
     rules: { "knotline/no-hardcoded-user-visible-string": "off" }
+  },
+  {
+    files: userVisibleCopyFiles,
+    ignores: ["**/*.test.{ts,tsx}", "**/__lint_fixtures__/**"],
+    rules: { "knotline/no-hardcoded-user-visible-string": "error" }
   },
   {
     files: reactFiles,
@@ -124,6 +128,7 @@ export default tseslint.config(
       "**/*.tsbuildinfo",
       "artifacts/**",
       "contracts/generated/**",
+      "packages/contracts/src/routes.generated.ts",
       "docs/**",
       "playwright-report/**",
       "apps/web/src/__lint_fixtures__/**",

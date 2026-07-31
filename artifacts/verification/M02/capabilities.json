@@ -1,0 +1,52 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://apps/web/src/demo.ts",
+      "verifiedAt": "2026-07-31T21:30:00.000Z"
+    },
+    "externalGates": [],
+    "id": "workflow.demo_library",
+    "owner": {
+      "contact": "shurevan",
+      "team": "product-engineering"
+    },
+    "runbook": "docs/operations/knotline/production-controls.md",
+    "status": "DEMO",
+    "summary": "The workflow library and map use explicitly labelled demonstration data."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://tests/e2e/route-matrix.spec.ts",
+      "verifiedAt": "2026-07-31T21:30:00.000Z"
+    },
+    "externalGates": [
+      "EXT-001"
+    ],
+    "id": "public.product_shell",
+    "owner": {
+      "contact": "shurevan",
+      "team": "product-engineering"
+    },
+    "runbook": "docs/operations/knotline/production-controls.md",
+    "status": "DEMO",
+    "summary": "Thirteen owner routes are complete locally; later routes are visibly planned and production naming remains externally blocked."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://apps/web/src/ComponentWorkbench.tsx",
+      "verifiedAt": "2026-07-31T21:30:00.000Z"
+    },
+    "externalGates": [],
+    "id": "ui.component_workbench",
+    "owner": {
+      "contact": "shurevan",
+      "team": "product-engineering"
+    },
+    "runbook": "docs/operations/knotline/production-controls.md",
+    "status": "DEMO",
+    "summary": "The shared token and primitive system is available in the localized component workbench."
+  }
+]

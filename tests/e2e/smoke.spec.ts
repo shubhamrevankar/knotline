@@ -1,7 +1,7 @@
 import { expect, test } from "./fixtures.js";
 
 test("current app is console-clean and responsive", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/app/workflows");
 
   await expect(page).toHaveTitle(/Knotline/);
   await expect(page.getByRole("heading", { level: 1, name: "Workflows" })).toBeVisible();

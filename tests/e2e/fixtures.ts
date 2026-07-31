@@ -6,6 +6,14 @@ export const test = base.extend<{ consoleMessages: string[] }>({
     async ({ page }, use) => {
       const messages: string[] = [];
 
+      await page.addInitScript(() => {
+        if (new URL(globalThis.location.href).searchParams.has("consent")) {
+          globalThis.localStorage.removeItem("knotline.consent.v1");
+        } else {
+          globalThis.localStorage.setItem("knotline.consent.v1", "essential");
+        }
+      });
+
       page.on("console", (message) => {
         if (message.type() === "error") messages.push(`console: ${message.text()}`);
       });

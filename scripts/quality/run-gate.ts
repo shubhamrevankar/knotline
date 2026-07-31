@@ -65,6 +65,8 @@ const ACTIVATION_MILESTONES = {
   "verify:iac": "M34",
   "verify:licenses": "M01",
   "verify:localization": "M02",
+  "verify:web-performance": "M02",
+  "verify:web-routes": "M02",
   "verify:migrations": "M03",
   "verify:openapi": "M01",
   "verify:reproducible-build": "M01",

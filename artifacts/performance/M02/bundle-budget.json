@@ -1,0 +1,37 @@
+{
+  "assets": [
+    {
+      "bytes": 196234,
+      "gzipBytes": 63648,
+      "name": "App-Carywq0r.js"
+    },
+    {
+      "bytes": 5113,
+      "gzipBytes": 1296,
+      "name": "ComponentWorkbench-rohB3t4O.js"
+    },
+    {
+      "bytes": 295308,
+      "gzipBytes": 87406,
+      "name": "index-BACpTCgu.js"
+    },
+    {
+      "bytes": 36957,
+      "gzipBytes": 7805,
+      "name": "index-D9Jo7xKR.css"
+    },
+    {
+      "bytes": 56752,
+      "gzipBytes": 18772,
+      "name": "react-vendor-CCzC7ttb.js"
+    }
+  ],
+  "errors": [],
+  "limits": {
+    "maxJavaScriptBytes": 350000,
+    "maxTotalGzipBytes": 180000
+  },
+  "schemaVersion": 1,
+  "status": "PASS",
+  "totalGzipBytes": 178927
+}

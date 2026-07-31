@@ -1,5 +1,7 @@
 import type { ApiEnvelope, Workflow, WorkflowSummary } from "@knotline/contracts";
 
+import { classifyStatus, RequestFailure } from "./query/errors.js";
+
 const configuredApiUrl: unknown = import.meta.env.VITE_API_URL;
 const apiUrl = typeof configuredApiUrl === "string" ? configuredApiUrl : "http://localhost:4100";
 
@@ -9,7 +11,13 @@ async function request<T>(path: string): Promise<T> {
     headers: { accept: "application/json" }
   });
   if (!response.ok) {
-    throw new Error(`Request failed with ${response.status}`);
+    throw new RequestFailure(
+      `Request failed with ${response.status}`,
+      classifyStatus(response.status),
+      response.headers.get("knotline-request-id") ??
+        response.headers.get("x-request-id") ??
+        undefined
+    );
   }
   return (await response.json()) as T;
 }

@@ -13,6 +13,7 @@ import {
   type NodeProps
 } from "@xyflow/react";
 import { Bot, Check, CircleDot, Send, ShieldCheck, UserRound } from "lucide-react";
+import { msg } from "./i18n.js";
 
 type OperationNodeData = {
   title: string;
@@ -32,13 +33,20 @@ const iconByKind = {
 
 function OperationNode({ data }: NodeProps<Node<OperationNodeData>>) {
   const Icon = iconByKind[data.kind];
+  const kindLabel = {
+    action: msg("canvas.kind.action"),
+    agent: msg("canvas.kind.agent"),
+    approval: msg("canvas.kind.approval"),
+    human: msg("canvas.kind.human"),
+    trigger: msg("canvas.kind.trigger")
+  }[data.kind];
   return (
     <article className={`operation-node operation-node--${data.status}`}>
       <Handle type="target" position={Position.Left} />
       <header>
         <span className="node-kind">
           <Icon aria-hidden="true" size={13} strokeWidth={2.2} />
-          {data.kind}
+          {kindLabel}
         </span>
         <span aria-hidden="true" className={`status-dot status-dot--${data.status}`} />
       </header>
@@ -61,8 +69,27 @@ function OperationNode({ data }: NodeProps<Node<OperationNodeData>>) {
 const nodeTypes = { operation: OperationNode };
 
 export function WorkflowCanvas({ workflow }: { workflow: Workflow }) {
+  const kindLabels: Record<NodeKind, string> = {
+    action: msg("canvas.kind.action"),
+    agent: msg("canvas.kind.agent"),
+    approval: msg("canvas.kind.approval"),
+    human: msg("canvas.kind.human"),
+    trigger: msg("canvas.kind.trigger")
+  };
+  const statusLabels: Record<NodeStatus, string> = {
+    complete: msg("canvas.status.complete"),
+    failed: msg("canvas.status.failed"),
+    queued: msg("canvas.status.queued"),
+    running: msg("canvas.status.running"),
+    waiting: msg("canvas.status.waiting")
+  };
   const nodes: Node<OperationNodeData>[] = workflow.nodes.map((node) => ({
-    ariaLabel: `${node.title}, ${node.kind}, ${node.status}, owned by ${node.owner}`,
+    ariaLabel: msg("canvas.node.aria", {
+      kind: kindLabels[node.kind],
+      owner: node.owner,
+      status: statusLabels[node.status],
+      title: node.title
+    }),
     id: node.id,
     type: "operation",
     position: { x: node.x, y: node.y },
@@ -85,14 +112,11 @@ export function WorkflowCanvas({ workflow }: { workflow: Workflow }) {
 
   return (
     <div
-      aria-label={`${workflow.name} visual workflow map with ${nodes.length} steps`}
+      aria-label={msg("canvas.region.aria", { count: nodes.length, name: workflow.name })}
       className="canvas"
       role="region"
     >
-      <p className="sr-only">
-        Use Tab to reach workflow steps and map controls. The workflow contains {nodes.length}{" "}
-        steps.
-      </p>
+      <p className="sr-only">{msg("canvas.instructions", { count: nodes.length })}</p>
       <ReactFlow
         nodes={nodes}
         edges={edges}

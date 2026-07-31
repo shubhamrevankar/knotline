@@ -2,7 +2,7 @@ import { AxeBuilder } from "@axe-core/playwright";
 import { expect, test } from "./fixtures.js";
 
 test("@a11y current app has no detectable WCAG A or AA violations", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/app/workflows");
   await expect(page.getByRole("heading", { level: 1, name: "Workflows" })).toBeVisible();
 
   const results = await new AxeBuilder({ page })

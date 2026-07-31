@@ -1,0 +1,6637 @@
+{
+  "planDigest": "sha256:4e9269f41daf30a7947125f2a949e32c3bf376d94b522ac1dc21f29ecbc4a863",
+  "requirements": [
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M31",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-001",
+      "routes": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M31",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-002",
+      "routes": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M31",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-003",
+      "routes": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M31",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-004",
+      "routes": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M31",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-005",
+      "routes": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M31",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-006",
+      "routes": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M31",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-007",
+      "routes": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-015",
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-04",
+        "CJ-19"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M32",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-008",
+      "routes": [
+        "route.app.settings.identity",
+        "route.app.settings.policies",
+        "route.app.settings.security"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-19"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M31",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-009",
+      "routes": [
+        "route.app.settings.audit",
+        "route.app.settings.data",
+        "route.app.settings.support-access",
+        "route.ops.privacy"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-015",
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-04",
+        "CJ-19"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M32",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AD-010",
+      "routes": [
+        "route.app.settings.identity",
+        "route.app.settings.policies",
+        "route.app.settings.security"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M14",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-001",
+      "routes": [
+        "route.app.agents",
+        "route.app.agents.detail",
+        "route.app.agents.detail.builder",
+        "route.app.agents.new"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M14",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-002",
+      "routes": [
+        "route.app.agents",
+        "route.app.agents.detail",
+        "route.app.agents.detail.builder",
+        "route.app.agents.new"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03",
+        "CJ-06"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M15",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-003",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M14",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-004",
+      "routes": [
+        "route.app.agents",
+        "route.app.agents.detail",
+        "route.app.agents.detail.builder",
+        "route.app.agents.new"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03",
+        "CJ-06"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M15",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-005",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03",
+        "CJ-06"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M15",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-006",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M17",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-007",
+      "routes": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M17",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-008",
+      "routes": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M16",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-009",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M16",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M16",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-010",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M16",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M17",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-011",
+      "routes": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M17",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-012",
+      "routes": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M16",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-013",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M16",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M17",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-014",
+      "routes": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RELEASE"
+      ],
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M18",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-015",
+      "routes": [
+        "route.app.agents.detail.activity",
+        "route.app.agents.detail.evals"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RELEASE"
+      ],
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M18",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-016",
+      "routes": [
+        "route.app.agents.detail.activity",
+        "route.app.agents.detail.evals"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RELEASE"
+      ],
+      "journeyIds": [
+        "CJ-10"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M18",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-017",
+      "routes": [
+        "route.app.agents.detail.activity",
+        "route.app.agents.detail.evals"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M34",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-018",
+      "routes": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M17",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-019",
+      "routes": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M17",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-020",
+      "routes": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M17",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-021",
+      "routes": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-11"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M17",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "AG-022",
+      "routes": [
+        "route.app.agents.detail.memory",
+        "route.app.profile.memory"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M29",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-001",
+      "routes": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M29",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-002",
+      "routes": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M29",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-003",
+      "routes": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M29",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-004",
+      "routes": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-005",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-006",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M29",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-007",
+      "routes": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M29",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-008",
+      "routes": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M29",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-009",
+      "routes": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-005",
+        "EXT-020"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-17"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M29",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "BL-010",
+      "routes": [
+        "route.app.settings.billing",
+        "route.app.settings.usage",
+        "route.pricing"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M22",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-001",
+      "routes": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M22",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-002",
+      "routes": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M22",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-003",
+      "routes": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M22",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-004",
+      "routes": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M22",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-005",
+      "routes": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M22",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-006",
+      "routes": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-14.PROVIDERS"
+      ],
+      "journeyIds": [
+        "CJ-14"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M26",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-007",
+      "routes": [
+        "route.app.workflows.detail.triggers"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M22",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-008",
+      "routes": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-13.ENTERPRISE_DATA",
+        "CJ-13.FRAMEWORK",
+        "CJ-13.KNOWLEDGE",
+        "CJ-13.WORK"
+      ],
+      "journeyIds": [
+        "CJ-13"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M22",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-009",
+      "routes": [
+        "route.app.connections",
+        "route.app.connections.detail",
+        "route.app.connections.new.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-007",
+        "EXT-014",
+        "EXT-025"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M38",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CN-010",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M38",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M09",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-001",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M09",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M09",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-002",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M09",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M09",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-003",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M09",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M28",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-004",
+      "routes": [
+        "route.app",
+        "route.app.analytics",
+        "route.app.analytics.reports.detail",
+        "route.app.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M28",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-005",
+      "routes": [
+        "route.app",
+        "route.app.analytics",
+        "route.app.analytics.reports.detail",
+        "route.app.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M28",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-006",
+      "routes": [
+        "route.app",
+        "route.app.analytics",
+        "route.app.analytics.reports.detail",
+        "route.app.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M28",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-007",
+      "routes": [
+        "route.app",
+        "route.app.analytics",
+        "route.app.analytics.reports.detail",
+        "route.app.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M28",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-008",
+      "routes": [
+        "route.app",
+        "route.app.analytics",
+        "route.app.analytics.reports.detail",
+        "route.app.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-16"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M28",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "CO-009",
+      "routes": [
+        "route.app",
+        "route.app.analytics",
+        "route.app.analytics.reports.detail",
+        "route.app.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-001",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-002",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-003",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-004",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-005",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [
+        "apps/web/src/routes/manifest.ts#plane-and-entitlement"
+      ],
+      "automatedTests": [
+        "tests/e2e/route-matrix.spec.ts",
+        "tests/e2e/responsive.spec.ts"
+      ],
+      "dataLifecycleRules": [],
+      "engineeringState": "IN_PROGRESS",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [
+        "artifact://M02/manual/responsive-product-review"
+      ],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-006",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [
+        "artifacts/verification/M02/route-coverage.json"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/router.tsx",
+        "packages/ui/src/index.tsx",
+        "apps/web/src/i18n.ts"
+      ],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-007",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-008",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-009",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-010",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-011",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-012",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-013",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-014",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [
+        "apps/web/src/routes/manifest.ts#plane-and-entitlement"
+      ],
+      "automatedTests": [
+        "tests/e2e/route-matrix.spec.ts",
+        "tests/e2e/responsive.spec.ts"
+      ],
+      "dataLifecycleRules": [],
+      "engineeringState": "IN_PROGRESS",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [
+        "artifact://M02/manual/responsive-product-review"
+      ],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-015",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [
+        "artifacts/verification/M02/route-coverage.json"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/router.tsx",
+        "packages/ui/src/index.tsx",
+        "apps/web/src/i18n.ts"
+      ],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-001",
+        "EXT-006",
+        "EXT-016",
+        "EXT-019",
+        "EXT-021",
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-016",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-006",
+        "EXT-013",
+        "EXT-016"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "EX-017",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-08",
+        "CJ-09"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M12",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-001",
+      "routes": [
+        "route.app.inbox",
+        "route.app.tasks",
+        "route.app.tasks.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-08",
+        "CJ-09"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M12",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-002",
+      "routes": [
+        "route.app.inbox",
+        "route.app.tasks",
+        "route.app.tasks.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-08",
+        "CJ-09"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M12",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-003",
+      "routes": [
+        "route.app.inbox",
+        "route.app.tasks",
+        "route.app.tasks.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-08",
+        "CJ-09"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M12",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-004",
+      "routes": [
+        "route.app.inbox",
+        "route.app.tasks",
+        "route.app.tasks.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-08",
+        "CJ-09"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M12",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-005",
+      "routes": [
+        "route.app.inbox",
+        "route.app.tasks",
+        "route.app.tasks.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-09"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M13",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-006",
+      "routes": [
+        "route.app.approvals",
+        "route.app.approvals.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-09"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M13",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-007",
+      "routes": [
+        "route.app.approvals",
+        "route.app.approvals.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-09"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M13",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-008",
+      "routes": [
+        "route.app.approvals",
+        "route.app.approvals.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-09"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M13",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-009",
+      "routes": [
+        "route.app.approvals",
+        "route.app.approvals.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-09"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M13",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-010",
+      "routes": [
+        "route.app.approvals",
+        "route.app.approvals.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-08",
+        "CJ-09"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M12",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "HU-011",
+      "routes": [
+        "route.app.inbox",
+        "route.app.tasks",
+        "route.app.tasks.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-006"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M04",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-001",
+      "routes": [
+        "route.app.profile",
+        "route.app.profile.sessions",
+        "route.auth.check-email",
+        "route.auth.google.callback",
+        "route.auth.magic.callback",
+        "route.auth.sign-in"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-007"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M04",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-002",
+      "routes": [
+        "route.app.profile",
+        "route.app.profile.sessions",
+        "route.auth.check-email",
+        "route.auth.google.callback",
+        "route.auth.magic.callback",
+        "route.auth.sign-in"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-015"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-04",
+        "CJ-19"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M32",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-003",
+      "routes": [
+        "route.app.settings.identity",
+        "route.app.settings.policies",
+        "route.app.settings.security"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-006"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M04",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-004",
+      "routes": [
+        "route.app.profile",
+        "route.app.profile.sessions",
+        "route.auth.check-email",
+        "route.auth.google.callback",
+        "route.auth.magic.callback",
+        "route.auth.sign-in"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-006"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-02"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M04",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-005",
+      "routes": [
+        "route.app.profile",
+        "route.app.profile.sessions",
+        "route.auth.check-email",
+        "route.auth.google.callback",
+        "route.auth.magic.callback",
+        "route.auth.sign-in"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M05",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-006",
+      "routes": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M05",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-007",
+      "routes": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M05",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-008",
+      "routes": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M05",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-009",
+      "routes": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M05",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-010",
+      "routes": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-18"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M30",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-011",
+      "routes": [
+        "route.app.developer.api",
+        "route.app.developer.apps",
+        "route.app.developer.webhooks",
+        "route.app.settings.developers",
+        "route.app.settings.webhooks"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-015"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-04",
+        "CJ-19"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M32",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-012",
+      "routes": [
+        "route.app.settings.identity",
+        "route.app.settings.policies",
+        "route.app.settings.security"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-015"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.REGION_MIGRATION"
+      ],
+      "journeyIds": [
+        "CJ-04",
+        "CJ-19"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M32",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-013",
+      "routes": [
+        "route.app.settings.identity",
+        "route.app.settings.policies",
+        "route.app.settings.security"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M03",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-014",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M03",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M03",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ID-015",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M03",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M19",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-001",
+      "routes": [
+        "route.app.knowledge.documents.detail",
+        "route.app.knowledge.sources"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M19",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-002",
+      "routes": [
+        "route.app.knowledge.documents.detail",
+        "route.app.knowledge.sources"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M19",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-003",
+      "routes": [
+        "route.app.knowledge.documents.detail",
+        "route.app.knowledge.sources"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M19",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-004",
+      "routes": [
+        "route.app.knowledge.documents.detail",
+        "route.app.knowledge.sources"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M20",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-005",
+      "routes": [
+        "route.app.knowledge.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M20",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-006",
+      "routes": [
+        "route.app.knowledge.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M20",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-007",
+      "routes": [
+        "route.app.knowledge.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M20",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-008",
+      "routes": [
+        "route.app.knowledge.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M20",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-009",
+      "routes": [
+        "route.app.knowledge.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-12.CONNECTED"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M21",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-010",
+      "routes": [
+        "route.app.knowledge",
+        "route.app.knowledge.entities",
+        "route.app.knowledge.entities.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-12.CONNECTED"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M21",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-011",
+      "routes": [
+        "route.app.knowledge",
+        "route.app.knowledge.entities",
+        "route.app.knowledge.entities.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-12.CONNECTED"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M21",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-012",
+      "routes": [
+        "route.app.knowledge",
+        "route.app.knowledge.entities",
+        "route.app.knowledge.entities.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M20",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-013",
+      "routes": [
+        "route.app.knowledge.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M20",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "KN-014",
+      "routes": [
+        "route.app.knowledge.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-019"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M34",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-001",
+      "routes": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-019"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M34",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-002",
+      "routes": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-003",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-004",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-005",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-006",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-017"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M35",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-007",
+      "routes": [
+        "route.ops.security"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-008",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-009",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [
+        "apps/web/src/routes/manifest.ts#plane-and-entitlement"
+      ],
+      "automatedTests": [
+        "tests/e2e/route-matrix.spec.ts",
+        "tests/e2e/responsive.spec.ts"
+      ],
+      "dataLifecycleRules": [],
+      "engineeringState": "IN_PROGRESS",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-023"
+      ],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [
+        "artifact://M02/manual/responsive-product-review"
+      ],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-010",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [
+        "artifacts/verification/M02/route-coverage.json"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/router.tsx",
+        "packages/ui/src/index.tsx",
+        "apps/web/src/i18n.ts"
+      ],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-017"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M35",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-011",
+      "routes": [
+        "route.ops.security"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-012",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M34",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-013",
+      "routes": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-014",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-015",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [
+        "apps/web/src/routes/manifest.ts#plane-and-entitlement"
+      ],
+      "automatedTests": [
+        "tests/e2e/route-matrix.spec.ts",
+        "tests/e2e/responsive.spec.ts"
+      ],
+      "dataLifecycleRules": [],
+      "engineeringState": "IN_PROGRESS",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [
+        "artifact://M02/manual/responsive-product-review"
+      ],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-016",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [
+        "artifacts/verification/M02/route-coverage.json"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/router.tsx",
+        "packages/ui/src/index.tsx",
+        "apps/web/src/i18n.ts"
+      ],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [
+        "apps/web/src/routes/manifest.ts#plane-and-entitlement"
+      ],
+      "automatedTests": [
+        "tests/e2e/route-matrix.spec.ts",
+        "tests/e2e/responsive.spec.ts"
+      ],
+      "dataLifecycleRules": [],
+      "engineeringState": "IN_PROGRESS",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-15.PUSH"
+      ],
+      "journeyIds": [
+        "CJ-01",
+        "CJ-20",
+        "CJ-21",
+        "CJ-22"
+      ],
+      "manualEvidence": [
+        "artifact://M02/manual/responsive-product-review"
+      ],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M33",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-017",
+      "routes": [
+        "route.accessibility",
+        "route.app.feedback",
+        "route.app.support",
+        "route.app.support.detail",
+        "route.contact",
+        "route.guest",
+        "route.help",
+        "route.help.wildcard",
+        "route.legal.acceptable-use",
+        "route.legal.dpa",
+        "route.legal.privacy",
+        "route.legal.subprocessors",
+        "route.legal.terms",
+        "route.status",
+        "route.trust"
+      ],
+      "routeStateEvidence": [
+        "artifacts/verification/M02/route-coverage.json"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/router.tsx",
+        "packages/ui/src/index.tsx",
+        "apps/web/src/i18n.ts"
+      ],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [
+        "apps/web/src/routes/manifest.ts#plane-and-entitlement"
+      ],
+      "automatedTests": [
+        "tests/e2e/route-matrix.spec.ts",
+        "tests/e2e/responsive.spec.ts"
+      ],
+      "dataLifecycleRules": [],
+      "engineeringState": "IN_PROGRESS",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [
+        "artifact://M02/manual/responsive-product-review"
+      ],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-018",
+      "routes": [],
+      "routeStateEvidence": [
+        "artifacts/verification/M02/route-coverage.json"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/router.tsx",
+        "packages/ui/src/index.tsx",
+        "apps/web/src/i18n.ts"
+      ],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [
+        "apps/web/src/routes/manifest.ts#plane-and-entitlement"
+      ],
+      "automatedTests": [
+        "tests/e2e/route-matrix.spec.ts",
+        "tests/e2e/responsive.spec.ts"
+      ],
+      "dataLifecycleRules": [],
+      "engineeringState": "IN_PROGRESS",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [
+        "artifact://M02/manual/responsive-product-review"
+      ],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-019",
+      "routes": [],
+      "routeStateEvidence": [
+        "artifacts/verification/M02/route-coverage.json"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/router.tsx",
+        "packages/ui/src/index.tsx",
+        "apps/web/src/i18n.ts"
+      ],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [
+        "apps/web/src/routes/manifest.ts#plane-and-entitlement"
+      ],
+      "automatedTests": [
+        "tests/e2e/route-matrix.spec.ts",
+        "tests/e2e/responsive.spec.ts"
+      ],
+      "dataLifecycleRules": [],
+      "engineeringState": "IN_PROGRESS",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [
+        "artifact://M02/manual/responsive-product-review"
+      ],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-020",
+      "routes": [],
+      "routeStateEvidence": [
+        "artifacts/verification/M02/route-coverage.json"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/router.tsx",
+        "packages/ui/src/index.tsx",
+        "apps/web/src/i18n.ts"
+      ],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-019"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M34",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-021",
+      "routes": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-019"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M34",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-022",
+      "routes": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-11.RETRIEVAL"
+      ],
+      "journeyIds": [
+        "CJ-12"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M20",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "NFR-023",
+      "routes": [
+        "route.app.knowledge.search"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M05",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-001",
+      "routes": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-06"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M08",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-002",
+      "routes": [
+        "route.app.workflows.new"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03",
+        "CJ-06"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M15",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-003",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M05",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-004",
+      "routes": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M05",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-005",
+      "routes": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M05",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-006",
+      "routes": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M05",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "ON-007",
+      "routes": [
+        "route.app.onboarding",
+        "route.app.settings.members",
+        "route.app.settings.roles",
+        "route.app.settings.workspace",
+        "route.invitations.accept"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [
+        "tooling/quality/plan-contract.test.mjs",
+        "tooling/gate/evidence.test.mjs"
+      ],
+      "dataLifecycleRules": [],
+      "engineeringState": "COMMITTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [
+        "docs/operations/knotline/production-controls.md"
+      ],
+      "primaryMilestone": "M01",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-001",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [
+        "tooling/quality/plan-contract.mjs",
+        "tooling/gate/evidence.mjs"
+      ],
+      "supportContractReason": "Plan-owned support contract implemented by M01",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [
+        "tooling/quality/plan-contract.test.mjs",
+        "tooling/gate/evidence.test.mjs"
+      ],
+      "dataLifecycleRules": [],
+      "engineeringState": "COMMITTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [
+        "docs/operations/knotline/production-controls.md"
+      ],
+      "primaryMilestone": "M01",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-002",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [
+        "tooling/quality/plan-contract.mjs",
+        "tooling/gate/evidence.mjs"
+      ],
+      "supportContractReason": "Plan-owned support contract implemented by M01",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003",
+        "EXT-021",
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.PRODUCTION",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M37",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-003",
+      "routes": [
+        "route.ops.releases"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003",
+        "EXT-021",
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.PRODUCTION",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M37",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-004",
+      "routes": [
+        "route.ops.releases"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003",
+        "EXT-021",
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.PRODUCTION",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M37",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-005",
+      "routes": [
+        "route.ops.releases"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-002",
+        "EXT-003",
+        "EXT-021",
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.PRODUCTION",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M37",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-006",
+      "routes": [
+        "route.ops.releases"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-019"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M34",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-007",
+      "routes": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-019"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M34",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-008",
+      "routes": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-009",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-010",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-022"
+      ],
+      "journeyBranchIds": [
+        "CJ-19.RESTORE",
+        "CJ-24.PRODUCTION"
+      ],
+      "journeyIds": [
+        "CJ-24"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M36",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-011",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-017",
+        "EXT-018"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M35",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-012",
+      "routes": [
+        "route.ops.security"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-019",
+        "EXT-024"
+      ],
+      "journeyBranchIds": [
+        "CJ-23.SECURITY"
+      ],
+      "journeyIds": [
+        "CJ-23"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M34",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "OP-013",
+      "routes": [
+        "route.app.settings.feature-access",
+        "route.ops",
+        "route.ops.incidents",
+        "route.ops.providers",
+        "route.ops.runtime",
+        "route.ops.support",
+        "route.ops.workspaces.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [
+        "CJ-14.PROVIDERS"
+      ],
+      "journeyIds": [
+        "CJ-14"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M26",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-001",
+      "routes": [
+        "route.app.workflows.detail.triggers"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-002",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-003",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-004",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-005",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-006",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-007",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-008",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-009",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-010",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-011",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-012",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-013",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-014",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-015",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-07"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M11",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-016",
+      "routes": [
+        "route.app.runs",
+        "route.app.runs.detail",
+        "route.app.runs.detail.tasks.detail",
+        "route.app.runs.detail.timeline"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-017",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-003"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M10",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "RN-018",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "supportContractReason": "Plan-owned support contract implemented by M10",
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M06",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-001",
+      "routes": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M06",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-002",
+      "routes": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [
+        "EXT-004"
+      ],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-03",
+        "CJ-06"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M15",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-003",
+      "routes": [],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M06",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-004",
+      "routes": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M07",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-005",
+      "routes": [
+        "route.app.workflows.detail.studio"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M07",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-006",
+      "routes": [
+        "route.app.workflows.detail.studio"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M07",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-007",
+      "routes": [
+        "route.app.workflows.detail.studio"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M07",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-008",
+      "routes": [
+        "route.app.workflows.detail.studio"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M07",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-009",
+      "routes": [
+        "route.app.workflows.detail.studio"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M07",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-010",
+      "routes": [
+        "route.app.workflows.detail.studio"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M07",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-011",
+      "routes": [
+        "route.app.workflows.detail.studio"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M07",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-012",
+      "routes": [
+        "route.app.workflows.detail.studio"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M06",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-013",
+      "routes": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-06"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M08",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-014",
+      "routes": [
+        "route.app.workflows.new"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M06",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-015",
+      "routes": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M06",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-016",
+      "routes": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M06",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-017",
+      "routes": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M06",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-018",
+      "routes": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M06",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-019",
+      "routes": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    },
+    {
+      "authorizationRules": [],
+      "automatedTests": [],
+      "dataLifecycleRules": [],
+      "engineeringState": "NOT_STARTED",
+      "environmentState": "NOT_DEPLOYED",
+      "events": [],
+      "externalGates": [],
+      "journeyBranchIds": [],
+      "journeyIds": [
+        "CJ-05"
+      ],
+      "manualEvidence": [],
+      "openapiOperationIds": [],
+      "operationalControls": [],
+      "primaryMilestone": "M06",
+      "regressionMilestones": [
+        "M38"
+      ],
+      "requirementId": "WF-020",
+      "routes": [
+        "route.app.templates",
+        "route.app.templates.detail",
+        "route.app.workflows",
+        "route.app.workflows.detail",
+        "route.app.workflows.detail.settings",
+        "route.app.workflows.detail.versions",
+        "route.app.workflows.detail.versions.detail"
+      ],
+      "routeStateEvidence": [],
+      "sourceSymbols": [],
+      "tablesAndObjects": []
+    }
+  ],
+  "schemaVersion": 1,
+  "traceabilityRegistryDigest": "sha256:47a78b43c701a30980ddfd1202a30d0e127663ce42eefa360944828eb74ff67f"
+}

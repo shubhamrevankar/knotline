@@ -5507,7 +5507,7 @@ experience.
 
 ### M02 — Design system, route architecture, responsive shell, and public truth
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M01\
 **Required commit:** `feat: deliver the responsive Knotline product shell`
 
@@ -5534,6 +5534,14 @@ Knotline experience across phone, tablet, desktop, and wide screens.
 - Register every implemented Section 5 route with stable route ID, class,
   authorization/entitlement, owner, canonical journeys, and explicit
   `REQUIRED`/reasoned `NOT_APPLICABLE` route-state coverage.
+- M02 owns complete behavior for its thirteen Section 5.1 route patterns. Every
+  later-owned public path renders an explicit `PLANNED` or review-pending shell
+  naming its owner milestone, and every `/app/*` or `/ops/*` path has registered
+  route/layout plumbing; `/ops/*` always uses the isolated operator layout.
+- The web route manifest must exactly cover all 105 canonical route IDs and
+  record route class, authorization plane, entitlement, owner milestone,
+  canonical journeys, and declared data-source type. CI rejects omissions,
+  duplicates, contract drift, or a route mounted in the wrong layout plane.
 - Add query client, error boundary, request correlation display, route-level
   suspense, and safe retry.
 - Implement every Section 5.1 public route shell, including all declared
@@ -5578,6 +5586,8 @@ Knotline experience across phone, tablet, desktop, and wide screens.
 - The current workflow view remains usable at every supported width.
 - A keyboard-only user can navigate public and app shells.
 - Public pages never claim unimplemented capabilities are live.
+- M02 contributes verified foundation evidence to EX-006, EX-015, NFR-010,
+  NFR-016–NFR-020 without claiming the M33/M36 primary completion states.
 
 ---
 
@@ -9198,7 +9208,7 @@ must appear in that milestone's boundary cell.
 |---|---|---|---|---|
 | M00 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `c1a2f16`; baseline verification |
 | M01 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `chore: establish the verified Knotline engineering system` |
-| M02 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-001 | `feat: deliver the responsive Knotline product shell` |
+| M02 | `COMMITTED` | `NOT_DEPLOYED` | EXT-001 | `feat: deliver the responsive Knotline product shell` |
 | M03 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-002 | `feat: persist Knotline data with enforced tenant isolation` |
 | M04 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006, EXT-007 | `feat: add secure passwordless and Google authentication` |
 | M05 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006 | `feat: enable complete workspace onboarding and access control` |

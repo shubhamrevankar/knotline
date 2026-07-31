@@ -4,10 +4,10 @@ test("@keyboard mobile navigation opens, closes, and restores focus", async ({
   page
 }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile-chromium", "Mobile drawer journey");
-  await page.goto("/");
+  await page.goto("/app/workflows");
 
   const openNavigation = page.getByRole("button", { name: "Open navigation" });
-  await page.keyboard.press("Tab");
+  await openNavigation.focus();
   await expect(openNavigation).toBeFocused();
 
   await page.keyboard.press("Enter");

@@ -67,7 +67,10 @@ describe("universal gate runner", () => {
       readFileSync(resolve(workspaceRoot, "contracts/generated/gate-activation.json"), "utf8")
     ) as NonNullable<Parameters<typeof validateGateManifest>[3]>;
     const declaration = JSON.parse(
-      readFileSync(resolve(workspaceRoot, "artifacts/verification/M01/declaration.json"), "utf8")
+      readFileSync(
+        resolve(workspaceRoot, `artifacts/verification/${manifest.milestone}/declaration.json`),
+        "utf8"
+      )
     ) as NonNullable<Parameters<typeof validateGateManifest>[4]>;
     const errors = validateGateManifest(
       manifest,
