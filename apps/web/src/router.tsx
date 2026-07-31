@@ -39,6 +39,11 @@ const ComponentWorkbench = lazy(async () => {
   return { default: module.ComponentWorkbench };
 });
 
+const WorkflowStudio = lazy(async () => {
+  const module = await import("./StudioPage.js");
+  return { default: module.StudioPage };
+});
+
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
   "go-to-market": msg("solution.gotomarket"),
@@ -335,6 +340,12 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
   if (route.id === "route.app.settings.members") return <MembersPage />;
   if (route.id === "route.app.settings.roles") return <RolesPage />;
   if (route.id === "route.app.workflows.detail") return <WorkflowDetailPage />;
+  if (route.id === "route.app.workflows.detail.studio")
+    return (
+      <Suspense fallback={<Skeleton label={msg("studio.loading")} />}>
+        <WorkflowStudio />
+      </Suspense>
+    );
   if (route.id === "route.app.workflows.detail.settings") return <WorkflowSettingsPage />;
   if (
     route.id === "route.app.workflows.detail.versions" ||

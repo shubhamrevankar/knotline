@@ -6,8 +6,15 @@ export default defineConfig({
     manifest: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          "react-vendor": ["react", "react-dom", "react-router-dom", "@tanstack/react-query"]
+        manualChunks(id) {
+          if (id.includes("@xyflow") && !id.endsWith(".css")) return "flow-vendor";
+          if (
+            /node_modules\/(?:\.pnpm\/)?(?:react(?:-dom|-router)?@|react\/|react-dom\/|react-router|@tanstack\+react-query|@tanstack\/react-query)/u.test(
+              id
+            )
+          )
+            return "react-vendor";
+          return undefined;
         }
       }
     }

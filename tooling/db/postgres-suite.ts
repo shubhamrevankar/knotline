@@ -304,7 +304,7 @@ async function rlsSuite(adminUrl: string, pool: DatabasePool): Promise<Record<st
   );
   await pool.query(
     `INSERT INTO workflow_nodes(workspace_id, workflow_id, workflow_version, id, stable_key, kind) VALUES
-     ($1, $3, 1, $4, 'source_a', 'action'), ($2, $3, 1, $5, 'target_b', 'action')`,
+     ($1, $3, 1, $4, 'source_a', 'human'), ($2, $3, 1, $5, 'target_b', 'human')`,
     [SEED.workspaceA, SEED.workspaceB, crossWorkflow, sourceNode, targetNode]
   );
   await expectRejected(

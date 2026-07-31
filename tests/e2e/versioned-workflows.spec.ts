@@ -5,7 +5,7 @@ const workflowId = "wf_launch-campaign";
 test("builder creates a persisted workflow draft from the workflow library", async ({ page }) => {
   await page.goto("/app/workflows");
   await expect(page.getByRole("heading", { name: "Workflows" })).toBeVisible();
-  await page.getByRole("button", { name: "New workflow" }).click();
+  await page.getByRole("main").getByRole("button", { name: "New workflow" }).click();
   await page.getByLabel("Workflow name").fill("Customer escalation");
   await page.getByLabel("Description").fill("Route and resolve escalations");
   await page.getByRole("button", { name: "Create draft" }).click();

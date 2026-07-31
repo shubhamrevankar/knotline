@@ -4,7 +4,7 @@
   "image": "pgvector/pgvector:0.8.1-pg17-trixie@sha256:137f044b0efe3d57f39b972b9b53641b1f2045b99d879e298bbf514a25787dcf",
   "retries": 0,
   "result": {
-    "persistedWorkflowId": "6db98814-f6c4-45c8-97a6-89d99c941ad0",
+    "persistedWorkflowId": "7343c42a-2b9b-4509-b240-2f3a488cb099",
     "concurrentCreates": 12,
     "optimisticWinnerCount": 1,
     "rollbackVerified": true

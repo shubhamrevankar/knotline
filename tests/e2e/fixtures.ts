@@ -15,7 +15,13 @@ export const test = base.extend<{ consoleMessages: string[] }>({
       });
 
       page.on("console", (message) => {
-        if (message.type() === "error") messages.push(`console: ${message.text()}`);
+        const expectedConcurrencyResponse =
+          message.type() === "error" &&
+          /Failed to load resource: the server responded with a status of (?:409|412)/u.test(
+            message.text()
+          );
+        if (message.type() === "error" && !expectedConcurrencyResponse)
+          messages.push(`console: ${message.text()}`);
       });
       page.on("pageerror", (error) => messages.push(`pageerror: ${error.message}`));
 

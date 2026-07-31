@@ -1,38 +1,58 @@
 {
   "assets": [
     {
-      "bytes": 194045,
-      "gzipBytes": 62690,
-      "name": "App-BC1T0L5_.js"
+      "bytes": 15799,
+      "gzipBytes": 4607,
+      "name": "App-BSbSjL04.js"
     },
     {
       "bytes": 5113,
-      "gzipBytes": 1295,
-      "name": "ComponentWorkbench-CDrZn4LO.js"
+      "gzipBytes": 1296,
+      "name": "ComponentWorkbench-CBry94GE.js"
     },
     {
-      "bytes": 40550,
-      "gzipBytes": 8551,
-      "name": "index-CAPzwXRa.css"
+      "bytes": 24172,
+      "gzipBytes": 7069,
+      "name": "StudioPage-rJe_3IVI.js"
     },
     {
-      "bytes": 311168,
-      "gzipBytes": 91791,
-      "name": "index-CiaN2kB-.js"
+      "bytes": 178911,
+      "gzipBytes": 58535,
+      "name": "flow-vendor-DqTwcKSY.js"
     },
     {
-      "bytes": 56760,
-      "gzipBytes": 18776,
-      "name": "react-vendor-ChtHdOmd.js"
+      "bytes": 178539,
+      "gzipBytes": 47154,
+      "name": "index-Cqr9zmmy.js"
+    },
+    {
+      "bytes": 50402,
+      "gzipBytes": 10397,
+      "name": "index-JHRY6IAp.css"
+    },
+    {
+      "bytes": 349,
+      "gzipBytes": 249,
+      "name": "plus-E86qikeE.js"
+    },
+    {
+      "bytes": 248730,
+      "gzipBytes": 78118,
+      "name": "react-vendor-Ca2lDvkd.js"
+    },
+    {
+      "bytes": 755,
+      "gzipBytes": 410,
+      "name": "studio-layout.worker-KjMP2n6b.js"
     }
   ],
   "errors": [],
   "initialAssets": [
-    "index-CAPzwXRa.css",
-    "index-CiaN2kB-.js",
-    "react-vendor-ChtHdOmd.js"
+    "index-Cqr9zmmy.js",
+    "index-JHRY6IAp.css",
+    "react-vendor-Ca2lDvkd.js"
   ],
-  "initialGzipBytes": 119118,
+  "initialGzipBytes": 135669,
   "limits": {
     "maxInitialGzipBytes": 140000,
     "maxJavaScriptBytes": 350000,
@@ -40,5 +60,5 @@
   },
   "schemaVersion": 1,
   "status": "PASS",
-  "totalGzipBytes": 183103
+  "totalGzipBytes": 207835
 }

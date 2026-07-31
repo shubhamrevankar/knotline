@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M07/manual/studio-review.json",
+      "verifiedAt": "2026-08-01T01:05:00.000Z"
+    },
+    "externalGates": [],
+    "id": "workflow.accessible-studio",
+    "owner": {
+      "contact": "shurevan",
+      "team": "workflow-platform"
+    },
+    "runbook": "docs/operations/knotline/workflow-studio.md",
+    "status": "DEMO",
+    "summary": "Responsive canvas and outline editing, typed inspectors, optimistic concurrency, encrypted recovery, validation focus, and 500-node layout are verified locally."
+  }
+]

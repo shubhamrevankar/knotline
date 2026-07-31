@@ -1,0 +1,9 @@
+{
+  "id": "m07-studio-review",
+  "kind": "manual",
+  "owner": "shurevan",
+  "recordedAt": "2026-08-01T01:05:00.000Z",
+  "schemaVersion": 1,
+  "status": "PASS",
+  "summary": "Reviewed all ten node kinds, canvas and outline parity, typed node and edge settings, keyboard/touch alternatives, validation focus, explicit concurrency conflict, encrypted recovery, worker layout, and mobile outline-first order."
+}

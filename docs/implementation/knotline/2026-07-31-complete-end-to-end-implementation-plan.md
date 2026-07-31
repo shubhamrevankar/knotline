@@ -5872,7 +5872,7 @@ reusable template.
 
 ### M07 — Complete accessible workflow studio
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M02, M06\
 **Required commit:** `feat: deliver the complete responsive workflow studio`
 
@@ -9219,7 +9219,7 @@ must appear in that milestone's boundary cell.
 | M04 | `COMMITTED` | `NOT_DEPLOYED` | EXT-006, EXT-007 | `feat: add secure passwordless and Google authentication` |
 | M05 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006 | `feat: enable complete workspace onboarding and access control` |
 | M06 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver versioned workflow definitions and publishing` |
-| M07 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the complete responsive workflow studio` |
+| M07 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the complete responsive workflow studio` |
 | M08 | `NOT_STARTED` | `NOT_DEPLOYED` | `SIMULATED`; EXT-004 `BLOCKED_EXTERNAL` for real activation | `feat: add guided workflow generation and safe test mode` |
 | M09 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006 for email mention delivery later | `feat: add collaborative workflow and work discussions` |
 | M10 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-003 | `feat: execute workflows durably across failures` |

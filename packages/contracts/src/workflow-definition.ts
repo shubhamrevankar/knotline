@@ -49,7 +49,10 @@ export const workflowDefinitionEdgeSchema = z
     key: keySchema,
     source: keySchema,
     target: keySchema,
-    condition: restrictedExpressionSchema.optional()
+    condition: restrictedExpressionSchema.optional(),
+    label: z.string().trim().max(160).optional(),
+    pathType: z.enum(["success", "failure", "default"]).optional(),
+    mapping: z.record(z.string(), restrictedExpressionSchema).optional()
   })
   .strict();
 

@@ -1,0 +1,270 @@
+{
+  "activeGateRows": [
+    "format",
+    "lint",
+    "strict type",
+    "unit coverage",
+    "build",
+    "brand/provenance guard",
+    "package boundaries",
+    "license",
+    "dependency",
+    "secret",
+    "evidence",
+    "docs validation",
+    "browser e2e",
+    "automated accessibility",
+    "responsive/visual regression",
+    "bundle and web vitals smoke",
+    "real postgresql integration",
+    "migration",
+    "rls/tenant isolation",
+    "query plan",
+    "backup smoke",
+    "auth/session/csrf/cors/abuse security suite",
+    "workflow schema/property",
+    "api/openapi",
+    "event compatibility"
+  ],
+  "declaredEnvironmentState": "NOT_DEPLOYED",
+  "deployments": [],
+  "environmentGates": [],
+  "evidenceUris": [
+    "repo://apps/web/src/StudioPage.tsx",
+    "repo://apps/web/src/studio-reducer.ts",
+    "repo://apps/web/src/studio-recovery.ts",
+    "repo://tests/e2e/workflow-studio.spec.ts",
+    "repo://docs/operations/knotline/workflow-studio.md"
+  ],
+  "externalGates": [],
+  "flags": [],
+  "knownRisks": [],
+  "manualReviews": [
+    {
+      "evidenceUri": "artifact://M07/manual/studio-review",
+      "id": "m07-studio-review",
+      "owner": "shurevan"
+    }
+  ],
+  "migrations": [],
+  "milestone": "M07",
+  "notYetApplicable": [
+    {
+      "activationMilestone": "M10",
+      "reason": "This gate activates with M10.",
+      "row": "temporal replay/restart/concurrency/idempotency"
+    },
+    {
+      "activationMilestone": "M10",
+      "reason": "This gate activates with M10.",
+      "row": "outbox/dlq"
+    },
+    {
+      "activationMilestone": "M10",
+      "reason": "This gate activates with M10.",
+      "row": "runtime load-lite"
+    },
+    {
+      "activationMilestone": "M10",
+      "reason": "This gate activates with M10.",
+      "row": "kill/repair smoke"
+    },
+    {
+      "activationMilestone": "M12",
+      "reason": "This gate activates with M12.",
+      "row": "restricted task/comment attachment upload"
+    },
+    {
+      "activationMilestone": "M12",
+      "reason": "This gate activates with M12.",
+      "row": "checksum/quota"
+    },
+    {
+      "activationMilestone": "M12",
+      "reason": "This gate activates with M12.",
+      "row": "quarantine/malware"
+    },
+    {
+      "activationMilestone": "M12",
+      "reason": "This gate activates with M12.",
+      "row": "authorization"
+    },
+    {
+      "activationMilestone": "M12",
+      "reason": "This gate activates with M12.",
+      "row": "download"
+    },
+    {
+      "activationMilestone": "M12",
+      "reason": "This gate activates with M12.",
+      "row": "and lifecycle gate"
+    },
+    {
+      "activationMilestone": "M15",
+      "reason": "This gate activates with M15.",
+      "row": "model contract/live-sandbox gate"
+    },
+    {
+      "activationMilestone": "M15",
+      "reason": "This gate activates with M15.",
+      "row": "structured output"
+    },
+    {
+      "activationMilestone": "M15",
+      "reason": "This gate activates with M15.",
+      "row": "evaluation smoke"
+    },
+    {
+      "activationMilestone": "M15",
+      "reason": "This gate activates with M15.",
+      "row": "ai usage/cost and kill switch"
+    },
+    {
+      "activationMilestone": "M16",
+      "reason": "This gate activates with M16.",
+      "row": "tool/credential/ssrf/sandbox security"
+    },
+    {
+      "activationMilestone": "M18",
+      "reason": "This gate activates with M18.",
+      "row": "full agent evaluation"
+    },
+    {
+      "activationMilestone": "M18",
+      "reason": "This gate activates with M18.",
+      "row": "release/canary/rollback"
+    },
+    {
+      "activationMilestone": "M19",
+      "reason": "This gate activates with M19.",
+      "row": "file malware/parser/object lifecycle"
+    },
+    {
+      "activationMilestone": "M20",
+      "reason": "This gate activates with M20.",
+      "row": "retrieval quality/acl/citation/performance"
+    },
+    {
+      "activationMilestone": "M22",
+      "reason": "This gate activates with M22.",
+      "row": "connector contract/oauth/webhook/sync fixture suites"
+    },
+    {
+      "activationMilestone": "M23",
+      "reason": "This gate activates with M23.",
+      "row": "each named provider’s real sandbox certification row"
+    },
+    {
+      "activationMilestone": "M27",
+      "reason": "This gate activates with M27.",
+      "row": "notification delivery/render/access-recheck"
+    },
+    {
+      "activationMilestone": "M29",
+      "reason": "This gate activates with M29.",
+      "row": "billing/entitlement/ledger/stripe sandbox"
+    },
+    {
+      "activationMilestone": "M31",
+      "reason": "This gate activates with M31.",
+      "row": "privacy/export/delete/retention/hold/restore-deletion"
+    },
+    {
+      "activationMilestone": "M32",
+      "reason": "This gate activates with M32.",
+      "row": "sso/scim/policy/residency/migration"
+    },
+    {
+      "activationMilestone": "M33",
+      "reason": "This gate activates with M33.",
+      "row": "complete browser/device/locale/pwa/guest/support/manual at matrix"
+    },
+    {
+      "activationMilestone": "M34",
+      "reason": "This gate activates with M34.",
+      "row": "aws staging terraform/fresh deploy/canary/rollback plus workforce operator identity"
+    },
+    {
+      "activationMilestone": "M34",
+      "reason": "This gate activates with M34.",
+      "row": "trace/redaction/sli/alert/runbook/kill/game-day"
+    },
+    {
+      "activationMilestone": "M35",
+      "reason": "This gate activates with M35.",
+      "row": "sast/dast/iac/container/sbom/signature/penetration evidence"
+    },
+    {
+      "activationMilestone": "M36",
+      "reason": "This gate activates with M36.",
+      "row": "section 4.2 full load/soak/chaos/backup/restore/dr profiles"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "terraform"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "fresh bootstrap"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "deployment"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "canary"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "rollback"
+    },
+    {
+      "activationMilestone": "M38",
+      "reason": "This gate activates with M38.",
+      "row": "every gate row above and every external gate in ga scope; zero gate-row n/a/skip/quarantine. reasoned route-state not_applicable remains governed by section 5.8"
+    }
+  ],
+  "owners": [
+    "shurevan"
+  ],
+  "requirements": [
+    "WF-005",
+    "WF-006",
+    "WF-007",
+    "WF-008",
+    "WF-009",
+    "WF-010",
+    "WF-011",
+    "WF-012"
+  ],
+  "schemaVersion": 1,
+  "targetEngineeringState": "COMMITTED",
+  "testRuns": [
+    {
+      "command": "pnpm test:unit",
+      "evidenceUri": "artifact://M07/test-results/studio-unit",
+      "id": "m07-studio-unit"
+    },
+    {
+      "command": "pnpm exec playwright test tests/e2e/workflow-studio.spec.ts",
+      "evidenceUri": "artifact://M07/test-results/studio-browser",
+      "id": "m07-studio-browser"
+    },
+    {
+      "command": "pnpm test:a11y",
+      "evidenceUri": "artifact://M07/test-results/studio-accessibility",
+      "id": "m07-studio-accessibility"
+    },
+    {
+      "command": "pnpm exec vitest run apps/web/src/studio-reducer.test.ts",
+      "evidenceUri": "artifact://M07/test-results/studio-performance",
+      "id": "m07-studio-performance"
+    }
+  ]
+}

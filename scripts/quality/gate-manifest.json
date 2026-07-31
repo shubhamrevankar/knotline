@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "milestone": "M04",
+  "milestone": "M07",
   "rows": [
     {
       "name": "format:check",
@@ -51,7 +51,12 @@
       "declarationRow": "package boundaries"
     },
     { "name": "verify:openapi", "status": "ACTIVE", "script": "verify:openapi" },
-    { "name": "verify:events", "status": "ACTIVE", "script": "verify:events" },
+    {
+      "name": "verify:events",
+      "status": "ACTIVE",
+      "script": "verify:events",
+      "declarationRow": "event compatibility"
+    },
     {
       "name": "verify:contracts",
       "status": "ACTIVE",
@@ -89,8 +94,13 @@
     },
     {
       "name": "test:property",
-      "status": "NOT_YET_APPLICABLE",
-      "activationMilestone": "M06"
+      "status": "ACTIVE",
+      "script": "test:property",
+      "declarationRow": "workflow schema/property",
+      "requiredTestFiles": [
+        "packages/contracts/src/workflow-definition.test.ts",
+        "apps/web/src/studio-reducer.test.ts"
+      ]
     },
     {
       "name": "test:db",
@@ -118,8 +128,10 @@
     },
     {
       "name": "test:api",
-      "status": "NOT_YET_APPLICABLE",
-      "activationMilestone": "M06"
+      "status": "ACTIVE",
+      "script": "test:api",
+      "declarationRow": "api/openapi",
+      "requiredTestFiles": ["tooling/workflows/postgres-suite.ts"]
     },
     {
       "name": "test:e2e",
