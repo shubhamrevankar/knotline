@@ -1,6 +1,7 @@
 import cors from "@fastify/cors";
 import {
   createWorkflowRequestSchema,
+  workflowDefinitionSchema,
   type ApiEnvelope,
   type Workflow,
   type WorkflowSummary
@@ -14,7 +15,7 @@ import {
   parseRequestId,
   type RequestTraceContext
 } from "@knotline/operations";
-import type { TenantContext, WorkflowRepository } from "@knotline/db";
+import type { TenantContext, VersionedWorkflowRepository, WorkflowRepository } from "@knotline/db";
 import Fastify, {
   LogController,
   type FastifyInstance,
@@ -41,6 +42,7 @@ export interface BuildAppOptions {
   readonly repository: WorkflowRepository;
   readonly auth: AuthService;
   readonly workspace?: WorkspaceService;
+  readonly workflowDefinitions?: VersionedWorkflowRepository;
   readonly captureMailer?: CaptureAuthMailer;
   readonly captureInvitationMailer?: CaptureInvitationMailer;
   readonly trustedProxy?: string;
@@ -205,6 +207,21 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   const requireActiveWorkspace = (authenticated: AuthenticatedRequest, workspaceId: string) => {
     if (authenticated.identity.activeWorkspaceId !== workspaceId)
       throw new AuthFailure("WORKSPACE_NOT_FOUND", 404, "The workspace does not exist.");
+  };
+  const workflowDefinitions = () => {
+    if (!options.workflowDefinitions)
+      throw new Error("Versioned workflow repository is not configured");
+    return options.workflowDefinitions;
+  };
+  const workflowAccess = async (
+    request: FastifyRequest,
+    permission: "workflow.read" | "workflow.create" | "workflow.manage",
+    mutation = false
+  ) => {
+    const authenticated = mutation ? await protectMutation(request) : await authenticate(request);
+    if (!options.workspace) return tenantContext(options, request, authenticated);
+    return (await options.workspace.require(authenticated.identity, request.id, permission))
+      .context;
   };
 
   const magicRequestSchema = z
@@ -937,6 +954,412 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
           }
         })
       );
+    });
+  }
+
+  if (options.workflowDefinitions) {
+    const workflowIdParams = z.object({ workflowId: z.string().uuid() }).strict();
+    const workflowVersionParams = z
+      .object({ workflowId: z.string().uuid(), version: z.coerce.number().int().positive() })
+      .strict();
+    const defaultDefinition = (name: string, description = "") =>
+      workflowDefinitionSchema.parse({
+        schemaVersion: 1,
+        name,
+        description,
+        inputSchema: {},
+        outputSchema: {},
+        nodes: [
+          {
+            key: "manual_start",
+            kind: "trigger",
+            name: "Manual start",
+            description: "",
+            position: { x: 80, y: 120 },
+            configuration: { triggerType: "manual" }
+          }
+        ],
+        edges: []
+      });
+
+    app.get("/v1/workspaces/:workspaceId/workflows", async (request) => {
+      const authenticated = await authenticate(request);
+      const { workspaceId } = workspaceParamsSchema.parse(request.params);
+      requireActiveWorkspace(authenticated, workspaceId);
+      const context = await workflowAccess(request, "workflow.read");
+      return { data: await options.repository.list(context) };
+    });
+    app.post("/v1/workspaces/:workspaceId/workflows", async (request, reply) => {
+      const authenticated = await protectMutation(request);
+      const { workspaceId } = workspaceParamsSchema.parse(request.params);
+      requireActiveWorkspace(authenticated, workspaceId);
+      const context = options.workspace
+        ? (await options.workspace.require(authenticated.identity, request.id, "workflow.create"))
+            .context
+        : tenantContext(options, request, authenticated);
+      const body = createWorkflowRequestSchema.parse(request.body);
+      const workflowId = await workflowDefinitions().import(
+        context,
+        defaultDefinition(body.name, body.description)
+      );
+      return reply.code(201).send({ data: await options.repository.get(context, workflowId) });
+    });
+    app.patch("/v1/workflows/:workflowId", async (request) => {
+      const context = await workflowAccess(request, "workflow.manage", true);
+      const { workflowId } = workflowIdParams.parse(request.params);
+      const body = z
+        .object({
+          name: z.string().trim().min(1).max(160).optional(),
+          description: z.string().max(4_000).optional()
+        })
+        .strict()
+        .parse(request.body);
+      const draft = await workflowDefinitions().getDraft(context, workflowId);
+      if (!draft) throw new AuthFailure("WORKFLOW_NOT_FOUND", 404, "The workflow does not exist.");
+      const saved = await workflowDefinitions().saveDraft(context, workflowId, draft.revision, {
+        ...draft.definition,
+        name: body.name ?? draft.definition.name,
+        description: body.description ?? draft.definition.description
+      });
+      return { data: saved };
+    });
+    app.delete("/v1/workflows/:workflowId", async (request, reply) => {
+      const context = await workflowAccess(request, "workflow.manage", true);
+      const { workflowId } = workflowIdParams.parse(request.params);
+      if (!(await workflowDefinitions().setLifecycle(context, workflowId, "deleting")))
+        throw new AuthFailure("WORKFLOW_NOT_FOUND", 404, "The workflow does not exist.");
+      return reply.code(202).send({ deletionRequested: true });
+    });
+    app.post("/v1/workflows/:workflowId/restorations", async (request) => {
+      const context = await workflowAccess(request, "workflow.manage", true);
+      const { workflowId } = workflowIdParams.parse(request.params);
+      return { restored: await workflowDefinitions().setLifecycle(context, workflowId, "active") };
+    });
+    app.post("/v1/workflows/:workflowId/duplicates", async (request, reply) => {
+      const context = await workflowAccess(request, "workflow.create", true);
+      const { workflowId } = workflowIdParams.parse(request.params);
+      const body = z
+        .object({ name: z.string().max(160).optional() })
+        .strict()
+        .parse(request.body ?? {});
+      const id = await workflowDefinitions().duplicate(context, workflowId, body.name);
+      if (!id) throw new AuthFailure("WORKFLOW_NOT_FOUND", 404, "The workflow does not exist.");
+      return reply.code(201).send({ id });
+    });
+    app.post("/v1/workspaces/:workspaceId/workflow-imports", async (request, reply) => {
+      const authenticated = await protectMutation(request);
+      const { workspaceId } = workspaceParamsSchema.parse(request.params);
+      requireActiveWorkspace(authenticated, workspaceId);
+      const context = options.workspace
+        ? (await options.workspace.require(authenticated.identity, request.id, "workflow.create"))
+            .context
+        : tenantContext(options, request, authenticated);
+      const id = await workflowDefinitions().import(context, request.body);
+      return reply.code(201).send({ id });
+    });
+    app.post("/v1/workflows/:workflowId/exports", async (request) => {
+      const context = await workflowAccess(request, "workflow.read", true);
+      const { workflowId } = workflowIdParams.parse(request.params);
+      const body = z
+        .object({ version: z.number().int().positive().optional() })
+        .strict()
+        .parse(request.body ?? {});
+      const exported = await workflowDefinitions().export(context, workflowId, body.version);
+      if (!exported)
+        throw new AuthFailure("WORKFLOW_NOT_FOUND", 404, "The workflow does not exist.");
+      return { data: exported };
+    });
+    app.post("/v1/workflows/:workflowId/ownership-transfers", async (request) => {
+      const context = await workflowAccess(request, "workflow.manage", true);
+      const { workflowId } = workflowIdParams.parse(request.params);
+      const { ownerUserId } = z
+        .object({ ownerUserId: z.string().uuid() })
+        .strict()
+        .parse(request.body);
+      return {
+        transferred: await workflowDefinitions().transfer(context, workflowId, ownerUserId)
+      };
+    });
+    app.post("/v1/workflows/:workflowId/favorites", async (request, reply) => {
+      const context = await workflowAccess(request, "workflow.read", true);
+      const { workflowId } = workflowIdParams.parse(request.params);
+      await workflowDefinitions().favorite(context, workflowId, true);
+      return reply.code(204).send();
+    });
+    app.delete("/v1/workflows/:workflowId/favorites", async (request, reply) => {
+      const context = await workflowAccess(request, "workflow.read", true);
+      const { workflowId } = workflowIdParams.parse(request.params);
+      await workflowDefinitions().favorite(context, workflowId, false);
+      return reply.code(204).send();
+    });
+    app.get("/v1/workflows/:workflowId/draft", async (request) => {
+      const context = await workflowAccess(request, "workflow.read");
+      const { workflowId } = workflowIdParams.parse(request.params);
+      const draft = await workflowDefinitions().getDraft(context, workflowId);
+      if (!draft)
+        throw new AuthFailure(
+          "WORKFLOW_DRAFT_NOT_FOUND",
+          404,
+          "The workflow draft does not exist."
+        );
+      return { data: draft };
+    });
+    app.put("/v1/workflows/:workflowId/draft", async (request, reply) => {
+      const context = await workflowAccess(request, "workflow.manage", true);
+      const { workflowId } = workflowIdParams.parse(request.params);
+      const draft = await workflowDefinitions().getDraft(context, workflowId);
+      if (!draft)
+        throw new AuthFailure(
+          "WORKFLOW_DRAFT_NOT_FOUND",
+          404,
+          "The workflow draft does not exist."
+        );
+      if (request.headers["if-match"] !== draft.etag)
+        throw new AuthFailure(
+          "WORKFLOW_EDIT_CONFLICT",
+          412,
+          "The workflow draft changed on another device."
+        );
+      const definition = workflowDefinitionSchema.parse(request.body);
+      const saved = await workflowDefinitions().saveDraft(
+        context,
+        workflowId,
+        draft.revision,
+        definition
+      );
+      if (saved === "conflict")
+        throw new AuthFailure(
+          "WORKFLOW_EDIT_CONFLICT",
+          409,
+          "The workflow draft changed concurrently."
+        );
+      if (!saved)
+        throw new AuthFailure(
+          "WORKFLOW_DRAFT_NOT_FOUND",
+          404,
+          "The workflow draft does not exist."
+        );
+      reply.header("etag", saved.etag);
+      return { data: saved };
+    });
+    app.post("/v1/workflows/:workflowId/draft/operations", async (request) => {
+      const context = await workflowAccess(request, "workflow.manage", true);
+      const { workflowId } = workflowIdParams.parse(request.params);
+      const body = z
+        .object({ revision: z.number().int().positive(), definition: workflowDefinitionSchema })
+        .strict()
+        .parse(request.body);
+      const saved = await workflowDefinitions().saveDraft(
+        context,
+        workflowId,
+        body.revision,
+        body.definition
+      );
+      if (saved === "conflict")
+        throw new AuthFailure(
+          "WORKFLOW_EDIT_CONFLICT",
+          409,
+          "The atomic operation batch conflicted."
+        );
+      return { data: saved };
+    });
+    app.post("/v1/workflows/:workflowId/draft/validations", async (request) => {
+      const context = await workflowAccess(request, "workflow.read", true);
+      const { workflowId } = workflowIdParams.parse(request.params);
+      const findings = await workflowDefinitions().validateDraft(context, workflowId);
+      if (!findings)
+        throw new AuthFailure(
+          "WORKFLOW_DRAFT_NOT_FOUND",
+          404,
+          "The workflow draft does not exist."
+        );
+      return { data: { valid: findings.every(({ severity }) => severity !== "error"), findings } };
+    });
+    app.post("/v1/workflows/:workflowId/draft/publications", async (request) => {
+      const context = await workflowAccess(request, "workflow.manage", true);
+      const { workflowId } = workflowIdParams.parse(request.params);
+      const body = z
+        .object({
+          revision: z.number().int().positive(),
+          releaseNote: z.string().max(2_000).default("")
+        })
+        .strict()
+        .parse(request.body);
+      const result = await workflowDefinitions().publish(
+        context,
+        workflowId,
+        body.revision,
+        body.releaseNote
+      );
+      if (result === "conflict")
+        throw new AuthFailure(
+          "WORKFLOW_EDIT_CONFLICT",
+          409,
+          "The workflow draft changed concurrently."
+        );
+      if (!result)
+        throw new AuthFailure(
+          "WORKFLOW_DRAFT_NOT_FOUND",
+          404,
+          "The workflow draft does not exist."
+        );
+      return { data: result };
+    });
+    app.get("/v1/workflows/:workflowId/versions", async (request) => {
+      const context = await workflowAccess(request, "workflow.read");
+      const { workflowId } = workflowIdParams.parse(request.params);
+      return { data: await workflowDefinitions().versions(context, workflowId) };
+    });
+    app.get("/v1/workflows/:workflowId/versions/:version", async (request) => {
+      const context = await workflowAccess(request, "workflow.read");
+      const { workflowId, version } = workflowVersionParams.parse(request.params);
+      const record = await workflowDefinitions().version(context, workflowId, version);
+      if (!record)
+        throw new AuthFailure(
+          "WORKFLOW_VERSION_NOT_FOUND",
+          404,
+          "The workflow version does not exist."
+        );
+      return { data: record };
+    });
+    app.get("/v1/workflows/:workflowId/version-diffs", async (request) => {
+      const context = await workflowAccess(request, "workflow.read");
+      const { workflowId } = workflowIdParams.parse(request.params);
+      const { from, to } = z
+        .object({
+          from: z.coerce.number().int().positive(),
+          to: z.coerce.number().int().positive()
+        })
+        .strict()
+        .parse(request.query);
+      const diff = await workflowDefinitions().diff(context, workflowId, from, to);
+      if (!diff)
+        throw new AuthFailure(
+          "WORKFLOW_VERSION_NOT_FOUND",
+          404,
+          "Both workflow versions are required."
+        );
+      return { data: diff };
+    });
+    app.post("/v1/workflows/:workflowId/drafts-from-version", async (request, reply) => {
+      const context = await workflowAccess(request, "workflow.manage", true);
+      const { workflowId } = workflowIdParams.parse(request.params);
+      const { version } = z
+        .object({ version: z.number().int().positive() })
+        .strict()
+        .parse(request.body);
+      const restored = await workflowDefinitions().restore(context, workflowId, version);
+      if (!restored)
+        throw new AuthFailure(
+          "WORKFLOW_VERSION_NOT_FOUND",
+          404,
+          "The workflow version does not exist."
+        );
+      return reply.code(201).send({ data: restored });
+    });
+    app.get("/v1/workspaces/:workspaceId/workflow-folders", async (request) => {
+      const authenticated = await authenticate(request);
+      const { workspaceId } = workspaceParamsSchema.parse(request.params);
+      requireActiveWorkspace(authenticated, workspaceId);
+      const context = await workflowAccess(request, "workflow.read");
+      return { data: await workflowDefinitions().folders(context) };
+    });
+    app.post("/v1/workspaces/:workspaceId/workflow-folders", async (request, reply) => {
+      const authenticated = await protectMutation(request);
+      const { workspaceId } = workspaceParamsSchema.parse(request.params);
+      requireActiveWorkspace(authenticated, workspaceId);
+      const context = options.workspace
+        ? (await options.workspace.require(authenticated.identity, request.id, "workflow.manage"))
+            .context
+        : tenantContext(options, request, authenticated);
+      const body = z
+        .object({ name: z.string().trim().min(1).max(120), parentId: z.string().uuid().optional() })
+        .strict()
+        .parse(request.body);
+      return reply
+        .code(201)
+        .send({ id: await workflowDefinitions().createFolder(context, body.name, body.parentId) });
+    });
+    app.get("/v1/workspaces/:workspaceId/workflow-tags", async (request) => {
+      const authenticated = await authenticate(request);
+      const { workspaceId } = workspaceParamsSchema.parse(request.params);
+      requireActiveWorkspace(authenticated, workspaceId);
+      const context = await workflowAccess(request, "workflow.read");
+      return { data: await workflowDefinitions().tags(context) };
+    });
+    app.post("/v1/workspaces/:workspaceId/workflow-tags", async (request, reply) => {
+      const authenticated = await protectMutation(request);
+      const { workspaceId } = workspaceParamsSchema.parse(request.params);
+      requireActiveWorkspace(authenticated, workspaceId);
+      const context = options.workspace
+        ? (await options.workspace.require(authenticated.identity, request.id, "workflow.manage"))
+            .context
+        : tenantContext(options, request, authenticated);
+      const body = z
+        .object({
+          name: z.string().trim().min(1).max(60),
+          color: z.enum(["slate", "blue", "lime", "amber", "rose", "violet"]).default("slate")
+        })
+        .strict()
+        .parse(request.body);
+      return reply
+        .code(201)
+        .send({ id: await workflowDefinitions().createTag(context, body.name, body.color) });
+    });
+    app.get("/v1/templates", async (request) => {
+      const context = await workflowAccess(request, "workflow.read");
+      return { data: await workflowDefinitions().templates(context) };
+    });
+    app.post("/v1/workspaces/:workspaceId/templates", async (request, reply) => {
+      const authenticated = await protectMutation(request);
+      const { workspaceId } = workspaceParamsSchema.parse(request.params);
+      requireActiveWorkspace(authenticated, workspaceId);
+      const context = options.workspace
+        ? (await options.workspace.require(authenticated.identity, request.id, "workflow.create"))
+            .context
+        : tenantContext(options, request, authenticated);
+      const body = z
+        .object({
+          workflowId: z.string().uuid(),
+          name: z.string().trim().min(1).max(160),
+          description: z.string().max(4_000).default(""),
+          variables: z
+            .array(
+              z
+                .object({
+                  key: z.string().regex(/^[a-z][a-z0-9_-]*$/u),
+                  required: z.boolean(),
+                  default: z.unknown().optional()
+                })
+                .strict()
+            )
+            .max(100)
+            .default([])
+        })
+        .strict()
+        .parse(request.body);
+      const template = await workflowDefinitions().createTemplate(context, body.workflowId, body);
+      if (!template)
+        throw new AuthFailure(
+          "WORKFLOW_DRAFT_NOT_FOUND",
+          404,
+          "The workflow draft does not exist."
+        );
+      return reply.code(201).send({ data: template });
+    });
+    app.post("/v1/templates/:templateId/instantiations", async (request, reply) => {
+      const context = await workflowAccess(request, "workflow.create", true);
+      const { templateId } = z
+        .object({ templateId: z.string().uuid() })
+        .strict()
+        .parse(request.params);
+      const { values } = z
+        .object({ values: z.record(z.string(), z.unknown()).default({}) })
+        .strict()
+        .parse(request.body ?? {});
+      const id = await workflowDefinitions().instantiateTemplate(context, templateId, values);
+      if (!id) throw new AuthFailure("TEMPLATE_NOT_FOUND", 404, "The template does not exist.");
+      return reply.code(201).send({ id });
     });
   }
 

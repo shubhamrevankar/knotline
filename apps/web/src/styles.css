@@ -14,6 +14,14 @@
   --lime: #c8ff52;
   --blue: #64a4ff;
   --coral: #ff765e;
+  --background: var(--ink);
+  --surface: var(--panel);
+  --surface-subtle: var(--panel-2);
+  --border: var(--line);
+  --accent: var(--lime);
+  --accent-strong: var(--lime);
+  --shadow-lg: 0 24px 70px rgb(0 0 0 / 35%);
+  --radius-lg: 1rem;
 }
 
 .skip-link {
@@ -1814,5 +1822,171 @@ kbd {
   .member-row label,
   .member-row .action-row {
     grid-column: 1;
+  }
+}
+
+.workflow-create-panel {
+  margin-bottom: 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface) 94%, var(--accent));
+  box-shadow: var(--shadow-lg);
+}
+
+.workflow-create-panel form,
+.workflow-create-panel label {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.workflow-create-panel form {
+  grid-template-columns: minmax(12rem, 1fr) minmax(16rem, 2fr) auto;
+  align-items: end;
+}
+
+.workflow-create-panel input,
+.workflow-create-panel textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  color: var(--text);
+  background: var(--surface);
+}
+
+.workflow-manage-page {
+  min-height: 100vh;
+  padding: clamp(1rem, 4vw, 3.5rem);
+  color: var(--text);
+  background: var(--background);
+}
+
+.workflow-manage-header {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 82rem;
+  margin: 0 auto 2rem;
+}
+
+.workflow-manage-header > a,
+.button-link {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.workflow-manage-header h1 {
+  margin: 0.55rem 0 0;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+}
+
+.workflow-manage-grid,
+.version-layout,
+.template-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr);
+  gap: 1rem;
+  max-width: 82rem;
+  margin: 0 auto;
+}
+
+.definition-card,
+.finding-card,
+.version-detail-card {
+  padding: 1.25rem;
+}
+
+.definition-card:last-child {
+  grid-column: 1 / -1;
+}
+
+.definition-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.definition-metrics div {
+  padding: 0.85rem;
+  border-radius: 0.75rem;
+  background: var(--surface-subtle);
+}
+
+.definition-metrics dt {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.definition-metrics dd {
+  margin: 0.25rem 0 0;
+  font-weight: 700;
+}
+
+.finding-card ul,
+.definition-node-list,
+.version-list {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0;
+  list-style: none;
+}
+
+.finding-card li,
+.definition-node-list li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+}
+
+.definition-node-list li > span {
+  color: var(--accent-strong);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+}
+
+.version-list {
+  margin: 0;
+}
+
+.version-list > article,
+.template-grid > article {
+  padding: 1rem;
+}
+
+.version-detail-card pre {
+  max-height: 30rem;
+  padding: 1rem;
+  overflow: auto;
+  border-radius: 0.75rem;
+  background: #0e131c;
+  color: #dbeafe;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 760px) {
+  .workflow-create-panel form,
+  .workflow-manage-grid,
+  .version-layout,
+  .template-grid,
+  .definition-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .definition-card:last-child {
+    grid-column: auto;
+  }
+
+  .finding-card li,
+  .definition-node-list li {
+    grid-template-columns: 1fr;
   }
 }

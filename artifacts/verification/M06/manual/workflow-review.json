@@ -1,0 +1,9 @@
+{
+  "id": "m06-workflow-review",
+  "kind": "manual",
+  "owner": "shurevan",
+  "recordedAt": "2026-08-01T00:45:00.000Z",
+  "schemaVersion": 1,
+  "status": "PASS",
+  "summary": "Reviewed create, validate, finding deep links, publish, immutable history, diff, restore, templates, responsive layout, and no simulated run success."
+}

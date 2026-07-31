@@ -41,6 +41,14 @@ export const workflowCreatedPayloadV1Schema = z
   })
   .passthrough();
 
+export const workflowPublishedPayloadV1Schema = z
+  .object({
+    workflowId: z.string().uuid(),
+    version: z.number().int().positive(),
+    contentHash: z.string().regex(/^sha256:[a-f0-9]{64}$/u)
+  })
+  .passthrough();
+
 export const identityAuthorizationPayloadV1Schema = z
   .object({
     authorizationId: z.string().uuid(),
@@ -73,6 +81,12 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "workflow-platform",
     schema: workflowCreatedPayloadV1Schema
+  },
+  {
+    eventType: "workflow.published",
+    eventVersion: 1,
+    owner: "workflow-platform",
+    schema: workflowPublishedPayloadV1Schema
   },
   {
     eventType: "identity.authorization_started",

@@ -32,6 +32,7 @@
     "test:integration": "bash tooling/containers/test-services.sh",
     "test:auth": "tsx tooling/auth/postgres-suite.ts",
     "test:workspace": "tsx tooling/workspace/postgres-suite.ts",
+    "test:workflows": "tsx tooling/workflows/postgres-suite.ts",
     "test:db": "tsx tooling/db/postgres-suite.ts integration",
     "test:rls": "tsx tooling/db/postgres-suite.ts rls",
     "test:unit": "tsx scripts/quality/assert-test-suites.ts && vitest run --coverage",

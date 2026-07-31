@@ -21,6 +21,12 @@ import {
   RolesPage,
   WorkspaceSettingsPage
 } from "./M05Pages.js";
+import {
+  TemplatesPage,
+  WorkflowDetailPage,
+  WorkflowSettingsPage,
+  WorkflowVersionsPage
+} from "./M06Pages.js";
 import { WEB_ROUTE_MANIFEST, type WebRouteManifestEntry } from "./routes/manifest.js";
 
 const WorkflowApp = lazy(async () => {
@@ -328,6 +334,15 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
   if (route.id === "route.app.settings.workspace") return <WorkspaceSettingsPage />;
   if (route.id === "route.app.settings.members") return <MembersPage />;
   if (route.id === "route.app.settings.roles") return <RolesPage />;
+  if (route.id === "route.app.workflows.detail") return <WorkflowDetailPage />;
+  if (route.id === "route.app.workflows.detail.settings") return <WorkflowSettingsPage />;
+  if (
+    route.id === "route.app.workflows.detail.versions" ||
+    route.id === "route.app.workflows.detail.versions.detail"
+  )
+    return <WorkflowVersionsPage />;
+  if (route.id === "route.app.templates" || route.id === "route.app.templates.detail")
+    return <TemplatesPage />;
   return (
     <AuthGate>
       <div className="registered-shell">

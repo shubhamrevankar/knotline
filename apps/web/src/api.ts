@@ -1,4 +1,10 @@
-import type { ApiEnvelope, Workflow, WorkflowSummary } from "@knotline/contracts";
+import type {
+  ApiEnvelope,
+  ValidationFinding,
+  Workflow,
+  WorkflowDefinition,
+  WorkflowSummary
+} from "@knotline/contracts";
 
 import { classifyStatus, RequestFailure } from "./query/errors.js";
 
@@ -362,9 +368,161 @@ export const removeSampleWorkspace = (sampleId: string) =>
     "DELETE"
   );
 
+export interface WorkflowDraft {
+  readonly workflowId: string;
+  readonly version: number;
+  readonly revision: number;
+  readonly etag: string;
+  readonly contentHash: string;
+  readonly definition: WorkflowDefinition;
+}
+
+export interface WorkflowVersionSummary {
+  readonly version: number;
+  readonly state: "draft" | "published" | "superseded";
+  readonly revision: number;
+  readonly contentHash: string;
+  readonly releaseNote: string;
+  readonly publishedAt?: string;
+  readonly createdAt: string;
+}
+
+export interface WorkflowTemplateSummary {
+  readonly id: string;
+  readonly name: string;
+  readonly description: string;
+  readonly state: string;
+  readonly version: number;
+  readonly definition: WorkflowDefinition;
+  readonly variables: readonly { readonly key: string; readonly required: boolean }[];
+}
+
+export const createVersionedWorkflow = async (name: string, description: string) =>
+  (
+    await mutate<{ readonly data: Workflow }>(`/v1/workspaces/${workspaceId}/workflows`, "POST", {
+      name,
+      description
+    })
+  ).data;
+
+export const fetchWorkflowDraft = async (workflowId: string) =>
+  (
+    await request<{ readonly data: WorkflowDraft }>(
+      `/v1/workflows/${encodeURIComponent(workflowId)}/draft`
+    )
+  ).data;
+
+export const saveWorkflowDraft = async (draft: WorkflowDraft, definition: WorkflowDefinition) => {
+  const csrf = document.cookie
+    .split(";")
+    .map((part) => part.trim())
+    .find((part) => part.startsWith("__Host-knotline-csrf="))
+    ?.slice("__Host-knotline-csrf=".length);
+  const response = await fetch(
+    `${apiUrl}/v1/workflows/${encodeURIComponent(draft.workflowId)}/draft`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+        "if-match": draft.etag,
+        ...(csrf ? { "x-csrf-token": decodeURIComponent(csrf) } : {})
+      },
+      body: JSON.stringify(definition)
+    }
+  );
+  if (!response.ok)
+    throw new RequestFailure(
+      `Request failed with ${response.status}`,
+      classifyStatus(response.status)
+    );
+  return ((await response.json()) as { data: WorkflowDraft }).data;
+};
+
+export const validateWorkflowDraft = async (workflowId: string) =>
+  (
+    await mutate<{
+      readonly data: { readonly valid: boolean; readonly findings: readonly ValidationFinding[] };
+    }>(`/v1/workflows/${encodeURIComponent(workflowId)}/draft/validations`, "POST")
+  ).data;
+
+export const publishWorkflowDraft = async (
+  workflowId: string,
+  revision: number,
+  releaseNote: string
+) =>
+  (
+    await mutate<{
+      readonly data: {
+        readonly published: boolean;
+        readonly findings: readonly ValidationFinding[];
+        readonly publishedVersion?: number;
+        readonly nextDraftVersion?: number;
+        readonly contentHash?: string;
+      };
+    }>(`/v1/workflows/${encodeURIComponent(workflowId)}/draft/publications`, "POST", {
+      revision,
+      releaseNote
+    })
+  ).data;
+
+export const fetchWorkflowVersions = async (workflowId: string) =>
+  (
+    await request<{ readonly data: readonly WorkflowVersionSummary[] }>(
+      `/v1/workflows/${encodeURIComponent(workflowId)}/versions`
+    )
+  ).data;
+
+export const fetchWorkflowVersion = async (workflowId: string, version: number) =>
+  (
+    await request<{ readonly data: WorkflowDraft }>(
+      `/v1/workflows/${encodeURIComponent(workflowId)}/versions/${version}`
+    )
+  ).data;
+
+export const fetchWorkflowDiff = async (workflowId: string, from: number, to: number) =>
+  (
+    await request<{ readonly data: Readonly<Record<string, unknown>> }>(
+      `/v1/workflows/${encodeURIComponent(workflowId)}/version-diffs?from=${from}&to=${to}`
+    )
+  ).data;
+
+export const restoreWorkflowVersion = async (workflowId: string, version: number) =>
+  (
+    await mutate<{ readonly data: WorkflowDraft }>(
+      `/v1/workflows/${encodeURIComponent(workflowId)}/drafts-from-version`,
+      "POST",
+      { version }
+    )
+  ).data;
+
+export const fetchTemplates = async () =>
+  (await request<{ readonly data: readonly WorkflowTemplateSummary[] }>("/v1/templates")).data;
+
+export const createWorkflowTemplate = async (
+  workflowId: string,
+  name: string,
+  description: string
+) =>
+  (
+    await mutate<{ readonly data: WorkflowTemplateSummary }>(
+      `/v1/workspaces/${workspaceId}/templates`,
+      "POST",
+      { workflowId, name, description, variables: [] }
+    )
+  ).data;
+
+export const instantiateWorkflowTemplate = (templateId: string) =>
+  mutate<{ readonly id: string }>(
+    `/v1/templates/${encodeURIComponent(templateId)}/instantiations`,
+    "POST",
+    { values: {} }
+  );
+
 export async function fetchWorkflows(): Promise<WorkflowSummary[]> {
   const response = await request<ApiEnvelope<WorkflowSummary[]>>(
-    `/v1/teams/${workspaceId}/workflows`
+    `/v1/workspaces/${workspaceId}/workflows`
   );
   return response.data;
 }

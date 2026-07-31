@@ -3152,12 +3152,28 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/auth.ts#AuthService.authenticate",
+        "apps/api/src/auth.ts#AuthService.verifyMutation",
+        "packages/db/src/auth-repository.ts#PostgresAuthRepository"
+      ],
+      "automatedTests": [
+        "tooling/auth/postgres-suite.ts#runSuite",
+        "apps/api/src/auth.test.ts",
+        "tests/e2e/auth.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "identity.authorization_started.v1",
+        "identity.authorization_consumed.v1",
+        "identity.authorization_failed.v1",
+        "identity.session_created.v1",
+        "identity.session_revoked.v1"
+      ],
       "externalGates": [
         "EXT-006"
       ],
@@ -3165,9 +3181,24 @@
       "journeyIds": [
         "CJ-02"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M04/manual/auth-surface-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-auth-magic-links",
+        "post-edge-v1-auth-magic-links-exchange",
+        "post-edge-v1-auth-google-authorizations",
+        "post-edge-v1-auth-google-exchange",
+        "get-callbacks-v1-identity-oauth-by-provider",
+        "post-v1-auth-sessions-refresh",
+        "get-v1-auth-sessions",
+        "delete-v1-auth-sessions-by-session-id",
+        "post-v1-auth-logout",
+        "get-v1-me-bootstrap"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/authentication-security.md"
+      ],
       "primaryMilestone": "M04",
       "regressionMilestones": [
         "M38"
@@ -3181,17 +3212,53 @@
         "route.auth.magic.callback",
         "route.auth.sign-in"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/auth.spec.ts#email-sign-in",
+        "tests/e2e/auth.spec.ts#google-sandbox",
+        "tests/e2e/auth.spec.ts#session-inventory"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/auth.ts#AuthService",
+        "apps/api/src/app.ts#buildApp",
+        "apps/web/src/AuthPages.tsx#SignInPage",
+        "apps/web/src/AuthPages.tsx#SessionsPage"
+      ],
+      "tablesAndObjects": [
+        "users",
+        "identity_links",
+        "magic_link_tokens",
+        "identity_authorization_transactions",
+        "identity_authorization_results",
+        "sessions",
+        "session_verifiers",
+        "auth_rate_limits",
+        "security_notifications",
+        "auth_email_deliveries"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/auth.ts#AuthService.authenticate",
+        "apps/api/src/auth.ts#AuthService.verifyMutation",
+        "packages/db/src/auth-repository.ts#PostgresAuthRepository"
+      ],
+      "automatedTests": [
+        "tooling/auth/postgres-suite.ts#runSuite",
+        "apps/api/src/auth.test.ts",
+        "tests/e2e/auth.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "identity.authorization_started.v1",
+        "identity.authorization_consumed.v1",
+        "identity.authorization_failed.v1",
+        "identity.session_created.v1",
+        "identity.session_revoked.v1"
+      ],
       "externalGates": [
         "EXT-007"
       ],
@@ -3199,9 +3266,24 @@
       "journeyIds": [
         "CJ-02"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M04/manual/auth-surface-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-auth-magic-links",
+        "post-edge-v1-auth-magic-links-exchange",
+        "post-edge-v1-auth-google-authorizations",
+        "post-edge-v1-auth-google-exchange",
+        "get-callbacks-v1-identity-oauth-by-provider",
+        "post-v1-auth-sessions-refresh",
+        "get-v1-auth-sessions",
+        "delete-v1-auth-sessions-by-session-id",
+        "post-v1-auth-logout",
+        "get-v1-me-bootstrap"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/authentication-security.md"
+      ],
       "primaryMilestone": "M04",
       "regressionMilestones": [
         "M38"
@@ -3215,9 +3297,29 @@
         "route.auth.magic.callback",
         "route.auth.sign-in"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/auth.spec.ts#email-sign-in",
+        "tests/e2e/auth.spec.ts#google-sandbox",
+        "tests/e2e/auth.spec.ts#session-inventory"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/auth.ts#AuthService",
+        "apps/api/src/app.ts#buildApp",
+        "apps/web/src/AuthPages.tsx#SignInPage",
+        "apps/web/src/AuthPages.tsx#SessionsPage"
+      ],
+      "tablesAndObjects": [
+        "users",
+        "identity_links",
+        "magic_link_tokens",
+        "identity_authorization_transactions",
+        "identity_authorization_results",
+        "sessions",
+        "session_verifiers",
+        "auth_rate_limits",
+        "security_notifications",
+        "auth_email_deliveries"
+      ]
     },
     {
       "authorizationRules": [],
@@ -3254,12 +3356,28 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/auth.ts#AuthService.authenticate",
+        "apps/api/src/auth.ts#AuthService.verifyMutation",
+        "packages/db/src/auth-repository.ts#PostgresAuthRepository"
+      ],
+      "automatedTests": [
+        "tooling/auth/postgres-suite.ts#runSuite",
+        "apps/api/src/auth.test.ts",
+        "tests/e2e/auth.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "identity.authorization_started.v1",
+        "identity.authorization_consumed.v1",
+        "identity.authorization_failed.v1",
+        "identity.session_created.v1",
+        "identity.session_revoked.v1"
+      ],
       "externalGates": [
         "EXT-006"
       ],
@@ -3267,9 +3385,24 @@
       "journeyIds": [
         "CJ-02"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M04/manual/auth-surface-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-auth-magic-links",
+        "post-edge-v1-auth-magic-links-exchange",
+        "post-edge-v1-auth-google-authorizations",
+        "post-edge-v1-auth-google-exchange",
+        "get-callbacks-v1-identity-oauth-by-provider",
+        "post-v1-auth-sessions-refresh",
+        "get-v1-auth-sessions",
+        "delete-v1-auth-sessions-by-session-id",
+        "post-v1-auth-logout",
+        "get-v1-me-bootstrap"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/authentication-security.md"
+      ],
       "primaryMilestone": "M04",
       "regressionMilestones": [
         "M38"
@@ -3283,17 +3416,53 @@
         "route.auth.magic.callback",
         "route.auth.sign-in"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/auth.spec.ts#email-sign-in",
+        "tests/e2e/auth.spec.ts#google-sandbox",
+        "tests/e2e/auth.spec.ts#session-inventory"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/auth.ts#AuthService",
+        "apps/api/src/app.ts#buildApp",
+        "apps/web/src/AuthPages.tsx#SignInPage",
+        "apps/web/src/AuthPages.tsx#SessionsPage"
+      ],
+      "tablesAndObjects": [
+        "users",
+        "identity_links",
+        "magic_link_tokens",
+        "identity_authorization_transactions",
+        "identity_authorization_results",
+        "sessions",
+        "session_verifiers",
+        "auth_rate_limits",
+        "security_notifications",
+        "auth_email_deliveries"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/auth.ts#AuthService.authenticate",
+        "apps/api/src/auth.ts#AuthService.verifyMutation",
+        "packages/db/src/auth-repository.ts#PostgresAuthRepository"
+      ],
+      "automatedTests": [
+        "tooling/auth/postgres-suite.ts#runSuite",
+        "apps/api/src/auth.test.ts",
+        "tests/e2e/auth.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "identity.authorization_started.v1",
+        "identity.authorization_consumed.v1",
+        "identity.authorization_failed.v1",
+        "identity.session_created.v1",
+        "identity.session_revoked.v1"
+      ],
       "externalGates": [
         "EXT-006"
       ],
@@ -3301,9 +3470,24 @@
       "journeyIds": [
         "CJ-02"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M04/manual/auth-surface-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-auth-magic-links",
+        "post-edge-v1-auth-magic-links-exchange",
+        "post-edge-v1-auth-google-authorizations",
+        "post-edge-v1-auth-google-exchange",
+        "get-callbacks-v1-identity-oauth-by-provider",
+        "post-v1-auth-sessions-refresh",
+        "get-v1-auth-sessions",
+        "delete-v1-auth-sessions-by-session-id",
+        "post-v1-auth-logout",
+        "get-v1-me-bootstrap"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/authentication-security.md"
+      ],
       "primaryMilestone": "M04",
       "regressionMilestones": [
         "M38"
@@ -3317,25 +3501,115 @@
         "route.auth.magic.callback",
         "route.auth.sign-in"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/auth.spec.ts#email-sign-in",
+        "tests/e2e/auth.spec.ts#google-sandbox",
+        "tests/e2e/auth.spec.ts#session-inventory"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/auth.ts#AuthService",
+        "apps/api/src/app.ts#buildApp",
+        "apps/web/src/AuthPages.tsx#SignInPage",
+        "apps/web/src/AuthPages.tsx#SessionsPage"
+      ],
+      "tablesAndObjects": [
+        "users",
+        "identity_links",
+        "magic_link_tokens",
+        "identity_authorization_transactions",
+        "identity_authorization_results",
+        "sessions",
+        "session_verifiers",
+        "auth_rate_limits",
+        "security_notifications",
+        "auth_email_deliveries"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository",
+        "packages/db/migrations/0003_workspace_access_onboarding.sql#row-level-security"
+      ],
+      "automatedTests": [
+        "tooling/workspace/postgres-suite.ts#runSuite",
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workspace.created.v1",
+        "workspace.updated.v1",
+        "workspace.archived.v1",
+        "member.updated.v1",
+        "member.removed.v1",
+        "ownership.transferred.v1",
+        "invitation.created.v1",
+        "invitation.accepted.v1",
+        "invitation.declined.v1",
+        "invitation.cancelled.v1",
+        "role.created.v1",
+        "role.updated.v1",
+        "role.deleted.v1",
+        "group.created.v1",
+        "group.updated.v1",
+        "group.deleted.v1",
+        "organization.relationship.created.v1",
+        "onboarding.updated.v1",
+        "sandbox.sample.created.v1",
+        "sandbox.sample.removed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-03"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M05/manual/access-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-invitation-responses",
+        "post-edge-v1-invitation-responses-preview",
+        "delete-v1-groups-by-group-id",
+        "patch-v1-groups-by-group-id",
+        "delete-v1-groups-by-group-id-members-by-user-id",
+        "put-v1-groups-by-group-id-members-by-user-id",
+        "delete-v1-invitations-by-invitation-id",
+        "post-v1-invitations-by-invitation-id-resends",
+        "get-v1-me-onboarding",
+        "put-v1-me-onboarding",
+        "post-v1-me-onboarding-sample-workspaces",
+        "delete-v1-me-onboarding-sample-workspaces-by-sample-id",
+        "delete-v1-roles-by-role-id",
+        "get-v1-roles-by-role-id",
+        "patch-v1-roles-by-role-id",
+        "get-v1-workspaces",
+        "post-v1-workspaces",
+        "delete-v1-workspaces-by-workspace-id",
+        "get-v1-workspaces-by-workspace-id",
+        "patch-v1-workspaces-by-workspace-id",
+        "post-v1-workspaces-by-workspace-id-archive",
+        "get-v1-workspaces-by-workspace-id-groups",
+        "post-v1-workspaces-by-workspace-id-groups",
+        "get-v1-workspaces-by-workspace-id-invitations",
+        "post-v1-workspaces-by-workspace-id-invitations",
+        "get-v1-workspaces-by-workspace-id-members",
+        "delete-v1-workspaces-by-workspace-id-members-by-member-id",
+        "get-v1-workspaces-by-workspace-id-members-by-member-id",
+        "patch-v1-workspaces-by-workspace-id-members-by-member-id",
+        "post-v1-workspaces-by-workspace-id-organization-relationships",
+        "post-v1-workspaces-by-workspace-id-ownership-transfers",
+        "post-v1-workspaces-by-workspace-id-restorations",
+        "get-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-switch"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/workspace-access-onboarding.md"
+      ],
       "primaryMilestone": "M05",
       "regressionMilestones": [
         "M38"
@@ -3348,25 +3622,116 @@
         "route.app.settings.workspace",
         "route.invitations.accept"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/workspace.ts#WorkspaceService",
+        "apps/web/src/M05Pages.tsx",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository"
+      ],
+      "tablesAndObjects": [
+        "workspaces",
+        "memberships",
+        "permission_catalog",
+        "workspace_roles",
+        "workspace_invitations",
+        "workspace_groups",
+        "workspace_group_memberships",
+        "organization_relationships",
+        "resource_grants",
+        "onboarding_progress",
+        "sandbox_resources",
+        "guest_identities",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository",
+        "packages/db/migrations/0003_workspace_access_onboarding.sql#row-level-security"
+      ],
+      "automatedTests": [
+        "tooling/workspace/postgres-suite.ts#runSuite",
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workspace.created.v1",
+        "workspace.updated.v1",
+        "workspace.archived.v1",
+        "member.updated.v1",
+        "member.removed.v1",
+        "ownership.transferred.v1",
+        "invitation.created.v1",
+        "invitation.accepted.v1",
+        "invitation.declined.v1",
+        "invitation.cancelled.v1",
+        "role.created.v1",
+        "role.updated.v1",
+        "role.deleted.v1",
+        "group.created.v1",
+        "group.updated.v1",
+        "group.deleted.v1",
+        "organization.relationship.created.v1",
+        "onboarding.updated.v1",
+        "sandbox.sample.created.v1",
+        "sandbox.sample.removed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-03"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M05/manual/access-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-invitation-responses",
+        "post-edge-v1-invitation-responses-preview",
+        "delete-v1-groups-by-group-id",
+        "patch-v1-groups-by-group-id",
+        "delete-v1-groups-by-group-id-members-by-user-id",
+        "put-v1-groups-by-group-id-members-by-user-id",
+        "delete-v1-invitations-by-invitation-id",
+        "post-v1-invitations-by-invitation-id-resends",
+        "get-v1-me-onboarding",
+        "put-v1-me-onboarding",
+        "post-v1-me-onboarding-sample-workspaces",
+        "delete-v1-me-onboarding-sample-workspaces-by-sample-id",
+        "delete-v1-roles-by-role-id",
+        "get-v1-roles-by-role-id",
+        "patch-v1-roles-by-role-id",
+        "get-v1-workspaces",
+        "post-v1-workspaces",
+        "delete-v1-workspaces-by-workspace-id",
+        "get-v1-workspaces-by-workspace-id",
+        "patch-v1-workspaces-by-workspace-id",
+        "post-v1-workspaces-by-workspace-id-archive",
+        "get-v1-workspaces-by-workspace-id-groups",
+        "post-v1-workspaces-by-workspace-id-groups",
+        "get-v1-workspaces-by-workspace-id-invitations",
+        "post-v1-workspaces-by-workspace-id-invitations",
+        "get-v1-workspaces-by-workspace-id-members",
+        "delete-v1-workspaces-by-workspace-id-members-by-member-id",
+        "get-v1-workspaces-by-workspace-id-members-by-member-id",
+        "patch-v1-workspaces-by-workspace-id-members-by-member-id",
+        "post-v1-workspaces-by-workspace-id-organization-relationships",
+        "post-v1-workspaces-by-workspace-id-ownership-transfers",
+        "post-v1-workspaces-by-workspace-id-restorations",
+        "get-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-switch"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/workspace-access-onboarding.md"
+      ],
       "primaryMilestone": "M05",
       "regressionMilestones": [
         "M38"
@@ -3379,25 +3744,116 @@
         "route.app.settings.workspace",
         "route.invitations.accept"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/workspace.ts#WorkspaceService",
+        "apps/web/src/M05Pages.tsx",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository"
+      ],
+      "tablesAndObjects": [
+        "workspaces",
+        "memberships",
+        "permission_catalog",
+        "workspace_roles",
+        "workspace_invitations",
+        "workspace_groups",
+        "workspace_group_memberships",
+        "organization_relationships",
+        "resource_grants",
+        "onboarding_progress",
+        "sandbox_resources",
+        "guest_identities",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository",
+        "packages/db/migrations/0003_workspace_access_onboarding.sql#row-level-security"
+      ],
+      "automatedTests": [
+        "tooling/workspace/postgres-suite.ts#runSuite",
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workspace.created.v1",
+        "workspace.updated.v1",
+        "workspace.archived.v1",
+        "member.updated.v1",
+        "member.removed.v1",
+        "ownership.transferred.v1",
+        "invitation.created.v1",
+        "invitation.accepted.v1",
+        "invitation.declined.v1",
+        "invitation.cancelled.v1",
+        "role.created.v1",
+        "role.updated.v1",
+        "role.deleted.v1",
+        "group.created.v1",
+        "group.updated.v1",
+        "group.deleted.v1",
+        "organization.relationship.created.v1",
+        "onboarding.updated.v1",
+        "sandbox.sample.created.v1",
+        "sandbox.sample.removed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-03"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M05/manual/access-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-invitation-responses",
+        "post-edge-v1-invitation-responses-preview",
+        "delete-v1-groups-by-group-id",
+        "patch-v1-groups-by-group-id",
+        "delete-v1-groups-by-group-id-members-by-user-id",
+        "put-v1-groups-by-group-id-members-by-user-id",
+        "delete-v1-invitations-by-invitation-id",
+        "post-v1-invitations-by-invitation-id-resends",
+        "get-v1-me-onboarding",
+        "put-v1-me-onboarding",
+        "post-v1-me-onboarding-sample-workspaces",
+        "delete-v1-me-onboarding-sample-workspaces-by-sample-id",
+        "delete-v1-roles-by-role-id",
+        "get-v1-roles-by-role-id",
+        "patch-v1-roles-by-role-id",
+        "get-v1-workspaces",
+        "post-v1-workspaces",
+        "delete-v1-workspaces-by-workspace-id",
+        "get-v1-workspaces-by-workspace-id",
+        "patch-v1-workspaces-by-workspace-id",
+        "post-v1-workspaces-by-workspace-id-archive",
+        "get-v1-workspaces-by-workspace-id-groups",
+        "post-v1-workspaces-by-workspace-id-groups",
+        "get-v1-workspaces-by-workspace-id-invitations",
+        "post-v1-workspaces-by-workspace-id-invitations",
+        "get-v1-workspaces-by-workspace-id-members",
+        "delete-v1-workspaces-by-workspace-id-members-by-member-id",
+        "get-v1-workspaces-by-workspace-id-members-by-member-id",
+        "patch-v1-workspaces-by-workspace-id-members-by-member-id",
+        "post-v1-workspaces-by-workspace-id-organization-relationships",
+        "post-v1-workspaces-by-workspace-id-ownership-transfers",
+        "post-v1-workspaces-by-workspace-id-restorations",
+        "get-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-switch"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/workspace-access-onboarding.md"
+      ],
       "primaryMilestone": "M05",
       "regressionMilestones": [
         "M38"
@@ -3410,25 +3866,116 @@
         "route.app.settings.workspace",
         "route.invitations.accept"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/workspace.ts#WorkspaceService",
+        "apps/web/src/M05Pages.tsx",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository"
+      ],
+      "tablesAndObjects": [
+        "workspaces",
+        "memberships",
+        "permission_catalog",
+        "workspace_roles",
+        "workspace_invitations",
+        "workspace_groups",
+        "workspace_group_memberships",
+        "organization_relationships",
+        "resource_grants",
+        "onboarding_progress",
+        "sandbox_resources",
+        "guest_identities",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository",
+        "packages/db/migrations/0003_workspace_access_onboarding.sql#row-level-security"
+      ],
+      "automatedTests": [
+        "tooling/workspace/postgres-suite.ts#runSuite",
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workspace.created.v1",
+        "workspace.updated.v1",
+        "workspace.archived.v1",
+        "member.updated.v1",
+        "member.removed.v1",
+        "ownership.transferred.v1",
+        "invitation.created.v1",
+        "invitation.accepted.v1",
+        "invitation.declined.v1",
+        "invitation.cancelled.v1",
+        "role.created.v1",
+        "role.updated.v1",
+        "role.deleted.v1",
+        "group.created.v1",
+        "group.updated.v1",
+        "group.deleted.v1",
+        "organization.relationship.created.v1",
+        "onboarding.updated.v1",
+        "sandbox.sample.created.v1",
+        "sandbox.sample.removed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-03"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M05/manual/access-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-invitation-responses",
+        "post-edge-v1-invitation-responses-preview",
+        "delete-v1-groups-by-group-id",
+        "patch-v1-groups-by-group-id",
+        "delete-v1-groups-by-group-id-members-by-user-id",
+        "put-v1-groups-by-group-id-members-by-user-id",
+        "delete-v1-invitations-by-invitation-id",
+        "post-v1-invitations-by-invitation-id-resends",
+        "get-v1-me-onboarding",
+        "put-v1-me-onboarding",
+        "post-v1-me-onboarding-sample-workspaces",
+        "delete-v1-me-onboarding-sample-workspaces-by-sample-id",
+        "delete-v1-roles-by-role-id",
+        "get-v1-roles-by-role-id",
+        "patch-v1-roles-by-role-id",
+        "get-v1-workspaces",
+        "post-v1-workspaces",
+        "delete-v1-workspaces-by-workspace-id",
+        "get-v1-workspaces-by-workspace-id",
+        "patch-v1-workspaces-by-workspace-id",
+        "post-v1-workspaces-by-workspace-id-archive",
+        "get-v1-workspaces-by-workspace-id-groups",
+        "post-v1-workspaces-by-workspace-id-groups",
+        "get-v1-workspaces-by-workspace-id-invitations",
+        "post-v1-workspaces-by-workspace-id-invitations",
+        "get-v1-workspaces-by-workspace-id-members",
+        "delete-v1-workspaces-by-workspace-id-members-by-member-id",
+        "get-v1-workspaces-by-workspace-id-members-by-member-id",
+        "patch-v1-workspaces-by-workspace-id-members-by-member-id",
+        "post-v1-workspaces-by-workspace-id-organization-relationships",
+        "post-v1-workspaces-by-workspace-id-ownership-transfers",
+        "post-v1-workspaces-by-workspace-id-restorations",
+        "get-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-switch"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/workspace-access-onboarding.md"
+      ],
       "primaryMilestone": "M05",
       "regressionMilestones": [
         "M38"
@@ -3441,25 +3988,116 @@
         "route.app.settings.workspace",
         "route.invitations.accept"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/workspace.ts#WorkspaceService",
+        "apps/web/src/M05Pages.tsx",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository"
+      ],
+      "tablesAndObjects": [
+        "workspaces",
+        "memberships",
+        "permission_catalog",
+        "workspace_roles",
+        "workspace_invitations",
+        "workspace_groups",
+        "workspace_group_memberships",
+        "organization_relationships",
+        "resource_grants",
+        "onboarding_progress",
+        "sandbox_resources",
+        "guest_identities",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository",
+        "packages/db/migrations/0003_workspace_access_onboarding.sql#row-level-security"
+      ],
+      "automatedTests": [
+        "tooling/workspace/postgres-suite.ts#runSuite",
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workspace.created.v1",
+        "workspace.updated.v1",
+        "workspace.archived.v1",
+        "member.updated.v1",
+        "member.removed.v1",
+        "ownership.transferred.v1",
+        "invitation.created.v1",
+        "invitation.accepted.v1",
+        "invitation.declined.v1",
+        "invitation.cancelled.v1",
+        "role.created.v1",
+        "role.updated.v1",
+        "role.deleted.v1",
+        "group.created.v1",
+        "group.updated.v1",
+        "group.deleted.v1",
+        "organization.relationship.created.v1",
+        "onboarding.updated.v1",
+        "sandbox.sample.created.v1",
+        "sandbox.sample.removed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-03"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M05/manual/access-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-invitation-responses",
+        "post-edge-v1-invitation-responses-preview",
+        "delete-v1-groups-by-group-id",
+        "patch-v1-groups-by-group-id",
+        "delete-v1-groups-by-group-id-members-by-user-id",
+        "put-v1-groups-by-group-id-members-by-user-id",
+        "delete-v1-invitations-by-invitation-id",
+        "post-v1-invitations-by-invitation-id-resends",
+        "get-v1-me-onboarding",
+        "put-v1-me-onboarding",
+        "post-v1-me-onboarding-sample-workspaces",
+        "delete-v1-me-onboarding-sample-workspaces-by-sample-id",
+        "delete-v1-roles-by-role-id",
+        "get-v1-roles-by-role-id",
+        "patch-v1-roles-by-role-id",
+        "get-v1-workspaces",
+        "post-v1-workspaces",
+        "delete-v1-workspaces-by-workspace-id",
+        "get-v1-workspaces-by-workspace-id",
+        "patch-v1-workspaces-by-workspace-id",
+        "post-v1-workspaces-by-workspace-id-archive",
+        "get-v1-workspaces-by-workspace-id-groups",
+        "post-v1-workspaces-by-workspace-id-groups",
+        "get-v1-workspaces-by-workspace-id-invitations",
+        "post-v1-workspaces-by-workspace-id-invitations",
+        "get-v1-workspaces-by-workspace-id-members",
+        "delete-v1-workspaces-by-workspace-id-members-by-member-id",
+        "get-v1-workspaces-by-workspace-id-members-by-member-id",
+        "patch-v1-workspaces-by-workspace-id-members-by-member-id",
+        "post-v1-workspaces-by-workspace-id-organization-relationships",
+        "post-v1-workspaces-by-workspace-id-ownership-transfers",
+        "post-v1-workspaces-by-workspace-id-restorations",
+        "get-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-switch"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/workspace-access-onboarding.md"
+      ],
       "primaryMilestone": "M05",
       "regressionMilestones": [
         "M38"
@@ -3472,9 +4110,30 @@
         "route.app.settings.workspace",
         "route.invitations.accept"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/workspace.ts#WorkspaceService",
+        "apps/web/src/M05Pages.tsx",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository"
+      ],
+      "tablesAndObjects": [
+        "workspaces",
+        "memberships",
+        "permission_catalog",
+        "workspace_roles",
+        "workspace_invitations",
+        "workspace_groups",
+        "workspace_group_memberships",
+        "organization_relationships",
+        "resource_grants",
+        "onboarding_progress",
+        "sandbox_resources",
+        "guest_identities",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
       "authorizationRules": [],
@@ -3576,20 +4235,35 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "packages/db/migrations/0001_tenant_foundation.sql#forced-rls",
+        "packages/db/src/context.ts#transaction-local-tenant-context"
+      ],
+      "automatedTests": [
+        "tooling/db/postgres-suite.ts#rlsSuite",
+        "tooling/db/postgres-suite.ts#integrationSuite",
+        "tooling/db/postgres-suite.ts#migrationSuite"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workflow.created.v1"
+      ],
       "externalGates": [
         "EXT-002"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
-      "manualEvidence": [],
+      "manualEvidence": [
+        "artifact://M03/manual/data-foundation-review"
+      ],
       "openapiOperationIds": [],
-      "operationalControls": [],
+      "operationalControls": [
+        "docs/operations/knotline/database-foundation.md"
+      ],
       "primaryMilestone": "M03",
       "regressionMilestones": [
         "M38"
@@ -3597,25 +4271,56 @@
       "requirementId": "ID-014",
       "routes": [],
       "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "sourceSymbols": [
+        "packages/db/src/repository.ts#PostgresWorkflowRepository",
+        "packages/db/src/migrations.ts#migrate",
+        "apps/api/src/app.ts#buildApp"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M03",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "users",
+        "workspaces",
+        "memberships",
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "idempotency_records",
+        "audit_events",
+        "outbox_events",
+        "knotline_schema_migrations"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "packages/db/migrations/0001_tenant_foundation.sql#forced-rls",
+        "packages/db/src/context.ts#transaction-local-tenant-context"
+      ],
+      "automatedTests": [
+        "tooling/db/postgres-suite.ts#rlsSuite",
+        "tooling/db/postgres-suite.ts#integrationSuite",
+        "tooling/db/postgres-suite.ts#migrationSuite"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workflow.created.v1"
+      ],
       "externalGates": [
         "EXT-002"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
-      "manualEvidence": [],
+      "manualEvidence": [
+        "artifact://M03/manual/data-foundation-review"
+      ],
       "openapiOperationIds": [],
-      "operationalControls": [],
+      "operationalControls": [
+        "docs/operations/knotline/database-foundation.md"
+      ],
       "primaryMilestone": "M03",
       "regressionMilestones": [
         "M38"
@@ -3623,9 +4328,25 @@
       "requirementId": "ID-015",
       "routes": [],
       "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "sourceSymbols": [
+        "packages/db/src/repository.ts#PostgresWorkflowRepository",
+        "packages/db/src/migrations.ts#migrate",
+        "apps/api/src/app.ts#buildApp"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M03",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "users",
+        "workspaces",
+        "memberships",
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "idempotency_records",
+        "audit_events",
+        "outbox_events",
+        "knotline_schema_migrations"
+      ]
     },
     {
       "authorizationRules": [],
@@ -4908,20 +5629,90 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository",
+        "packages/db/migrations/0003_workspace_access_onboarding.sql#row-level-security"
+      ],
+      "automatedTests": [
+        "tooling/workspace/postgres-suite.ts#runSuite",
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workspace.created.v1",
+        "workspace.updated.v1",
+        "workspace.archived.v1",
+        "member.updated.v1",
+        "member.removed.v1",
+        "ownership.transferred.v1",
+        "invitation.created.v1",
+        "invitation.accepted.v1",
+        "invitation.declined.v1",
+        "invitation.cancelled.v1",
+        "role.created.v1",
+        "role.updated.v1",
+        "role.deleted.v1",
+        "group.created.v1",
+        "group.updated.v1",
+        "group.deleted.v1",
+        "organization.relationship.created.v1",
+        "onboarding.updated.v1",
+        "sandbox.sample.created.v1",
+        "sandbox.sample.removed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-03"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M05/manual/access-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-invitation-responses",
+        "post-edge-v1-invitation-responses-preview",
+        "delete-v1-groups-by-group-id",
+        "patch-v1-groups-by-group-id",
+        "delete-v1-groups-by-group-id-members-by-user-id",
+        "put-v1-groups-by-group-id-members-by-user-id",
+        "delete-v1-invitations-by-invitation-id",
+        "post-v1-invitations-by-invitation-id-resends",
+        "get-v1-me-onboarding",
+        "put-v1-me-onboarding",
+        "post-v1-me-onboarding-sample-workspaces",
+        "delete-v1-me-onboarding-sample-workspaces-by-sample-id",
+        "delete-v1-roles-by-role-id",
+        "get-v1-roles-by-role-id",
+        "patch-v1-roles-by-role-id",
+        "get-v1-workspaces",
+        "post-v1-workspaces",
+        "delete-v1-workspaces-by-workspace-id",
+        "get-v1-workspaces-by-workspace-id",
+        "patch-v1-workspaces-by-workspace-id",
+        "post-v1-workspaces-by-workspace-id-archive",
+        "get-v1-workspaces-by-workspace-id-groups",
+        "post-v1-workspaces-by-workspace-id-groups",
+        "get-v1-workspaces-by-workspace-id-invitations",
+        "post-v1-workspaces-by-workspace-id-invitations",
+        "get-v1-workspaces-by-workspace-id-members",
+        "delete-v1-workspaces-by-workspace-id-members-by-member-id",
+        "get-v1-workspaces-by-workspace-id-members-by-member-id",
+        "patch-v1-workspaces-by-workspace-id-members-by-member-id",
+        "post-v1-workspaces-by-workspace-id-organization-relationships",
+        "post-v1-workspaces-by-workspace-id-ownership-transfers",
+        "post-v1-workspaces-by-workspace-id-restorations",
+        "get-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-switch"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/workspace-access-onboarding.md"
+      ],
       "primaryMilestone": "M05",
       "regressionMilestones": [
         "M38"
@@ -4934,9 +5725,30 @@
         "route.app.settings.workspace",
         "route.invitations.accept"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/workspace.ts#WorkspaceService",
+        "apps/web/src/M05Pages.tsx",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository"
+      ],
+      "tablesAndObjects": [
+        "workspaces",
+        "memberships",
+        "permission_catalog",
+        "workspace_roles",
+        "workspace_invitations",
+        "workspace_groups",
+        "workspace_group_memberships",
+        "organization_relationships",
+        "resource_grants",
+        "onboarding_progress",
+        "sandbox_resources",
+        "guest_identities",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
       "authorizationRules": [],
@@ -4994,20 +5806,90 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository",
+        "packages/db/migrations/0003_workspace_access_onboarding.sql#row-level-security"
+      ],
+      "automatedTests": [
+        "tooling/workspace/postgres-suite.ts#runSuite",
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workspace.created.v1",
+        "workspace.updated.v1",
+        "workspace.archived.v1",
+        "member.updated.v1",
+        "member.removed.v1",
+        "ownership.transferred.v1",
+        "invitation.created.v1",
+        "invitation.accepted.v1",
+        "invitation.declined.v1",
+        "invitation.cancelled.v1",
+        "role.created.v1",
+        "role.updated.v1",
+        "role.deleted.v1",
+        "group.created.v1",
+        "group.updated.v1",
+        "group.deleted.v1",
+        "organization.relationship.created.v1",
+        "onboarding.updated.v1",
+        "sandbox.sample.created.v1",
+        "sandbox.sample.removed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-03"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M05/manual/access-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-invitation-responses",
+        "post-edge-v1-invitation-responses-preview",
+        "delete-v1-groups-by-group-id",
+        "patch-v1-groups-by-group-id",
+        "delete-v1-groups-by-group-id-members-by-user-id",
+        "put-v1-groups-by-group-id-members-by-user-id",
+        "delete-v1-invitations-by-invitation-id",
+        "post-v1-invitations-by-invitation-id-resends",
+        "get-v1-me-onboarding",
+        "put-v1-me-onboarding",
+        "post-v1-me-onboarding-sample-workspaces",
+        "delete-v1-me-onboarding-sample-workspaces-by-sample-id",
+        "delete-v1-roles-by-role-id",
+        "get-v1-roles-by-role-id",
+        "patch-v1-roles-by-role-id",
+        "get-v1-workspaces",
+        "post-v1-workspaces",
+        "delete-v1-workspaces-by-workspace-id",
+        "get-v1-workspaces-by-workspace-id",
+        "patch-v1-workspaces-by-workspace-id",
+        "post-v1-workspaces-by-workspace-id-archive",
+        "get-v1-workspaces-by-workspace-id-groups",
+        "post-v1-workspaces-by-workspace-id-groups",
+        "get-v1-workspaces-by-workspace-id-invitations",
+        "post-v1-workspaces-by-workspace-id-invitations",
+        "get-v1-workspaces-by-workspace-id-members",
+        "delete-v1-workspaces-by-workspace-id-members-by-member-id",
+        "get-v1-workspaces-by-workspace-id-members-by-member-id",
+        "patch-v1-workspaces-by-workspace-id-members-by-member-id",
+        "post-v1-workspaces-by-workspace-id-organization-relationships",
+        "post-v1-workspaces-by-workspace-id-ownership-transfers",
+        "post-v1-workspaces-by-workspace-id-restorations",
+        "get-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-switch"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/workspace-access-onboarding.md"
+      ],
       "primaryMilestone": "M05",
       "regressionMilestones": [
         "M38"
@@ -5020,25 +5902,116 @@
         "route.app.settings.workspace",
         "route.invitations.accept"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/workspace.ts#WorkspaceService",
+        "apps/web/src/M05Pages.tsx",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository"
+      ],
+      "tablesAndObjects": [
+        "workspaces",
+        "memberships",
+        "permission_catalog",
+        "workspace_roles",
+        "workspace_invitations",
+        "workspace_groups",
+        "workspace_group_memberships",
+        "organization_relationships",
+        "resource_grants",
+        "onboarding_progress",
+        "sandbox_resources",
+        "guest_identities",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository",
+        "packages/db/migrations/0003_workspace_access_onboarding.sql#row-level-security"
+      ],
+      "automatedTests": [
+        "tooling/workspace/postgres-suite.ts#runSuite",
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workspace.created.v1",
+        "workspace.updated.v1",
+        "workspace.archived.v1",
+        "member.updated.v1",
+        "member.removed.v1",
+        "ownership.transferred.v1",
+        "invitation.created.v1",
+        "invitation.accepted.v1",
+        "invitation.declined.v1",
+        "invitation.cancelled.v1",
+        "role.created.v1",
+        "role.updated.v1",
+        "role.deleted.v1",
+        "group.created.v1",
+        "group.updated.v1",
+        "group.deleted.v1",
+        "organization.relationship.created.v1",
+        "onboarding.updated.v1",
+        "sandbox.sample.created.v1",
+        "sandbox.sample.removed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-03"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M05/manual/access-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-invitation-responses",
+        "post-edge-v1-invitation-responses-preview",
+        "delete-v1-groups-by-group-id",
+        "patch-v1-groups-by-group-id",
+        "delete-v1-groups-by-group-id-members-by-user-id",
+        "put-v1-groups-by-group-id-members-by-user-id",
+        "delete-v1-invitations-by-invitation-id",
+        "post-v1-invitations-by-invitation-id-resends",
+        "get-v1-me-onboarding",
+        "put-v1-me-onboarding",
+        "post-v1-me-onboarding-sample-workspaces",
+        "delete-v1-me-onboarding-sample-workspaces-by-sample-id",
+        "delete-v1-roles-by-role-id",
+        "get-v1-roles-by-role-id",
+        "patch-v1-roles-by-role-id",
+        "get-v1-workspaces",
+        "post-v1-workspaces",
+        "delete-v1-workspaces-by-workspace-id",
+        "get-v1-workspaces-by-workspace-id",
+        "patch-v1-workspaces-by-workspace-id",
+        "post-v1-workspaces-by-workspace-id-archive",
+        "get-v1-workspaces-by-workspace-id-groups",
+        "post-v1-workspaces-by-workspace-id-groups",
+        "get-v1-workspaces-by-workspace-id-invitations",
+        "post-v1-workspaces-by-workspace-id-invitations",
+        "get-v1-workspaces-by-workspace-id-members",
+        "delete-v1-workspaces-by-workspace-id-members-by-member-id",
+        "get-v1-workspaces-by-workspace-id-members-by-member-id",
+        "patch-v1-workspaces-by-workspace-id-members-by-member-id",
+        "post-v1-workspaces-by-workspace-id-organization-relationships",
+        "post-v1-workspaces-by-workspace-id-ownership-transfers",
+        "post-v1-workspaces-by-workspace-id-restorations",
+        "get-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-switch"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/workspace-access-onboarding.md"
+      ],
       "primaryMilestone": "M05",
       "regressionMilestones": [
         "M38"
@@ -5051,25 +6024,116 @@
         "route.app.settings.workspace",
         "route.invitations.accept"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/workspace.ts#WorkspaceService",
+        "apps/web/src/M05Pages.tsx",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository"
+      ],
+      "tablesAndObjects": [
+        "workspaces",
+        "memberships",
+        "permission_catalog",
+        "workspace_roles",
+        "workspace_invitations",
+        "workspace_groups",
+        "workspace_group_memberships",
+        "organization_relationships",
+        "resource_grants",
+        "onboarding_progress",
+        "sandbox_resources",
+        "guest_identities",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository",
+        "packages/db/migrations/0003_workspace_access_onboarding.sql#row-level-security"
+      ],
+      "automatedTests": [
+        "tooling/workspace/postgres-suite.ts#runSuite",
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workspace.created.v1",
+        "workspace.updated.v1",
+        "workspace.archived.v1",
+        "member.updated.v1",
+        "member.removed.v1",
+        "ownership.transferred.v1",
+        "invitation.created.v1",
+        "invitation.accepted.v1",
+        "invitation.declined.v1",
+        "invitation.cancelled.v1",
+        "role.created.v1",
+        "role.updated.v1",
+        "role.deleted.v1",
+        "group.created.v1",
+        "group.updated.v1",
+        "group.deleted.v1",
+        "organization.relationship.created.v1",
+        "onboarding.updated.v1",
+        "sandbox.sample.created.v1",
+        "sandbox.sample.removed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-03"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M05/manual/access-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-invitation-responses",
+        "post-edge-v1-invitation-responses-preview",
+        "delete-v1-groups-by-group-id",
+        "patch-v1-groups-by-group-id",
+        "delete-v1-groups-by-group-id-members-by-user-id",
+        "put-v1-groups-by-group-id-members-by-user-id",
+        "delete-v1-invitations-by-invitation-id",
+        "post-v1-invitations-by-invitation-id-resends",
+        "get-v1-me-onboarding",
+        "put-v1-me-onboarding",
+        "post-v1-me-onboarding-sample-workspaces",
+        "delete-v1-me-onboarding-sample-workspaces-by-sample-id",
+        "delete-v1-roles-by-role-id",
+        "get-v1-roles-by-role-id",
+        "patch-v1-roles-by-role-id",
+        "get-v1-workspaces",
+        "post-v1-workspaces",
+        "delete-v1-workspaces-by-workspace-id",
+        "get-v1-workspaces-by-workspace-id",
+        "patch-v1-workspaces-by-workspace-id",
+        "post-v1-workspaces-by-workspace-id-archive",
+        "get-v1-workspaces-by-workspace-id-groups",
+        "post-v1-workspaces-by-workspace-id-groups",
+        "get-v1-workspaces-by-workspace-id-invitations",
+        "post-v1-workspaces-by-workspace-id-invitations",
+        "get-v1-workspaces-by-workspace-id-members",
+        "delete-v1-workspaces-by-workspace-id-members-by-member-id",
+        "get-v1-workspaces-by-workspace-id-members-by-member-id",
+        "patch-v1-workspaces-by-workspace-id-members-by-member-id",
+        "post-v1-workspaces-by-workspace-id-organization-relationships",
+        "post-v1-workspaces-by-workspace-id-ownership-transfers",
+        "post-v1-workspaces-by-workspace-id-restorations",
+        "get-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-switch"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/workspace-access-onboarding.md"
+      ],
       "primaryMilestone": "M05",
       "regressionMilestones": [
         "M38"
@@ -5082,25 +6146,116 @@
         "route.app.settings.workspace",
         "route.invitations.accept"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/workspace.ts#WorkspaceService",
+        "apps/web/src/M05Pages.tsx",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository"
+      ],
+      "tablesAndObjects": [
+        "workspaces",
+        "memberships",
+        "permission_catalog",
+        "workspace_roles",
+        "workspace_invitations",
+        "workspace_groups",
+        "workspace_group_memberships",
+        "organization_relationships",
+        "resource_grants",
+        "onboarding_progress",
+        "sandbox_resources",
+        "guest_identities",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository",
+        "packages/db/migrations/0003_workspace_access_onboarding.sql#row-level-security"
+      ],
+      "automatedTests": [
+        "tooling/workspace/postgres-suite.ts#runSuite",
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workspace.created.v1",
+        "workspace.updated.v1",
+        "workspace.archived.v1",
+        "member.updated.v1",
+        "member.removed.v1",
+        "ownership.transferred.v1",
+        "invitation.created.v1",
+        "invitation.accepted.v1",
+        "invitation.declined.v1",
+        "invitation.cancelled.v1",
+        "role.created.v1",
+        "role.updated.v1",
+        "role.deleted.v1",
+        "group.created.v1",
+        "group.updated.v1",
+        "group.deleted.v1",
+        "organization.relationship.created.v1",
+        "onboarding.updated.v1",
+        "sandbox.sample.created.v1",
+        "sandbox.sample.removed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-03"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M05/manual/access-review"
+      ],
+      "openapiOperationIds": [
+        "post-edge-v1-invitation-responses",
+        "post-edge-v1-invitation-responses-preview",
+        "delete-v1-groups-by-group-id",
+        "patch-v1-groups-by-group-id",
+        "delete-v1-groups-by-group-id-members-by-user-id",
+        "put-v1-groups-by-group-id-members-by-user-id",
+        "delete-v1-invitations-by-invitation-id",
+        "post-v1-invitations-by-invitation-id-resends",
+        "get-v1-me-onboarding",
+        "put-v1-me-onboarding",
+        "post-v1-me-onboarding-sample-workspaces",
+        "delete-v1-me-onboarding-sample-workspaces-by-sample-id",
+        "delete-v1-roles-by-role-id",
+        "get-v1-roles-by-role-id",
+        "patch-v1-roles-by-role-id",
+        "get-v1-workspaces",
+        "post-v1-workspaces",
+        "delete-v1-workspaces-by-workspace-id",
+        "get-v1-workspaces-by-workspace-id",
+        "patch-v1-workspaces-by-workspace-id",
+        "post-v1-workspaces-by-workspace-id-archive",
+        "get-v1-workspaces-by-workspace-id-groups",
+        "post-v1-workspaces-by-workspace-id-groups",
+        "get-v1-workspaces-by-workspace-id-invitations",
+        "post-v1-workspaces-by-workspace-id-invitations",
+        "get-v1-workspaces-by-workspace-id-members",
+        "delete-v1-workspaces-by-workspace-id-members-by-member-id",
+        "get-v1-workspaces-by-workspace-id-members-by-member-id",
+        "patch-v1-workspaces-by-workspace-id-members-by-member-id",
+        "post-v1-workspaces-by-workspace-id-organization-relationships",
+        "post-v1-workspaces-by-workspace-id-ownership-transfers",
+        "post-v1-workspaces-by-workspace-id-restorations",
+        "get-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-roles",
+        "post-v1-workspaces-by-workspace-id-switch"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/workspace-access-onboarding.md"
+      ],
       "primaryMilestone": "M05",
       "regressionMilestones": [
         "M38"
@@ -5113,9 +6268,30 @@
         "route.app.settings.workspace",
         "route.invitations.accept"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/workspace-access.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/api/src/workspace.ts#WorkspaceService",
+        "apps/web/src/M05Pages.tsx",
+        "packages/db/src/workspace-repository.ts#PostgresWorkspaceRepository"
+      ],
+      "tablesAndObjects": [
+        "workspaces",
+        "memberships",
+        "permission_catalog",
+        "workspace_roles",
+        "workspace_invitations",
+        "workspace_groups",
+        "workspace_group_memberships",
+        "organization_relationships",
+        "resource_grants",
+        "onboarding_progress",
+        "sandbox_resources",
+        "guest_identities",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
       "authorizationRules": [],
@@ -6031,20 +7207,66 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/workflow-definition.test.ts",
+        "tooling/workflows/postgres-suite.ts#runSuite",
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workflow.created.v1",
+        "workflow.published.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-05"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M06/manual/workflow-review"
+      ],
+      "openapiOperationIds": [
+        "get-v1-templates",
+        "post-v1-templates-by-template-id-instantiations",
+        "delete-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id",
+        "patch-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id-draft",
+        "put-v1-workflows-by-workflow-id-draft",
+        "post-v1-workflows-by-workflow-id-draft-operations",
+        "post-v1-workflows-by-workflow-id-draft-publications",
+        "post-v1-workflows-by-workflow-id-draft-validations",
+        "post-v1-workflows-by-workflow-id-drafts-from-version",
+        "post-v1-workflows-by-workflow-id-duplicates",
+        "post-v1-workflows-by-workflow-id-exports",
+        "delete-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-ownership-transfers",
+        "post-v1-workflows-by-workflow-id-restorations",
+        "get-v1-workflows-by-workflow-id-version-diffs",
+        "get-v1-workflows-by-workflow-id-versions",
+        "get-v1-workflows-by-workflow-id-versions-by-version",
+        "post-v1-workspaces-by-workspace-id-templates",
+        "get-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-imports",
+        "get-v1-workspaces-by-workspace-id-workflow-tags",
+        "post-v1-workspaces-by-workspace-id-workflow-tags",
+        "get-v1-workspaces-by-workspace-id-workflows",
+        "post-v1-workspaces-by-workspace-id-workflows"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/versioned-workflows.md"
+      ],
       "primaryMilestone": "M06",
       "regressionMilestones": [
         "M38"
@@ -6059,25 +7281,92 @@
         "route.app.workflows.detail.versions",
         "route.app.workflows.detail.versions.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/workflow-definition.ts#validateWorkflowDefinition",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository",
+        "apps/web/src/M06Pages.tsx"
+      ],
+      "tablesAndObjects": [
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "workflow_folders",
+        "workflow_tags",
+        "workflow_tag_assignments",
+        "workflow_favorites",
+        "workflow_validation_findings",
+        "workflow_templates",
+        "workflow_template_versions",
+        "workflow_triggers",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/workflow-definition.test.ts",
+        "tooling/workflows/postgres-suite.ts#runSuite",
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workflow.created.v1",
+        "workflow.published.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-05"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M06/manual/workflow-review"
+      ],
+      "openapiOperationIds": [
+        "get-v1-templates",
+        "post-v1-templates-by-template-id-instantiations",
+        "delete-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id",
+        "patch-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id-draft",
+        "put-v1-workflows-by-workflow-id-draft",
+        "post-v1-workflows-by-workflow-id-draft-operations",
+        "post-v1-workflows-by-workflow-id-draft-publications",
+        "post-v1-workflows-by-workflow-id-draft-validations",
+        "post-v1-workflows-by-workflow-id-drafts-from-version",
+        "post-v1-workflows-by-workflow-id-duplicates",
+        "post-v1-workflows-by-workflow-id-exports",
+        "delete-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-ownership-transfers",
+        "post-v1-workflows-by-workflow-id-restorations",
+        "get-v1-workflows-by-workflow-id-version-diffs",
+        "get-v1-workflows-by-workflow-id-versions",
+        "get-v1-workflows-by-workflow-id-versions-by-version",
+        "post-v1-workspaces-by-workspace-id-templates",
+        "get-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-imports",
+        "get-v1-workspaces-by-workspace-id-workflow-tags",
+        "post-v1-workspaces-by-workspace-id-workflow-tags",
+        "get-v1-workspaces-by-workspace-id-workflows",
+        "post-v1-workspaces-by-workspace-id-workflows"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/versioned-workflows.md"
+      ],
       "primaryMilestone": "M06",
       "regressionMilestones": [
         "M38"
@@ -6092,9 +7381,30 @@
         "route.app.workflows.detail.versions",
         "route.app.workflows.detail.versions.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/workflow-definition.ts#validateWorkflowDefinition",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository",
+        "apps/web/src/M06Pages.tsx"
+      ],
+      "tablesAndObjects": [
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "workflow_folders",
+        "workflow_tags",
+        "workflow_tag_assignments",
+        "workflow_favorites",
+        "workflow_validation_findings",
+        "workflow_templates",
+        "workflow_template_versions",
+        "workflow_triggers",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
       "authorizationRules": [],
@@ -6125,20 +7435,66 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/workflow-definition.test.ts",
+        "tooling/workflows/postgres-suite.ts#runSuite",
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workflow.created.v1",
+        "workflow.published.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-05"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M06/manual/workflow-review"
+      ],
+      "openapiOperationIds": [
+        "get-v1-templates",
+        "post-v1-templates-by-template-id-instantiations",
+        "delete-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id",
+        "patch-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id-draft",
+        "put-v1-workflows-by-workflow-id-draft",
+        "post-v1-workflows-by-workflow-id-draft-operations",
+        "post-v1-workflows-by-workflow-id-draft-publications",
+        "post-v1-workflows-by-workflow-id-draft-validations",
+        "post-v1-workflows-by-workflow-id-drafts-from-version",
+        "post-v1-workflows-by-workflow-id-duplicates",
+        "post-v1-workflows-by-workflow-id-exports",
+        "delete-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-ownership-transfers",
+        "post-v1-workflows-by-workflow-id-restorations",
+        "get-v1-workflows-by-workflow-id-version-diffs",
+        "get-v1-workflows-by-workflow-id-versions",
+        "get-v1-workflows-by-workflow-id-versions-by-version",
+        "post-v1-workspaces-by-workspace-id-templates",
+        "get-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-imports",
+        "get-v1-workspaces-by-workspace-id-workflow-tags",
+        "post-v1-workspaces-by-workspace-id-workflow-tags",
+        "get-v1-workspaces-by-workspace-id-workflows",
+        "post-v1-workspaces-by-workspace-id-workflows"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/versioned-workflows.md"
+      ],
       "primaryMilestone": "M06",
       "regressionMilestones": [
         "M38"
@@ -6153,9 +7509,30 @@
         "route.app.workflows.detail.versions",
         "route.app.workflows.detail.versions.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/workflow-definition.ts#validateWorkflowDefinition",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository",
+        "apps/web/src/M06Pages.tsx"
+      ],
+      "tablesAndObjects": [
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "workflow_folders",
+        "workflow_tags",
+        "workflow_tag_assignments",
+        "workflow_favorites",
+        "workflow_validation_findings",
+        "workflow_templates",
+        "workflow_template_versions",
+        "workflow_triggers",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
       "authorizationRules": [],
@@ -6374,20 +7751,66 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/workflow-definition.test.ts",
+        "tooling/workflows/postgres-suite.ts#runSuite",
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workflow.created.v1",
+        "workflow.published.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-05"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M06/manual/workflow-review"
+      ],
+      "openapiOperationIds": [
+        "get-v1-templates",
+        "post-v1-templates-by-template-id-instantiations",
+        "delete-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id",
+        "patch-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id-draft",
+        "put-v1-workflows-by-workflow-id-draft",
+        "post-v1-workflows-by-workflow-id-draft-operations",
+        "post-v1-workflows-by-workflow-id-draft-publications",
+        "post-v1-workflows-by-workflow-id-draft-validations",
+        "post-v1-workflows-by-workflow-id-drafts-from-version",
+        "post-v1-workflows-by-workflow-id-duplicates",
+        "post-v1-workflows-by-workflow-id-exports",
+        "delete-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-ownership-transfers",
+        "post-v1-workflows-by-workflow-id-restorations",
+        "get-v1-workflows-by-workflow-id-version-diffs",
+        "get-v1-workflows-by-workflow-id-versions",
+        "get-v1-workflows-by-workflow-id-versions-by-version",
+        "post-v1-workspaces-by-workspace-id-templates",
+        "get-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-imports",
+        "get-v1-workspaces-by-workspace-id-workflow-tags",
+        "post-v1-workspaces-by-workspace-id-workflow-tags",
+        "get-v1-workspaces-by-workspace-id-workflows",
+        "post-v1-workspaces-by-workspace-id-workflows"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/versioned-workflows.md"
+      ],
       "primaryMilestone": "M06",
       "regressionMilestones": [
         "M38"
@@ -6402,9 +7825,30 @@
         "route.app.workflows.detail.versions",
         "route.app.workflows.detail.versions.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/workflow-definition.ts#validateWorkflowDefinition",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository",
+        "apps/web/src/M06Pages.tsx"
+      ],
+      "tablesAndObjects": [
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "workflow_folders",
+        "workflow_tags",
+        "workflow_tag_assignments",
+        "workflow_favorites",
+        "workflow_validation_findings",
+        "workflow_templates",
+        "workflow_template_versions",
+        "workflow_triggers",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
       "authorizationRules": [],
@@ -6434,20 +7878,66 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/workflow-definition.test.ts",
+        "tooling/workflows/postgres-suite.ts#runSuite",
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workflow.created.v1",
+        "workflow.published.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-05"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M06/manual/workflow-review"
+      ],
+      "openapiOperationIds": [
+        "get-v1-templates",
+        "post-v1-templates-by-template-id-instantiations",
+        "delete-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id",
+        "patch-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id-draft",
+        "put-v1-workflows-by-workflow-id-draft",
+        "post-v1-workflows-by-workflow-id-draft-operations",
+        "post-v1-workflows-by-workflow-id-draft-publications",
+        "post-v1-workflows-by-workflow-id-draft-validations",
+        "post-v1-workflows-by-workflow-id-drafts-from-version",
+        "post-v1-workflows-by-workflow-id-duplicates",
+        "post-v1-workflows-by-workflow-id-exports",
+        "delete-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-ownership-transfers",
+        "post-v1-workflows-by-workflow-id-restorations",
+        "get-v1-workflows-by-workflow-id-version-diffs",
+        "get-v1-workflows-by-workflow-id-versions",
+        "get-v1-workflows-by-workflow-id-versions-by-version",
+        "post-v1-workspaces-by-workspace-id-templates",
+        "get-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-imports",
+        "get-v1-workspaces-by-workspace-id-workflow-tags",
+        "post-v1-workspaces-by-workspace-id-workflow-tags",
+        "get-v1-workspaces-by-workspace-id-workflows",
+        "post-v1-workspaces-by-workspace-id-workflows"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/versioned-workflows.md"
+      ],
       "primaryMilestone": "M06",
       "regressionMilestones": [
         "M38"
@@ -6462,25 +7952,92 @@
         "route.app.workflows.detail.versions",
         "route.app.workflows.detail.versions.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/workflow-definition.ts#validateWorkflowDefinition",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository",
+        "apps/web/src/M06Pages.tsx"
+      ],
+      "tablesAndObjects": [
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "workflow_folders",
+        "workflow_tags",
+        "workflow_tag_assignments",
+        "workflow_favorites",
+        "workflow_validation_findings",
+        "workflow_templates",
+        "workflow_template_versions",
+        "workflow_triggers",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/workflow-definition.test.ts",
+        "tooling/workflows/postgres-suite.ts#runSuite",
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workflow.created.v1",
+        "workflow.published.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-05"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M06/manual/workflow-review"
+      ],
+      "openapiOperationIds": [
+        "get-v1-templates",
+        "post-v1-templates-by-template-id-instantiations",
+        "delete-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id",
+        "patch-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id-draft",
+        "put-v1-workflows-by-workflow-id-draft",
+        "post-v1-workflows-by-workflow-id-draft-operations",
+        "post-v1-workflows-by-workflow-id-draft-publications",
+        "post-v1-workflows-by-workflow-id-draft-validations",
+        "post-v1-workflows-by-workflow-id-drafts-from-version",
+        "post-v1-workflows-by-workflow-id-duplicates",
+        "post-v1-workflows-by-workflow-id-exports",
+        "delete-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-ownership-transfers",
+        "post-v1-workflows-by-workflow-id-restorations",
+        "get-v1-workflows-by-workflow-id-version-diffs",
+        "get-v1-workflows-by-workflow-id-versions",
+        "get-v1-workflows-by-workflow-id-versions-by-version",
+        "post-v1-workspaces-by-workspace-id-templates",
+        "get-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-imports",
+        "get-v1-workspaces-by-workspace-id-workflow-tags",
+        "post-v1-workspaces-by-workspace-id-workflow-tags",
+        "get-v1-workspaces-by-workspace-id-workflows",
+        "post-v1-workspaces-by-workspace-id-workflows"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/versioned-workflows.md"
+      ],
       "primaryMilestone": "M06",
       "regressionMilestones": [
         "M38"
@@ -6495,25 +8052,92 @@
         "route.app.workflows.detail.versions",
         "route.app.workflows.detail.versions.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/workflow-definition.ts#validateWorkflowDefinition",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository",
+        "apps/web/src/M06Pages.tsx"
+      ],
+      "tablesAndObjects": [
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "workflow_folders",
+        "workflow_tags",
+        "workflow_tag_assignments",
+        "workflow_favorites",
+        "workflow_validation_findings",
+        "workflow_templates",
+        "workflow_template_versions",
+        "workflow_triggers",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/workflow-definition.test.ts",
+        "tooling/workflows/postgres-suite.ts#runSuite",
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workflow.created.v1",
+        "workflow.published.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-05"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M06/manual/workflow-review"
+      ],
+      "openapiOperationIds": [
+        "get-v1-templates",
+        "post-v1-templates-by-template-id-instantiations",
+        "delete-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id",
+        "patch-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id-draft",
+        "put-v1-workflows-by-workflow-id-draft",
+        "post-v1-workflows-by-workflow-id-draft-operations",
+        "post-v1-workflows-by-workflow-id-draft-publications",
+        "post-v1-workflows-by-workflow-id-draft-validations",
+        "post-v1-workflows-by-workflow-id-drafts-from-version",
+        "post-v1-workflows-by-workflow-id-duplicates",
+        "post-v1-workflows-by-workflow-id-exports",
+        "delete-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-ownership-transfers",
+        "post-v1-workflows-by-workflow-id-restorations",
+        "get-v1-workflows-by-workflow-id-version-diffs",
+        "get-v1-workflows-by-workflow-id-versions",
+        "get-v1-workflows-by-workflow-id-versions-by-version",
+        "post-v1-workspaces-by-workspace-id-templates",
+        "get-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-imports",
+        "get-v1-workspaces-by-workspace-id-workflow-tags",
+        "post-v1-workspaces-by-workspace-id-workflow-tags",
+        "get-v1-workspaces-by-workspace-id-workflows",
+        "post-v1-workspaces-by-workspace-id-workflows"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/versioned-workflows.md"
+      ],
       "primaryMilestone": "M06",
       "regressionMilestones": [
         "M38"
@@ -6528,25 +8152,92 @@
         "route.app.workflows.detail.versions",
         "route.app.workflows.detail.versions.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/workflow-definition.ts#validateWorkflowDefinition",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository",
+        "apps/web/src/M06Pages.tsx"
+      ],
+      "tablesAndObjects": [
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "workflow_folders",
+        "workflow_tags",
+        "workflow_tag_assignments",
+        "workflow_favorites",
+        "workflow_validation_findings",
+        "workflow_templates",
+        "workflow_template_versions",
+        "workflow_triggers",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/workflow-definition.test.ts",
+        "tooling/workflows/postgres-suite.ts#runSuite",
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workflow.created.v1",
+        "workflow.published.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-05"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M06/manual/workflow-review"
+      ],
+      "openapiOperationIds": [
+        "get-v1-templates",
+        "post-v1-templates-by-template-id-instantiations",
+        "delete-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id",
+        "patch-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id-draft",
+        "put-v1-workflows-by-workflow-id-draft",
+        "post-v1-workflows-by-workflow-id-draft-operations",
+        "post-v1-workflows-by-workflow-id-draft-publications",
+        "post-v1-workflows-by-workflow-id-draft-validations",
+        "post-v1-workflows-by-workflow-id-drafts-from-version",
+        "post-v1-workflows-by-workflow-id-duplicates",
+        "post-v1-workflows-by-workflow-id-exports",
+        "delete-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-ownership-transfers",
+        "post-v1-workflows-by-workflow-id-restorations",
+        "get-v1-workflows-by-workflow-id-version-diffs",
+        "get-v1-workflows-by-workflow-id-versions",
+        "get-v1-workflows-by-workflow-id-versions-by-version",
+        "post-v1-workspaces-by-workspace-id-templates",
+        "get-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-imports",
+        "get-v1-workspaces-by-workspace-id-workflow-tags",
+        "post-v1-workspaces-by-workspace-id-workflow-tags",
+        "get-v1-workspaces-by-workspace-id-workflows",
+        "post-v1-workspaces-by-workspace-id-workflows"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/versioned-workflows.md"
+      ],
       "primaryMilestone": "M06",
       "regressionMilestones": [
         "M38"
@@ -6561,25 +8252,92 @@
         "route.app.workflows.detail.versions",
         "route.app.workflows.detail.versions.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/workflow-definition.ts#validateWorkflowDefinition",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository",
+        "apps/web/src/M06Pages.tsx"
+      ],
+      "tablesAndObjects": [
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "workflow_folders",
+        "workflow_tags",
+        "workflow_tag_assignments",
+        "workflow_favorites",
+        "workflow_validation_findings",
+        "workflow_templates",
+        "workflow_template_versions",
+        "workflow_triggers",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/workflow-definition.test.ts",
+        "tooling/workflows/postgres-suite.ts#runSuite",
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workflow.created.v1",
+        "workflow.published.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-05"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M06/manual/workflow-review"
+      ],
+      "openapiOperationIds": [
+        "get-v1-templates",
+        "post-v1-templates-by-template-id-instantiations",
+        "delete-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id",
+        "patch-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id-draft",
+        "put-v1-workflows-by-workflow-id-draft",
+        "post-v1-workflows-by-workflow-id-draft-operations",
+        "post-v1-workflows-by-workflow-id-draft-publications",
+        "post-v1-workflows-by-workflow-id-draft-validations",
+        "post-v1-workflows-by-workflow-id-drafts-from-version",
+        "post-v1-workflows-by-workflow-id-duplicates",
+        "post-v1-workflows-by-workflow-id-exports",
+        "delete-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-ownership-transfers",
+        "post-v1-workflows-by-workflow-id-restorations",
+        "get-v1-workflows-by-workflow-id-version-diffs",
+        "get-v1-workflows-by-workflow-id-versions",
+        "get-v1-workflows-by-workflow-id-versions-by-version",
+        "post-v1-workspaces-by-workspace-id-templates",
+        "get-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-imports",
+        "get-v1-workspaces-by-workspace-id-workflow-tags",
+        "post-v1-workspaces-by-workspace-id-workflow-tags",
+        "get-v1-workspaces-by-workspace-id-workflows",
+        "post-v1-workspaces-by-workspace-id-workflows"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/versioned-workflows.md"
+      ],
       "primaryMilestone": "M06",
       "regressionMilestones": [
         "M38"
@@ -6594,25 +8352,92 @@
         "route.app.workflows.detail.versions",
         "route.app.workflows.detail.versions.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/workflow-definition.ts#validateWorkflowDefinition",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository",
+        "apps/web/src/M06Pages.tsx"
+      ],
+      "tablesAndObjects": [
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "workflow_folders",
+        "workflow_tags",
+        "workflow_tag_assignments",
+        "workflow_favorites",
+        "workflow_validation_findings",
+        "workflow_templates",
+        "workflow_template_versions",
+        "workflow_triggers",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "apps/api/src/workspace.ts#WorkspaceService.require",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/workflow-definition.test.ts",
+        "tooling/workflows/postgres-suite.ts#runSuite",
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "workflow.created.v1",
+        "workflow.published.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-05"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M06/manual/workflow-review"
+      ],
+      "openapiOperationIds": [
+        "get-v1-templates",
+        "post-v1-templates-by-template-id-instantiations",
+        "delete-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id",
+        "patch-v1-workflows-by-workflow-id",
+        "get-v1-workflows-by-workflow-id-draft",
+        "put-v1-workflows-by-workflow-id-draft",
+        "post-v1-workflows-by-workflow-id-draft-operations",
+        "post-v1-workflows-by-workflow-id-draft-publications",
+        "post-v1-workflows-by-workflow-id-draft-validations",
+        "post-v1-workflows-by-workflow-id-drafts-from-version",
+        "post-v1-workflows-by-workflow-id-duplicates",
+        "post-v1-workflows-by-workflow-id-exports",
+        "delete-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-favorites",
+        "post-v1-workflows-by-workflow-id-ownership-transfers",
+        "post-v1-workflows-by-workflow-id-restorations",
+        "get-v1-workflows-by-workflow-id-version-diffs",
+        "get-v1-workflows-by-workflow-id-versions",
+        "get-v1-workflows-by-workflow-id-versions-by-version",
+        "post-v1-workspaces-by-workspace-id-templates",
+        "get-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-folders",
+        "post-v1-workspaces-by-workspace-id-workflow-imports",
+        "get-v1-workspaces-by-workspace-id-workflow-tags",
+        "post-v1-workspaces-by-workspace-id-workflow-tags",
+        "get-v1-workspaces-by-workspace-id-workflows",
+        "post-v1-workspaces-by-workspace-id-workflows"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/versioned-workflows.md"
+      ],
       "primaryMilestone": "M06",
       "regressionMilestones": [
         "M38"
@@ -6627,9 +8452,30 @@
         "route.app.workflows.detail.versions",
         "route.app.workflows.detail.versions.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/versioned-workflows.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/workflow-definition.ts#validateWorkflowDefinition",
+        "packages/db/src/versioned-workflow-repository.ts#PostgresVersionedWorkflowRepository",
+        "apps/web/src/M06Pages.tsx"
+      ],
+      "tablesAndObjects": [
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "workflow_folders",
+        "workflow_tags",
+        "workflow_tag_assignments",
+        "workflow_favorites",
+        "workflow_validation_findings",
+        "workflow_templates",
+        "workflow_template_versions",
+        "workflow_triggers",
+        "audit_events",
+        "outbox_events"
+      ]
     }
   ],
   "schemaVersion": 1,

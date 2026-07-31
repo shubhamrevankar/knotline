@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/security/M06/versioned-workflows.json",
+      "verifiedAt": "2026-08-01T00:45:00.000Z"
+    },
+    "externalGates": [],
+    "id": "workflow.versioned-definitions",
+    "owner": {
+      "contact": "shurevan",
+      "team": "workflow-platform"
+    },
+    "runbook": "docs/operations/knotline/versioned-workflows.md",
+    "status": "DEMO",
+    "summary": "Typed workflow drafts, deterministic validation, immutable publishing, version restore, import/export, and templates are verified locally."
+  }
+]

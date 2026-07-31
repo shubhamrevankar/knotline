@@ -229,6 +229,11 @@ export const workflows = pgTable(
     state: text("state").notNull().default("draft"),
     currentVersion: integer("current_version").notNull().default(1),
     optimisticVersion: integer("optimistic_version").notNull().default(1),
+    ownerUserId: uuid("owner_user_id"),
+    folderId: uuid("folder_id"),
+    archivedAt: timestamp("archived_at", { withTimezone: true }),
+    deletedAt: timestamp("deleted_at", { withTimezone: true }),
+    entitlementClass: text("entitlement_class").notNull().default("standard"),
     ...timestamps
   },
   (table) => [
@@ -246,6 +251,9 @@ export const workflowVersions = pgTable(
     state: text("state").notNull().default("draft"),
     definition: jsonb("definition").notNull().default({}),
     contentHash: text("content_hash").notNull(),
+    draftRevision: integer("draft_revision").notNull().default(1),
+    releaseNote: text("release_note").notNull().default(""),
+    createdBy: uuid("created_by"),
     publishedAt: timestamp("published_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
   },
@@ -290,6 +298,136 @@ export const workflowEdges = pgTable(
   (table) => [
     primaryKey({ columns: [table.workspaceId, table.workflowId, table.workflowVersion, table.id] })
   ]
+);
+
+export const workflowFolders = pgTable(
+  "workflow_folders",
+  {
+    workspaceId: uuid("workspace_id").notNull(),
+    id: uuid("id").notNull(),
+    parentId: uuid("parent_id"),
+    name: text("name").notNull(),
+    createdBy: uuid("created_by").notNull(),
+    ...timestamps
+  },
+  (table) => [primaryKey({ columns: [table.workspaceId, table.id] })]
+);
+
+export const workflowTags = pgTable(
+  "workflow_tags",
+  {
+    workspaceId: uuid("workspace_id").notNull(),
+    id: uuid("id").notNull(),
+    name: text("name").notNull(),
+    color: text("color").notNull().default("slate"),
+    createdBy: uuid("created_by").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [primaryKey({ columns: [table.workspaceId, table.id] })]
+);
+
+export const workflowTagAssignments = pgTable(
+  "workflow_tag_assignments",
+  {
+    workspaceId: uuid("workspace_id").notNull(),
+    workflowId: uuid("workflow_id").notNull(),
+    tagId: uuid("tag_id").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [primaryKey({ columns: [table.workspaceId, table.workflowId, table.tagId] })]
+);
+
+export const workflowFavorites = pgTable(
+  "workflow_favorites",
+  {
+    workspaceId: uuid("workspace_id").notNull(),
+    workflowId: uuid("workflow_id").notNull(),
+    userId: uuid("user_id").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [primaryKey({ columns: [table.workspaceId, table.workflowId, table.userId] })]
+);
+
+export const workflowValidationFindings = pgTable(
+  "workflow_validation_findings",
+  {
+    workspaceId: uuid("workspace_id").notNull(),
+    id: uuid("id").notNull(),
+    workflowId: uuid("workflow_id").notNull(),
+    workflowVersion: integer("workflow_version").notNull(),
+    draftRevision: integer("draft_revision").notNull(),
+    code: text("code").notNull(),
+    severity: text("severity").notNull(),
+    message: text("message").notNull(),
+    location: jsonb("location").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [
+    primaryKey({ columns: [table.workspaceId, table.id] }),
+    index("workflow_validation_revision_idx").on(
+      table.workspaceId,
+      table.workflowId,
+      table.workflowVersion,
+      table.draftRevision
+    )
+  ]
+);
+
+export const workflowTemplates = pgTable(
+  "workflow_templates",
+  {
+    workspaceId: uuid("workspace_id").notNull(),
+    id: uuid("id").notNull(),
+    name: text("name").notNull(),
+    description: text("description").notNull().default(""),
+    visibility: text("visibility").notNull().default("workspace"),
+    state: text("state").notNull().default("draft"),
+    currentVersion: integer("current_version").notNull().default(1),
+    createdBy: uuid("created_by").notNull(),
+    ...timestamps
+  },
+  (table) => [
+    primaryKey({ columns: [table.workspaceId, table.id] }),
+    index("workflow_templates_workspace_state_idx").on(
+      table.workspaceId,
+      table.state,
+      table.updatedAt
+    )
+  ]
+);
+
+export const workflowTemplateVersions = pgTable(
+  "workflow_template_versions",
+  {
+    workspaceId: uuid("workspace_id").notNull(),
+    templateId: uuid("template_id").notNull(),
+    version: integer("version").notNull(),
+    state: text("state").notNull().default("draft"),
+    definition: jsonb("definition").notNull(),
+    variables: jsonb("variables").notNull().default([]),
+    contentHash: text("content_hash").notNull(),
+    publishedAt: timestamp("published_at", { withTimezone: true }),
+    createdBy: uuid("created_by").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [primaryKey({ columns: [table.workspaceId, table.templateId, table.version] })]
+);
+
+export const workflowTriggers = pgTable(
+  "workflow_triggers",
+  {
+    workspaceId: uuid("workspace_id").notNull(),
+    id: uuid("id").notNull(),
+    workflowId: uuid("workflow_id").notNull(),
+    workflowVersion: integer("workflow_version").notNull(),
+    triggerKey: text("trigger_key").notNull(),
+    kind: text("kind").notNull(),
+    configuration: jsonb("configuration").notNull().default({}),
+    state: text("state").notNull().default("disabled"),
+    secretVersion: integer("secret_version").notNull().default(1),
+    ...timestamps
+  },
+  (table) => [primaryKey({ columns: [table.workspaceId, table.id] })]
 );
 
 export const idempotencyRecords = pgTable(

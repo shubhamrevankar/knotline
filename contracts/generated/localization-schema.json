@@ -25,9 +25,9 @@
       "key": "app.loading.workspace",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:313",
-        "apps/web/src/App.tsx:342",
-        "apps/web/src/router.tsx:320"
+        "apps/web/src/App.tsx:362",
+        "apps/web/src/App.tsx:391",
+        "apps/web/src/router.tsx:326"
       ]
     },
     {
@@ -291,12 +291,12 @@
       "key": "brand.name",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:114",
+        "apps/web/src/App.tsx:134",
         "apps/web/src/AuthPages.tsx:28",
         "apps/web/src/M05Pages.tsx:46",
-        "apps/web/src/router.tsx:133",
-        "apps/web/src/router.tsx:148",
-        "apps/web/src/router.tsx:337"
+        "apps/web/src/router.tsx:139",
+        "apps/web/src/router.tsx:154",
+        "apps/web/src/router.tsx:352"
       ]
     },
     {
@@ -409,42 +409,42 @@
       "key": "consent.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:114"
+        "apps/web/src/router.tsx:120"
       ]
     },
     {
       "key": "consent.essential",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:116"
+        "apps/web/src/router.tsx:122"
       ]
     },
     {
       "key": "consent.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:113"
+        "apps/web/src/router.tsx:119"
       ]
     },
     {
       "key": "consent.measurement",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:118"
+        "apps/web/src/router.tsx:124"
       ]
     },
     {
       "key": "customer.connection.api",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:213"
+        "apps/web/src/App.tsx:233"
       ]
     },
     {
       "key": "customer.connection.fallback",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:213"
+        "apps/web/src/App.tsx:233"
       ]
     },
     {
@@ -466,7 +466,7 @@
       "key": "customer.help",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:167"
+        "apps/web/src/App.tsx:187"
       ]
     },
     {
@@ -475,63 +475,63 @@
         "count"
       ],
       "usedBy": [
-        "apps/web/src/App.tsx:271"
+        "apps/web/src/App.tsx:320"
       ]
     },
     {
       "key": "customer.library.group",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:283"
+        "apps/web/src/App.tsx:332"
       ]
     },
     {
       "key": "customer.library.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:269"
+        "apps/web/src/App.tsx:318"
       ]
     },
     {
       "key": "customer.library.settings",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:275"
+        "apps/web/src/App.tsx:324"
       ]
     },
     {
       "key": "customer.map.complete",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:356"
+        "apps/web/src/App.tsx:405"
       ]
     },
     {
       "key": "customer.map.edit",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:330"
+        "apps/web/src/App.tsx:379"
       ]
     },
     {
       "key": "customer.map.legend",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:345"
+        "apps/web/src/App.tsx:394"
       ]
     },
     {
       "key": "customer.map.run",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:334"
+        "apps/web/src/App.tsx:383"
       ]
     },
     {
       "key": "customer.map.running",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:348"
+        "apps/web/src/App.tsx:397"
       ]
     },
     {
@@ -540,28 +540,28 @@
         "version"
       ],
       "usedBy": [
-        "apps/web/src/App.tsx:324"
+        "apps/web/src/App.tsx:373"
       ]
     },
     {
       "key": "customer.map.waiting",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:352"
+        "apps/web/src/App.tsx:401"
       ]
     },
     {
       "key": "customer.metrics.agent",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:254"
+        "apps/web/src/App.tsx:303"
       ]
     },
     {
       "key": "customer.metrics.agentdetail",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:256"
+        "apps/web/src/App.tsx:305"
       ]
     },
     {
@@ -570,49 +570,49 @@
         "count"
       ],
       "usedBy": [
-        "apps/web/src/App.tsx:261"
+        "apps/web/src/App.tsx:310"
       ]
     },
     {
       "key": "customer.metrics.label",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:242"
+        "apps/web/src/App.tsx:291"
       ]
     },
     {
       "key": "customer.metrics.runs",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:244"
+        "apps/web/src/App.tsx:293"
       ]
     },
     {
       "key": "customer.metrics.runsdetail",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:246"
+        "apps/web/src/App.tsx:295"
       ]
     },
     {
       "key": "customer.metrics.time",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:260"
+        "apps/web/src/App.tsx:309"
       ]
     },
     {
       "key": "customer.metrics.waiting",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:249"
+        "apps/web/src/App.tsx:298"
       ]
     },
     {
       "key": "customer.metrics.waitingdetail",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:251"
+        "apps/web/src/App.tsx:300"
       ]
     },
     {
@@ -626,7 +626,7 @@
       "key": "customer.nav.close",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:117"
+        "apps/web/src/App.tsx:137"
       ]
     },
     {
@@ -640,30 +640,30 @@
       "key": "customer.nav.label",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:104",
-        "apps/web/src/router.tsx:334"
+        "apps/web/src/App.tsx:124",
+        "apps/web/src/router.tsx:349"
       ]
     },
     {
       "key": "customer.nav.main",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:136"
+        "apps/web/src/App.tsx:156"
       ]
     },
     {
       "key": "customer.nav.mobile",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:363"
+        "apps/web/src/App.tsx:412"
       ]
     },
     {
       "key": "customer.nav.open",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:192",
-        "apps/web/src/router.tsx:352"
+        "apps/web/src/App.tsx:212",
+        "apps/web/src/router.tsx:367"
       ]
     },
     {
@@ -685,7 +685,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/App.tsx:30",
-        "apps/web/src/App.tsx:370"
+        "apps/web/src/App.tsx:419"
       ]
     },
     {
@@ -693,80 +693,80 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/App.tsx:29",
-        "apps/web/src/App.tsx:366",
-        "apps/web/src/router.tsx:311",
-        "apps/web/src/router.tsx:341"
+        "apps/web/src/App.tsx:415",
+        "apps/web/src/router.tsx:317",
+        "apps/web/src/router.tsx:356"
       ]
     },
     {
       "key": "customer.notifications",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:216"
+        "apps/web/src/App.tsx:236"
       ]
     },
     {
       "key": "customer.page.planned",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:312"
+        "apps/web/src/router.tsx:318"
       ]
     },
     {
       "key": "customer.route.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:349"
+        "apps/web/src/router.tsx:364"
       ]
     },
     {
       "key": "customer.route.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:348"
+        "apps/web/src/router.tsx:363"
       ]
     },
     {
       "key": "customer.saved.attention",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:155"
+        "apps/web/src/App.tsx:175"
       ]
     },
     {
       "key": "customer.saved.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:152"
+        "apps/web/src/App.tsx:172"
       ]
     },
     {
       "key": "customer.saved.running",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:160"
+        "apps/web/src/App.tsx:180"
       ]
     },
     {
       "key": "customer.search",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:199",
-        "apps/web/src/App.tsx:201"
+        "apps/web/src/App.tsx:219",
+        "apps/web/src/App.tsx:221"
       ]
     },
     {
       "key": "customer.section.operations",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:232"
+        "apps/web/src/App.tsx:281"
       ]
     },
     {
       "key": "customer.settings",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:171"
+        "apps/web/src/App.tsx:191"
       ]
     },
     {
@@ -801,43 +801,43 @@
       "key": "customer.user.handle",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:179"
+        "apps/web/src/App.tsx:199"
       ]
     },
     {
       "key": "customer.user.initials",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:175"
+        "apps/web/src/App.tsx:195"
       ]
     },
     {
       "key": "customer.user.name",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:178"
+        "apps/web/src/App.tsx:198"
       ]
     },
     {
       "key": "customer.workflow.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:233"
+        "apps/web/src/App.tsx:282"
       ]
     },
     {
       "key": "customer.workflow.new",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:224",
-        "apps/web/src/App.tsx:374"
+        "apps/web/src/App.tsx:244",
+        "apps/web/src/App.tsx:423"
       ]
     },
     {
       "key": "customer.workflow.patterns",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:238"
+        "apps/web/src/App.tsx:287"
       ]
     },
     {
@@ -846,7 +846,7 @@
         "count"
       ],
       "usedBy": [
-        "apps/web/src/App.tsx:307"
+        "apps/web/src/App.tsx:356"
       ]
     },
     {
@@ -855,14 +855,14 @@
         "count"
       ],
       "usedBy": [
-        "apps/web/src/App.tsx:306"
+        "apps/web/src/App.tsx:355"
       ]
     },
     {
       "key": "customer.workflow.tagline",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:234"
+        "apps/web/src/App.tsx:283"
       ]
     },
     {
@@ -874,7 +874,7 @@
       "key": "customer.workspace.name",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:131"
+        "apps/web/src/App.tsx:151"
       ]
     },
     {
@@ -1080,8 +1080,8 @@
       "key": "metadata.description",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:80",
-        "apps/web/src/router.tsx:88"
+        "apps/web/src/router.tsx:86",
+        "apps/web/src/router.tsx:94"
       ]
     },
     {
@@ -1090,49 +1090,49 @@
         "title"
       ],
       "usedBy": [
-        "apps/web/src/router.tsx:62"
+        "apps/web/src/router.tsx:68"
       ]
     },
     {
       "key": "nav.docs",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:140"
+        "apps/web/src/router.tsx:146"
       ]
     },
     {
       "key": "nav.open.demo",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:143"
+        "apps/web/src/router.tsx:149"
       ]
     },
     {
       "key": "nav.product",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:136"
+        "apps/web/src/router.tsx:142"
       ]
     },
     {
       "key": "nav.security",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:139"
+        "apps/web/src/router.tsx:145"
       ]
     },
     {
       "key": "nav.solutions",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:137"
+        "apps/web/src/router.tsx:143"
       ]
     },
     {
       "key": "nav.templates",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:138"
+        "apps/web/src/router.tsx:144"
       ]
     },
     {
@@ -1317,21 +1317,21 @@
       "key": "operator.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:371"
+        "apps/web/src/router.tsx:386"
       ]
     },
     {
       "key": "operator.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:370"
+        "apps/web/src/router.tsx:385"
       ]
     },
     {
       "key": "operator.plane",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:366"
+        "apps/web/src/router.tsx:381"
       ]
     },
     {
@@ -1340,14 +1340,14 @@
         "milestone"
       ],
       "usedBy": [
-        "apps/web/src/router.tsx:369"
+        "apps/web/src/router.tsx:384"
       ]
     },
     {
       "key": "operator.surface",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:361"
+        "apps/web/src/router.tsx:376"
       ]
     },
     {
@@ -1454,183 +1454,183 @@
       "key": "public.capability.async",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:299"
+        "apps/web/src/router.tsx:305"
       ]
     },
     {
       "key": "public.capability.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:296"
+        "apps/web/src/router.tsx:302"
       ]
     },
     {
       "key": "public.capability.static",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:300"
+        "apps/web/src/router.tsx:306"
       ]
     },
     {
       "key": "public.feature.context.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:189"
+        "apps/web/src/router.tsx:195"
       ]
     },
     {
       "key": "public.feature.context.title",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:188"
+        "apps/web/src/router.tsx:194"
       ]
     },
     {
       "key": "public.feature.governance.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:184"
+        "apps/web/src/router.tsx:190"
       ]
     },
     {
       "key": "public.feature.governance.title",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:183"
+        "apps/web/src/router.tsx:189"
       ]
     },
     {
       "key": "public.feature.workflow.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:179"
+        "apps/web/src/router.tsx:185"
       ]
     },
     {
       "key": "public.feature.workflow.title",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:178"
+        "apps/web/src/router.tsx:184"
       ]
     },
     {
       "key": "public.footer.accessibility",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:151"
+        "apps/web/src/router.tsx:157"
       ]
     },
     {
       "key": "public.footer.label",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:149"
+        "apps/web/src/router.tsx:155"
       ]
     },
     {
       "key": "public.footer.privacy",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:150"
+        "apps/web/src/router.tsx:156"
       ]
     },
     {
       "key": "public.footer.status",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:152"
+        "apps/web/src/router.tsx:158"
       ]
     },
     {
       "key": "public.home.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:167"
+        "apps/web/src/router.tsx:173"
       ]
     },
     {
       "key": "public.home.cta.demo",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:170"
+        "apps/web/src/router.tsx:176"
       ]
     },
     {
       "key": "public.home.cta.product",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:172"
+        "apps/web/src/router.tsx:178"
       ]
     },
     {
       "key": "public.home.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:166"
+        "apps/web/src/router.tsx:172"
       ]
     },
     {
       "key": "public.home.principles",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:175"
+        "apps/web/src/router.tsx:181"
       ]
     },
     {
       "key": "public.home.status",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:165"
+        "apps/web/src/router.tsx:171"
       ]
     },
     {
       "key": "public.nav.primary",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:135"
+        "apps/web/src/router.tsx:141"
       ]
     },
     {
       "key": "public.notfound.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:200"
+        "apps/web/src/router.tsx:206"
       ]
     },
     {
       "key": "public.notfound.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:197",
-        "apps/web/src/router.tsx:199"
+        "apps/web/src/router.tsx:203",
+        "apps/web/src/router.tsx:205"
       ]
     },
     {
       "key": "public.notfound.return",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:201"
+        "apps/web/src/router.tsx:207"
       ]
     },
     {
       "key": "public.page.available",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:290"
+        "apps/web/src/router.tsx:296"
       ]
     },
     {
       "key": "public.page.body.owned",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:294"
+        "apps/web/src/router.tsx:300"
       ]
     },
     {
       "key": "public.page.body.planned",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:294"
+        "apps/web/src/router.tsx:300"
       ]
     },
     {
@@ -1639,100 +1639,100 @@
         "milestone"
       ],
       "usedBy": [
-        "apps/web/src/router.tsx:291",
-        "apps/web/src/router.tsx:346"
+        "apps/web/src/router.tsx:297",
+        "apps/web/src/router.tsx:361"
       ]
     },
     {
       "key": "public.page.planned.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:282"
+        "apps/web/src/router.tsx:288"
       ]
     },
     {
       "key": "public.skip",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:128"
+        "apps/web/src/router.tsx:134"
       ]
     },
     {
       "key": "public.title.agents",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:50"
+        "apps/web/src/router.tsx:56"
       ]
     },
     {
       "key": "public.title.changelog",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:57"
+        "apps/web/src/router.tsx:63"
       ]
     },
     {
       "key": "public.title.docs",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:55"
+        "apps/web/src/router.tsx:61"
       ]
     },
     {
       "key": "public.title.documentation",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:56"
+        "apps/web/src/router.tsx:62"
       ]
     },
     {
       "key": "public.title.home",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:161",
-        "apps/web/src/router.tsx:47"
+        "apps/web/src/router.tsx:167",
+        "apps/web/src/router.tsx:53"
       ]
     },
     {
       "key": "public.title.integrations",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:52"
+        "apps/web/src/router.tsx:58"
       ]
     },
     {
       "key": "public.title.knowledge",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:51"
+        "apps/web/src/router.tsx:57"
       ]
     },
     {
       "key": "public.title.product",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:48"
+        "apps/web/src/router.tsx:54"
       ]
     },
     {
       "key": "public.title.security",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:54"
+        "apps/web/src/router.tsx:60"
       ]
     },
     {
       "key": "public.title.templates",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:53"
+        "apps/web/src/router.tsx:59"
       ]
     },
     {
       "key": "public.title.workflows",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:49"
+        "apps/web/src/router.tsx:55"
       ]
     },
     {
@@ -1900,49 +1900,49 @@
       "key": "solution.finance",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:41"
+        "apps/web/src/router.tsx:47"
       ]
     },
     {
       "key": "solution.gotomarket",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:38"
+        "apps/web/src/router.tsx:44"
       ]
     },
     {
       "key": "solution.hr",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:42"
+        "apps/web/src/router.tsx:48"
       ]
     },
     {
       "key": "solution.it",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:43"
+        "apps/web/src/router.tsx:49"
       ]
     },
     {
       "key": "solution.operations",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:37"
+        "apps/web/src/router.tsx:43"
       ]
     },
     {
       "key": "solution.product",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:39"
+        "apps/web/src/router.tsx:45"
       ]
     },
     {
       "key": "solution.support",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:40"
+        "apps/web/src/router.tsx:46"
       ]
     },
     {
@@ -1951,112 +1951,112 @@
         "name"
       ],
       "usedBy": [
-        "apps/web/src/router.tsx:228"
+        "apps/web/src/router.tsx:234"
       ]
     },
     {
       "key": "state.archived.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:249"
+        "apps/web/src/router.tsx:255"
       ]
     },
     {
       "key": "state.archived.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:249"
+        "apps/web/src/router.tsx:255"
       ]
     },
     {
       "key": "state.degraded.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:255"
+        "apps/web/src/router.tsx:261"
       ]
     },
     {
       "key": "state.degraded.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:255"
+        "apps/web/src/router.tsx:261"
       ]
     },
     {
       "key": "state.deleted.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:251"
+        "apps/web/src/router.tsx:257"
       ]
     },
     {
       "key": "state.deleted.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:251"
+        "apps/web/src/router.tsx:257"
       ]
     },
     {
       "key": "state.forbidden.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:243"
+        "apps/web/src/router.tsx:249"
       ]
     },
     {
       "key": "state.forbidden.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:243"
+        "apps/web/src/router.tsx:249"
       ]
     },
     {
       "key": "state.offline.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:253"
+        "apps/web/src/router.tsx:259"
       ]
     },
     {
       "key": "state.offline.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:253"
+        "apps/web/src/router.tsx:259"
       ]
     },
     {
       "key": "state.plan.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:245"
+        "apps/web/src/router.tsx:251"
       ]
     },
     {
       "key": "state.plan.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:245"
+        "apps/web/src/router.tsx:251"
       ]
     },
     {
       "key": "state.return",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:269"
+        "apps/web/src/router.tsx:275"
       ]
     },
     {
       "key": "state.suspended.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:247"
+        "apps/web/src/router.tsx:253"
       ]
     },
     {
       "key": "state.suspended.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:247"
+        "apps/web/src/router.tsx:253"
       ]
     },
     {
@@ -2064,7 +2064,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/AuthPages.tsx:218",
-        "apps/web/src/router.tsx:241"
+        "apps/web/src/router.tsx:247"
       ]
     },
     {
@@ -2072,7 +2072,42 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/AuthPages.tsx:212",
-        "apps/web/src/router.tsx:241"
+        "apps/web/src/router.tsx:247"
+      ]
+    },
+    {
+      "key": "templates.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:324"
+      ]
+    },
+    {
+      "key": "templates.instantiated",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:347"
+      ]
+    },
+    {
+      "key": "templates.loading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:331"
+      ]
+    },
+    {
+      "key": "templates.preview",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:343"
+      ]
+    },
+    {
+      "key": "templates.use",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:351"
       ]
     },
     {
@@ -2312,7 +2347,7 @@
       "key": "workbench.loading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:219"
+        "apps/web/src/router.tsx:225"
       ]
     },
     {
@@ -2551,6 +2586,303 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/ComponentWorkbench.tsx:56"
+      ]
+    },
+    {
+      "key": "workflow.create.close",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/App.tsx:256"
+      ]
+    },
+    {
+      "key": "workflow.create.description",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/App.tsx:269"
+      ]
+    },
+    {
+      "key": "workflow.create.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/App.tsx:253"
+      ]
+    },
+    {
+      "key": "workflow.create.name",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/App.tsx:265"
+      ]
+    },
+    {
+      "key": "workflow.create.submit",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/App.tsx:273"
+      ]
+    },
+    {
+      "key": "workflow.definition.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:174"
+      ]
+    },
+    {
+      "key": "workflow.detail.draft",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:81"
+      ]
+    },
+    {
+      "key": "workflow.detail.edges",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:93"
+      ]
+    },
+    {
+      "key": "workflow.detail.hash",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:97"
+      ]
+    },
+    {
+      "key": "workflow.detail.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:56"
+      ]
+    },
+    {
+      "key": "workflow.detail.loading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:76"
+      ]
+    },
+    {
+      "key": "workflow.detail.nodes",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:256",
+        "apps/web/src/M06Pages.tsx:340",
+        "apps/web/src/M06Pages.tsx:89"
+      ]
+    },
+    {
+      "key": "workflow.diff.compare",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:270"
+      ]
+    },
+    {
+      "key": "workflow.diff.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:250"
+      ]
+    },
+    {
+      "key": "workflow.diff.need.two",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:273"
+      ]
+    },
+    {
+      "key": "workflow.findings.empty",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:156"
+      ]
+    },
+    {
+      "key": "workflow.findings.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:154"
+      ]
+    },
+    {
+      "key": "workflow.manage.back",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:32"
+      ]
+    },
+    {
+      "key": "workflow.manage.badge",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:35"
+      ]
+    },
+    {
+      "key": "workflow.manage.error",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:47"
+      ]
+    },
+    {
+      "key": "workflow.publish",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:140"
+      ]
+    },
+    {
+      "key": "workflow.publish.note",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:125"
+      ]
+    },
+    {
+      "key": "workflow.publish.success",
+      "placeholders": [
+        "version"
+      ],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:130"
+      ]
+    },
+    {
+      "key": "workflow.restore",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:240"
+      ]
+    },
+    {
+      "key": "workflow.restore.success",
+      "placeholders": [
+        "version"
+      ],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:235"
+      ]
+    },
+    {
+      "key": "workflow.settings.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:287"
+      ]
+    },
+    {
+      "key": "workflow.template.create",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:289",
+        "apps/web/src/M06Pages.tsx:301"
+      ]
+    },
+    {
+      "key": "workflow.template.create.body",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:290"
+      ]
+    },
+    {
+      "key": "workflow.template.created",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:297"
+      ]
+    },
+    {
+      "key": "workflow.template.default.body",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:296"
+      ]
+    },
+    {
+      "key": "workflow.template.default.name",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:295"
+      ]
+    },
+    {
+      "key": "workflow.validate",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:117"
+      ]
+    },
+    {
+      "key": "workflow.validate.invalid",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:111",
+        "apps/web/src/M06Pages.tsx:133"
+      ]
+    },
+    {
+      "key": "workflow.validate.valid",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:110"
+      ]
+    },
+    {
+      "key": "workflow.version.selected",
+      "placeholders": [
+        "version"
+      ],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:249"
+      ]
+    },
+    {
+      "key": "workflow.versions",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:144"
+      ]
+    },
+    {
+      "key": "workflow.versions.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:207"
+      ]
+    },
+    {
+      "key": "workflow.versions.inspect",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:230"
+      ]
+    },
+    {
+      "key": "workflow.versions.list",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:217"
+      ]
+    },
+    {
+      "key": "workflow.versions.loading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:214"
+      ]
+    },
+    {
+      "key": "workflow.versions.no.note",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:226"
       ]
     },
     {

@@ -212,6 +212,62 @@
       "retentionDays": 365,
       "exportHandler": "security-export",
       "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "workflow_folders",
+      "class": "workflow.folder",
+      "retentionDays": 2555,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "workflow-delete"
+    },
+    {
+      "name": "workflow_tags",
+      "class": "workflow.tag",
+      "retentionDays": 2555,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "workflow-delete"
+    },
+    {
+      "name": "workflow_tag_assignments",
+      "class": "workflow.tagassignment",
+      "retentionDays": 2555,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "workflow-delete"
+    },
+    {
+      "name": "workflow_favorites",
+      "class": "workflow.favorite",
+      "retentionDays": 2555,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "workflow_validation_findings",
+      "class": "workflow.validation",
+      "retentionDays": 365,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "workflow-delete"
+    },
+    {
+      "name": "workflow_templates",
+      "class": "workflow.template",
+      "retentionDays": 2555,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "workflow-delete"
+    },
+    {
+      "name": "workflow_template_versions",
+      "class": "workflow.templateversion",
+      "retentionDays": 2555,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "workflow-delete"
+    },
+    {
+      "name": "workflow_triggers",
+      "class": "workflow.trigger",
+      "retentionDays": 2555,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "workflow-delete"
     }
   ],
   "indexes": [
@@ -276,7 +332,20 @@
     "resource_grants_pkey",
     "onboarding_progress_pkey",
     "sandbox_resources_pkey",
-    "guest_identities_pkey"
+    "guest_identities_pkey",
+    "workflow_folders_pkey",
+    "workflow_folders_workspace_id_parent_id_normalized_name_key",
+    "workflow_tags_pkey",
+    "workflow_tags_workspace_id_normalized_name_key",
+    "workflow_tag_assignments_pkey",
+    "workflow_favorites_pkey",
+    "workflow_validation_findings_pkey",
+    "workflow_validation_revision_idx",
+    "workflow_templates_pkey",
+    "workflow_templates_workspace_state_idx",
+    "workflow_template_versions_pkey",
+    "workflow_triggers_pkey",
+    "workflow_triggers_workspace_id_workflow_id_trigger_key_key"
   ],
   "caches": []
 }

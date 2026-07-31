@@ -1,0 +1,278 @@
+{
+  "activeGateRows": [
+    "format",
+    "lint",
+    "strict type",
+    "unit coverage",
+    "build",
+    "brand/provenance guard",
+    "package boundaries",
+    "license",
+    "dependency",
+    "secret",
+    "evidence",
+    "docs validation",
+    "browser e2e",
+    "automated accessibility",
+    "responsive/visual regression",
+    "bundle and web vitals smoke",
+    "real postgresql integration",
+    "migration",
+    "rls/tenant isolation",
+    "query plan",
+    "backup smoke",
+    "auth/session/csrf/cors/abuse security suite",
+    "workflow schema/property",
+    "api/openapi",
+    "event compatibility"
+  ],
+  "declaredEnvironmentState": "NOT_DEPLOYED",
+  "deployments": [],
+  "environmentGates": [],
+  "evidenceUris": [
+    "repo://packages/contracts/src/workflow-definition.ts",
+    "repo://packages/db/migrations/0004_versioned_workflows.sql",
+    "repo://packages/db/src/versioned-workflow-repository.ts",
+    "repo://tooling/workflows/postgres-suite.ts",
+    "repo://artifacts/security/M06/versioned-workflows.json",
+    "repo://docs/operations/knotline/versioned-workflows.md"
+  ],
+  "externalGates": [],
+  "flags": [],
+  "knownRisks": [],
+  "manualReviews": [
+    {
+      "evidenceUri": "artifact://M06/manual/workflow-review",
+      "id": "m06-workflow-review",
+      "owner": "shurevan"
+    }
+  ],
+  "migrations": [
+    {
+      "evidenceUri": "repo://packages/db/migrations/0004_versioned_workflows.sql",
+      "id": "0004-versioned-workflows"
+    }
+  ],
+  "milestone": "M06",
+  "notYetApplicable": [
+    {
+      "activationMilestone": "M10",
+      "reason": "This gate activates with M10.",
+      "row": "temporal replay/restart/concurrency/idempotency"
+    },
+    {
+      "activationMilestone": "M10",
+      "reason": "This gate activates with M10.",
+      "row": "outbox/dlq"
+    },
+    {
+      "activationMilestone": "M10",
+      "reason": "This gate activates with M10.",
+      "row": "runtime load-lite"
+    },
+    {
+      "activationMilestone": "M10",
+      "reason": "This gate activates with M10.",
+      "row": "kill/repair smoke"
+    },
+    {
+      "activationMilestone": "M12",
+      "reason": "This gate activates with M12.",
+      "row": "restricted task/comment attachment upload"
+    },
+    {
+      "activationMilestone": "M12",
+      "reason": "This gate activates with M12.",
+      "row": "checksum/quota"
+    },
+    {
+      "activationMilestone": "M12",
+      "reason": "This gate activates with M12.",
+      "row": "quarantine/malware"
+    },
+    {
+      "activationMilestone": "M12",
+      "reason": "This gate activates with M12.",
+      "row": "authorization"
+    },
+    {
+      "activationMilestone": "M12",
+      "reason": "This gate activates with M12.",
+      "row": "download"
+    },
+    {
+      "activationMilestone": "M12",
+      "reason": "This gate activates with M12.",
+      "row": "and lifecycle gate"
+    },
+    {
+      "activationMilestone": "M15",
+      "reason": "This gate activates with M15.",
+      "row": "model contract/live-sandbox gate"
+    },
+    {
+      "activationMilestone": "M15",
+      "reason": "This gate activates with M15.",
+      "row": "structured output"
+    },
+    {
+      "activationMilestone": "M15",
+      "reason": "This gate activates with M15.",
+      "row": "evaluation smoke"
+    },
+    {
+      "activationMilestone": "M15",
+      "reason": "This gate activates with M15.",
+      "row": "ai usage/cost and kill switch"
+    },
+    {
+      "activationMilestone": "M16",
+      "reason": "This gate activates with M16.",
+      "row": "tool/credential/ssrf/sandbox security"
+    },
+    {
+      "activationMilestone": "M18",
+      "reason": "This gate activates with M18.",
+      "row": "full agent evaluation"
+    },
+    {
+      "activationMilestone": "M18",
+      "reason": "This gate activates with M18.",
+      "row": "release/canary/rollback"
+    },
+    {
+      "activationMilestone": "M19",
+      "reason": "This gate activates with M19.",
+      "row": "file malware/parser/object lifecycle"
+    },
+    {
+      "activationMilestone": "M20",
+      "reason": "This gate activates with M20.",
+      "row": "retrieval quality/acl/citation/performance"
+    },
+    {
+      "activationMilestone": "M22",
+      "reason": "This gate activates with M22.",
+      "row": "connector contract/oauth/webhook/sync fixture suites"
+    },
+    {
+      "activationMilestone": "M23",
+      "reason": "This gate activates with M23.",
+      "row": "each named provider’s real sandbox certification row"
+    },
+    {
+      "activationMilestone": "M27",
+      "reason": "This gate activates with M27.",
+      "row": "notification delivery/render/access-recheck"
+    },
+    {
+      "activationMilestone": "M29",
+      "reason": "This gate activates with M29.",
+      "row": "billing/entitlement/ledger/stripe sandbox"
+    },
+    {
+      "activationMilestone": "M31",
+      "reason": "This gate activates with M31.",
+      "row": "privacy/export/delete/retention/hold/restore-deletion"
+    },
+    {
+      "activationMilestone": "M32",
+      "reason": "This gate activates with M32.",
+      "row": "sso/scim/policy/residency/migration"
+    },
+    {
+      "activationMilestone": "M33",
+      "reason": "This gate activates with M33.",
+      "row": "complete browser/device/locale/pwa/guest/support/manual at matrix"
+    },
+    {
+      "activationMilestone": "M34",
+      "reason": "This gate activates with M34.",
+      "row": "aws staging terraform/fresh deploy/canary/rollback plus workforce operator identity"
+    },
+    {
+      "activationMilestone": "M34",
+      "reason": "This gate activates with M34.",
+      "row": "trace/redaction/sli/alert/runbook/kill/game-day"
+    },
+    {
+      "activationMilestone": "M35",
+      "reason": "This gate activates with M35.",
+      "row": "sast/dast/iac/container/sbom/signature/penetration evidence"
+    },
+    {
+      "activationMilestone": "M36",
+      "reason": "This gate activates with M36.",
+      "row": "section 4.2 full load/soak/chaos/backup/restore/dr profiles"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "terraform"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "fresh bootstrap"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "deployment"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "canary"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "rollback"
+    },
+    {
+      "activationMilestone": "M38",
+      "reason": "This gate activates with M38.",
+      "row": "every gate row above and every external gate in ga scope; zero gate-row n/a/skip/quarantine. reasoned route-state not_applicable remains governed by section 5.8"
+    }
+  ],
+  "owners": [
+    "shurevan"
+  ],
+  "requirements": [
+    "WF-001",
+    "WF-002",
+    "WF-004",
+    "WF-013",
+    "WF-015",
+    "WF-016",
+    "WF-017",
+    "WF-018",
+    "WF-019",
+    "WF-020"
+  ],
+  "schemaVersion": 1,
+  "targetEngineeringState": "COMMITTED",
+  "testRuns": [
+    {
+      "command": "pnpm test:workflows",
+      "evidenceUri": "artifact://M06/test-results/workflow-security",
+      "id": "m06-workflow-security"
+    },
+    {
+      "command": "pnpm test:unit",
+      "evidenceUri": "artifact://M06/test-results/unit-property",
+      "id": "m06-unit-property"
+    },
+    {
+      "command": "pnpm exec playwright test tests/e2e/versioned-workflows.spec.ts",
+      "evidenceUri": "artifact://M06/test-results/browser",
+      "id": "m06-browser"
+    },
+    {
+      "command": "pnpm test:a11y",
+      "evidenceUri": "artifact://M06/test-results/accessibility",
+      "id": "m06-accessibility"
+    }
+  ]
+}

@@ -17,10 +17,10 @@ import {
   Sparkles,
   UsersRound
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import type { Workflow, WorkflowSummary } from "@knotline/contracts";
-import { fetchWorkflow, fetchWorkflows } from "./api";
+import { createVersionedWorkflow, fetchWorkflow, fetchWorkflows } from "./api";
 import { i18n, msg } from "./i18n.js";
 import { WorkflowCanvas } from "./WorkflowCanvas";
 
@@ -49,6 +49,8 @@ export function App() {
   const [workflow, setWorkflow] = useState<Workflow | null>(null);
   const [selectedId, setSelectedId] = useState("");
   const [connected, setConnected] = useState(false);
+  const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState("");
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -96,6 +98,24 @@ export function App() {
   const closeSidebar = () => {
     setSidebarOpen(false);
     menuButtonRef.current?.focus();
+  };
+
+  const createWorkflow = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const name = form.get("name");
+    const description = form.get("description");
+    if (typeof name !== "string" || typeof description !== "string") return;
+    try {
+      const created = await createVersionedWorkflow(name, description);
+      const items = await fetchWorkflows();
+      setWorkflows(items);
+      setSelectedId(created.id);
+      setCreating(false);
+      setCreateError("");
+    } catch (reason) {
+      setCreateError(String(reason));
+    }
   };
 
   return (
@@ -219,7 +239,7 @@ export function App() {
             >
               <Bell aria-hidden="true" size={18} />
             </button>
-            <button className="primary-button" type="button">
+            <button className="primary-button" onClick={() => setCreating(true)} type="button">
               <Plus aria-hidden="true" size={16} />
               {msg("customer.workflow.new")}
             </button>
@@ -227,6 +247,35 @@ export function App() {
         </header>
 
         <section aria-labelledby="workflows-heading" className="page">
+          {creating ? (
+            <aside className="workflow-create-panel" aria-labelledby="workflow-create-heading">
+              <div className="row-between">
+                <h2 id="workflow-create-heading">{msg("workflow.create.heading")}</h2>
+                <button
+                  className="icon-button"
+                  aria-label={msg("workflow.create.close")}
+                  onClick={() => setCreating(false)}
+                  type="button"
+                >
+                  ×
+                </button>
+              </div>
+              <form onSubmit={(event) => void createWorkflow(event)}>
+                <label>
+                  {msg("workflow.create.name")}
+                  <input name="name" required maxLength={120} />
+                </label>
+                <label>
+                  {msg("workflow.create.description")}
+                  <textarea name="description" maxLength={500} />
+                </label>
+                <button className="primary-button" type="submit">
+                  {msg("workflow.create.submit")}
+                </button>
+              </form>
+              {createError ? <p role="alert">{createError}</p> : null}
+            </aside>
+          ) : null}
           <div className="page-heading">
             <div>
               <span className="section-index">{msg("customer.section.operations")}</span>
@@ -326,9 +375,9 @@ export function App() {
                       <h2 id="selected-workflow-heading">{workflow.name}</h2>
                     </div>
                     <div className="canvas-actions">
-                      <button className="secondary-button" type="button">
+                      <Link className="secondary-button" to={`/app/workflows/${workflow.id}`}>
                         {msg("customer.map.edit")}
-                      </button>
+                      </Link>
                       <button className="run-button" type="button">
                         <span aria-hidden="true" />
                         {msg("customer.map.run")}

@@ -25,7 +25,9 @@ export default defineConfig({
         "apps/api/src/workspace.ts",
         "apps/web/src/AuthPages.tsx",
         "apps/web/src/M05Pages.tsx",
-        "apps/web/src/api.ts"
+        "apps/web/src/M06Pages.tsx",
+        "apps/web/src/api.ts",
+        "packages/db/src/versioned-workflow-repository.ts"
       ]
     },
     exclude: ["**/dist/**", "**/node_modules/**", "tests/e2e/**", "tooling/**/*.test.mjs"],

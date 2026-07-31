@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "image": "pgvector/pgvector:0.8.1-pg17-trixie@sha256:137f044b0efe3d57f39b972b9b53641b1f2045b99d879e298bbf514a25787dcf",
+  "result": {
+    "draft": {
+      "import": true,
+      "optimisticConflict": true,
+      "atomicRevision": true
+    },
+    "validation": {
+      "stableFindings": true,
+      "invalidPublishBlocked": true
+    },
+    "publication": {
+      "immutable": true,
+      "hashStable": true,
+      "nextDraft": true
+    },
+    "versions": {
+      "list": 3,
+      "diff": true,
+      "restore": true
+    },
+    "portability": {
+      "exportImportRoundTrip": true
+    },
+    "organization": {
+      "folders": true,
+      "tags": true
+    },
+    "templates": {
+      "variables": true,
+      "instantiate": true
+    },
+    "isolation": {
+      "rls": true
+    },
+    "api": {
+      "list": true,
+      "draft": true,
+      "etagConflict": true,
+      "version": true
+    },
+    "auditEvents": 7
+  }
+}

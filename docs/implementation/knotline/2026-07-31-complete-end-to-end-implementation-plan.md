@@ -5800,7 +5800,7 @@ stage of onboarding.
 
 ### M06 — Workflow definitions, typed nodes, validation, versions, and templates
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M05\
 **Required commit:** `feat: deliver versioned workflow definitions and publishing`
 

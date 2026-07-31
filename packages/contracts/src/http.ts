@@ -375,6 +375,182 @@ const WORKSPACE_ACCESS_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   )
 ];
 
+const VERSIONED_WORKFLOW_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  workspaceAccessContract(
+    "GET",
+    "/v1/workspaces/{workspaceId}/workflows",
+    "listVersionedWorkflows",
+    "List persisted workspace workflows"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/workflows",
+    "createVersionedWorkflow",
+    "Create a versioned workflow draft",
+    201
+  ),
+  workspaceAccessContract(
+    "PATCH",
+    "/v1/workflows/{workflowId}",
+    "updateWorkflowMetadata",
+    "Update workflow metadata"
+  ),
+  workspaceAccessContract(
+    "DELETE",
+    "/v1/workflows/{workflowId}",
+    "requestWorkflowDeletion",
+    "Request guarded workflow deletion",
+    202
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflows/{workflowId}/restorations",
+    "restoreArchivedWorkflow",
+    "Restore an archived workflow"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflows/{workflowId}/duplicates",
+    "duplicateWorkflow",
+    "Duplicate a workflow into a new draft",
+    201
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/workflow-imports",
+    "importWorkflow",
+    "Import canonical workflow JSON",
+    201
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflows/{workflowId}/exports",
+    "exportWorkflow",
+    "Export canonical workflow JSON"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflows/{workflowId}/ownership-transfers",
+    "transferWorkflowOwnership",
+    "Transfer workflow ownership"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflows/{workflowId}/favorites",
+    "favoriteWorkflow",
+    "Favorite a workflow",
+    204
+  ),
+  workspaceAccessContract(
+    "DELETE",
+    "/v1/workflows/{workflowId}/favorites",
+    "unfavoriteWorkflow",
+    "Remove a workflow favorite",
+    204
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/workflows/{workflowId}/draft",
+    "getWorkflowDraft",
+    "Read the current editable draft"
+  ),
+  workspaceAccessContract(
+    "PUT",
+    "/v1/workflows/{workflowId}/draft",
+    "replaceWorkflowDraft",
+    "Replace a draft using an ETag precondition"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflows/{workflowId}/draft/operations",
+    "applyWorkflowDraftOperations",
+    "Apply an atomic draft operation batch"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflows/{workflowId}/draft/validations",
+    "validateWorkflowDraft",
+    "Validate the complete typed workflow graph"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflows/{workflowId}/draft/publications",
+    "publishWorkflowDraft",
+    "Publish an immutable workflow version"
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/workflows/{workflowId}/versions",
+    "listWorkflowVersions",
+    "List workflow version history"
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/workflows/{workflowId}/versions/{version}",
+    "getWorkflowVersion",
+    "Read an immutable workflow version"
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/workflows/{workflowId}/version-diffs",
+    "diffWorkflowVersions",
+    "Compare two workflow versions"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflows/{workflowId}/drafts-from-version",
+    "restoreWorkflowVersion",
+    "Restore a version into a new draft",
+    201
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/workspaces/{workspaceId}/workflow-folders",
+    "listWorkflowFolders",
+    "List workflow folders"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/workflow-folders",
+    "createWorkflowFolder",
+    "Create a workflow folder",
+    201
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/workspaces/{workspaceId}/workflow-tags",
+    "listWorkflowTags",
+    "List workflow tags"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/workflow-tags",
+    "createWorkflowTag",
+    "Create a workflow tag",
+    201
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/templates",
+    "listWorkflowTemplates",
+    "List visible workflow templates"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/templates",
+    "createWorkflowTemplate",
+    "Create a workspace template",
+    201
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/templates/{templateId}/instantiations",
+    "instantiateWorkflowTemplate",
+    "Instantiate a template as a workflow draft",
+    201
+  )
+];
+
 export const OPERATIONAL_PROBE_CONTRACTS = [
   {
     method: "GET",
@@ -396,6 +572,7 @@ export const OPERATIONAL_PROBE_CONTRACTS = [
 
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
+  ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

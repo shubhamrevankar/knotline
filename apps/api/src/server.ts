@@ -2,6 +2,7 @@ import { loadConfig } from "@knotline/config";
 import {
   PostgresAuthRepository,
   PostgresWorkspaceRepository,
+  PostgresVersionedWorkflowRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -36,6 +37,7 @@ const repository = new PostgresWorkflowRepository(pool, (observation) => {
 });
 const authRepository = new PostgresAuthRepository(pool);
 const workspaceRepository = new PostgresWorkspaceRepository(pool);
+const workflowDefinitions = new PostgresVersionedWorkflowRepository(pool);
 const isLocal = environment.environment === "local" || environment.environment === "ci";
 const googleIssuer = isLocal
   ? `${environment.api.publicOrigin.origin}/__local/oidc`
@@ -113,6 +115,7 @@ const app = await buildApp({
   repository,
   auth,
   workspace,
+  workflowDefinitions,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),
   ...(process.env.KNOTLINE_TRUSTED_PROXY
