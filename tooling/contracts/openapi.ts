@@ -89,7 +89,7 @@ async function assertRuntimeRouteParity(): Promise<void> {
       const path = match[2]?.replace(/:([A-Za-z][A-Za-z0-9]*)/gu, "{$1}");
       return `${method} ${path}`;
     })
-    .filter((operation) => !["GET /health", "GET /ready"].includes(operation))
+    .filter((operation) => !["GET /health/live", "GET /health/ready"].includes(operation))
     .sort();
   const contracted = HTTP_ROUTE_CONTRACTS.map((route) => `${route.method} ${route.path}`).sort();
   if (JSON.stringify(implemented) !== JSON.stringify(contracted)) {

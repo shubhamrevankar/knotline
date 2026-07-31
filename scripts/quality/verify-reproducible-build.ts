@@ -11,6 +11,7 @@ const run = (workspaceRoot: string, command: string, args: readonly string[]): s
   const result = spawnSync(command, args, {
     cwd: workspaceRoot,
     encoding: "utf8",
+    maxBuffer: 64 * 1024 * 1024,
     stdio: ["ignore", "pipe", "inherit"]
   });
   if (result.status !== 0) {

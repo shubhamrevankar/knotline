@@ -7,15 +7,15 @@
     "dist"
   ],
   "scripts": {
-    "predev": "pnpm --filter @knotline/config --filter @knotline/contracts --filter @knotline/operations build",
+    "predev": "pnpm --filter @knotline/config --filter @knotline/contracts --filter @knotline/db --filter @knotline/operations build",
     "dev": "tsx watch src/server.ts",
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/server.js",
-    "pretypecheck": "pnpm --filter @knotline/config --filter @knotline/contracts --filter @knotline/operations build",
+    "pretypecheck": "pnpm --filter @knotline/config --filter @knotline/contracts --filter @knotline/db --filter @knotline/operations build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "pretest": "pnpm --filter @knotline/config --filter @knotline/contracts --filter @knotline/operations build",
+    "pretest": "pnpm --filter @knotline/config --filter @knotline/contracts --filter @knotline/db --filter @knotline/operations build",
     "test": "vitest run src",
-    "pretest:unit": "pnpm --filter @knotline/config --filter @knotline/contracts --filter @knotline/operations build",
+    "pretest:unit": "pnpm --filter @knotline/config --filter @knotline/contracts --filter @knotline/db --filter @knotline/operations build",
     "test:unit": "vitest run src",
     "lint": "eslint src --max-warnings 0"
   },
@@ -23,6 +23,7 @@
     "@fastify/cors": "11.1.0",
     "@knotline/config": "workspace:*",
     "@knotline/contracts": "workspace:*",
+    "@knotline/db": "workspace:*",
     "@knotline/operations": "workspace:*",
     "fastify": "5.11.0",
     "zod": "4.1.12"

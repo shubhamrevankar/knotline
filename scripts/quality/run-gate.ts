@@ -56,6 +56,7 @@ const ACTIVATION_MILESTONES = {
   "test:visual": "M02",
   typecheck: "M01",
   "verify:boundaries": "M01",
+  "verify:backup": "M03",
   "verify:brand": "M01",
   "verify:containers": "M01",
   "verify:contracts": "M01",
@@ -69,6 +70,7 @@ const ACTIVATION_MILESTONES = {
   "verify:web-routes": "M02",
   "verify:migrations": "M03",
   "verify:openapi": "M01",
+  "verify:query-plan": "M03",
   "verify:reproducible-build": "M01",
   "verify:secrets": "M01"
 } as const satisfies Readonly<Record<string, string>>;

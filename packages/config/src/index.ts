@@ -49,7 +49,7 @@ const localDefaults = {
   KNOTLINE_API_PORT: "4100",
   KNOTLINE_API_ORIGIN: "http://localhost:4100",
   KNOTLINE_WEB_ORIGIN: "http://localhost:5173",
-  DATABASE_URL: "postgresql://knotline_local:knotline-local-only-password@localhost:5432/knotline",
+  DATABASE_URL: "postgresql://knotline_runtime:local-only-runtime-password@localhost:5432/knotline",
   REDIS_URL: "redis://localhost:6379",
   TEMPORAL_ADDRESS: "localhost:7233",
   TEMPORAL_NAMESPACE: "default",

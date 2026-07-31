@@ -14,15 +14,23 @@ import {
   parseRequestId,
   type RequestTraceContext
 } from "@knotline/operations";
-import Fastify, { LogController, type FastifyInstance, type FastifyRequest } from "fastify";
+import type { TenantContext, WorkflowRepository } from "@knotline/db";
+import Fastify, {
+  LogController,
+  type FastifyInstance,
+  type FastifyReply,
+  type FastifyRequest
+} from "fastify";
 import { z } from "zod";
-
-import { createWorkflow, getWorkflow, listWorkflows } from "./catalog.js";
 
 export interface BuildAppOptions {
   readonly environment: string;
   readonly logLevel?: string | false;
   readonly webOrigin: string;
+  readonly repository: WorkflowRepository;
+  readonly workspaceId: string;
+  readonly principalId: string;
+  readonly mutationsDisabled?: boolean;
 }
 
 interface ApiErrorReply {
@@ -35,6 +43,15 @@ interface ApiErrorReply {
 
 const teamParamsSchema = z.object({ teamId: z.string().min(1).max(160) }).strict();
 const workflowParamsSchema = z.object({ workflowId: z.string().min(1).max(160) }).strict();
+
+function tenantContext(options: BuildAppOptions, request: FastifyRequest): TenantContext {
+  return {
+    workspaceId: options.workspaceId,
+    principalId: options.principalId,
+    requestId: request.id,
+    mutationsDisabled: options.mutationsDisabled ?? false
+  };
+}
 
 function requestIdentifier(header: unknown): string {
   return (typeof header === "string" ? parseRequestId(header) : undefined) ?? createRequestId();
@@ -106,33 +123,72 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     done();
   });
 
-  app.get("/health", () => ({
+  const liveness = () => ({
     status: "ok" as const,
     service: "knotline-api" as const,
     time: new Date().toISOString()
-  }));
-
-  app.get("/ready", () => ({ status: "ready" as const, service: "knotline-api" as const }));
-
-  app.get("/v1/bootstrap", () => ({
-    capabilityStatus: "DEMO" as const,
-    user: { id: "user_maya", name: "Maya Chen", email: "maya@northstar.example" },
-    activeTeam: { id: "team_northstar", name: "Northstar Studio", role: "owner" as const },
-    entitlements: { agents: true, integrations: true, audit: true }
-  }));
-
-  app.get<{ Reply: ApiEnvelope<WorkflowSummary[]> }>("/v1/teams/:teamId/workflows", (request) => {
-    const params = teamParamsSchema.parse(request.params);
-    return { data: listWorkflows(params.teamId) };
   });
 
-  app.post<{ Reply: ApiEnvelope<Workflow> }>(
+  app.get("/health/live", liveness);
+
+  const readiness = async (_request: FastifyRequest, reply: FastifyReply) => {
+    if (!(await options.repository.ready())) {
+      return reply.code(503).send({ status: "unavailable", service: "knotline-api" });
+    }
+    return { status: "ready" as const, service: "knotline-api" as const };
+  };
+  app.get("/health/ready", readiness);
+
+  app.get("/v1/bootstrap", async (request, reply) => {
+    const bootstrap = await options.repository.bootstrap(tenantContext(options, request));
+    if (!bootstrap) {
+      return reply.code(404).send({
+        error: {
+          code: "BOOTSTRAP_NOT_FOUND",
+          message: "The workspace bootstrap does not exist.",
+          requestId: request.id
+        }
+      });
+    }
+    return {
+      capabilityStatus: "DEMO" as const,
+      ...bootstrap,
+      entitlements: { agents: true, integrations: true, audit: true }
+    };
+  });
+
+  app.get<{ Reply: ApiEnvelope<WorkflowSummary[]> | ApiErrorReply }>(
+    "/v1/teams/:teamId/workflows",
+    async (request, reply) => {
+      const params = teamParamsSchema.parse(request.params);
+      if (params.teamId !== options.workspaceId) {
+        return reply.code(404).send({
+          error: {
+            code: "WORKSPACE_NOT_FOUND",
+            message: "The workspace does not exist.",
+            requestId: request.id
+          }
+        });
+      }
+      return { data: [...(await options.repository.list(tenantContext(options, request)))] };
+    }
+  );
+
+  app.post<{ Reply: ApiEnvelope<Workflow> | ApiErrorReply }>(
     "/v1/teams/:teamId/workflows",
     async (request, reply) => {
       const params = teamParamsSchema.parse(request.params);
       const body = createWorkflowRequestSchema.parse(request.body);
-      const workflow = createWorkflow({
-        teamId: params.teamId,
+      if (params.teamId !== options.workspaceId) {
+        return reply.code(404).send({
+          error: {
+            code: "WORKSPACE_NOT_FOUND",
+            message: "The workspace does not exist.",
+            requestId: request.id
+          }
+        });
+      }
+      const workflow = await options.repository.create(tenantContext(options, request), {
         name: body.name,
         ...(body.description === undefined ? {} : { description: body.description })
       });
@@ -144,7 +200,10 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     "/v1/workflows/:workflowId",
     async (request, reply) => {
       const params = workflowParamsSchema.parse(request.params);
-      const workflow = getWorkflow(params.workflowId);
+      const workflow = await options.repository.get(
+        tenantContext(options, request),
+        params.workflowId
+      );
       if (!workflow) {
         return reply.code(404).send({
           error: {

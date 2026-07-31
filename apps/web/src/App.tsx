@@ -20,7 +20,6 @@ import {
 import { useEffect, useRef, useState } from "react";
 import type { Workflow, WorkflowSummary } from "@knotline/contracts";
 import { fetchWorkflow, fetchWorkflows } from "./api";
-import { demoWorkflow, demoWorkflows } from "./demo";
 import { i18n, msg } from "./i18n.js";
 import { WorkflowCanvas } from "./WorkflowCanvas";
 
@@ -45,21 +44,38 @@ function StatusPill({ status }: { status: WorkflowSummary["status"] }) {
 
 export function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [workflows, setWorkflows] = useState<WorkflowSummary[]>(demoWorkflows);
-  const [workflow, setWorkflow] = useState<Workflow>(demoWorkflow);
-  const [selectedId, setSelectedId] = useState(demoWorkflow.id);
+  const [workflows, setWorkflows] = useState<WorkflowSummary[]>([]);
+  const [workflow, setWorkflow] = useState<Workflow | null>(null);
+  const [selectedId, setSelectedId] = useState("");
   const [connected, setConnected] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    Promise.all([fetchWorkflows(), fetchWorkflow(selectedId)])
-      .then(([items, selected]) => {
+    fetchWorkflows()
+      .then((items) => {
         setWorkflows(items);
+        setConnected(true);
+        setSelectedId((current) => current || items[0]?.id || "");
+      })
+      .catch(() => {
+        setWorkflows([]);
+        setWorkflow(null);
+        setConnected(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!selectedId) return;
+    fetchWorkflow(selectedId)
+      .then((selected) => {
         setWorkflow(selected);
         setConnected(true);
       })
-      .catch(() => setConnected(false));
+      .catch(() => {
+        setWorkflow(null);
+        setConnected(false);
+      });
   }, [selectedId]);
 
   useEffect(() => {
@@ -112,7 +128,6 @@ export function App() {
           </span>
           <span>
             <strong>{msg("customer.workspace.name")}</strong>
-            <small>{msg("customer.workspace.demo")}</small>
           </span>
           <ChevronDown aria-hidden="true" size={15} />
         </button>
@@ -210,11 +225,6 @@ export function App() {
           </div>
         </header>
 
-        <div aria-label={msg("customer.demo.environment")} className="demo-banner" role="note">
-          <strong>{msg("customer.demo.label")}</strong>
-          <span>{msg("customer.demo.body")}</span>
-        </div>
-
         <section aria-labelledby="workflows-heading" className="page">
           <div className="page-heading">
             <div>
@@ -298,28 +308,39 @@ export function App() {
                     </span>
                   </button>
                 ))}
+                {!connected && workflows.length === 0 ? (
+                  <p role="status">{msg("app.loading.workspace")}</p>
+                ) : null}
               </div>
             </section>
 
             <section aria-labelledby="selected-workflow-heading" className="canvas-panel">
-              <div className="canvas-header">
-                <div>
-                  <span className="eyebrow">
-                    {msg("customer.map.version", { version: workflow.version })}
-                  </span>
-                  <h2 id="selected-workflow-heading">{workflow.name}</h2>
+              {workflow ? (
+                <>
+                  <div className="canvas-header">
+                    <div>
+                      <span className="eyebrow">
+                        {msg("customer.map.version", { version: workflow.version })}
+                      </span>
+                      <h2 id="selected-workflow-heading">{workflow.name}</h2>
+                    </div>
+                    <div className="canvas-actions">
+                      <button className="secondary-button" type="button">
+                        {msg("customer.map.edit")}
+                      </button>
+                      <button className="run-button" type="button">
+                        <span aria-hidden="true" />
+                        {msg("customer.map.run")}
+                      </button>
+                    </div>
+                  </div>
+                  <WorkflowCanvas workflow={workflow} />
+                </>
+              ) : (
+                <div className="canvas-header">
+                  <h2 id="selected-workflow-heading">{msg("app.loading.workspace")}</h2>
                 </div>
-                <div className="canvas-actions">
-                  <button className="secondary-button" type="button">
-                    {msg("customer.map.edit")}
-                  </button>
-                  <button className="run-button" type="button">
-                    <span aria-hidden="true" />
-                    {msg("customer.map.run")}
-                  </button>
-                </div>
-              </div>
-              <WorkflowCanvas workflow={workflow} />
+              )}
               <div aria-label={msg("customer.map.legend")} className="canvas-legend" role="group">
                 <span>
                   <i aria-hidden="true" className="legend-dot legend-dot--running" />

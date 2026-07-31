@@ -7,20 +7,86 @@ import {
   bootstrapSchema,
   workflowSchema
 } from "@knotline/contracts";
+import type { TenantContext, WorkflowRepository, WorkspaceBootstrap } from "@knotline/db";
+import type { Workflow, WorkflowSummary } from "@knotline/contracts";
 
 import { buildApp } from "./app.js";
 
 const apps: Awaited<ReturnType<typeof buildApp>>[] = [];
+const workspaceId = "10000000-0000-4000-8000-000000000001";
+const principalId = "20000000-0000-4000-8000-000000000001";
+
+class TestRepository implements WorkflowRepository {
+  readonly workflows = new Map<string, Workflow>();
+  isReady = true;
+
+  bootstrap(): Promise<WorkspaceBootstrap> {
+    return Promise.resolve({
+      user: { id: principalId, name: "Maya Chen", email: "maya@northstar.example" },
+      activeTeam: { id: workspaceId, name: "Northstar Studio", role: "owner" }
+    });
+  }
+
+  list(): Promise<readonly WorkflowSummary[]> {
+    return Promise.resolve(
+      [...this.workflows.values()].map((workflow) => ({
+        id: workflow.id,
+        teamId: workflow.teamId,
+        name: workflow.name,
+        description: workflow.description,
+        status: workflow.status,
+        version: workflow.version,
+        updatedAt: workflow.updatedAt,
+        nodeCount: workflow.nodes.length,
+        activeRuns: 0
+      }))
+    );
+  }
+
+  get(context: TenantContext, workflowId: string): Promise<Workflow | undefined> {
+    void context;
+    return Promise.resolve(this.workflows.get(workflowId));
+  }
+
+  create(
+    context: TenantContext,
+    input: { readonly name: string; readonly description?: string }
+  ): Promise<Workflow> {
+    void context;
+    const workflow: Workflow = {
+      id: crypto.randomUUID(),
+      teamId: workspaceId,
+      name: input.name,
+      description: input.description ?? "",
+      status: "draft",
+      version: 1,
+      updatedAt: new Date().toISOString(),
+      nodes: [],
+      edges: []
+    };
+    this.workflows.set(workflow.id, workflow);
+    return Promise.resolve(workflow);
+  }
+
+  ready(): Promise<boolean> {
+    return Promise.resolve(this.isReady);
+  }
+}
 
 afterEach(async () => {
   await Promise.all(apps.splice(0).map((app) => app.close()));
 });
 
-async function app() {
+async function app(isReady = true) {
+  const repository = new TestRepository();
+  repository.isReady = isReady;
   const selected = await buildApp({
     environment: "test",
     logLevel: false,
-    webOrigin: "http://localhost:5173"
+    webOrigin: "http://localhost:5173",
+    repository,
+    workspaceId,
+    principalId
   });
   apps.push(selected);
   return selected;
@@ -30,8 +96,8 @@ describe("API application", () => {
   it("serves separate liveness and readiness endpoints", async () => {
     const selected = await app();
     const [health, ready] = await Promise.all([
-      selected.inject({ method: "GET", url: "/health" }),
-      selected.inject({ method: "GET", url: "/ready" })
+      selected.inject({ method: "GET", url: "/health/live" }),
+      selected.inject({ method: "GET", url: "/health/ready" })
     ]);
     expect(health.statusCode).toBe(200);
     OPERATIONAL_PROBE_CONTRACTS[0].responses[200].parse(health.json());
@@ -39,6 +105,11 @@ describe("API application", () => {
     expect(ready.statusCode).toBe(200);
     OPERATIONAL_PROBE_CONTRACTS[1].responses[200].parse(ready.json());
     expect(ready.json()).toEqual({ status: "ready", service: "knotline-api" });
+
+    const incompatible = await app(false);
+    const unavailable = await incompatible.inject({ method: "GET", url: "/health/ready" });
+    expect(unavailable.statusCode).toBe(503);
+    expect(unavailable.json()).toEqual({ status: "unavailable", service: "knotline-api" });
   });
 
   it("labels the hard-coded bootstrap as demo and returns canonical request IDs", async () => {
@@ -69,7 +140,7 @@ describe("API application", () => {
     const selected = await app();
     const malformed = await selected.inject({
       method: "POST",
-      url: "/v1/teams/team_demo/workflows",
+      url: `/v1/teams/${workspaceId}/workflows`,
       headers: { "content-type": "application/json" },
       payload: '{"name":'
     });
@@ -79,7 +150,7 @@ describe("API application", () => {
 
     const unsupported = await selected.inject({
       method: "POST",
-      url: "/v1/teams/team_demo/workflows",
+      url: `/v1/teams/${workspaceId}/workflows`,
       headers: { "content-type": "application/xml" },
       payload: "<workflow />"
     });
@@ -92,7 +163,7 @@ describe("API application", () => {
     const selected = await app();
     const invalid = await selected.inject({
       method: "POST",
-      url: "/v1/teams/team_demo/workflows",
+      url: `/v1/teams/${workspaceId}/workflows`,
       payload: { name: "Demo workflow", unknown: true }
     });
     expect(invalid.statusCode).toBe(400);
@@ -101,17 +172,14 @@ describe("API application", () => {
 
     const isolated = await selected.inject({
       method: "GET",
-      url: "/v1/teams/team_unknown/workflows"
+      url: "/v1/teams/10000000-0000-4000-8000-000000000099/workflows"
     });
-    expect(isolated.statusCode).toBe(200);
-    HTTP_ROUTE_CONTRACTS.find(
-      (route) => route.operationId === "listWorkflows"
-    )?.responses[200]?.parse(isolated.json());
-    expect(isolated.json()).toEqual({ data: [] });
+    expect(isolated.statusCode).toBe(404);
+    expect(apiErrorSchema.parse(isolated.json()).error.code).toBe("WORKSPACE_NOT_FOUND");
 
     const created = await selected.inject({
       method: "POST",
-      url: "/v1/teams/team_demo/workflows",
+      url: `/v1/teams/${workspaceId}/workflows`,
       payload: { name: "Contract verified workflow" }
     });
     expect(created.statusCode).toBe(201);

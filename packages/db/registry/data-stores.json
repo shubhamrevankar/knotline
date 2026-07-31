@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "owner": { "team": "product-engineering", "contact": "shurevan" },
+  "runbook": "docs/operations/knotline/database-foundation.md",
+  "stores": [
+    {
+      "name": "users",
+      "class": "identity.profile",
+      "retentionDays": 2555,
+      "exportHandler": "identity-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "workspaces",
+      "class": "workspace.profile",
+      "retentionDays": 2555,
+      "exportHandler": "workspace-export",
+      "deleteHandler": "workspace-delete"
+    },
+    {
+      "name": "memberships",
+      "class": "workspace.membership",
+      "retentionDays": 2555,
+      "exportHandler": "workspace-export",
+      "deleteHandler": "workspace-delete"
+    },
+    {
+      "name": "workflows",
+      "class": "workflow.definition",
+      "retentionDays": 2555,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "workflow-delete"
+    },
+    {
+      "name": "workflow_versions",
+      "class": "workflow.version",
+      "retentionDays": 2555,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "workflow-delete"
+    },
+    {
+      "name": "workflow_nodes",
+      "class": "workflow.node",
+      "retentionDays": 2555,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "workflow-delete"
+    },
+    {
+      "name": "workflow_edges",
+      "class": "workflow.edge",
+      "retentionDays": 2555,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "workflow-delete"
+    },
+    {
+      "name": "idempotency_records",
+      "class": "control.idempotency",
+      "retentionDays": 7,
+      "exportHandler": "control-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "audit_events",
+      "class": "governance.audit",
+      "retentionDays": 2555,
+      "exportHandler": "audit-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "outbox_events",
+      "class": "control.outbox",
+      "retentionDays": 30,
+      "exportHandler": "control-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "knotline_schema_migrations",
+      "class": "control.schema",
+      "retentionDays": 36500,
+      "exportHandler": "schema-export",
+      "deleteHandler": "never-delete"
+    }
+  ],
+  "indexes": [
+    "users_pkey",
+    "users_email_key",
+    "workspaces_pkey",
+    "workspaces_slug_key",
+    "memberships_pkey",
+    "memberships_workspace_id_user_id_key",
+    "memberships_workspace_state_idx",
+    "workflows_pkey",
+    "workflows_workspace_updated_idx",
+    "workflow_versions_pkey",
+    "workflow_nodes_pkey",
+    "workflow_nodes_stable_key_unique",
+    "workflow_edges_pkey",
+    "idempotency_records_pkey",
+    "idempotency_scope_key_unique",
+    "audit_events_pkey",
+    "audit_events_workspace_time_idx",
+    "outbox_events_pkey",
+    "outbox_unpublished_idx",
+    "knotline_schema_migrations_pkey"
+  ],
+  "caches": []
+}

@@ -5,9 +5,9 @@ test("current app is console-clean and responsive", async ({ page }) => {
 
   await expect(page).toHaveTitle(/Knotline/);
   await expect(page.getByRole("heading", { level: 1, name: "Workflows" })).toBeVisible();
-  await expect(page.getByRole("note", { name: "Demo environment" })).toContainText(
-    "No production activity"
-  );
+  if ((page.viewportSize()?.width ?? 0) >= 768) {
+    await expect(page.getByRole("status")).toContainText("Database connected");
+  }
   await expect(page.getByRole("region", { name: /visual workflow map/ })).toBeVisible();
 
   const hasViewportOverflow = await page.evaluate(

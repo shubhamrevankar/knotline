@@ -1,0 +1,20 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/database/M03/integration.json",
+      "verifiedAt": "2026-07-31T22:15:00.000Z"
+    },
+    "externalGates": [
+      "EXT-002"
+    ],
+    "id": "data.tenant_persistence",
+    "owner": {
+      "contact": "shurevan",
+      "team": "product-engineering"
+    },
+    "runbook": "docs/operations/knotline/database-foundation.md",
+    "status": "DEMO",
+    "summary": "Local PostgreSQL persistence, forced tenant RLS, migrations, repositories, query plans, and backup restore are verified; production infrastructure remains external."
+  }
+]

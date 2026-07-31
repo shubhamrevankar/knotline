@@ -4,6 +4,11 @@ import { classifyStatus, RequestFailure } from "./query/errors.js";
 
 const configuredApiUrl: unknown = import.meta.env.VITE_API_URL;
 const apiUrl = typeof configuredApiUrl === "string" ? configuredApiUrl : "http://localhost:4100";
+const configuredWorkspaceId: unknown = import.meta.env.VITE_WORKSPACE_ID;
+const workspaceId =
+  typeof configuredWorkspaceId === "string"
+    ? configuredWorkspaceId
+    : "10000000-0000-4000-8000-000000000001";
 
 async function request<T>(path: string): Promise<T> {
   const response = await fetch(`${apiUrl}${path}`, {
@@ -24,7 +29,7 @@ async function request<T>(path: string): Promise<T> {
 
 export async function fetchWorkflows(): Promise<WorkflowSummary[]> {
   const response = await request<ApiEnvelope<WorkflowSummary[]>>(
-    "/v1/teams/team_northstar/workflows"
+    `/v1/teams/${workspaceId}/workflows`
   );
   return response.data;
 }

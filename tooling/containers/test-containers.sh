@@ -85,8 +85,8 @@ done
 
 api_port="$(docker port "${api_name}" 4100/tcp | sed 's/.*://')"
 web_port="$(docker port "${web_name}" 8080/tcp | sed 's/.*://')"
-curl --fail --silent --show-error "http://127.0.0.1:${api_port}/health" >/dev/null
-curl --fail --silent --show-error "http://127.0.0.1:${api_port}/ready" >/dev/null
+curl --fail --silent --show-error "http://127.0.0.1:${api_port}/health/live" >/dev/null
+curl --fail --silent --show-error "http://127.0.0.1:${api_port}/health/ready" >/dev/null
 curl --fail --silent --show-error "http://127.0.0.1:${web_port}/health" >/dev/null
 curl --fail --silent --show-error "http://127.0.0.1:${web_port}/ready" >/dev/null
 

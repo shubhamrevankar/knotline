@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "scope": "localhost-only",
+  "services": [
+    "mailpit",
+    "minio",
+    "postgres",
+    "redis",
+    "temporal",
+    "temporal-ui"
+  ]
+}

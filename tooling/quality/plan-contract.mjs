@@ -1078,7 +1078,7 @@ export async function validateCodeRoutes(apiEntries, root = ROOT) {
   const codeRoutes = await scanCodeRoutes(root);
   const contracts = new Set(apiEntries.map(({ method, path }) => `${method} ${path}`));
   const legacy = JSON.parse(await readFile(join(root, "tooling/routes/legacy-m00.json"), "utf8"));
-  const allowedInfrastructure = new Set(["GET /health", "GET /ready"]);
+  const allowedInfrastructure = new Set(["GET /health/live", "GET /health/ready"]);
   const errors = [];
   const seenLegacy = new Set();
   for (const route of codeRoutes) {

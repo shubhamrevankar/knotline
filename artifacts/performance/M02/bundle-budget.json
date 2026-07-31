@@ -1,19 +1,19 @@
 {
   "assets": [
     {
-      "bytes": 196234,
-      "gzipBytes": 63648,
-      "name": "App-Carywq0r.js"
+      "bytes": 194500,
+      "gzipBytes": 62917,
+      "name": "App-DUcC-089.js"
     },
     {
       "bytes": 5113,
-      "gzipBytes": 1296,
-      "name": "ComponentWorkbench-rohB3t4O.js"
+      "gzipBytes": 1298,
+      "name": "ComponentWorkbench-CV2xXaSt.js"
     },
     {
-      "bytes": 295308,
-      "gzipBytes": 87406,
-      "name": "index-BACpTCgu.js"
+      "bytes": 295321,
+      "gzipBytes": 87416,
+      "name": "index-8g3UDfQ8.js"
     },
     {
       "bytes": 36957,
@@ -33,5 +33,5 @@
   },
   "schemaVersion": 1,
   "status": "PASS",
-  "totalGzipBytes": 178927
+  "totalGzipBytes": 178208
 }

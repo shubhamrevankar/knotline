@@ -43,7 +43,8 @@ docker compose --project-name "${project_name}" --file "${compose_file}" exec --
   redis-cli ping | grep --quiet PONG
 
 mkdir -p "${repository_root}/artifacts/integration"
-docker compose --project-name "${project_name}" --file "${compose_file}" ps \
-  --format json > "${repository_root}/artifacts/integration/services.json"
+docker compose --project-name "${project_name}" --file "${compose_file}" ps --services \
+  | node "${repository_root}/tooling/containers/write-services-evidence.mjs" \
+    "${repository_root}/artifacts/integration/services.json"
 
 echo "Local dependency integration checks passed."

@@ -1,0 +1,38 @@
+{
+  "name": "@knotline/db",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "migrations",
+    "registry"
+  ],
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run src",
+    "test:unit": "vitest run src",
+    "lint": "eslint src --max-warnings 0",
+    "migrate": "tsx src/cli.ts migrate",
+    "seed": "tsx src/cli.ts seed",
+    "generate": "tsx src/cli.ts generate",
+    "registry:check": "tsx src/cli.ts registry-check"
+  },
+  "dependencies": {
+    "@knotline/contracts": "workspace:*",
+    "@knotline/operations": "workspace:*",
+    "drizzle-orm": "0.45.2",
+    "pg": "8.16.3"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/pg": "8.16.0",
+    "tsx": "4.20.6",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

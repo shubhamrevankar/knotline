@@ -5593,7 +5593,7 @@ Knotline experience across phone, tablet, desktop, and wide screens.
 
 ### M03 — PostgreSQL, tenant isolation, migrations, and repository foundation
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M01\
 **Required commit:** `feat: persist Knotline data with enforced tenant isolation`
 
@@ -9209,7 +9209,7 @@ must appear in that milestone's boundary cell.
 | M00 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `c1a2f16`; baseline verification |
 | M01 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `chore: establish the verified Knotline engineering system` |
 | M02 | `COMMITTED` | `NOT_DEPLOYED` | EXT-001 | `feat: deliver the responsive Knotline product shell` |
-| M03 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-002 | `feat: persist Knotline data with enforced tenant isolation` |
+| M03 | `COMMITTED` | `NOT_DEPLOYED` | EXT-002 | `feat: persist Knotline data with enforced tenant isolation` |
 | M04 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006, EXT-007 | `feat: add secure passwordless and Google authentication` |
 | M05 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006 | `feat: enable complete workspace onboarding and access control` |
 | M06 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver versioned workflow definitions and publishing` |

@@ -8,6 +8,7 @@ COPY apps/api/package.json apps/api/package.json
 COPY packages/contracts/package.json packages/contracts/package.json
 COPY packages/config/package.json packages/config/package.json
 COPY packages/operations/package.json packages/operations/package.json
+COPY packages/db/package.json packages/db/package.json
 RUN pnpm install --frozen-lockfile
 
 FROM dependencies AS build
@@ -16,9 +17,11 @@ COPY apps/api apps/api
 COPY packages/contracts packages/contracts
 COPY packages/config packages/config
 COPY packages/operations packages/operations
+COPY packages/db packages/db
 RUN pnpm --filter @knotline/contracts build \
   && pnpm --filter @knotline/config build \
   && pnpm --filter @knotline/operations build \
+  && pnpm --filter @knotline/db build \
   && pnpm --filter @knotline/api build \
   && pnpm --filter @knotline/api deploy --prod /opt/knotline
 
@@ -28,13 +31,13 @@ ENV NODE_ENV=production \
 WORKDIR /app
 LABEL org.opencontainers.image.title="Knotline API" \
       org.opencontainers.image.description="Knotline control-plane API" \
-      com.knotline.health.path="/health" \
-      com.knotline.readiness.path="/ready"
+      com.knotline.health.path="/health/live" \
+      com.knotline.readiness.path="/health/ready"
 COPY --from=build --chown=node:node /opt/knotline/node_modules ./node_modules
 COPY --from=build --chown=node:node /workspace/apps/api/dist ./dist
 COPY --from=build --chown=node:node /workspace/apps/api/package.json ./package.json
 USER node
 EXPOSE 4100
 HEALTHCHECK --interval=10s --timeout=3s --start-period=10s --retries=5 \
-  CMD ["node", "-e", "fetch('http://127.0.0.1:4100/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+  CMD ["node", "-e", "fetch('http://127.0.0.1:4100/health/live').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
 CMD ["node", "dist/server.js"]

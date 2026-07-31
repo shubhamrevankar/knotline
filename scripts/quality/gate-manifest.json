@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "milestone": "M02",
+  "milestone": "M03",
   "rows": [
     {
       "name": "format:check",
@@ -94,18 +94,22 @@
     },
     {
       "name": "test:db",
-      "status": "NOT_YET_APPLICABLE",
-      "activationMilestone": "M03"
+      "status": "ACTIVE",
+      "script": "test:db",
+      "declarationRow": "real postgresql integration",
+      "requiredTestFiles": ["tooling/db/postgres-suite.ts"]
     },
     {
       "name": "test:integration",
-      "status": "NOT_YET_APPLICABLE",
-      "activationMilestone": "M03"
+      "status": "ACTIVE",
+      "script": "test:integration"
     },
     {
       "name": "test:rls",
-      "status": "NOT_YET_APPLICABLE",
-      "activationMilestone": "M03"
+      "status": "ACTIVE",
+      "script": "test:rls",
+      "declarationRow": "rls/tenant isolation",
+      "requiredTestFiles": ["tooling/db/postgres-suite.ts"]
     },
     {
       "name": "test:contract",
@@ -166,8 +170,21 @@
     },
     {
       "name": "verify:migrations",
-      "status": "NOT_YET_APPLICABLE",
-      "activationMilestone": "M03"
+      "status": "ACTIVE",
+      "script": "verify:migrations",
+      "declarationRow": "migration"
+    },
+    {
+      "name": "verify:query-plan",
+      "status": "ACTIVE",
+      "script": "verify:query-plan",
+      "declarationRow": "query plan"
+    },
+    {
+      "name": "verify:backup",
+      "status": "ACTIVE",
+      "script": "verify:backup",
+      "declarationRow": "backup smoke"
     },
     {
       "name": "verify:iac",

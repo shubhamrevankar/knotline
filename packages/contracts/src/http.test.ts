@@ -16,7 +16,10 @@ describe("HTTP contracts", () => {
     expect(new Set(HTTP_ROUTE_CONTRACTS.map((route) => `${route.method} ${route.path}`)).size).toBe(
       HTTP_ROUTE_CONTRACTS.length
     );
-    expect(OPERATIONAL_PROBE_CONTRACTS.map((route) => route.path)).toEqual(["/health", "/ready"]);
+    expect(OPERATIONAL_PROBE_CONTRACTS.map((route) => route.path)).toEqual([
+      "/health/live",
+      "/health/ready"
+    ]);
   });
 
   it("keeps the current bootstrap explicitly demo-labelled", () => {

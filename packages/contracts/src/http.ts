@@ -113,7 +113,7 @@ export interface HttpRouteContract {
 export const OPERATIONAL_PROBE_CONTRACTS = [
   {
     method: "GET",
-    path: "/health",
+    path: "/health/live",
     operationId: "getHealth",
     summary: "Read API liveness",
     tags: ["Operations"],
@@ -121,7 +121,7 @@ export const OPERATIONAL_PROBE_CONTRACTS = [
   },
   {
     method: "GET",
-    path: "/ready",
+    path: "/health/ready",
     operationId: "getReadiness",
     summary: "Read API readiness",
     tags: ["Operations"],

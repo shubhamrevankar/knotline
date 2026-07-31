@@ -124,7 +124,14 @@ async function candidateFiles(root) {
 export async function verifyProvenance(root) {
   const findings = [];
   for (const path of await candidateFiles(root)) {
-    const bytes = await readFile(path);
+    const bytes = await readFile(path).catch((error) => {
+      if (error?.code === "ENOENT") return undefined;
+      throw error;
+    });
+    // `git ls-files --cached` includes tracked files deleted in the current
+    // milestone; their absence is intentional and the index diff is scanned
+    // by the surrounding gate.
+    if (bytes === undefined) continue;
     const repositoryPath = relative(root, path).replaceAll("\\", "/");
     if (PROHIBITED_ASSET_HASHES.has(sha256(bytes))) {
       findings.push({ file: repositoryPath, ruleId: "PROVENANCE-ASSET-HASH" });
