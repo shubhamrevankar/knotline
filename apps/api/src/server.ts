@@ -3,6 +3,7 @@ import {
   PostgresAuthRepository,
   PostgresWorkspaceRepository,
   PostgresVersionedWorkflowRepository,
+  PostgresWorkflowGenerationRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -18,6 +19,7 @@ import {
   SesAuthMailer
 } from "./auth.js";
 import { CaptureInvitationMailer, SesInvitationMailer, WorkspaceService } from "./workspace.js";
+import { WorkflowGenerationService } from "./workflow-generation.js";
 
 const environment = loadConfig(process.env);
 if (environment.environment === "local") {
@@ -38,6 +40,10 @@ const repository = new PostgresWorkflowRepository(pool, (observation) => {
 const authRepository = new PostgresAuthRepository(pool);
 const workspaceRepository = new PostgresWorkspaceRepository(pool);
 const workflowDefinitions = new PostgresVersionedWorkflowRepository(pool);
+const workflowGeneration = new WorkflowGenerationService(
+  undefined,
+  new PostgresWorkflowGenerationRepository(pool)
+);
 const isLocal = environment.environment === "local" || environment.environment === "ci";
 const googleIssuer = isLocal
   ? `${environment.api.publicOrigin.origin}/__local/oidc`
@@ -116,6 +122,7 @@ const app = await buildApp({
   auth,
   workspace,
   workflowDefinitions,
+  workflowGeneration,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),
   ...(process.env.KNOTLINE_TRUSTED_PROXY

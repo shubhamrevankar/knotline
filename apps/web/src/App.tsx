@@ -23,6 +23,7 @@ import type { Workflow, WorkflowSummary } from "@knotline/contracts";
 import { createVersionedWorkflow, fetchWorkflow, fetchWorkflows } from "./api";
 import { i18n, msg } from "./i18n.js";
 import { WorkflowCanvas } from "./WorkflowCanvas";
+import { GuidedWorkflowCreate } from "./GuidedWorkflowCreate.js";
 
 const nav = [
   { label: msg("customer.nav.pulse"), icon: Gauge },
@@ -273,6 +274,14 @@ export function App() {
                   {msg("workflow.create.submit")}
                 </button>
               </form>
+              <GuidedWorkflowCreate
+                onCreated={(workflowId) => {
+                  void fetchWorkflows().then(setWorkflows);
+                  setSelectedId(workflowId);
+                  setCreating(false);
+                }}
+              />
+              <Link to="/app/workflows/new">{msg("generation.full.page")}</Link>
               {createError ? <p role="alert">{createError}</p> : null}
             </aside>
           ) : null}

@@ -221,4 +221,48 @@ describe("API application", () => {
       (route) => route.operationId === "getWorkflow"
     )?.responses[200]?.parse(detail.json());
   });
+
+  it("exposes asynchronous generation and side-effect-free dry-run resources", async () => {
+    const selected = await app();
+    const created = await selected.inject({
+      method: "POST",
+      url: `/v1/workspaces/${workspaceId}/workflow-generations`,
+      payload: {
+        prompt: "Collect a request, require approval, and notify the requester.",
+        fixture: "standard"
+      }
+    });
+    expect(created.statusCode).toBe(202);
+    const generationId = created.json<{ data: { id: string } }>().data.id;
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const generation = await selected.inject({
+      method: "GET",
+      url: `/v1/workflow-generations/${generationId}`
+    });
+    expect(generation.statusCode).toBe(200);
+    const definition = generation.json<{
+      data: { lifecycle: string; result: { definition: unknown } };
+    }>().data;
+    expect(definition.lifecycle).toBe("SUCCEEDED");
+    const dryRun = await selected.inject({
+      method: "POST",
+      url: "/v1/workflow-dry-runs",
+      payload: {
+        definition: definition.result.definition,
+        fixture: {
+          input: {},
+          humanSubmissions: {},
+          agentOutputs: {},
+          connectorOutputs: {},
+          permissions: ["workflow.run"],
+          entitlements: ["workflows"],
+          healthyConnections: [],
+          budgetMinor: 0,
+          timezone: "UTC"
+        }
+      }
+    });
+    expect(dryRun.statusCode).toBe(200);
+    expect(dryRun.json()).toMatchObject({ data: { simulated: true, externalWrites: 0 } });
+  });
 });

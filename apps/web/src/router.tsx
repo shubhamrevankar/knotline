@@ -44,6 +44,11 @@ const WorkflowStudio = lazy(async () => {
   return { default: module.StudioPage };
 });
 
+const GuidedWorkflowPage = lazy(async () => {
+  const module = await import("./GuidedWorkflowCreate.js");
+  return { default: module.GuidedWorkflowPage };
+});
+
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
   "go-to-market": msg("solution.gotomarket"),
@@ -340,6 +345,12 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
   if (route.id === "route.app.settings.members") return <MembersPage />;
   if (route.id === "route.app.settings.roles") return <RolesPage />;
   if (route.id === "route.app.workflows.detail") return <WorkflowDetailPage />;
+  if (route.id === "route.app.workflows.new")
+    return (
+      <Suspense fallback={<Skeleton label={msg("generation.loading")} />}>
+        <GuidedWorkflowPage />
+      </Suspense>
+    );
   if (route.id === "route.app.workflows.detail.studio")
     return (
       <Suspense fallback={<Skeleton label={msg("studio.loading")} />}>

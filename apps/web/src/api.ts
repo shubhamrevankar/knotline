@@ -3,6 +3,8 @@ import type {
   ValidationFinding,
   Workflow,
   WorkflowDefinition,
+  WorkflowDryRunReport,
+  WorkflowGenerationResult,
   WorkflowSummary
 } from "@knotline/contracts";
 
@@ -396,6 +398,80 @@ export interface WorkflowTemplateSummary {
   readonly definition: WorkflowDefinition;
   readonly variables: readonly { readonly key: string; readonly required: boolean }[];
 }
+
+export interface WorkflowGenerationResource {
+  readonly id: string;
+  readonly sourcePrompt: string;
+  readonly lifecycle: "QUEUED" | "RUNNING" | "SUCCEEDED" | "FAILED" | "CANCELLING" | "CANCELLED";
+  readonly phase?: "GENERATING" | "VALIDATING" | "REPAIRING" | "READY_TO_ACCEPT";
+  readonly result?: WorkflowGenerationResult;
+  readonly failureCode?: string;
+  readonly retryOf?: string;
+  readonly acceptedWorkflowId?: string;
+}
+
+export const startWorkflowGeneration = async (prompt: string, retryOf?: string) =>
+  (
+    await mutate<{ readonly data: WorkflowGenerationResource }>(
+      `/v1/workspaces/${workspaceId}/workflow-generations`,
+      "POST",
+      { prompt, fixture: "standard", ...(retryOf ? { retryOf } : {}) }
+    )
+  ).data;
+
+export const fetchWorkflowGeneration = async (generationId: string) =>
+  (
+    await request<{ readonly data: WorkflowGenerationResource }>(
+      `/v1/workflow-generations/${encodeURIComponent(generationId)}`
+    )
+  ).data;
+
+export const cancelWorkflowGeneration = async (generationId: string) =>
+  (
+    await mutate<{ readonly data: WorkflowGenerationResource }>(
+      `/v1/workflow-generations/${encodeURIComponent(generationId)}/cancellations`,
+      "POST"
+    )
+  ).data;
+
+export const acceptWorkflowGeneration = (generationId: string, publish = true) =>
+  mutate<{ readonly workflowId: string; readonly simulated: true; readonly published: boolean }>(
+    `/v1/workflow-generations/${encodeURIComponent(generationId)}/acceptances`,
+    "POST",
+    { publish }
+  );
+
+export const previewWorkflowImport = async (
+  format: "json" | "csv",
+  content: WorkflowDefinition | string
+) =>
+  (
+    await mutate<{
+      readonly data: {
+        readonly definition: WorkflowDefinition;
+        readonly findings: readonly ValidationFinding[];
+        readonly createsResource: false;
+      };
+    }>("/v1/workflow-import-previews", "POST", { format, content })
+  ).data;
+
+export const importWorkflowDefinition = (definition: WorkflowDefinition) =>
+  mutate<{ readonly id: string }>(
+    `/v1/workspaces/${workspaceId}/workflow-imports`,
+    "POST",
+    definition
+  );
+
+export const dryRunWorkflowDefinition = async (
+  definition: WorkflowDefinition,
+  fixture: Readonly<Record<string, unknown>>
+) =>
+  (
+    await mutate<{ readonly data: WorkflowDryRunReport }>("/v1/workflow-dry-runs", "POST", {
+      definition,
+      fixture
+    })
+  ).data;
 
 export const createVersionedWorkflow = async (name: string, description: string) =>
   (

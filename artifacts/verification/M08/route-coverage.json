@@ -1,5 +1,5 @@
 {
-  "milestone": "M06",
+  "milestone": "M08",
   "planDigest": "sha256:b07cf1c5f08308633cf93dcbf2ce6afff93bbf4b9aec962d2ca9e243a8a621a8",
   "routeRegistryDigest": "sha256:7a1de02fadf05aa6c8e18547ea38cb3bc20152ce7d34eb0304c360b3bd1d3186",
   "routes": [
@@ -9733,146 +9733,290 @@
       "routeId": "route.app.workflows.detail.studio",
       "states": [
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.loading",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.draft-saving-saved",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "draft-saving-saved"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.validation",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "validation"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.pending",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "pending"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.success",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.conflict",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "conflict"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.plan-limit",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.missing-deleted",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing-deleted"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.destructive-confirm",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "destructive-confirm"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.partial-degraded-dependency",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-degraded-dependency"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.archived-suspended",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-suspended"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.step-up",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "step-up"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.policy-denial",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "policy-denial"
         },
         {
-          "activationMilestone": "M07",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M07; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M07/test-results/studio-accessibility",
+            "authorizationPersona": "workspace builder with workflow manage permission",
+            "browserTest": "tests/e2e/workflow-studio.spec.ts",
+            "evidenceUri": "artifact://M07/test-results/studio-browser",
+            "expectedTelemetry": "content-free workflow ID, version, revision, conflict code, and request ID",
+            "fixture": "workflow-studio.none-without-recorded-reason",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "none-without-recorded-reason"
         }
@@ -10457,146 +10601,290 @@
       "routeId": "route.app.workflows.new",
       "states": [
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.loading",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.draft-saving-saved",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "draft-saving-saved"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.validation",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "validation"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.pending",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "pending"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.success",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.conflict",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "conflict"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.plan-limit",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.missing-deleted",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing-deleted"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.destructive-confirm",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "destructive-confirm"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.partial-degraded-dependency",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-degraded-dependency"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.archived-suspended",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-suspended"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.step-up",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "step-up"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.policy-denial",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "policy-denial"
         },
         {
-          "activationMilestone": "M08",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M08; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M08/test-results/generation-browser",
+            "authorizationPersona": "workspace builder with workflow create permission",
+            "browserTest": "tests/e2e/workflow-generation.spec.ts",
+            "evidenceUri": "artifact://M08/test-results/generation-browser",
+            "expectedTelemetry": "generation ID, lifecycle, phase, prompt contract, provider key, repair count, and content-free finding codes",
+            "fixture": "workflow-generation.none-without-recorded-reason",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "none-without-recorded-reason"
         }

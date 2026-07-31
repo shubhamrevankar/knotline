@@ -41,6 +41,12 @@
       "etagConflict": true,
       "version": true
     },
+    "generation": {
+      "durable": true,
+      "tenantIsolated": true,
+      "dryRunExternalWrites": 0,
+      "published": true
+    },
     "auditEvents": 7
   }
 }

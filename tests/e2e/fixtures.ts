@@ -5,6 +5,43 @@ export const test = base.extend<{ consoleMessages: string[] }>({
   consoleMessages: [
     async ({ page }, use) => {
       const messages: string[] = [];
+      const generatedDefinition = {
+        schemaVersion: 1,
+        name: "Launch request approval",
+        description: "SIMULATED guided workflow",
+        inputSchema: {},
+        outputSchema: {},
+        nodes: [
+          {
+            key: "request_received",
+            kind: "trigger",
+            name: "Request received",
+            description: "",
+            position: { x: 80, y: 120 },
+            configuration: { triggerType: "manual" }
+          },
+          {
+            key: "prepare_request",
+            kind: "human",
+            name: "Prepare request",
+            description: "",
+            position: { x: 360, y: 120 },
+            configuration: { assignment: "workflow_initiator" }
+          },
+          {
+            key: "review_request",
+            kind: "approval",
+            name: "Review request",
+            description: "",
+            position: { x: 640, y: 120 },
+            configuration: { policy: "workspace_owner" }
+          }
+        ],
+        edges: [
+          { key: "path_1", source: "request_received", target: "prepare_request" },
+          { key: "path_2", source: "prepare_request", target: "review_request" }
+        ]
+      };
 
       await page.addInitScript(() => {
         if (new URL(globalThis.location.href).searchParams.has("consent")) {
@@ -149,6 +186,89 @@ export const test = base.extend<{ consoleMessages: string[] }>({
           };
         } else if (pathname === "/edge/v1/invitation-responses") {
           body = { result: "accepted" };
+        } else if (pathname.endsWith("/workflow-generations") && method === "POST") {
+          body = {
+            data: {
+              id: "90000000-0000-4000-8000-000000000001",
+              sourcePrompt: "Collect a launch request and require owner approval.",
+              lifecycle: "QUEUED"
+            }
+          };
+        } else if (pathname === "/v1/workflow-generations/90000000-0000-4000-8000-000000000001") {
+          body = {
+            data: {
+              id: "90000000-0000-4000-8000-000000000001",
+              sourcePrompt: "Collect a launch request and require owner approval.",
+              lifecycle: "SUCCEEDED",
+              phase: "READY_TO_ACCEPT",
+              result: {
+                promptVersion: "workflow-generation.v1",
+                provider: "fixture-v1",
+                simulated: true,
+                definition: generatedDefinition,
+                assumptions: ["The workflow starts manually."],
+                assignments: ["Prepare request → workflow initiator"],
+                missingIntegrations: [],
+                findings: [],
+                repairAttempts: 0,
+                usage: { inputUnits: 56, outputUnits: 900, costMinor: 0, currency: "USD" },
+                diff: { addedNodes: 3, addedEdges: 2 }
+              }
+            }
+          };
+        } else if (pathname === "/v1/workflow-dry-runs") {
+          body = {
+            data: {
+              simulated: true,
+              externalWrites: 0,
+              path: ["request_received", "prepare_request", "review_request"],
+              steps: [
+                {
+                  nodeKey: "request_received",
+                  kind: "trigger",
+                  source: "input",
+                  value: {},
+                  externalWrite: false
+                },
+                {
+                  nodeKey: "prepare_request",
+                  kind: "human",
+                  source: "human_fixture",
+                  value: {},
+                  externalWrite: false
+                },
+                {
+                  nodeKey: "review_request",
+                  kind: "approval",
+                  source: "deterministic",
+                  value: {},
+                  externalWrite: false
+                }
+              ],
+              findings: [],
+              preflight: {
+                allowed: true,
+                expectedCostMinor: 0,
+                currency: "USD",
+                checks: [
+                  { key: "permission", passed: true, message: "Workflow run permission" },
+                  { key: "entitlement", passed: true, message: "Workflow entitlement" }
+                ]
+              }
+            }
+          };
+        } else if (pathname.endsWith("/acceptances")) {
+          body = {
+            workflowId: "90000000-0000-4000-8000-000000000002",
+            simulated: true,
+            published: true
+          };
+        } else if (pathname === "/v1/workflow-import-previews") {
+          body = {
+            data: { definition: generatedDefinition, findings: [], createsResource: false }
+          };
+        } else if (pathname.endsWith("/workflow-imports")) {
+          body = { id: "90000000-0000-4000-8000-000000000003" };
         } else if (pathname.endsWith("/workflows") && pathname.includes("/workspaces/")) {
           body = method === "GET" ? { data: demoWorkflows } : { data: demoWorkflow };
         } else if (pathname.endsWith("/draft")) {

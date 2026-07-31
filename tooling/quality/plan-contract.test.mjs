@@ -24,7 +24,7 @@ test("locks the authoritative plan inventory and deterministic output", () => {
   assert.equal(first.journeys.entries.filter(({ id }) => !id.includes(".")).length, 24);
   assert.equal(first.journeys.entries.filter(({ id }) => id.includes(".")).length, 15);
   assert.equal(first.externalGates.entries.length, 25);
-  assert.equal(first.api.entries.length, 448);
+  assert.equal(first.api.entries.length, 451);
   assert.equal(
     first.routes.entries.find(({ path }) => path === "/product/integrations").routeClass,
     "public_async"

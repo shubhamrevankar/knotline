@@ -6,11 +6,13 @@ import { setTimeout as delay } from "node:timers/promises";
 import type { WorkflowDefinition } from "../../packages/contracts/src/index.js";
 import { buildApp } from "../../apps/api/src/app.js";
 import type { AuthService } from "../../apps/api/src/auth.js";
+import { WorkflowGenerationService } from "../../apps/api/src/workflow-generation.js";
 import {
   contentHash,
   createPool,
   migrate,
   PostgresVersionedWorkflowRepository,
+  PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
   seedSyntheticTenants,
   SEED,
@@ -111,6 +113,7 @@ const definition = (name = "Incident response"): WorkflowDefinition => ({
 
 async function runSuite(pool: DatabasePool) {
   const repository = new PostgresVersionedWorkflowRepository(pool);
+  const generationRepository = new PostgresWorkflowGenerationRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -281,6 +284,7 @@ async function runSuite(pool: DatabasePool) {
     webOrigin: "http://localhost:5173",
     repository: new PostgresWorkflowRepository(pool),
     workflowDefinitions: repository,
+    workflowGeneration: new WorkflowGenerationService(undefined, generationRepository),
     auth: {
       authenticate: () =>
         Promise.resolve({
@@ -330,6 +334,55 @@ async function runSuite(pool: DatabasePool) {
       url: `/v1/workflows/${workflowId}/versions/1`
     });
     assert(versionResponse.statusCode === 200, "Immutable version API failed");
+    const generationResponse = await app.inject({
+      method: "POST",
+      url: `/v1/workspaces/${SEED.workspaceA}/workflow-generations`,
+      payload: {
+        prompt: "Collect a request, require owner approval, and notify the requester.",
+        fixture: "standard"
+      }
+    });
+    assert(generationResponse.statusCode === 202, "Workflow generation did not queue");
+    const generationId = generationResponse.json<{ data: { id: string } }>().data.id;
+    await delay(20);
+    const persistedGeneration = await generationRepository.get(contextA, generationId);
+    assert(persistedGeneration?.lifecycle === "SUCCEEDED", "Generation lifecycle was not durable");
+    assert(
+      (await generationRepository.get(contextB, generationId)) === undefined,
+      "Generation resource crossed tenant RLS"
+    );
+    const dryRunResponse = await app.inject({
+      method: "POST",
+      url: "/v1/workflow-dry-runs",
+      payload: {
+        definition: persistedGeneration.result?.definition,
+        fixture: {
+          input: {},
+          humanSubmissions: {},
+          agentOutputs: {},
+          connectorOutputs: {},
+          permissions: ["workflow.run"],
+          entitlements: ["workflows"],
+          healthyConnections: [],
+          budgetMinor: 100,
+          timezone: "UTC"
+        }
+      }
+    });
+    assert(
+      dryRunResponse.statusCode === 200 &&
+        dryRunResponse.json<{ data: { externalWrites: number } }>().data.externalWrites === 0,
+      "Dry run did not prove zero external writes"
+    );
+    const acceptanceResponse = await app.inject({
+      method: "POST",
+      url: `/v1/workflow-generations/${generationId}/acceptances`,
+      payload: { publish: true }
+    });
+    assert(
+      acceptanceResponse.statusCode === 201,
+      "Generated workflow was not accepted and published"
+    );
   } finally {
     await app.close();
   }
@@ -348,6 +401,7 @@ async function runSuite(pool: DatabasePool) {
     templates: { variables: true, instantiate: true },
     isolation: { rls: true },
     api: { list: true, draft: true, etagConflict: true, version: true },
+    generation: { durable: true, tenantIsolated: true, dryRunExternalWrites: 0, published: true },
     auditEvents: auditCount
   };
 }

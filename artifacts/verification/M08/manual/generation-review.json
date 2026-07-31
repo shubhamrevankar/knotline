@@ -1,0 +1,9 @@
+{
+  "id": "m08-generation-review",
+  "kind": "manual",
+  "owner": "shurevan",
+  "recordedAt": "2026-08-01T02:00:00.000Z",
+  "schemaVersion": 1,
+  "status": "PASS",
+  "summary": "Reviewed blank, template, guided fixture and import entry paths; full generation lineage; bounded repair and cancellation; preflight negative cases; zero external writes; explicit SIMULATED labeling; responsive accept-and-publish flow; and M15 provider gate."
+}

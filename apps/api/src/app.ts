@@ -1,7 +1,12 @@
 import cors from "@fastify/cors";
 import {
   createWorkflowRequestSchema,
+  dryRunFixtureSchema,
+  dryRunWorkflow,
+  importWorkflowCsv,
+  validateWorkflowDefinition,
   workflowDefinitionSchema,
+  workflowGenerationRequestSchema,
   type ApiEnvelope,
   type Workflow,
   type WorkflowSummary
@@ -34,6 +39,7 @@ import {
   parseCookies
 } from "./auth.js";
 import { type CaptureInvitationMailer, type WorkspaceService } from "./workspace.js";
+import { WorkflowGenerationService } from "./workflow-generation.js";
 
 export interface BuildAppOptions {
   readonly environment: string;
@@ -47,6 +53,7 @@ export interface BuildAppOptions {
   readonly captureInvitationMailer?: CaptureInvitationMailer;
   readonly trustedProxy?: string;
   readonly mutationsDisabled?: boolean;
+  readonly workflowGeneration?: WorkflowGenerationService;
 }
 
 interface ApiErrorReply {
@@ -81,6 +88,7 @@ function requestIdentifier(header: unknown): string {
 }
 
 export async function buildApp(options: BuildAppOptions): Promise<FastifyInstance> {
+  const workflowGeneration = options.workflowGeneration ?? new WorkflowGenerationService();
   const requestContexts = new WeakMap<FastifyRequest, RequestTraceContext>();
   const app = Fastify({
     trustProxy: options.trustedProxy ? [options.trustedProxy] : false,
@@ -223,6 +231,114 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     return (await options.workspace.require(authenticated.identity, request.id, permission))
       .context;
   };
+
+  app.post("/v1/workspaces/:workspaceId/workflow-generations", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const context = options.workspace
+      ? (await options.workspace.require(authenticated.identity, request.id, "workflow.create"))
+          .context
+      : tenantContext(options, request, authenticated);
+    const resource = await workflowGeneration.start(
+      context,
+      workflowGenerationRequestSchema.parse(request.body)
+    );
+    return reply.code(202).send({ data: resource });
+  });
+
+  app.get("/v1/workflow-generations/:generationId", async (request) => {
+    const context = await workflowAccess(request, "workflow.read");
+    const { generationId } = z
+      .object({ generationId: z.string().uuid() })
+      .strict()
+      .parse(request.params);
+    const resource = await workflowGeneration.get(context, generationId);
+    if (!resource)
+      throw new AuthFailure("GENERATION_NOT_FOUND", 404, "The generation does not exist.");
+    return { data: resource };
+  });
+
+  app.post("/v1/workflow-generations/:generationId/cancellations", async (request) => {
+    const context = await workflowAccess(request, "workflow.create", true);
+    const { generationId } = z
+      .object({ generationId: z.string().uuid() })
+      .strict()
+      .parse(request.params);
+    const resource = await workflowGeneration.cancel(context, generationId);
+    if (!resource)
+      throw new AuthFailure("GENERATION_NOT_FOUND", 404, "The generation does not exist.");
+    return { data: resource };
+  });
+
+  app.post("/v1/workflow-generations/:generationId/acceptances", async (request, reply) => {
+    const context = await workflowAccess(request, "workflow.create", true);
+    const { generationId } = z
+      .object({ generationId: z.string().uuid() })
+      .strict()
+      .parse(request.params);
+    const resource = await workflowGeneration.get(context, generationId);
+    if (!resource?.result)
+      throw new AuthFailure("GENERATION_NOT_READY", 409, "The generation is not ready to accept.");
+    if (!options.workflowDefinitions)
+      throw new AuthFailure("WORKFLOW_IMPORT_UNAVAILABLE", 503, "Workflow import is unavailable.");
+    const { publish } = z
+      .object({ publish: z.boolean().default(false) })
+      .strict()
+      .parse(request.body ?? {});
+    const alreadyAccepted = Boolean(resource.acceptedWorkflowId);
+    const workflowId =
+      resource.acceptedWorkflowId ??
+      (await workflowDefinitions().import(context, resource.result.definition));
+    if (publish && !alreadyAccepted) {
+      const draft = await workflowDefinitions().getDraft(context, workflowId);
+      if (!draft)
+        throw new AuthFailure(
+          "WORKFLOW_DRAFT_NOT_FOUND",
+          404,
+          "The workflow draft does not exist."
+        );
+      const published = await workflowDefinitions().publish(
+        context,
+        workflowId,
+        draft.revision,
+        "Accepted from simulated guided generation"
+      );
+      if (!published || published === "conflict" || !published.published)
+        throw new AuthFailure(
+          "WORKFLOW_GENERATED_INVALID",
+          422,
+          "The generated workflow is not publishable."
+        );
+    }
+    await workflowGeneration.accept(context, generationId, workflowId);
+    return reply
+      .code(alreadyAccepted ? 200 : 201)
+      .send({ workflowId, simulated: true, published: publish });
+  });
+
+  app.post("/v1/workflow-import-previews", async (request) => {
+    await workflowAccess(request, "workflow.create", true);
+    const body = z
+      .discriminatedUnion("format", [
+        z.object({ format: z.literal("json"), content: workflowDefinitionSchema }).strict(),
+        z.object({ format: z.literal("csv"), content: z.string().min(1).max(256_000) }).strict()
+      ])
+      .parse(request.body);
+    const definition = body.format === "json" ? body.content : importWorkflowCsv(body.content);
+    return {
+      data: { definition, findings: validateWorkflowDefinition(definition), createsResource: false }
+    };
+  });
+
+  app.post("/v1/workflow-dry-runs", async (request) => {
+    await workflowAccess(request, "workflow.read", true);
+    const body = z
+      .object({ definition: workflowDefinitionSchema, fixture: dryRunFixtureSchema })
+      .strict()
+      .parse(request.body);
+    return { data: dryRunWorkflow(body.definition, body.fixture) };
+  });
 
   const magicRequestSchema = z
     .object({

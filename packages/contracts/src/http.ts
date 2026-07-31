@@ -548,6 +548,44 @@ const VERSIONED_WORKFLOW_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
     "instantiateWorkflowTemplate",
     "Instantiate a template as a workflow draft",
     201
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/workflow-generations",
+    "createWorkflowGeneration",
+    "Queue deterministic guided workflow generation",
+    202
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/workflow-generations/{generationId}",
+    "getWorkflowGeneration",
+    "Read workflow generation lifecycle and review output"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflow-generations/{generationId}/cancellations",
+    "cancelWorkflowGeneration",
+    "Cancel active workflow generation"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflow-generations/{generationId}/acceptances",
+    "acceptWorkflowGeneration",
+    "Accept generated output as a workflow",
+    201
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflow-import-previews",
+    "previewWorkflowImport",
+    "Validate JSON or CSV workflow import without creating a resource"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflow-dry-runs",
+    "dryRunWorkflow",
+    "Execute deterministic fixtures with no external writes"
   )
 ];
 

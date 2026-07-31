@@ -2144,6 +2144,13 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "post-v1-workflow-dry-runs",
+      "method": "POST",
+      "path": "/v1/workflow-dry-runs",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "delete-v1-workflow-folders-by-folder-id",
       "method": "DELETE",
       "path": "/v1/workflow-folders/:folderId",
@@ -2165,9 +2172,23 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "post-v1-workflow-generations-by-generation-id-acceptances",
+      "method": "POST",
+      "path": "/v1/workflow-generations/:generationId/acceptances",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "post-v1-workflow-generations-by-generation-id-cancellations",
       "method": "POST",
       "path": "/v1/workflow-generations/:generationId/cancellations",
+      "sourceSection": "10.5"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workflow-import-previews",
+      "method": "POST",
+      "path": "/v1/workflow-import-previews",
       "sourceSection": "10.5"
     },
     {
@@ -3138,6 +3159,6 @@
     }
   ],
   "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
-  "planDigest": "sha256:cf6139ceaa4dd2cd2ba3816fcc3e233820c6a3ea054864e63299805f30277beb",
+  "planDigest": "sha256:b07cf1c5f08308633cf93dcbf2ce6afff93bbf4b9aec962d2ca9e243a8a621a8",
   "schemaVersion": 1
 }

@@ -2439,6 +2439,9 @@ DELETE /v1/templates/:templateId
 POST   /v1/workspaces/:workspaceId/workflow-generations
 GET    /v1/workflow-generations/:generationId
 POST   /v1/workflow-generations/:generationId/cancellations
+POST   /v1/workflow-generations/:generationId/acceptances
+POST   /v1/workflow-import-previews
+POST   /v1/workflow-dry-runs
 ```
 
 ### 10.6 Run, task, and approval API
@@ -5925,7 +5928,7 @@ map.
 
 ### M08 — Workflow generation, import, dry run, and policy preflight
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M07\
 **Required commit:** `feat: add guided workflow generation and safe test mode`
 
@@ -9217,10 +9220,10 @@ must appear in that milestone's boundary cell.
 | M02 | `COMMITTED` | `NOT_DEPLOYED` | EXT-001 | `feat: deliver the responsive Knotline product shell` |
 | M03 | `COMMITTED` | `NOT_DEPLOYED` | EXT-002 | `feat: persist Knotline data with enforced tenant isolation` |
 | M04 | `COMMITTED` | `NOT_DEPLOYED` | EXT-006, EXT-007 | `feat: add secure passwordless and Google authentication` |
-| M05 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006 | `feat: enable complete workspace onboarding and access control` |
-| M06 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver versioned workflow definitions and publishing` |
+| M05 | `COMMITTED` | `NOT_DEPLOYED` | EXT-006 | `feat: enable complete workspace onboarding and access control` |
+| M06 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver versioned workflow definitions and publishing` |
 | M07 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the complete responsive workflow studio` |
-| M08 | `NOT_STARTED` | `NOT_DEPLOYED` | `SIMULATED`; EXT-004 `BLOCKED_EXTERNAL` for real activation | `feat: add guided workflow generation and safe test mode` |
+| M08 | `COMMITTED` | `NOT_DEPLOYED` | `SIMULATED`; EXT-004 `BLOCKED_EXTERNAL` for real activation | `feat: add guided workflow generation and safe test mode` |
 | M09 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006 for email mention delivery later | `feat: add collaborative workflow and work discussions` |
 | M10 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-003 | `feat: execute workflows durably across failures` |
 | M11 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the live Knotline run room` |

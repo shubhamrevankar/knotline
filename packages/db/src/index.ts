@@ -10,3 +10,4 @@ export * from "./telemetry.js";
 export * from "./values.js";
 export * from "./workspace-repository.js";
 export * from "./versioned-workflow-repository.js";
+export * from "./workflow-generation-repository.js";
