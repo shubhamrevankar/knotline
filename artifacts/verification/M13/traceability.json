@@ -1147,52 +1147,160 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "BL-005",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "BL-006",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
       "authorizationRules": [],
@@ -1656,76 +1764,187 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/collaboration-repository.ts#authorizeResource"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/collaboration.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/collaboration.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
       "events": [],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "delete-v1-comments-by-comment-id",
+        "patch-v1-comments-by-comment-id",
+        "post-v1-comments-by-comment-id-reactions",
+        "delete-v1-comments-by-comment-id-reactions-by-reaction",
+        "post-v1-resources-by-resource-type-by-resource-id-comments",
+        "get-v1-resources-by-resource-type-by-resource-id-thread",
+        "delete-v1-workflows-by-workflow-id-follows",
+        "post-v1-workflows-by-workflow-id-follows"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/collaboration-and-conflicts.md"
+      ],
       "primaryMilestone": "M09",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "CO-001",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tests/e2e/collaboration.spec.ts",
+        "tests/e2e/workflow-studio.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/collaboration.ts#renderSafeMarkdown",
+        "packages/contracts/src/collaboration.ts#mergeChangedSections",
+        "packages/db/src/collaboration-repository.ts#PostgresCollaborationRepository",
+        "apps/web/src/CollaborationPanel.tsx#CollaborationPanel"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M09",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "generic_threads",
+        "generic_comments",
+        "comment_mentions",
+        "comment_reactions",
+        "resource_follows",
+        "resource_activity_events",
+        "notification_intents",
+        "saved_resource_filters"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/collaboration-repository.ts#authorizeResource"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/collaboration.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/collaboration.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
       "events": [],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "delete-v1-comments-by-comment-id",
+        "patch-v1-comments-by-comment-id",
+        "post-v1-comments-by-comment-id-reactions",
+        "delete-v1-comments-by-comment-id-reactions-by-reaction",
+        "post-v1-resources-by-resource-type-by-resource-id-comments",
+        "get-v1-resources-by-resource-type-by-resource-id-thread",
+        "delete-v1-workflows-by-workflow-id-follows",
+        "post-v1-workflows-by-workflow-id-follows"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/collaboration-and-conflicts.md"
+      ],
       "primaryMilestone": "M09",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "CO-002",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tests/e2e/collaboration.spec.ts",
+        "tests/e2e/workflow-studio.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/collaboration.ts#renderSafeMarkdown",
+        "packages/contracts/src/collaboration.ts#mergeChangedSections",
+        "packages/db/src/collaboration-repository.ts#PostgresCollaborationRepository",
+        "apps/web/src/CollaborationPanel.tsx#CollaborationPanel"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M09",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "generic_threads",
+        "generic_comments",
+        "comment_mentions",
+        "comment_reactions",
+        "resource_follows",
+        "resource_activity_events",
+        "notification_intents",
+        "saved_resource_filters"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/collaboration-repository.ts#authorizeResource"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/collaboration.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/collaboration.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
       "events": [],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "delete-v1-comments-by-comment-id",
+        "patch-v1-comments-by-comment-id",
+        "post-v1-comments-by-comment-id-reactions",
+        "delete-v1-comments-by-comment-id-reactions-by-reaction",
+        "post-v1-resources-by-resource-type-by-resource-id-comments",
+        "get-v1-resources-by-resource-type-by-resource-id-thread",
+        "delete-v1-workflows-by-workflow-id-follows",
+        "post-v1-workflows-by-workflow-id-follows"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/collaboration-and-conflicts.md"
+      ],
       "primaryMilestone": "M09",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "CO-003",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tests/e2e/collaboration.spec.ts",
+        "tests/e2e/workflow-studio.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/collaboration.ts#renderSafeMarkdown",
+        "packages/contracts/src/collaboration.ts#mergeChangedSections",
+        "packages/db/src/collaboration-repository.ts#PostgresCollaborationRepository",
+        "apps/web/src/CollaborationPanel.tsx#CollaborationPanel"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M09",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "generic_threads",
+        "generic_comments",
+        "comment_mentions",
+        "comment_reactions",
+        "resource_follows",
+        "resource_activity_events",
+        "notification_intents",
+        "saved_resource_filters"
+      ]
     },
     {
       "authorizationRules": [],
@@ -2832,12 +3051,26 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#humanTaskAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/human-task.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "task.claimed.v1",
+        "task.delegated.v1",
+        "task.submitted.v1",
+        "task.reopened.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
@@ -2845,8 +3078,51 @@
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-v1-artifact-uploads-by-upload-id-completions",
+        "delete-v1-artifacts-by-artifact-id",
+        "get-v1-artifacts-by-artifact-id-download",
+        "delete-v1-task-queues-by-queue-id",
+        "get-v1-task-queues-by-queue-id",
+        "patch-v1-task-queues-by-queue-id",
+        "delete-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-routing-policy",
+        "post-v1-task-queues-by-queue-id-routing-simulations",
+        "get-v1-task-runs",
+        "get-v1-task-runs-by-task-run-id",
+        "post-v1-task-runs-by-task-run-id-artifact-uploads",
+        "get-v1-task-runs-by-task-run-id-artifacts",
+        "get-v1-task-runs-by-task-run-id-attempts",
+        "get-v1-task-runs-by-task-run-id-attempts-by-attempt",
+        "post-v1-task-runs-by-task-run-id-claims",
+        "post-v1-task-runs-by-task-run-id-clarification-requests",
+        "get-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-delegations",
+        "put-v1-task-runs-by-task-run-id-draft",
+        "post-v1-task-runs-by-task-run-id-reassignments",
+        "post-v1-task-runs-by-task-run-id-reopenings",
+        "post-v1-task-runs-by-task-run-id-returns-to-queue",
+        "post-v1-task-runs-by-task-run-id-submissions",
+        "post-v1-task-runs-by-task-run-id-unclaims",
+        "delete-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-bulk-actions",
+        "delete-v1-task-templates-by-template-id",
+        "get-v1-task-templates-by-template-id",
+        "patch-v1-task-templates-by-template-id",
+        "post-v1-task-templates-by-template-id-previews",
+        "post-v1-task-templates-by-template-id-publications",
+        "post-v1-task-templates-by-template-id-versions",
+        "get-v1-workspaces-by-workspace-id-task-queues",
+        "post-v1-workspaces-by-workspace-id-task-queues",
+        "get-v1-workspaces-by-workspace-id-task-templates",
+        "post-v1-workspaces-by-workspace-id-task-templates"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md"
+      ],
       "primaryMilestone": "M12",
       "regressionMilestones": [
         "M38"
@@ -2857,17 +3133,56 @@
         "route.app.tasks",
         "route.app.tasks.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M12Pages.tsx#TaskInboxPage",
+        "apps/web/src/M12Pages.tsx#TaskDetailPage",
+        "packages/db/src/human-task-repository.ts#PostgresHumanTaskRepository",
+        "packages/db/src/task-administration-repository.ts#PostgresTaskAdministrationRepository"
+      ],
+      "tablesAndObjects": [
+        "human_task_details",
+        "human_task_drafts",
+        "human_task_submissions",
+        "task_delegations",
+        "task_watchers",
+        "task_queues",
+        "task_queue_members",
+        "task_routing_policy_versions",
+        "task_routing_decisions",
+        "business_calendars",
+        "business_calendar_versions",
+        "task_templates",
+        "task_template_versions",
+        "files",
+        "file_versions",
+        "file_upload_sessions",
+        "task_file_attachments"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#humanTaskAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/human-task.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "task.claimed.v1",
+        "task.delegated.v1",
+        "task.submitted.v1",
+        "task.reopened.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
@@ -2875,8 +3190,51 @@
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-v1-artifact-uploads-by-upload-id-completions",
+        "delete-v1-artifacts-by-artifact-id",
+        "get-v1-artifacts-by-artifact-id-download",
+        "delete-v1-task-queues-by-queue-id",
+        "get-v1-task-queues-by-queue-id",
+        "patch-v1-task-queues-by-queue-id",
+        "delete-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-routing-policy",
+        "post-v1-task-queues-by-queue-id-routing-simulations",
+        "get-v1-task-runs",
+        "get-v1-task-runs-by-task-run-id",
+        "post-v1-task-runs-by-task-run-id-artifact-uploads",
+        "get-v1-task-runs-by-task-run-id-artifacts",
+        "get-v1-task-runs-by-task-run-id-attempts",
+        "get-v1-task-runs-by-task-run-id-attempts-by-attempt",
+        "post-v1-task-runs-by-task-run-id-claims",
+        "post-v1-task-runs-by-task-run-id-clarification-requests",
+        "get-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-delegations",
+        "put-v1-task-runs-by-task-run-id-draft",
+        "post-v1-task-runs-by-task-run-id-reassignments",
+        "post-v1-task-runs-by-task-run-id-reopenings",
+        "post-v1-task-runs-by-task-run-id-returns-to-queue",
+        "post-v1-task-runs-by-task-run-id-submissions",
+        "post-v1-task-runs-by-task-run-id-unclaims",
+        "delete-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-bulk-actions",
+        "delete-v1-task-templates-by-template-id",
+        "get-v1-task-templates-by-template-id",
+        "patch-v1-task-templates-by-template-id",
+        "post-v1-task-templates-by-template-id-previews",
+        "post-v1-task-templates-by-template-id-publications",
+        "post-v1-task-templates-by-template-id-versions",
+        "get-v1-workspaces-by-workspace-id-task-queues",
+        "post-v1-workspaces-by-workspace-id-task-queues",
+        "get-v1-workspaces-by-workspace-id-task-templates",
+        "post-v1-workspaces-by-workspace-id-task-templates"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md"
+      ],
       "primaryMilestone": "M12",
       "regressionMilestones": [
         "M38"
@@ -2887,17 +3245,56 @@
         "route.app.tasks",
         "route.app.tasks.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M12Pages.tsx#TaskInboxPage",
+        "apps/web/src/M12Pages.tsx#TaskDetailPage",
+        "packages/db/src/human-task-repository.ts#PostgresHumanTaskRepository",
+        "packages/db/src/task-administration-repository.ts#PostgresTaskAdministrationRepository"
+      ],
+      "tablesAndObjects": [
+        "human_task_details",
+        "human_task_drafts",
+        "human_task_submissions",
+        "task_delegations",
+        "task_watchers",
+        "task_queues",
+        "task_queue_members",
+        "task_routing_policy_versions",
+        "task_routing_decisions",
+        "business_calendars",
+        "business_calendar_versions",
+        "task_templates",
+        "task_template_versions",
+        "files",
+        "file_versions",
+        "file_upload_sessions",
+        "task_file_attachments"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#humanTaskAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/human-task.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "task.claimed.v1",
+        "task.delegated.v1",
+        "task.submitted.v1",
+        "task.reopened.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
@@ -2905,8 +3302,51 @@
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-v1-artifact-uploads-by-upload-id-completions",
+        "delete-v1-artifacts-by-artifact-id",
+        "get-v1-artifacts-by-artifact-id-download",
+        "delete-v1-task-queues-by-queue-id",
+        "get-v1-task-queues-by-queue-id",
+        "patch-v1-task-queues-by-queue-id",
+        "delete-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-routing-policy",
+        "post-v1-task-queues-by-queue-id-routing-simulations",
+        "get-v1-task-runs",
+        "get-v1-task-runs-by-task-run-id",
+        "post-v1-task-runs-by-task-run-id-artifact-uploads",
+        "get-v1-task-runs-by-task-run-id-artifacts",
+        "get-v1-task-runs-by-task-run-id-attempts",
+        "get-v1-task-runs-by-task-run-id-attempts-by-attempt",
+        "post-v1-task-runs-by-task-run-id-claims",
+        "post-v1-task-runs-by-task-run-id-clarification-requests",
+        "get-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-delegations",
+        "put-v1-task-runs-by-task-run-id-draft",
+        "post-v1-task-runs-by-task-run-id-reassignments",
+        "post-v1-task-runs-by-task-run-id-reopenings",
+        "post-v1-task-runs-by-task-run-id-returns-to-queue",
+        "post-v1-task-runs-by-task-run-id-submissions",
+        "post-v1-task-runs-by-task-run-id-unclaims",
+        "delete-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-bulk-actions",
+        "delete-v1-task-templates-by-template-id",
+        "get-v1-task-templates-by-template-id",
+        "patch-v1-task-templates-by-template-id",
+        "post-v1-task-templates-by-template-id-previews",
+        "post-v1-task-templates-by-template-id-publications",
+        "post-v1-task-templates-by-template-id-versions",
+        "get-v1-workspaces-by-workspace-id-task-queues",
+        "post-v1-workspaces-by-workspace-id-task-queues",
+        "get-v1-workspaces-by-workspace-id-task-templates",
+        "post-v1-workspaces-by-workspace-id-task-templates"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md"
+      ],
       "primaryMilestone": "M12",
       "regressionMilestones": [
         "M38"
@@ -2917,17 +3357,56 @@
         "route.app.tasks",
         "route.app.tasks.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M12Pages.tsx#TaskInboxPage",
+        "apps/web/src/M12Pages.tsx#TaskDetailPage",
+        "packages/db/src/human-task-repository.ts#PostgresHumanTaskRepository",
+        "packages/db/src/task-administration-repository.ts#PostgresTaskAdministrationRepository"
+      ],
+      "tablesAndObjects": [
+        "human_task_details",
+        "human_task_drafts",
+        "human_task_submissions",
+        "task_delegations",
+        "task_watchers",
+        "task_queues",
+        "task_queue_members",
+        "task_routing_policy_versions",
+        "task_routing_decisions",
+        "business_calendars",
+        "business_calendar_versions",
+        "task_templates",
+        "task_template_versions",
+        "files",
+        "file_versions",
+        "file_upload_sessions",
+        "task_file_attachments"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#humanTaskAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/human-task.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "task.claimed.v1",
+        "task.delegated.v1",
+        "task.submitted.v1",
+        "task.reopened.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
@@ -2935,8 +3414,51 @@
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-v1-artifact-uploads-by-upload-id-completions",
+        "delete-v1-artifacts-by-artifact-id",
+        "get-v1-artifacts-by-artifact-id-download",
+        "delete-v1-task-queues-by-queue-id",
+        "get-v1-task-queues-by-queue-id",
+        "patch-v1-task-queues-by-queue-id",
+        "delete-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-routing-policy",
+        "post-v1-task-queues-by-queue-id-routing-simulations",
+        "get-v1-task-runs",
+        "get-v1-task-runs-by-task-run-id",
+        "post-v1-task-runs-by-task-run-id-artifact-uploads",
+        "get-v1-task-runs-by-task-run-id-artifacts",
+        "get-v1-task-runs-by-task-run-id-attempts",
+        "get-v1-task-runs-by-task-run-id-attempts-by-attempt",
+        "post-v1-task-runs-by-task-run-id-claims",
+        "post-v1-task-runs-by-task-run-id-clarification-requests",
+        "get-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-delegations",
+        "put-v1-task-runs-by-task-run-id-draft",
+        "post-v1-task-runs-by-task-run-id-reassignments",
+        "post-v1-task-runs-by-task-run-id-reopenings",
+        "post-v1-task-runs-by-task-run-id-returns-to-queue",
+        "post-v1-task-runs-by-task-run-id-submissions",
+        "post-v1-task-runs-by-task-run-id-unclaims",
+        "delete-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-bulk-actions",
+        "delete-v1-task-templates-by-template-id",
+        "get-v1-task-templates-by-template-id",
+        "patch-v1-task-templates-by-template-id",
+        "post-v1-task-templates-by-template-id-previews",
+        "post-v1-task-templates-by-template-id-publications",
+        "post-v1-task-templates-by-template-id-versions",
+        "get-v1-workspaces-by-workspace-id-task-queues",
+        "post-v1-workspaces-by-workspace-id-task-queues",
+        "get-v1-workspaces-by-workspace-id-task-templates",
+        "post-v1-workspaces-by-workspace-id-task-templates"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md"
+      ],
       "primaryMilestone": "M12",
       "regressionMilestones": [
         "M38"
@@ -2947,17 +3469,56 @@
         "route.app.tasks",
         "route.app.tasks.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M12Pages.tsx#TaskInboxPage",
+        "apps/web/src/M12Pages.tsx#TaskDetailPage",
+        "packages/db/src/human-task-repository.ts#PostgresHumanTaskRepository",
+        "packages/db/src/task-administration-repository.ts#PostgresTaskAdministrationRepository"
+      ],
+      "tablesAndObjects": [
+        "human_task_details",
+        "human_task_drafts",
+        "human_task_submissions",
+        "task_delegations",
+        "task_watchers",
+        "task_queues",
+        "task_queue_members",
+        "task_routing_policy_versions",
+        "task_routing_decisions",
+        "business_calendars",
+        "business_calendar_versions",
+        "task_templates",
+        "task_template_versions",
+        "files",
+        "file_versions",
+        "file_upload_sessions",
+        "task_file_attachments"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#humanTaskAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/human-task.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "task.claimed.v1",
+        "task.delegated.v1",
+        "task.submitted.v1",
+        "task.reopened.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
@@ -2965,8 +3526,51 @@
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-v1-artifact-uploads-by-upload-id-completions",
+        "delete-v1-artifacts-by-artifact-id",
+        "get-v1-artifacts-by-artifact-id-download",
+        "delete-v1-task-queues-by-queue-id",
+        "get-v1-task-queues-by-queue-id",
+        "patch-v1-task-queues-by-queue-id",
+        "delete-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-routing-policy",
+        "post-v1-task-queues-by-queue-id-routing-simulations",
+        "get-v1-task-runs",
+        "get-v1-task-runs-by-task-run-id",
+        "post-v1-task-runs-by-task-run-id-artifact-uploads",
+        "get-v1-task-runs-by-task-run-id-artifacts",
+        "get-v1-task-runs-by-task-run-id-attempts",
+        "get-v1-task-runs-by-task-run-id-attempts-by-attempt",
+        "post-v1-task-runs-by-task-run-id-claims",
+        "post-v1-task-runs-by-task-run-id-clarification-requests",
+        "get-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-delegations",
+        "put-v1-task-runs-by-task-run-id-draft",
+        "post-v1-task-runs-by-task-run-id-reassignments",
+        "post-v1-task-runs-by-task-run-id-reopenings",
+        "post-v1-task-runs-by-task-run-id-returns-to-queue",
+        "post-v1-task-runs-by-task-run-id-submissions",
+        "post-v1-task-runs-by-task-run-id-unclaims",
+        "delete-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-bulk-actions",
+        "delete-v1-task-templates-by-template-id",
+        "get-v1-task-templates-by-template-id",
+        "patch-v1-task-templates-by-template-id",
+        "post-v1-task-templates-by-template-id-previews",
+        "post-v1-task-templates-by-template-id-publications",
+        "post-v1-task-templates-by-template-id-versions",
+        "get-v1-workspaces-by-workspace-id-task-queues",
+        "post-v1-workspaces-by-workspace-id-task-queues",
+        "get-v1-workspaces-by-workspace-id-task-templates",
+        "post-v1-workspaces-by-workspace-id-task-templates"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md"
+      ],
       "primaryMilestone": "M12",
       "regressionMilestones": [
         "M38"
@@ -2977,25 +3581,76 @@
         "route.app.tasks",
         "route.app.tasks.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M12Pages.tsx#TaskInboxPage",
+        "apps/web/src/M12Pages.tsx#TaskDetailPage",
+        "packages/db/src/human-task-repository.ts#PostgresHumanTaskRepository",
+        "packages/db/src/task-administration-repository.ts#PostgresTaskAdministrationRepository"
+      ],
+      "tablesAndObjects": [
+        "human_task_details",
+        "human_task_drafts",
+        "human_task_submissions",
+        "task_delegations",
+        "task_watchers",
+        "task_queues",
+        "task_queue_members",
+        "task_routing_policy_versions",
+        "task_routing_decisions",
+        "business_calendars",
+        "business_calendar_versions",
+        "task_templates",
+        "task_template_versions",
+        "files",
+        "file_versions",
+        "file_upload_sessions",
+        "task_file_attachments"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#approvalAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/approval.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "approval.requested.v1",
+        "approval.decided.v1",
+        "approval.expired.v1",
+        "approval.revoked.v1",
+        "approval.consumed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-ops-v1-break-glass-requests-by-request-id-approvals",
+        "post-ops-v1-usage-adjustment-requests-by-request-id-approvals",
+        "get-v1-approvals",
+        "get-v1-approvals-by-approval-id",
+        "post-v1-approvals-by-approval-id-decisions",
+        "post-v1-approvals-by-approval-id-delegations",
+        "post-v1-approvals-by-approval-id-reminders",
+        "post-v1-approvals-by-approval-id-revocations"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/approvals-and-sla.md"
+      ],
       "primaryMilestone": "M13",
       "regressionMilestones": [
         "M38"
@@ -3005,25 +3660,70 @@
         "route.app.approvals",
         "route.app.approvals.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M13Pages.tsx#ApprovalInboxPage",
+        "apps/web/src/M13Pages.tsx#ApprovalDetailPage",
+        "packages/db/src/approval-repository.ts#PostgresApprovalRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun"
+      ],
+      "tablesAndObjects": [
+        "approval_policies",
+        "approval_policy_versions",
+        "approvals",
+        "approval_steps",
+        "approval_decisions",
+        "approval_delegations",
+        "sla_definitions",
+        "sla_definition_versions",
+        "sla_timer_events",
+        "approval_consumptions",
+        "notification_intents"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#approvalAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/approval.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "approval.requested.v1",
+        "approval.decided.v1",
+        "approval.expired.v1",
+        "approval.revoked.v1",
+        "approval.consumed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-ops-v1-break-glass-requests-by-request-id-approvals",
+        "post-ops-v1-usage-adjustment-requests-by-request-id-approvals",
+        "get-v1-approvals",
+        "get-v1-approvals-by-approval-id",
+        "post-v1-approvals-by-approval-id-decisions",
+        "post-v1-approvals-by-approval-id-delegations",
+        "post-v1-approvals-by-approval-id-reminders",
+        "post-v1-approvals-by-approval-id-revocations"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/approvals-and-sla.md"
+      ],
       "primaryMilestone": "M13",
       "regressionMilestones": [
         "M38"
@@ -3033,25 +3733,70 @@
         "route.app.approvals",
         "route.app.approvals.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M13Pages.tsx#ApprovalInboxPage",
+        "apps/web/src/M13Pages.tsx#ApprovalDetailPage",
+        "packages/db/src/approval-repository.ts#PostgresApprovalRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun"
+      ],
+      "tablesAndObjects": [
+        "approval_policies",
+        "approval_policy_versions",
+        "approvals",
+        "approval_steps",
+        "approval_decisions",
+        "approval_delegations",
+        "sla_definitions",
+        "sla_definition_versions",
+        "sla_timer_events",
+        "approval_consumptions",
+        "notification_intents"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#approvalAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/approval.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "approval.requested.v1",
+        "approval.decided.v1",
+        "approval.expired.v1",
+        "approval.revoked.v1",
+        "approval.consumed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-ops-v1-break-glass-requests-by-request-id-approvals",
+        "post-ops-v1-usage-adjustment-requests-by-request-id-approvals",
+        "get-v1-approvals",
+        "get-v1-approvals-by-approval-id",
+        "post-v1-approvals-by-approval-id-decisions",
+        "post-v1-approvals-by-approval-id-delegations",
+        "post-v1-approvals-by-approval-id-reminders",
+        "post-v1-approvals-by-approval-id-revocations"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/approvals-and-sla.md"
+      ],
       "primaryMilestone": "M13",
       "regressionMilestones": [
         "M38"
@@ -3061,25 +3806,70 @@
         "route.app.approvals",
         "route.app.approvals.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M13Pages.tsx#ApprovalInboxPage",
+        "apps/web/src/M13Pages.tsx#ApprovalDetailPage",
+        "packages/db/src/approval-repository.ts#PostgresApprovalRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun"
+      ],
+      "tablesAndObjects": [
+        "approval_policies",
+        "approval_policy_versions",
+        "approvals",
+        "approval_steps",
+        "approval_decisions",
+        "approval_delegations",
+        "sla_definitions",
+        "sla_definition_versions",
+        "sla_timer_events",
+        "approval_consumptions",
+        "notification_intents"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#approvalAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/approval.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "approval.requested.v1",
+        "approval.decided.v1",
+        "approval.expired.v1",
+        "approval.revoked.v1",
+        "approval.consumed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-ops-v1-break-glass-requests-by-request-id-approvals",
+        "post-ops-v1-usage-adjustment-requests-by-request-id-approvals",
+        "get-v1-approvals",
+        "get-v1-approvals-by-approval-id",
+        "post-v1-approvals-by-approval-id-decisions",
+        "post-v1-approvals-by-approval-id-delegations",
+        "post-v1-approvals-by-approval-id-reminders",
+        "post-v1-approvals-by-approval-id-revocations"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/approvals-and-sla.md"
+      ],
       "primaryMilestone": "M13",
       "regressionMilestones": [
         "M38"
@@ -3089,25 +3879,70 @@
         "route.app.approvals",
         "route.app.approvals.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M13Pages.tsx#ApprovalInboxPage",
+        "apps/web/src/M13Pages.tsx#ApprovalDetailPage",
+        "packages/db/src/approval-repository.ts#PostgresApprovalRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun"
+      ],
+      "tablesAndObjects": [
+        "approval_policies",
+        "approval_policy_versions",
+        "approvals",
+        "approval_steps",
+        "approval_decisions",
+        "approval_delegations",
+        "sla_definitions",
+        "sla_definition_versions",
+        "sla_timer_events",
+        "approval_consumptions",
+        "notification_intents"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#approvalAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/approval.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "approval.requested.v1",
+        "approval.decided.v1",
+        "approval.expired.v1",
+        "approval.revoked.v1",
+        "approval.consumed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-ops-v1-break-glass-requests-by-request-id-approvals",
+        "post-ops-v1-usage-adjustment-requests-by-request-id-approvals",
+        "get-v1-approvals",
+        "get-v1-approvals-by-approval-id",
+        "post-v1-approvals-by-approval-id-decisions",
+        "post-v1-approvals-by-approval-id-delegations",
+        "post-v1-approvals-by-approval-id-reminders",
+        "post-v1-approvals-by-approval-id-revocations"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/approvals-and-sla.md"
+      ],
       "primaryMilestone": "M13",
       "regressionMilestones": [
         "M38"
@@ -3117,17 +3952,50 @@
         "route.app.approvals",
         "route.app.approvals.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M13Pages.tsx#ApprovalInboxPage",
+        "apps/web/src/M13Pages.tsx#ApprovalDetailPage",
+        "packages/db/src/approval-repository.ts#PostgresApprovalRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun"
+      ],
+      "tablesAndObjects": [
+        "approval_policies",
+        "approval_policy_versions",
+        "approvals",
+        "approval_steps",
+        "approval_decisions",
+        "approval_delegations",
+        "sla_definitions",
+        "sla_definition_versions",
+        "sla_timer_events",
+        "approval_consumptions",
+        "notification_intents"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#humanTaskAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/human-task.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "task.claimed.v1",
+        "task.delegated.v1",
+        "task.submitted.v1",
+        "task.reopened.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
@@ -3135,8 +4003,51 @@
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-v1-artifact-uploads-by-upload-id-completions",
+        "delete-v1-artifacts-by-artifact-id",
+        "get-v1-artifacts-by-artifact-id-download",
+        "delete-v1-task-queues-by-queue-id",
+        "get-v1-task-queues-by-queue-id",
+        "patch-v1-task-queues-by-queue-id",
+        "delete-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-routing-policy",
+        "post-v1-task-queues-by-queue-id-routing-simulations",
+        "get-v1-task-runs",
+        "get-v1-task-runs-by-task-run-id",
+        "post-v1-task-runs-by-task-run-id-artifact-uploads",
+        "get-v1-task-runs-by-task-run-id-artifacts",
+        "get-v1-task-runs-by-task-run-id-attempts",
+        "get-v1-task-runs-by-task-run-id-attempts-by-attempt",
+        "post-v1-task-runs-by-task-run-id-claims",
+        "post-v1-task-runs-by-task-run-id-clarification-requests",
+        "get-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-delegations",
+        "put-v1-task-runs-by-task-run-id-draft",
+        "post-v1-task-runs-by-task-run-id-reassignments",
+        "post-v1-task-runs-by-task-run-id-reopenings",
+        "post-v1-task-runs-by-task-run-id-returns-to-queue",
+        "post-v1-task-runs-by-task-run-id-submissions",
+        "post-v1-task-runs-by-task-run-id-unclaims",
+        "delete-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-bulk-actions",
+        "delete-v1-task-templates-by-template-id",
+        "get-v1-task-templates-by-template-id",
+        "patch-v1-task-templates-by-template-id",
+        "post-v1-task-templates-by-template-id-previews",
+        "post-v1-task-templates-by-template-id-publications",
+        "post-v1-task-templates-by-template-id-versions",
+        "get-v1-workspaces-by-workspace-id-task-queues",
+        "post-v1-workspaces-by-workspace-id-task-queues",
+        "get-v1-workspaces-by-workspace-id-task-templates",
+        "post-v1-workspaces-by-workspace-id-task-templates"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md"
+      ],
       "primaryMilestone": "M12",
       "regressionMilestones": [
         "M38"
@@ -3147,9 +4058,34 @@
         "route.app.tasks",
         "route.app.tasks.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M12Pages.tsx#TaskInboxPage",
+        "apps/web/src/M12Pages.tsx#TaskDetailPage",
+        "packages/db/src/human-task-repository.ts#PostgresHumanTaskRepository",
+        "packages/db/src/task-administration-repository.ts#PostgresTaskAdministrationRepository"
+      ],
+      "tablesAndObjects": [
+        "human_task_details",
+        "human_task_drafts",
+        "human_task_submissions",
+        "task_delegations",
+        "task_watchers",
+        "task_queues",
+        "task_queue_members",
+        "task_routing_policy_versions",
+        "task_routing_decisions",
+        "business_calendars",
+        "business_calendar_versions",
+        "task_templates",
+        "task_template_versions",
+        "files",
+        "file_versions",
+        "file_upload_sessions",
+        "task_file_attachments"
+      ]
     },
     {
       "authorizationRules": [
@@ -5751,10 +6687,18 @@
       ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/workflow-generation.test.ts",
+        "apps/api/src/workflow-generation.test.ts",
+        "tests/e2e/workflow-generation.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
       "events": [],
       "externalGates": [],
@@ -5762,9 +6706,21 @@
       "journeyIds": [
         "CJ-06"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M08/manual/generation-review"
+      ],
+      "openapiOperationIds": [
+        "post-v1-workflow-dry-runs",
+        "get-v1-workflow-generations-by-generation-id",
+        "post-v1-workflow-generations-by-generation-id-acceptances",
+        "post-v1-workflow-generations-by-generation-id-cancellations",
+        "post-v1-workflow-import-previews",
+        "post-v1-workspaces-by-workspace-id-workflow-generations",
+        "post-v1-workspaces-by-workspace-id-workflow-imports"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/workflow-generation-test-mode.md"
+      ],
       "primaryMilestone": "M08",
       "regressionMilestones": [
         "M38"
@@ -5773,9 +6729,25 @@
       "routes": [
         "route.app.workflows.new"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/workflow-generation.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/workflow-generation.ts#runDeterministicGeneration",
+        "packages/contracts/src/workflow-generation.ts#dryRunWorkflow",
+        "apps/api/src/workflow-generation.ts#WorkflowGenerationService",
+        "apps/web/src/GuidedWorkflowCreate.tsx#GuidedWorkflowCreate"
+      ],
+      "tablesAndObjects": [
+        "workflow_generations",
+        "workflow_test_runs",
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
       "authorizationRules": [],
@@ -6761,384 +7733,1164 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-002",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-003",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-004",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-005",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-006",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-007",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-008",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-009",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-010",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-011",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-012",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-013",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-014",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-015",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/run-room.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-07"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "get-v1-runs-by-run-id-stream",
+        "get-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md"
+      ],
       "primaryMilestone": "M11",
       "regressionMilestones": [
         "M38"
@@ -7150,61 +8902,183 @@
         "route.app.runs.detail.tasks.detail",
         "route.app.runs.detail.timeline"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/run-room.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M11Pages.tsx#RunRoomPage",
+        "apps/web/src/M11Pages.tsx#TaskInspector",
+        "packages/db/src/runtime-repository.ts#workflowRuns"
+      ],
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_attempts",
+        "run_events",
+        "run_saved_views",
+        "run_follows",
+        "run_artifacts"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-017",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/runtime.test.ts",
+        "apps/worker/src/workflows.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "run.queued.v1",
+        "run.running.v1",
+        "run.paused.v1",
+        "run.succeeded.v1",
+        "task.started.v1",
+        "task.succeeded.v1",
+        "usage.reservation_created.v1",
+        "usage.reservation_finalized.v1",
+        "usage.reservation_released.v1"
+      ],
       "externalGates": [
         "EXT-003"
       ],
       "journeyBranchIds": [],
       "journeyIds": [],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "get-v1-runs-by-run-id",
+        "post-v1-runs-by-run-id-cancellations",
+        "get-v1-runs-by-run-id-events",
+        "post-v1-runs-by-run-id-pauses",
+        "post-v1-runs-by-run-id-resumptions",
+        "post-v1-workflows-by-workflow-id-runs"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md",
+        "tooling/runtime/repair.ts"
+      ],
       "primaryMilestone": "M10",
       "regressionMilestones": [
         "M38"
       ],
       "requirementId": "RN-018",
       "routes": [],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
+      "routeStateEvidence": [
+        "tooling/runtime/temporal-smoke.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/runtime.ts#compileRuntimePlan",
+        "packages/db/src/runtime-repository.ts#PostgresRuntimeRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun",
+        "apps/worker/src/activities.ts#executeSyntheticTask"
+      ],
       "supportContractReason": "Plan-owned support contract implemented by M10",
-      "tablesAndObjects": []
+      "tablesAndObjects": [
+        "workflow_runs",
+        "task_runs",
+        "task_dependencies",
+        "task_attempts",
+        "run_events",
+        "outbox_events",
+        "event_receipts",
+        "external_operations",
+        "external_operation_attempts",
+        "external_operation_attempt_records",
+        "dead_letter_items",
+        "entitlement_policies",
+        "budget_periods",
+        "admission_reservations",
+        "admission_ledger_entries",
+        "runtime_control_switches"
+      ]
     },
     {
       "authorizationRules": [
@@ -8187,10 +10061,18 @@
       ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#workflowAccess"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/workflow-generation.test.ts",
+        "apps/api/src/workflow-generation.test.ts",
+        "tests/e2e/workflow-generation.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
       "events": [],
       "externalGates": [],
@@ -8198,9 +10080,21 @@
       "journeyIds": [
         "CJ-06"
       ],
-      "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "manualEvidence": [
+        "artifact://M08/manual/generation-review"
+      ],
+      "openapiOperationIds": [
+        "post-v1-workflow-dry-runs",
+        "get-v1-workflow-generations-by-generation-id",
+        "post-v1-workflow-generations-by-generation-id-acceptances",
+        "post-v1-workflow-generations-by-generation-id-cancellations",
+        "post-v1-workflow-import-previews",
+        "post-v1-workspaces-by-workspace-id-workflow-generations",
+        "post-v1-workspaces-by-workspace-id-workflow-imports"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/workflow-generation-test-mode.md"
+      ],
       "primaryMilestone": "M08",
       "regressionMilestones": [
         "M38"
@@ -8209,9 +10103,25 @@
       "routes": [
         "route.app.workflows.new"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/workflow-generation.spec.ts"
+      ],
+      "sourceSymbols": [
+        "packages/contracts/src/workflow-generation.ts#runDeterministicGeneration",
+        "packages/contracts/src/workflow-generation.ts#dryRunWorkflow",
+        "apps/api/src/workflow-generation.ts#WorkflowGenerationService",
+        "apps/web/src/GuidedWorkflowCreate.tsx#GuidedWorkflowCreate"
+      ],
+      "tablesAndObjects": [
+        "workflow_generations",
+        "workflow_test_runs",
+        "workflows",
+        "workflow_versions",
+        "workflow_nodes",
+        "workflow_edges",
+        "audit_events",
+        "outbox_events"
+      ]
     },
     {
       "authorizationRules": [

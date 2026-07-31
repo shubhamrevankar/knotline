@@ -1,5 +1,5 @@
 import { activityInfo } from "@temporalio/activity";
-import { createPool, PostgresRuntimeRepository } from "@knotline/db";
+import { createPool, PostgresApprovalRepository, PostgresRuntimeRepository } from "@knotline/db";
 
 import type { DurableRunInput } from "./workflows.js";
 
@@ -8,11 +8,13 @@ const pool = databaseUrl
   ? createPool(databaseUrl, { application_name: "knotline-runtime-worker" })
   : undefined;
 const repository = pool ? new PostgresRuntimeRepository(pool) : undefined;
+const approvals = pool ? new PostgresApprovalRepository(pool) : undefined;
 
 export async function recordRunTransition(
   input: DurableRunInput & {
     readonly expected: "queued" | "running" | "paused" | "cancelling";
-    readonly next: "running" | "paused" | "cancelling" | "cancelled" | "succeeded";
+    readonly next:
+      "running" | "paused" | "cancelling" | "cancelled" | "succeeded" | "policy_stopped";
     readonly expectedVersion: number;
   }
 ) {
@@ -29,6 +31,42 @@ export async function recordRunTransition(
     1,
     input.next,
     `run.${input.next}`
+  );
+}
+
+export async function consumeApproval(
+  input: DurableRunInput & {
+    readonly node: DurableRunInput["plan"][number];
+    readonly operationId: string;
+    readonly fencingToken: number;
+  }
+) {
+  if (!approvals) throw new Error("DATABASE_URL_REQUIRED");
+  return approvals.consumeForNode(
+    {
+      workspaceId: input.workspaceId,
+      principalId: input.principalId,
+      requestId: `activity-${activityInfo().activityId}`
+    },
+    input.runId,
+    input.node.key,
+    input.operationId,
+    input.fencingToken
+  );
+}
+
+export async function expireApproval(
+  input: DurableRunInput & { readonly node: DurableRunInput["plan"][number] }
+) {
+  if (!approvals) throw new Error("DATABASE_URL_REQUIRED");
+  return approvals.expireForNode(
+    {
+      workspaceId: input.workspaceId,
+      principalId: input.principalId,
+      requestId: `activity-${activityInfo().activityId}`
+    },
+    input.runId,
+    input.node.key
   );
 }
 

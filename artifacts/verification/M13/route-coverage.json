@@ -1,5 +1,5 @@
 {
-  "milestone": "M12",
+  "milestone": "M13",
   "planDigest": "sha256:436b3a2ea0b0b660a9e36c14b06965c420b1a147b2b1b94364e39d2239e21216",
   "routeRegistryDigest": "sha256:c1019ec498f2378a29149c723ad7f9340a1e0e2dec683efff8537d01e740bb61",
   "routes": [
@@ -1531,146 +1531,290 @@
       "routeId": "route.app.approvals",
       "states": [
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.connecting-live",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "connecting-live"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.reconnecting",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "reconnecting"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.polling-fallback",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "polling-fallback"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.partial-history",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-history"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.pending-action",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "pending-action"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.success-error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success-error"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.plan-policy",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-policy"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.missing",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.terminal",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "terminal"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.degraded-provider",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-provider"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.uncertain-reconciling",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "uncertain-reconciling"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.kill-throttle",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "kill-throttle"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.expired",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "expired"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.archived",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.edit-conflict-only-for-truly-immutable-views",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-only-for-truly-immutable-views"
         }
@@ -1680,146 +1824,290 @@
       "routeId": "route.app.approvals.detail",
       "states": [
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.connecting-live",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "connecting-live"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.reconnecting",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "reconnecting"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.polling-fallback",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "polling-fallback"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.partial-history",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-history"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.pending-action",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "pending-action"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.success-error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success-error"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.plan-policy",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-policy"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.missing",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.terminal",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "terminal"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.degraded-provider",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-provider"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.uncertain-reconciling",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "uncertain-reconciling"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.kill-throttle",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "kill-throttle"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.expired",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "expired"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.archived",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived"
         },
         {
-          "activationMilestone": "M13",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M13; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M13/test-results/approval-browser",
+            "authorizationPersona": "requester or eligible recorded approver",
+            "browserTest": "tests/e2e/approvals.spec.ts",
+            "evidenceUri": "artifact://M13/test-results/approval-browser",
+            "expectedTelemetry": "approval ID, immutable packet hash, policy version, decision, timer, and CAS outcome",
+            "fixture": "approval.edit-conflict-only-for-truly-immutable-views",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and 320px mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-only-for-truly-immutable-views"
         }

@@ -10,8 +10,11 @@ const ROOT = resolve(new URL("../..", import.meta.url).pathname);
 const DIST = join(ROOT, "apps", "web", "dist");
 const REPORT = join(ROOT, "artifacts", "performance", "M02", "bundle-budget.json");
 const MAX_JS_BYTES = 350_000;
-const MAX_INITIAL_GZIP_BYTES = 144_000;
-const MAX_TOTAL_GZIP_BYTES = 232_000;
+// M13 adds the lazy approval packet and decision surface plus its route dispatch.
+// These ceilings preserve less than 2 KB initial and 3 KB total headroom over the
+// reviewed production build, so future growth still requires an explicit review.
+const MAX_INITIAL_GZIP_BYTES = 146_000;
+const MAX_TOTAL_GZIP_BYTES = 238_000;
 
 export function evaluateAssets(assets, initialAssetNames = new Set()) {
   const errors = [];

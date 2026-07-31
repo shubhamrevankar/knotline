@@ -126,7 +126,7 @@
       ],
       "id": "M13",
       "requiredCommit": "feat: add durable approvals and escalation policies",
-      "status": "NOT_STARTED",
+      "status": "COMMITTED",
       "title": "Approval policies, SLA timers, delegation, and escalation"
     },
     {
@@ -435,6 +435,6 @@
     }
   ],
   "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
-  "planDigest": "sha256:e89fb9fd6245e21cd037c63d2ddf02cab7a0b001017428c9fc3683c3bcf568f8",
+  "planDigest": "sha256:436b3a2ea0b0b660a9e36c14b06965c420b1a147b2b1b94364e39d2239e21216",
   "schemaVersion": 1
 }

@@ -8,6 +8,7 @@ import {
   PostgresRuntimeRepository,
   PostgresHumanTaskRepository,
   PostgresTaskAdministrationRepository,
+  PostgresApprovalRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -53,6 +54,7 @@ const collaboration = new PostgresCollaborationRepository(pool);
 const runtime = new PostgresRuntimeRepository(pool);
 const humanTasks = new PostgresHumanTaskRepository(pool);
 const taskAdministration = new PostgresTaskAdministrationRepository(pool);
+const approvals = new PostgresApprovalRepository(pool);
 const temporalConnection = await Connection.connect({
   address: process.env.TEMPORAL_ADDRESS ?? "127.0.0.1:7233"
 });
@@ -92,6 +94,11 @@ const runStarter = {
     await temporalClient.workflow
       .getHandle(temporalWorkflowId)
       .signal("completeHumanTask", nodeKey);
+  },
+  async completeApproval(temporalWorkflowId: string, nodeKey: string, operationId: string) {
+    await temporalClient.workflow
+      .getHandle(temporalWorkflowId)
+      .signal("completeApproval", nodeKey, operationId);
   }
 };
 const isLocal = environment.environment === "local" || environment.environment === "ci";
@@ -177,6 +184,7 @@ const app = await buildApp({
   runtime,
   humanTasks,
   taskAdministration,
+  approvals,
   runStarter,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),

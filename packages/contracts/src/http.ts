@@ -2,6 +2,11 @@ import { z } from "zod";
 
 import { runIntentSchema, runStateSchema, startRunSchema, taskStateSchema } from "./runtime.js";
 import {
+  approvalDecisionSchema,
+  approvalDelegationSchema,
+  approvalRevocationSchema
+} from "./approval.js";
+import {
   restrictedUploadCompletionSchema,
   restrictedUploadRequestSchema,
   taskActionSchema,
@@ -1038,12 +1043,94 @@ const TASK_ADMIN_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }))
 ];
 
+export const APPROVAL_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  {
+    method: "GET",
+    path: "/v1/approvals",
+    operationId: "listApprovals",
+    summary: "List approvals visible to the requester or an eligible reviewer",
+    tags: ["Approvals"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(z.array(genericDataSchema)),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/approvals/{approvalId}",
+    operationId: "getApproval",
+    summary: "Read the immutable approval packet, policy, steps, and decisions",
+    tags: ["Approvals"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  ...(
+    [
+      [
+        "decisions",
+        "decideApproval",
+        "Record one immutable approval decision",
+        approvalDecisionSchema,
+        201
+      ],
+      [
+        "delegations",
+        "delegateApproval",
+        "Delegate within the recorded approval scope",
+        approvalDelegationSchema,
+        201
+      ],
+      [
+        "reminders",
+        "remindApproval",
+        "Queue deduplicated approval reminders",
+        z.object({ idempotencyKey: z.string().min(16).max(160) }).strict(),
+        202
+      ],
+      [
+        "revocations",
+        "revokeApproval",
+        "Revoke authorization before execution consumes it",
+        approvalRevocationSchema,
+        202
+      ]
+    ] as const
+  ).map(([suffix, operationId, summary, requestBody, status]) => ({
+    method: "POST" as const,
+    path: `/v1/approvals/{approvalId}/${suffix}`,
+    operationId,
+    summary,
+    tags: ["Approvals"],
+    exposure: "browser_internal" as const,
+    requestBody,
+    responses: {
+      [status]: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  }))
+];
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
   ...RUNTIME_ROUTE_CONTRACTS,
   ...HUMAN_TASK_ROUTE_CONTRACTS,
   ...TASK_ADMIN_ROUTE_CONTRACTS,
+  ...APPROVAL_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

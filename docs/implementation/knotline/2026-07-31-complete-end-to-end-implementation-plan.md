@@ -6277,7 +6277,7 @@ reassign, and audit structured work created by workflows.
 
 ### M13 — Approval policies, SLA timers, delegation, and escalation
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M12\
 **Required commit:** `feat: add durable approvals and escalation policies`
 
@@ -9229,7 +9229,7 @@ must appear in that milestone's boundary cell.
 | M10 | `COMMITTED` | `NOT_DEPLOYED` | EXT-003 | `feat: execute workflows durably across failures` |
 | M11 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the live Knotline run room` |
 | M12 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver complete human task execution` |
-| M13 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: add durable approvals and escalation policies` |
+| M13 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: add durable approvals and escalation policies` |
 | M14 | `NOT_STARTED` | `NOT_DEPLOYED` | `SIMULATED` for test console | `feat: deliver the Knotline agent foundry` |
 | M15 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-004 | `feat: integrate the governed OpenAI model gateway` |
 | M16 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-002 for deployed sandbox/vault; EXT-004 for live model-requested tool smoke | `feat: secure agent tools with isolated execution` |

@@ -1,4 +1,5 @@
 import cors from "@fastify/cors";
+import { randomUUID } from "node:crypto";
 import {
   createWorkflowRequestSchema,
   dryRunFixtureSchema,
@@ -29,6 +30,7 @@ import {
 } from "@knotline/operations";
 import type {
   CollaborationRepository,
+  ApprovalRepository,
   HumanTaskRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -74,6 +76,7 @@ export interface BuildAppOptions {
   readonly runtime?: RuntimeRepository;
   readonly humanTasks?: HumanTaskRepository;
   readonly taskAdministration?: TaskAdministrationRepository;
+  readonly approvals?: ApprovalRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -84,6 +87,11 @@ export interface BuildAppOptions {
     }): Promise<void>;
     signal(temporalWorkflowId: string, signal: "pause" | "resume" | "cancel"): Promise<void>;
     completeTask(temporalWorkflowId: string, nodeKey: string): Promise<void>;
+    completeApproval(
+      temporalWorkflowId: string,
+      nodeKey: string,
+      operationId: string
+    ): Promise<void>;
   };
 }
 
@@ -2142,6 +2150,78 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     const { artifactId } = z.object({ artifactId: z.string().uuid() }).parse(request.params);
     await taskAdmin().deleteArtifact(context, artifactId);
     return reply.code(204).send();
+  });
+
+  const approvalAccess = async (request: FastifyRequest, mutation = false) => {
+    if (!options.approvals) throw new Error("Approvals are not configured");
+    const authenticated = mutation ? await protectMutation(request) : await authenticate(request);
+    if (!options.workspace) return tenantContext(options, request, authenticated);
+    return (await options.workspace.require(authenticated.identity, request.id, "workflow.read"))
+      .context;
+  };
+  const approvalParams = z.object({ approvalId: z.string().uuid() }).strict();
+
+  app.get("/v1/approvals", async (request) => ({
+    data: await options.approvals!.list(await approvalAccess(request))
+  }));
+  app.get("/v1/approvals/:approvalId", async (request, reply) => {
+    const context = await approvalAccess(request);
+    const { approvalId } = approvalParams.parse(request.params);
+    const approval = await options.approvals!.get(context, approvalId);
+    if (!approval)
+      return reply.code(404).send({
+        error: {
+          code: "APPROVAL_NOT_FOUND",
+          message: "The approval does not exist.",
+          requestId: request.id
+        }
+      });
+    return { data: approval };
+  });
+  app.post("/v1/approvals/:approvalId/decisions", async (request, reply) => {
+    if (!options.runStarter) throw new Error("Runtime is not configured");
+    const context = await approvalAccess(request, true);
+    const { approvalId } = approvalParams.parse(request.params);
+    const result = await options.approvals!.decide(context, approvalId, request.body, {
+      requestId: request.id,
+      userAgent: request.headers["user-agent"] ?? "unknown",
+      ip: request.ip
+    });
+    if (result.state === "APPROVED_PENDING_EXECUTION") {
+      const approval = await options.approvals!.get(context, approvalId);
+      if (!approval) throw new Error("APPROVAL_NOT_FOUND_AFTER_DECISION");
+      await options.runStarter.completeApproval(
+        String(approval.temporal_workflow_id),
+        String(approval.node_key),
+        randomUUID()
+      );
+    }
+    return reply.code(201).send({ data: result });
+  });
+  app.post("/v1/approvals/:approvalId/delegations", async (request, reply) => {
+    const context = await approvalAccess(request, true);
+    const { approvalId } = approvalParams.parse(request.params);
+    return reply
+      .code(201)
+      .send({ data: await options.approvals!.delegate(context, approvalId, request.body) });
+  });
+  app.post("/v1/approvals/:approvalId/reminders", async (request, reply) => {
+    const context = await approvalAccess(request, true);
+    const { approvalId } = approvalParams.parse(request.params);
+    const { idempotencyKey } = z
+      .object({ idempotencyKey: z.string().min(16).max(160) })
+      .strict()
+      .parse(request.body);
+    return reply
+      .code(202)
+      .send({ data: await options.approvals!.remind(context, approvalId, idempotencyKey) });
+  });
+  app.post("/v1/approvals/:approvalId/revocations", async (request, reply) => {
+    const context = await approvalAccess(request, true);
+    const { approvalId } = approvalParams.parse(request.params);
+    return reply
+      .code(202)
+      .send({ data: await options.approvals!.revoke(context, approvalId, request.body) });
   });
 
   app.setErrorHandler((error, request, reply) => {

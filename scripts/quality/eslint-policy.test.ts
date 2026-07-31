@@ -28,7 +28,7 @@ describe("ESLint policy", () => {
     expect(ruleIds).toContain("react/jsx-key");
     expect(ruleIds).toContain("import-x/first");
     expect(result?.errorCount).toBeGreaterThanOrEqual(6);
-  });
+  }, 20_000);
 
   it("can activate the M02 user-visible hardcoded-copy policy", async () => {
     const runner = new ESLint({

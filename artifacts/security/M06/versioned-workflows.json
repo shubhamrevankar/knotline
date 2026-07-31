@@ -62,6 +62,16 @@
       "tenantIsolated": true,
       "api": true
     },
+    "approvals": {
+      "snapshot": true,
+      "selfApprovalDenied": true,
+      "immutableDecision": true,
+      "idempotentDecision": true,
+      "revokeConsumeSingleWinner": true,
+      "explicitAutoOutcome": true,
+      "tenantIsolated": true,
+      "api": true
+    },
     "auditEvents": 7
   }
 }

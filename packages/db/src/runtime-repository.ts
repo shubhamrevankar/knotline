@@ -1,4 +1,6 @@
 import {
+  approvalPacketSchema,
+  approvalPolicySchema,
   assertRunTransition,
   compileRuntimePlan,
   type RuntimePlanNode,
@@ -8,6 +10,7 @@ import {
 import type { Pool, PoolClient } from "pg";
 
 import { withTenantTransaction, type TenantContext } from "./context.js";
+import { resolveApprovalSteps } from "./approval-repository.js";
 import { contentHash, createId } from "./values.js";
 
 export interface RuntimeRunRecord {
@@ -231,7 +234,7 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
             node.dependencies.length ? "pending" : "ready"
           ]
         );
-        if (node.kind === "human" || node.kind === "approval")
+        if (node.kind === "human")
           await client.query(
             `INSERT INTO human_task_details(workspace_id,task_id,created_by,priority,form_schema,form_schema_version)
              VALUES ($1,$2,$3,'normal',$4,1)`,
@@ -253,6 +256,113 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
               }
             ]
           );
+        if (node.kind === "approval") {
+          const policy = approvalPolicySchema.parse(
+            node.configuration.approvalPolicy ?? {
+              schemaVersion: 1,
+              version: 1,
+              strategy: "parallel",
+              steps: [
+                {
+                  key: "review",
+                  selector: {
+                    type: "user",
+                    userIds: node.configuration.approverUserIds ?? [context.principalId]
+                  },
+                  mode: "single",
+                  order: 0,
+                  allowAbstain: true
+                }
+              ],
+              allowSelfApproval: node.configuration.allowSelfApproval === true,
+              separationOfDuties: true,
+              reasonRequired: true,
+              autoOutcome: node.configuration.autoOutcome ?? "none"
+            }
+          );
+          const packet = approvalPacketSchema.parse(
+            node.configuration.approvalPacket ?? {
+              title:
+                typeof node.configuration.title === "string" ? node.configuration.title : node.key,
+              proposedAction:
+                typeof node.configuration.proposedAction === "string"
+                  ? node.configuration.proposedAction
+                  : `Authorize workflow node ${node.key}`,
+              affectedResources: [],
+              diff: node.configuration.diff ?? {},
+              risk: {
+                level: node.configuration.riskLevel ?? "medium",
+                findings: node.configuration.riskFindings ?? []
+              },
+              evidence: [],
+              provenance: {
+                workflowId,
+                workflowVersion: version.version,
+                nodeKey: node.key
+              },
+              expiresAt: new Date(Date.now() + node.timeoutMs).toISOString()
+            }
+          );
+          const approvalId = createId();
+          const resolved = await resolveApprovalSteps(client, context, policy, packet);
+          const packetHash = contentHash(packet);
+          await client.query(
+            `INSERT INTO approvals(workspace_id,id,task_id,requester_id,policy_snapshot,packet,packet_hash,state,expires_at)
+             VALUES($1,$2,$3,$4,$5,$6,$7,'PENDING',$8)`,
+            [
+              context.workspaceId,
+              approvalId,
+              taskId,
+              context.principalId,
+              policy,
+              packet,
+              packetHash,
+              packet.expiresAt
+            ]
+          );
+          const firstOrder = Math.min(...resolved.map(({ order }) => order));
+          for (const step of resolved)
+            await client.query(
+              `INSERT INTO approval_steps(workspace_id,approval_id,step_key,step_order,mode,quorum,eligible_user_ids,resolution_evidence,state)
+               VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+              [
+                context.workspaceId,
+                approvalId,
+                step.key,
+                step.order,
+                step.mode,
+                step.quorum ?? null,
+                step.eligibleUserIds,
+                { selector: step.selector, policyVersion: policy.version },
+                step.order === firstOrder ? "active" : "pending"
+              ]
+            );
+          await client.query(
+            `INSERT INTO sla_timer_events(workspace_id,id,approval_id,timer_type,tier,due_at,temporal_timer_id,idempotency_key)
+             VALUES($1,$2,$3,'expiry',0,$4,$5,$6)`,
+            [
+              context.workspaceId,
+              createId(),
+              approvalId,
+              packet.expiresAt,
+              `approval-${approvalId}-expiry`,
+              `${approvalId}:expiry:0`
+            ]
+          );
+          await this.appendEvent(
+            client,
+            context.workspaceId,
+            runId,
+            "approval.requested",
+            "user",
+            context.principalId,
+            {
+              approvalId,
+              nodeKey: node.key,
+              packetHash
+            }
+          );
+        }
       }
       for (const node of plan)
         for (const dependency of node.dependencies)

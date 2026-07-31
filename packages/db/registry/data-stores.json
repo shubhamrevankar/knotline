@@ -583,6 +583,76 @@
       "retentionDays": 2555,
       "exportHandler": "task-export",
       "deleteHandler": "object-delete"
+    },
+    {
+      "name": "approval_policies",
+      "class": "approval.policy",
+      "retentionDays": 2555,
+      "exportHandler": "approval-export",
+      "deleteHandler": "approval-delete"
+    },
+    {
+      "name": "approval_policy_versions",
+      "class": "approval.policy_version",
+      "retentionDays": 2555,
+      "exportHandler": "approval-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "approvals",
+      "class": "approval.request",
+      "retentionDays": 2555,
+      "exportHandler": "approval-export",
+      "deleteHandler": "approval-delete"
+    },
+    {
+      "name": "approval_steps",
+      "class": "approval.step",
+      "retentionDays": 2555,
+      "exportHandler": "approval-export",
+      "deleteHandler": "approval-delete"
+    },
+    {
+      "name": "approval_decisions",
+      "class": "approval.decision",
+      "retentionDays": 2555,
+      "exportHandler": "approval-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "approval_delegations",
+      "class": "approval.delegation",
+      "retentionDays": 2555,
+      "exportHandler": "approval-export",
+      "deleteHandler": "approval-delete"
+    },
+    {
+      "name": "sla_definitions",
+      "class": "approval.sla",
+      "retentionDays": 2555,
+      "exportHandler": "approval-export",
+      "deleteHandler": "approval-delete"
+    },
+    {
+      "name": "sla_definition_versions",
+      "class": "approval.sla_version",
+      "retentionDays": 2555,
+      "exportHandler": "approval-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "sla_timer_events",
+      "class": "approval.timer",
+      "retentionDays": 365,
+      "exportHandler": "approval-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "approval_consumptions",
+      "class": "approval.consumption",
+      "retentionDays": 2555,
+      "exportHandler": "approval-export",
+      "deleteHandler": "governed-delete"
     }
   ],
   "indexes": [
@@ -716,7 +786,29 @@
     "files_pkey",
     "file_versions_pkey",
     "file_upload_sessions_pkey",
-    "task_file_attachments_pkey"
+    "task_file_attachments_pkey",
+    "approval_policies_pkey",
+    "approval_policies_workspace_id_name_key",
+    "approval_policy_versions_pkey",
+    "approval_policy_versions_workspace_id_policy_id_content_hash_key",
+    "approvals_pkey",
+    "approvals_workspace_id_task_id_key",
+    "approvals_inbox_idx",
+    "approval_steps_pkey",
+    "approval_decisions_pkey",
+    "approval_decisions_workspace_id_approval_id_idempotency_key_key",
+    "approval_decisions_workspace_id_approval_id_step_key_actor_id_key",
+    "approval_delegations_pkey",
+    "sla_definitions_pkey",
+    "sla_definitions_workspace_id_name_key",
+    "sla_definition_versions_pkey",
+    "sla_timer_events_pkey",
+    "sla_timer_events_workspace_id_idempotency_key_key",
+    "sla_timer_events_workspace_id_approval_id_timer_type_tier_key",
+    "sla_timer_due_idx",
+    "approval_consumptions_pkey",
+    "approval_consumptions_workspace_id_operation_id_key",
+    "notification_intents_dedupe_idx"
   ],
   "caches": []
 }

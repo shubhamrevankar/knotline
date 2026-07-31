@@ -69,6 +69,16 @@ const TaskDetailPage = lazy(async () => {
   return { default: module.TaskDetailPage };
 });
 
+const ApprovalInboxPage = lazy(async () => {
+  const module = await import("./M13Pages.js");
+  return { default: module.ApprovalInboxPage };
+});
+
+const ApprovalDetailPage = lazy(async () => {
+  const module = await import("./M13Pages.js");
+  return { default: module.ApprovalDetailPage };
+});
+
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
   "go-to-market": msg("solution.gotomarket"),
@@ -430,6 +440,22 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label="Loading task" />}>
           <TaskDetailPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.approvals")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading approvals" />}>
+          <ApprovalInboxPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.approvals.detail")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading approval" />}>
+          <ApprovalDetailPage />
         </Suspense>
       </AuthGate>
     );

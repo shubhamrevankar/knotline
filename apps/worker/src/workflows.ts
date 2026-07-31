@@ -8,10 +8,12 @@ const pauseSignal = defineSignal("pause");
 const resumeSignal = defineSignal("resume");
 const cancelSignal = defineSignal("cancel");
 const completeHumanTaskSignal = defineSignal<[string]>("completeHumanTask");
-const { recordRunTransition, executeSyntheticTask } = proxyActivities<typeof activities>({
-  startToCloseTimeout: "2 minutes",
-  retry: { maximumAttempts: 3, initialInterval: "1 second" }
-});
+const completeApprovalSignal = defineSignal<[string, string]>("completeApproval");
+const { recordRunTransition, executeSyntheticTask, consumeApproval, expireApproval } =
+  proxyActivities<typeof activities>({
+    startToCloseTimeout: "2 minutes",
+    retry: { maximumAttempts: 3, initialInterval: "1 second" }
+  });
 
 export interface DurableRunInput {
   readonly workspaceId: string;
@@ -43,8 +45,13 @@ export async function durableWorkflowRun(input: DurableRunInput) {
   });
   const complete = new Set<string>();
   const completedHumanTasks = new Set<string>();
+  const approvedOperations = new Map<string, string>();
+  let policyStopped = false;
   setHandler(completeHumanTaskSignal, (nodeKey) => {
     completedHumanTasks.add(nodeKey);
+  });
+  setHandler(completeApprovalSignal, (nodeKey, operationId) => {
+    approvedOperations.set(nodeKey, operationId);
   });
   while (complete.size < input.plan.length && !cancelled) {
     if (paused && currentState === "running") {
@@ -71,15 +78,33 @@ export async function durableWorkflowRun(input: DurableRunInput) {
     );
     if (ready.length === 0) throw new Error("RUNTIME_GRAPH_STALLED");
     for (const node of ready) {
-      if (node.kind === "human" || node.kind === "approval") {
+      if (node.kind === "human") {
         await condition(() => completedHumanTasks.has(node.key) || cancelled);
         if (cancelled) break;
+      } else if (node.kind === "approval") {
+        const authorized = await condition(
+          () => approvedOperations.has(node.key) || cancelled,
+          node.timeoutMs
+        );
+        if (cancelled) break;
+        if (!authorized) {
+          await expireApproval({ ...input, node });
+          policyStopped = true;
+          break;
+        }
+        await consumeApproval({
+          ...input,
+          node,
+          operationId: approvedOperations.get(node.key)!,
+          fencingToken: 1
+        });
       } else if (node.kind === "delay") {
         await sleep(Math.min(Number(node.configuration.delayMs ?? 1), 86_400_000));
         await executeSyntheticTask({ ...input, node });
       } else await executeSyntheticTask({ ...input, node });
       complete.add(node.key);
     }
+    if (policyStopped) break;
   }
   if (cancelled) {
     await recordRunTransition({
@@ -95,6 +120,15 @@ export async function durableWorkflowRun(input: DurableRunInput) {
       expectedVersion: stateVersion++
     });
     return { state: "cancelled", completed: [...complete] };
+  }
+  if (policyStopped) {
+    await recordRunTransition({
+      ...input,
+      expected: currentState,
+      next: "policy_stopped",
+      expectedVersion: stateVersion++
+    });
+    return { state: "policy_stopped", completed: [...complete] };
   }
   await recordRunTransition({
     ...input,

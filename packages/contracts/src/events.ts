@@ -85,6 +85,18 @@ export const runtimeTransitionPayloadV1Schema = z
   })
   .passthrough();
 
+export const approvalEventPayloadV1Schema = z
+  .object({
+    approvalId: z.string().uuid(),
+    nodeKey: z.string().max(160).optional(),
+    decisionId: z.string().uuid().optional(),
+    operationId: z.string().uuid().optional(),
+    state: z.string().max(80).optional(),
+    outcome: z.string().max(80).optional(),
+    packetHash: z.string().max(200).optional()
+  })
+  .passthrough();
+
 export const EVENT_SCHEMA_REGISTRY = [
   {
     eventType: "workflow.created",
@@ -165,6 +177,7 @@ export const EVENT_SCHEMA_REGISTRY = [
     "run.cancelled",
     "run.succeeded",
     "run.failed",
+    "run.policy_stopped",
     "task.started",
     "task.succeeded",
     "task.claimed",
@@ -184,6 +197,22 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "runtime-platform",
     schema: runtimeTransitionPayloadV1Schema
+  })),
+  ...[
+    "approval.requested",
+    "approval.delegated",
+    "approval.abstained",
+    "approval.decided",
+    "approval.revision_requested",
+    "approval.expired",
+    "approval.reminded",
+    "approval.revoked",
+    "approval.consumed"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "approval-platform",
+    schema: approvalEventPayloadV1Schema
   }))
 ] as const;
 

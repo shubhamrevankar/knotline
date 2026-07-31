@@ -2,28 +2,23 @@
   "assets": [
     {
       "bytes": 15234,
-      "gzipBytes": 4394,
-      "name": "App-DUYJOlTX.js"
+      "gzipBytes": 4395,
+      "name": "App-C_z7N9Gj.js"
     },
     {
       "bytes": 6781,
       "gzipBytes": 2496,
-      "name": "CollaborationPanel-B_A--0u0.js"
+      "name": "CollaborationPanel-B88MvMeJ.js"
     },
     {
       "bytes": 5113,
-      "gzipBytes": 1299,
-      "name": "ComponentWorkbench-D9gqZxTp.js"
+      "gzipBytes": 1297,
+      "name": "ComponentWorkbench-EctmYVeR.js"
     },
     {
       "bytes": 8610,
-      "gzipBytes": 2818,
-      "name": "GuidedWorkflowCreate-1F9t6yWi.js"
-    },
-    {
-      "bytes": 9437,
-      "gzipBytes": 2989,
-      "name": "M11Pages-CTriN4gR.js"
+      "gzipBytes": 2819,
+      "name": "GuidedWorkflowCreate-Ctj3NFbk.js"
     },
     {
       "bytes": 4827,
@@ -31,34 +26,54 @@
       "name": "M11Pages-D4gQqCLn.css"
     },
     {
+      "bytes": 9437,
+      "gzipBytes": 2989,
+      "name": "M11Pages-DWsezExE.js"
+    },
+    {
+      "bytes": 8285,
+      "gzipBytes": 2887,
+      "name": "M12Pages-Dgva5TST.js"
+    },
+    {
       "bytes": 4751,
       "gzipBytes": 1450,
       "name": "M12Pages-Dsa9hK6P.css"
     },
     {
-      "bytes": 8357,
-      "gzipBytes": 2924,
-      "name": "M12Pages-wxQUKH28.js"
+      "bytes": 3284,
+      "gzipBytes": 1047,
+      "name": "M13Pages-BKI3wklf.css"
+    },
+    {
+      "bytes": 6545,
+      "gzipBytes": 2351,
+      "name": "M13Pages-DkdTwfxn.js"
     },
     {
       "bytes": 24443,
-      "gzipBytes": 7104,
-      "name": "StudioPage-Bozz0Y3R.js"
+      "gzipBytes": 7103,
+      "name": "StudioPage-C7Sx0h7i.js"
     },
     {
       "bytes": 235,
-      "gzipBytes": 201,
-      "name": "activity-DcmOES87.js"
+      "gzipBytes": 202,
+      "name": "activity-B56FZHGY.js"
     },
     {
       "bytes": 291,
-      "gzipBytes": 237,
-      "name": "bell-CwxcLH_e.js"
+      "gzipBytes": 238,
+      "name": "bell-CkX9uaZg.js"
     },
     {
       "bytes": 280,
-      "gzipBytes": 210,
-      "name": "braces-BG0NWocd.js"
+      "gzipBytes": 208,
+      "name": "braces-C-NcjcKp.js"
+    },
+    {
+      "bytes": 165,
+      "gzipBytes": 166,
+      "name": "clock-3-ByxsYsmD.js"
     },
     {
       "bytes": 178911,
@@ -66,24 +81,24 @@
       "name": "flow-vendor-DqTwcKSY.js"
     },
     {
+      "bytes": 209697,
+      "gzipBytes": 55204,
+      "name": "index-BVDboOEM.js"
+    },
+    {
       "bytes": 53251,
       "gzipBytes": 10910,
       "name": "index-BxfnZxQ3.css"
     },
     {
-      "bytes": 203880,
-      "gzipBytes": 53906,
-      "name": "index-C84ZSszR.js"
-    },
-    {
       "bytes": 297,
-      "gzipBytes": 200,
-      "name": "list-tree-CLvjLFX3.js"
+      "gzipBytes": 201,
+      "name": "list-tree-BvotbYV8.js"
     },
     {
       "bytes": 349,
-      "gzipBytes": 252,
-      "name": "plus-Cl_Y10b3.js"
+      "gzipBytes": 254,
+      "name": "plus-BQxsbZuh.js"
     },
     {
       "bytes": 248730,
@@ -97,23 +112,23 @@
     },
     {
       "bytes": 329,
-      "gzipBytes": 216,
-      "name": "trash-2-BluxYEAA.js"
+      "gzipBytes": 219,
+      "name": "trash-2-BceRgSWp.js"
     }
   ],
   "errors": [],
   "initialAssets": [
+    "index-BVDboOEM.js",
     "index-BxfnZxQ3.css",
-    "index-C84ZSszR.js",
     "react-vendor-Ca2lDvkd.js"
   ],
-  "initialGzipBytes": 142934,
+  "initialGzipBytes": 144232,
   "limits": {
-    "maxInitialGzipBytes": 144000,
+    "maxInitialGzipBytes": 146000,
     "maxJavaScriptBytes": 350000,
-    "maxTotalGzipBytes": 232000
+    "maxTotalGzipBytes": 238000
   },
   "schemaVersion": 1,
   "status": "PASS",
-  "totalGzipBytes": 230210
+  "totalGzipBytes": 235040
 }

@@ -32,7 +32,7 @@
     "test:integration": "bash tooling/containers/test-services.sh",
     "test:auth": "tsx tooling/auth/postgres-suite.ts",
     "test:api": "tsx tooling/workflows/postgres-suite.ts",
-    "test:property": "vitest run packages/contracts/src/workflow-definition.test.ts packages/contracts/src/workflow-generation.test.ts packages/contracts/src/collaboration.test.ts packages/contracts/src/runtime.test.ts packages/contracts/src/human-task.test.ts apps/web/src/studio-reducer.test.ts",
+    "test:property": "vitest run packages/contracts/src/workflow-definition.test.ts packages/contracts/src/workflow-generation.test.ts packages/contracts/src/collaboration.test.ts packages/contracts/src/runtime.test.ts packages/contracts/src/human-task.test.ts packages/contracts/src/approval.test.ts apps/web/src/studio-reducer.test.ts",
     "test:runtime": "pnpm test:api && vitest run packages/contracts/src/runtime.test.ts apps/worker/src/workflows.test.ts",
     "test:workspace": "tsx tooling/workspace/postgres-suite.ts",
     "test:workflows": "tsx tooling/workflows/postgres-suite.ts",

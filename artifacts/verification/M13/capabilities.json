@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M13/test-results/approval-api.json",
+      "verifiedAt": "2026-08-01T08:00:00.000Z"
+    },
+    "externalGates": [],
+    "id": "approvals.durable-authorization",
+    "owner": {
+      "contact": "shurevan",
+      "team": "workflow-platform"
+    },
+    "runbook": "docs/operations/knotline/approvals-and-sla.md",
+    "status": "DEMO",
+    "summary": "Immutable policy and packet snapshots, eligibility resolution, two-phase authorization, revocation/consumption CAS, durable expiry, deduplicated reminders, and responsive decisions are locally verified."
+  }
+]

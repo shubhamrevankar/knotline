@@ -98,7 +98,17 @@ export const REQUIRED_STORES = [
   "files",
   "file_versions",
   "file_upload_sessions",
-  "task_file_attachments"
+  "task_file_attachments",
+  "approval_policies",
+  "approval_policy_versions",
+  "approvals",
+  "approval_steps",
+  "approval_decisions",
+  "approval_delegations",
+  "sla_definitions",
+  "sla_definition_versions",
+  "sla_timer_events",
+  "approval_consumptions"
 ] as const;
 
 export async function validateDataStoreRegistry(): Promise<Registry> {

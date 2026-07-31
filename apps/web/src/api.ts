@@ -170,6 +170,78 @@ export interface SessionSummary {
   readonly revocationReason?: string;
 }
 
+export interface ApprovalSummary {
+  readonly id: string;
+  readonly state: string;
+  readonly state_version: string | number;
+  readonly expires_at: string;
+  readonly title: string;
+  readonly risk: "low" | "medium" | "high" | "critical";
+  readonly eligible: boolean;
+}
+
+export interface ApprovalDetail extends ApprovalSummary {
+  readonly requester_id: string;
+  readonly packet: {
+    readonly title: string;
+    readonly proposedAction: string;
+    readonly affectedResources: readonly { type: string; id: string; label: string }[];
+    readonly diff: Readonly<Record<string, unknown>>;
+    readonly risk: { level: string; findings: readonly string[] };
+    readonly evidence: readonly { label: string; uri: string; digest?: string }[];
+    readonly provenance: Readonly<Record<string, unknown>>;
+    readonly expiresAt: string;
+  };
+  readonly steps: readonly {
+    step_key: string;
+    state: string;
+    mode: string;
+    eligible_user_ids: readonly string[];
+  }[];
+  readonly decisions: readonly {
+    id: string;
+    actor_id: string;
+    outcome: string;
+    reason: string;
+    decided_at: string;
+  }[];
+}
+
+export const fetchApprovals = async () =>
+  (await request<{ readonly data: readonly ApprovalSummary[] }>("/v1/approvals")).data;
+
+export const fetchApproval = async (approvalId: string) =>
+  (
+    await request<{ readonly data: ApprovalDetail }>(
+      `/v1/approvals/${encodeURIComponent(approvalId)}`
+    )
+  ).data;
+
+export const decideApproval = async (
+  approvalId: string,
+  input: {
+    readonly stepKey: string;
+    readonly outcome: "approve" | "reject" | "request_changes" | "abstain" | "cancel";
+    readonly reason: string;
+    readonly expectedVersion: number;
+    readonly idempotencyKey: string;
+  }
+) =>
+  (
+    await mutate<{ readonly data: Readonly<Record<string, unknown>> }>(
+      `/v1/approvals/${encodeURIComponent(approvalId)}/decisions`,
+      "POST",
+      input
+    )
+  ).data;
+
+export const remindApproval = (approvalId: string, idempotencyKey: string) =>
+  mutate<{ readonly data: { readonly queued: number } }>(
+    `/v1/approvals/${encodeURIComponent(approvalId)}/reminders`,
+    "POST",
+    { idempotencyKey }
+  );
+
 export const fetchMeBootstrap = () => request<MeBootstrap>("/v1/me/bootstrap");
 
 export const fetchProfile = async () =>

@@ -15,6 +15,7 @@ import {
   PostgresRuntimeRepository,
   PostgresHumanTaskRepository,
   PostgresTaskAdministrationRepository,
+  PostgresApprovalRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -122,6 +123,7 @@ async function runSuite(pool: DatabasePool) {
   const runtimeRepository = new PostgresRuntimeRepository(pool);
   const humanTaskRepository = new PostgresHumanTaskRepository(pool);
   const taskAdministration = new PostgresTaskAdministrationRepository(pool);
+  const approvalRepository = new PostgresApprovalRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -307,6 +309,147 @@ async function runSuite(pool: DatabasePool) {
     (await humanTaskRepository.list(contextB, { view: "all" })).length === 0,
     "Human task inbox crossed a tenant boundary"
   );
+  const automaticApprovals = await approvalRepository.list(contextA);
+  const automaticApproval = automaticApprovals.find((approval) => approval.title === "approval");
+  assert(typeof automaticApproval?.id === "string", "Approval node did not snapshot a request");
+  const selfApproval = await Promise.allSettled([
+    approvalRepository.decide(contextA, String(automaticApproval.id), {
+      stepKey: "review",
+      outcome: "approve",
+      reason: "Must be rejected by separation of duties",
+      expectedVersion: 1,
+      idempotencyKey: "approval-self-denial-0001"
+    })
+  ]);
+  assert(selfApproval[0]?.status === "rejected", "Self-approval bypassed the recorded policy");
+  assert((await approvalRepository.list(contextB)).length === 0, "Approval RLS crossed tenants");
+
+  const raceTaskId = "a1300000-0000-4000-8000-000000000001";
+  await withTenantTransaction(pool, contextA, (client) =>
+    client.query(
+      `INSERT INTO task_runs(workspace_id,id,run_id,node_key,node_kind,instance_key,execution_path,queue_class,runtime_config,maximum_attempts,timeout_ms,state)
+       VALUES($1,$2,$3,'approval_race','approval','race','root/approval_race','human','{}',1,60000,'ready')`,
+      [contextA.workspaceId, raceTaskId, durableRun.id]
+    )
+  );
+  const raceApproval = await approvalRepository.create(
+    contextA,
+    raceTaskId,
+    {
+      schemaVersion: 1,
+      version: 1,
+      strategy: "parallel",
+      steps: [
+        {
+          key: "review",
+          selector: { type: "user", userIds: [SEED.userA] },
+          mode: "single",
+          order: 0,
+          allowAbstain: true
+        }
+      ],
+      allowSelfApproval: true,
+      separationOfDuties: false,
+      reasonRequired: true,
+      autoOutcome: "none"
+    },
+    {
+      title: "CAS race fixture",
+      proposedAction: "Execute exactly once",
+      affectedResources: [],
+      diff: {},
+      risk: { level: "high", findings: ["Irreversible boundary"] },
+      evidence: [],
+      provenance: { fixture: true },
+      expiresAt: new Date(Date.now() + 60_000).toISOString()
+    }
+  );
+  const approved = await approvalRepository.decide(contextA, raceApproval.id, {
+    stepKey: "review",
+    outcome: "approve",
+    reason: "Fixture authorization",
+    expectedVersion: 1,
+    idempotencyKey: "approval-race-decision-0001"
+  });
+  assert(approved.state === "APPROVED_PENDING_EXECUTION", "Approval skipped two-phase state");
+  const duplicateDecision = await approvalRepository.decide(contextA, raceApproval.id, {
+    stepKey: "review",
+    outcome: "approve",
+    reason: "Fixture authorization",
+    expectedVersion: 1,
+    idempotencyKey: "approval-race-decision-0001"
+  });
+  assert(duplicateDecision.id === approved.id, "Approval decision idempotency was not stable");
+  const mutableDecision = await Promise.allSettled([
+    withTenantTransaction(pool, contextA, (client) =>
+      client.query(
+        "UPDATE approval_decisions SET reason='rewritten' WHERE workspace_id=$1 AND id=$2",
+        [contextA.workspaceId, approved.id]
+      )
+    )
+  ]);
+  assert(mutableDecision[0]?.status === "rejected", "Immutable approval decision was rewritten");
+  const raceDetail = await approvalRepository.get(contextA, raceApproval.id);
+  const race = await Promise.allSettled([
+    approvalRepository.revoke(contextA, raceApproval.id, {
+      reason: "Competing revocation",
+      expectedVersion: Number(raceDetail?.state_version),
+      idempotencyKey: "approval-race-revocation-0001"
+    }),
+    approvalRepository.consume(
+      contextA,
+      raceApproval.id,
+      "a1300000-0000-4000-8000-000000000002",
+      String(raceDetail?.packet_hash),
+      1
+    )
+  ]);
+  assert(
+    race.filter(({ status }) => status === "fulfilled").length === 1,
+    "Revocation versus consumption did not have exactly one CAS winner"
+  );
+  const expiryTaskId = "a1300000-0000-4000-8000-000000000003";
+  await withTenantTransaction(pool, contextA, (client) =>
+    client.query(
+      `INSERT INTO task_runs(workspace_id,id,run_id,node_key,node_kind,instance_key,execution_path,queue_class,runtime_config,maximum_attempts,timeout_ms,state)
+       VALUES($1,$2,$3,'approval_expiry','approval','expiry','root/approval_expiry','human','{}',1,60000,'ready')`,
+      [contextA.workspaceId, expiryTaskId, durableRun.id]
+    )
+  );
+  const expiringApproval = await approvalRepository.create(
+    contextA,
+    expiryTaskId,
+    {
+      schemaVersion: 1,
+      version: 1,
+      strategy: "parallel",
+      steps: [
+        {
+          key: "review",
+          selector: { type: "user", userIds: [SEED.userA] },
+          mode: "single",
+          order: 0,
+          allowAbstain: true
+        }
+      ],
+      allowSelfApproval: true,
+      separationOfDuties: false,
+      reasonRequired: true,
+      autoOutcome: "reject"
+    },
+    {
+      title: "Expiry fixture",
+      proposedAction: "Stop unless explicitly approved",
+      affectedResources: [],
+      diff: {},
+      risk: { level: "medium", findings: [] },
+      evidence: [],
+      provenance: { fixture: true },
+      expiresAt: new Date(Date.now() + 60_000).toISOString()
+    }
+  );
+  const expired = await approvalRepository.expire(contextA, expiringApproval.id);
+  assert(expired.state === "REJECTED", "Explicit SLA auto-outcome was not applied");
   await withTenantTransaction(pool, contextA, (client) =>
     client.query(
       "UPDATE task_runs SET state='ready',state_version=state_version+1 WHERE workspace_id=$1 AND id=$2",
@@ -468,7 +611,7 @@ async function runSuite(pool: DatabasePool) {
   );
   const durableProjection = await runtimeRepository.run(contextA, durableRun.id);
   assert(
-    durableProjection?.state === "succeeded" && durableProjection.events.length === 5,
+    durableProjection?.state === "succeeded" && durableProjection.events.length >= 8,
     "Durable ordered history was incomplete"
   );
   const admissionSettlement = await withTenantTransaction(pool, contextA, async (client) => {
@@ -507,10 +650,12 @@ async function runSuite(pool: DatabasePool) {
     runtime: runtimeRepository,
     humanTasks: humanTaskRepository,
     taskAdministration,
+    approvals: approvalRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),
-      completeTask: () => Promise.resolve()
+      completeTask: () => Promise.resolve(),
+      completeApproval: () => Promise.resolve()
     },
     auth: {
       authenticate: () =>
@@ -696,6 +841,12 @@ async function runSuite(pool: DatabasePool) {
         streamResponse.body.includes("event: heartbeat"),
       "Resumable run event stream did not emit an event and heartbeat"
     );
+    const approvalListResponse = await app.inject({ method: "GET", url: "/v1/approvals" });
+    assert(
+      approvalListResponse.statusCode === 200 &&
+        approvalListResponse.json<{ data: unknown[] }>().data.length >= 3,
+      "Approval inbox API did not return authorized requests"
+    );
   } finally {
     await app.close();
   }
@@ -727,6 +878,16 @@ async function runSuite(pool: DatabasePool) {
       idempotentStart: true,
       staleFenceRejected: true,
       orderedEvents: true,
+      tenantIsolated: true,
+      api: true
+    },
+    approvals: {
+      snapshot: true,
+      selfApprovalDenied: true,
+      immutableDecision: true,
+      idempotentDecision: true,
+      revokeConsumeSingleWinner: true,
+      explicitAutoOutcome: true,
       tenantIsolated: true,
       api: true
     },
