@@ -55,7 +55,15 @@ export const REQUIRED_STORES = [
   "workflow_template_versions",
   "workflow_triggers",
   "workflow_generations",
-  "workflow_test_runs"
+  "workflow_test_runs",
+  "generic_threads",
+  "generic_comments",
+  "comment_mentions",
+  "comment_reactions",
+  "resource_follows",
+  "resource_activity_events",
+  "notification_intents",
+  "saved_resource_filters"
 ] as const;
 
 export async function validateDataStoreRegistry(): Promise<Registry> {

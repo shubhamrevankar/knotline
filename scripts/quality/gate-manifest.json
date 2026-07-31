@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "milestone": "M08",
+  "milestone": "M09",
   "rows": [
     {
       "name": "format:check",
@@ -100,6 +100,7 @@
       "requiredTestFiles": [
         "packages/contracts/src/workflow-definition.test.ts",
         "packages/contracts/src/workflow-generation.test.ts",
+        "packages/contracts/src/collaboration.test.ts",
         "apps/web/src/studio-reducer.test.ts"
       ]
     },
@@ -134,7 +135,8 @@
       "declarationRow": "api/openapi",
       "requiredTestFiles": [
         "tooling/workflows/postgres-suite.ts",
-        "apps/api/src/workflow-generation.test.ts"
+        "apps/api/src/workflow-generation.test.ts",
+        "packages/contracts/src/collaboration.test.ts"
       ]
     },
     {

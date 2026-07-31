@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M09/manual/collaboration-review.json",
+      "verifiedAt": "2026-08-01T03:00:00.000Z"
+    },
+    "externalGates": [],
+    "id": "workflow.collaboration-conflict-recovery",
+    "owner": {
+      "contact": "shurevan",
+      "team": "workflow-platform"
+    },
+    "runbook": "docs/operations/knotline/collaboration-and-conflicts.md",
+    "status": "DEMO",
+    "summary": "Durable authorized discussions, mentions, reactions, follows, activity, optional presence, safe Markdown, and explicit ETag conflict recovery are verified locally."
+  }
+]

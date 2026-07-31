@@ -5984,7 +5984,7 @@ generation is activated and accepted in M15.
 
 ### M09 — Collaboration, comments, mentions, activity, and edit conflict model
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M07\
 **Required commit:** `feat: add collaborative workflow and work discussions`
 
@@ -9224,7 +9224,7 @@ must appear in that milestone's boundary cell.
 | M06 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver versioned workflow definitions and publishing` |
 | M07 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the complete responsive workflow studio` |
 | M08 | `COMMITTED` | `NOT_DEPLOYED` | `SIMULATED`; EXT-004 `BLOCKED_EXTERNAL` for real activation | `feat: add guided workflow generation and safe test mode` |
-| M09 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006 for email mention delivery later | `feat: add collaborative workflow and work discussions` |
+| M09 | `COMMITTED` | `NOT_DEPLOYED` | EXT-006 for email mention delivery later | `feat: add collaborative workflow and work discussions` |
 | M10 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-003 | `feat: execute workflows durably across failures` |
 | M11 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the live Knotline run room` |
 | M12 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver complete human task execution` |

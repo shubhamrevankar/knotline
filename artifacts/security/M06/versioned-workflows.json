@@ -47,6 +47,14 @@
       "dryRunExternalWrites": 0,
       "published": true
     },
+    "collaboration": {
+      "comments": true,
+      "sanitized": true,
+      "mentionsTenantScoped": true,
+      "reactions": true,
+      "follows": true,
+      "activityAuditSeparated": true
+    },
     "auditEvents": 7
   }
 }

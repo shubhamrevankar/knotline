@@ -1,29 +1,39 @@
 {
   "assets": [
     {
-      "bytes": 15570,
-      "gzipBytes": 4559,
-      "name": "App-CEmqOh1F.js"
+      "bytes": 15372,
+      "gzipBytes": 4459,
+      "name": "App-Dk5bV2Xu.js"
+    },
+    {
+      "bytes": 6780,
+      "gzipBytes": 2498,
+      "name": "CollaborationPanel-BvAiHgd1.js"
     },
     {
       "bytes": 5113,
       "gzipBytes": 1296,
-      "name": "ComponentWorkbench-oAn7-Kgw.js"
+      "name": "ComponentWorkbench-DZSe5M_g.js"
     },
     {
       "bytes": 8610,
-      "gzipBytes": 2819,
-      "name": "GuidedWorkflowCreate-DYo9yXoQ.js"
+      "gzipBytes": 2817,
+      "name": "GuidedWorkflowCreate-Bghee1Y1.js"
     },
     {
-      "bytes": 23987,
-      "gzipBytes": 6995,
-      "name": "StudioPage-Cd1ZWZnW.js"
+      "bytes": 24637,
+      "gzipBytes": 7168,
+      "name": "StudioPage-bvNy6MAD.js"
+    },
+    {
+      "bytes": 291,
+      "gzipBytes": 237,
+      "name": "bell-CJLyGjCE.js"
     },
     {
       "bytes": 280,
-      "gzipBytes": 211,
-      "name": "braces-BVcX4ftN.js"
+      "gzipBytes": 208,
+      "name": "braces-D3uhJtAp.js"
     },
     {
       "bytes": 178911,
@@ -31,19 +41,19 @@
       "name": "flow-vendor-DqTwcKSY.js"
     },
     {
-      "bytes": 51841,
-      "gzipBytes": 10663,
-      "name": "index-6MZWfnDi.css"
+      "bytes": 53251,
+      "gzipBytes": 10910,
+      "name": "index-BxfnZxQ3.css"
     },
     {
-      "bytes": 184102,
-      "gzipBytes": 48862,
-      "name": "index-BsCSgwg4.js"
+      "bytes": 189182,
+      "gzipBytes": 50577,
+      "name": "index-Do2NPR3n.js"
     },
     {
       "bytes": 349,
-      "gzipBytes": 252,
-      "name": "plus-DkhriK4D.js"
+      "gzipBytes": 251,
+      "name": "plus-CRsK78J9.js"
     },
     {
       "bytes": 248730,
@@ -54,15 +64,20 @@
       "bytes": 755,
       "gzipBytes": 410,
       "name": "studio-layout.worker-KjMP2n6b.js"
+    },
+    {
+      "bytes": 329,
+      "gzipBytes": 215,
+      "name": "trash-2-DQw68JYy.js"
     }
   ],
   "errors": [],
   "initialAssets": [
-    "index-6MZWfnDi.css",
-    "index-BsCSgwg4.js",
+    "index-BxfnZxQ3.css",
+    "index-Do2NPR3n.js",
     "react-vendor-Ca2lDvkd.js"
   ],
-  "initialGzipBytes": 137643,
+  "initialGzipBytes": 139605,
   "limits": {
     "maxInitialGzipBytes": 140000,
     "maxJavaScriptBytes": 350000,
@@ -70,5 +85,5 @@
   },
   "schemaVersion": 1,
   "status": "PASS",
-  "totalGzipBytes": 212720
+  "totalGzipBytes": 217699
 }

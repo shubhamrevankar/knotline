@@ -586,6 +586,60 @@ const VERSIONED_WORKFLOW_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
     "/v1/workflow-dry-runs",
     "dryRunWorkflow",
     "Execute deterministic fixtures with no external writes"
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/resources/{resourceType}/{resourceId}/thread",
+    "getResourceThread",
+    "Read authorized comments, reactions, activity, follows, and presence"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/resources/{resourceType}/{resourceId}/comments",
+    "createResourceComment",
+    "Create a sanitized resource comment",
+    201
+  ),
+  workspaceAccessContract(
+    "PATCH",
+    "/v1/comments/{commentId}",
+    "editResourceComment",
+    "Edit an authored comment within policy"
+  ),
+  workspaceAccessContract(
+    "DELETE",
+    "/v1/comments/{commentId}",
+    "deleteResourceComment",
+    "Tombstone an authored comment",
+    204
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/comments/{commentId}/reactions",
+    "addCommentReaction",
+    "Add an idempotent comment reaction",
+    204
+  ),
+  workspaceAccessContract(
+    "DELETE",
+    "/v1/comments/{commentId}/reactions/{reaction}",
+    "removeCommentReaction",
+    "Remove a personal comment reaction",
+    204
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workflows/{workflowId}/follows",
+    "followWorkflow",
+    "Follow workflow activity",
+    204
+  ),
+  workspaceAccessContract(
+    "DELETE",
+    "/v1/workflows/{workflowId}/follows",
+    "unfollowWorkflow",
+    "Stop following workflow activity",
+    204
   )
 ];
 

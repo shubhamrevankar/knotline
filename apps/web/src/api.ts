@@ -1,5 +1,6 @@
 import type {
   ApiEnvelope,
+  CollaborationThread,
   ValidationFinding,
   Workflow,
   WorkflowDefinition,
@@ -472,6 +473,62 @@ export const dryRunWorkflowDefinition = async (
       fixture
     })
   ).data;
+
+export interface CollaborationThreadView extends CollaborationThread {
+  readonly sharePath: string;
+  readonly presence: readonly {
+    readonly id: string;
+    readonly displayName: string;
+    readonly lastSeenAt: string;
+  }[];
+}
+
+export const fetchResourceThread = async (resourceType: "workflow", resourceId: string) =>
+  (
+    await request<{ readonly data: CollaborationThreadView }>(
+      `/v1/resources/${resourceType}/${encodeURIComponent(resourceId)}/thread`
+    )
+  ).data;
+
+export const createResourceComment = (
+  resourceId: string,
+  input: {
+    readonly body: string;
+    readonly parentId?: string;
+    readonly mentionedUserIds: readonly string[];
+    readonly attachmentRefs: readonly string[];
+  }
+) =>
+  mutate<{ readonly id: string }>(
+    `/v1/resources/workflow/${encodeURIComponent(resourceId)}/comments`,
+    "POST",
+    input
+  );
+
+export const editResourceComment = (commentId: string, body: string) =>
+  mutate<{ readonly updated: true }>(`/v1/comments/${encodeURIComponent(commentId)}`, "PATCH", {
+    body
+  });
+
+export const deleteResourceComment = (commentId: string) =>
+  mutate<void>(`/v1/comments/${encodeURIComponent(commentId)}`, "DELETE");
+
+export const setCommentReaction = (
+  commentId: string,
+  reaction: "thumbs_up" | "heart" | "celebrate" | "eyes",
+  enabled: boolean
+) =>
+  mutate<void>(
+    `/v1/comments/${encodeURIComponent(commentId)}/reactions${enabled ? "" : `/${reaction}`}`,
+    enabled ? "POST" : "DELETE",
+    enabled ? { reaction } : undefined
+  );
+
+export const setWorkflowFollow = (workflowId: string, enabled: boolean) =>
+  mutate<void>(
+    `/v1/workflows/${encodeURIComponent(workflowId)}/follows`,
+    enabled ? "POST" : "DELETE"
+  );
 
 export const createVersionedWorkflow = async (name: string, description: string) =>
   (

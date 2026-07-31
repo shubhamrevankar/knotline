@@ -282,6 +282,62 @@
       "retentionDays": 365,
       "exportHandler": "workflow-export",
       "deleteHandler": "workflow-delete"
+    },
+    {
+      "name": "generic_threads",
+      "class": "collaboration.thread",
+      "retentionDays": 2555,
+      "exportHandler": "collaboration-export",
+      "deleteHandler": "workspace-delete"
+    },
+    {
+      "name": "generic_comments",
+      "class": "collaboration.comment",
+      "retentionDays": 2555,
+      "exportHandler": "collaboration-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "comment_mentions",
+      "class": "collaboration.mention",
+      "retentionDays": 2555,
+      "exportHandler": "collaboration-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "comment_reactions",
+      "class": "collaboration.reaction",
+      "retentionDays": 2555,
+      "exportHandler": "collaboration-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "resource_follows",
+      "class": "collaboration.follow",
+      "retentionDays": 2555,
+      "exportHandler": "collaboration-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "resource_activity_events",
+      "class": "collaboration.activity",
+      "retentionDays": 730,
+      "exportHandler": "collaboration-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "notification_intents",
+      "class": "notification.intent",
+      "retentionDays": 90,
+      "exportHandler": "notification-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "saved_resource_filters",
+      "class": "collaboration.saved_filter",
+      "retentionDays": 2555,
+      "exportHandler": "collaboration-export",
+      "deleteHandler": "identity-delete"
     }
   ],
   "indexes": [
@@ -363,7 +419,19 @@
     "workflow_generations_pkey",
     "workflow_generations_workspace_created_idx",
     "workflow_test_runs_pkey",
-    "workflow_test_runs_workspace_created_idx"
+    "workflow_test_runs_workspace_created_idx",
+    "generic_threads_pkey",
+    "generic_threads_workspace_id_resource_type_resource_id_key",
+    "generic_comments_pkey",
+    "generic_comments_thread_created_idx",
+    "comment_mentions_pkey",
+    "comment_reactions_pkey",
+    "resource_follows_pkey",
+    "resource_activity_events_pkey",
+    "resource_activity_resource_idx",
+    "notification_intents_pkey",
+    "notification_intents_pending_idx",
+    "saved_resource_filters_pkey"
   ],
   "caches": []
 }

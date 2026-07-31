@@ -1,0 +1,9 @@
+{
+  "id": "m09-collaboration-review",
+  "kind": "manual",
+  "owner": "shurevan",
+  "recordedAt": "2026-08-01T03:00:00.000Z",
+  "schemaVersion": 1,
+  "status": "PASS",
+  "summary": "Reviewed authorized discussion, mention isolation, reactions, attachments, edit and tombstone policies, product activity separation, ephemeral presence loss, share-link authorization, and reload/reapply conflict recovery on desktop and mobile."
+}

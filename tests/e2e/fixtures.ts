@@ -42,6 +42,16 @@ export const test = base.extend<{ consoleMessages: string[] }>({
           { key: "path_2", source: "prepare_request", target: "review_request" }
         ]
       };
+      let collaborationFollowed = false;
+      let collaborationComment:
+        | {
+            id: string;
+            body: string;
+            renderedHtml: string;
+            state: "active" | "edited" | "deleted";
+            reactions: { reaction: "thumbs_up"; count: number; reacted: boolean }[];
+          }
+        | undefined;
 
       await page.addInitScript(() => {
         if (new URL(globalThis.location.href).searchParams.has("consent")) {
@@ -186,6 +196,79 @@ export const test = base.extend<{ consoleMessages: string[] }>({
           };
         } else if (pathname === "/edge/v1/invitation-responses") {
           body = { result: "accepted" };
+        } else if (pathname.includes("/resources/workflow/") && pathname.endsWith("/thread")) {
+          body = {
+            data: {
+              id: "91000000-0000-4000-8000-000000000001",
+              resourceType: "workflow",
+              resourceId: demoWorkflow.id,
+              followed: collaborationFollowed,
+              sharePath: `/app/workflows/${demoWorkflow.id}`,
+              presence: [
+                {
+                  id: "20000000-0000-4000-8000-000000000001",
+                  displayName: "Ava North",
+                  lastSeenAt: "2026-07-31T00:00:00.000Z"
+                }
+              ],
+              comments: collaborationComment
+                ? [
+                    {
+                      ...collaborationComment,
+                      threadId: "91000000-0000-4000-8000-000000000001",
+                      authorUserId: "20000000-0000-4000-8000-000000000001",
+                      authorDisplayName: "Ava North",
+                      attachmentRefs: ["artifact_review_12345678"],
+                      mentionedUserIds: ["20000000-0000-4000-8000-000000000002"],
+                      createdAt: "2026-07-31T00:00:00.000Z",
+                      updatedAt: "2026-07-31T00:00:00.000Z",
+                      editableUntil: "2026-07-31T00:15:00.000Z"
+                    }
+                  ]
+                : [],
+              activity: collaborationComment
+                ? [
+                    {
+                      id: "91000000-0000-4000-8000-000000000003",
+                      type: "comment.created",
+                      actorUserId: "20000000-0000-4000-8000-000000000001",
+                      summary: "Comment added",
+                      createdAt: "2026-07-31T00:00:00.000Z"
+                    }
+                  ]
+                : []
+            }
+          };
+        } else if (pathname.includes("/resources/workflow/") && pathname.endsWith("/comments")) {
+          collaborationComment = {
+            id: "91000000-0000-4000-8000-000000000002",
+            body: "**Review** <script>alert(1)</script>",
+            renderedHtml: "<strong>Review</strong> &lt;script&gt;alert(1)&lt;/script&gt;",
+            state: "active",
+            reactions: []
+          };
+          body = { id: collaborationComment.id };
+        } else if (/\/v1\/comments\/[^/]+$/u.test(pathname) && method === "PATCH") {
+          if (collaborationComment) {
+            collaborationComment.body = "Edited review note";
+            collaborationComment.renderedHtml = "Edited review note";
+            collaborationComment.state = "edited";
+          }
+          body = { updated: true };
+        } else if (/\/v1\/comments\/[^/]+$/u.test(pathname) && method === "DELETE") {
+          if (collaborationComment) {
+            collaborationComment.body = "[deleted]";
+            collaborationComment.renderedHtml = "[deleted]";
+            collaborationComment.state = "deleted";
+          }
+          body = undefined;
+        } else if (pathname.endsWith("/reactions") && method === "POST") {
+          if (collaborationComment)
+            collaborationComment.reactions = [{ reaction: "thumbs_up", count: 1, reacted: true }];
+          body = undefined;
+        } else if (pathname.endsWith("/follows")) {
+          collaborationFollowed = method === "POST";
+          body = undefined;
         } else if (pathname.endsWith("/workflow-generations") && method === "POST") {
           body = {
             data: {
@@ -437,13 +520,13 @@ export const test = base.extend<{ consoleMessages: string[] }>({
           body = { data };
         }
         await route.fulfill({
-          body: JSON.stringify(body),
+          ...(body === undefined ? {} : { body: JSON.stringify(body) }),
           headers: {
             "access-control-allow-credentials": "true",
             "access-control-allow-origin": "http://127.0.0.1:4173",
             "content-type": "application/json"
           },
-          status: 200
+          status: body === undefined ? 204 : 200
         });
       });
 

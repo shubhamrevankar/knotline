@@ -1,6 +1,6 @@
 import { Badge, Button, Card, ErrorState, Skeleton } from "@knotline/ui";
 import { ArrowLeft, CheckCircle2, Copy, GitCompare, History, RotateCcw, Send } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import {
@@ -21,6 +21,11 @@ import {
 } from "./api.js";
 import { AuthGate } from "./AuthPages.js";
 import { msg } from "./i18n.js";
+
+const CollaborationPanel = lazy(async () => {
+  const module = await import("./CollaborationPanel.js");
+  return { default: module.CollaborationPanel };
+});
 
 function WorkflowFrame({ children, title }: { children: ReactNode; title: string }) {
   return (
@@ -182,6 +187,9 @@ export function WorkflowDetailPage() {
               ))}
             </ol>
           </Card>
+          <Suspense fallback={<Skeleton label={msg("collaboration.heading")} />}>
+            <CollaborationPanel workflowId={workflowId} />
+          </Suspense>
         </div>
       )}
     </WorkflowFrame>

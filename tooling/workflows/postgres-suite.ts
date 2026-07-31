@@ -11,6 +11,7 @@ import {
   contentHash,
   createPool,
   migrate,
+  PostgresCollaborationRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -114,6 +115,7 @@ const definition = (name = "Incident response"): WorkflowDefinition => ({
 async function runSuite(pool: DatabasePool) {
   const repository = new PostgresVersionedWorkflowRepository(pool);
   const generationRepository = new PostgresWorkflowGenerationRepository(pool);
+  const collaborationRepository = new PostgresCollaborationRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -285,6 +287,7 @@ async function runSuite(pool: DatabasePool) {
     repository: new PostgresWorkflowRepository(pool),
     workflowDefinitions: repository,
     workflowGeneration: new WorkflowGenerationService(undefined, generationRepository),
+    collaboration: collaborationRepository,
     auth: {
       authenticate: () =>
         Promise.resolve({
@@ -383,6 +386,57 @@ async function runSuite(pool: DatabasePool) {
       acceptanceResponse.statusCode === 201,
       "Generated workflow was not accepted and published"
     );
+    const commentResponse = await app.inject({
+      method: "POST",
+      url: `/v1/resources/workflow/${workflowId}/comments`,
+      payload: {
+        body: "**Review** <script>alert(1)</script>",
+        mentionedUserIds: [SEED.userA],
+        attachmentRefs: ["artifact_review_12345678"]
+      }
+    });
+    assert(commentResponse.statusCode === 201, "Authorized workflow comment failed");
+    const commentId = commentResponse.json<{ id: string }>().id;
+    const threadResponse = await app.inject({
+      method: "GET",
+      url: `/v1/resources/workflow/${workflowId}/thread`
+    });
+    const threadBody = threadResponse.json<{
+      data: { comments: { renderedHtml: string }[]; activity: unknown[] };
+    }>().data;
+    assert(
+      threadResponse.statusCode === 200 &&
+        threadBody.comments[0]?.renderedHtml.includes("&lt;script&gt;") &&
+        !threadBody.comments[0]?.renderedHtml.includes("<script>"),
+      "Comment sanitizer did not neutralize raw HTML"
+    );
+    assert(threadBody.activity.length === 1, "Product activity was not recorded separately");
+    const unauthorizedMention = await app.inject({
+      method: "POST",
+      url: `/v1/resources/workflow/${workflowId}/comments`,
+      payload: { body: "Hidden mention", mentionedUserIds: [SEED.userB], attachmentRefs: [] }
+    });
+    assert(
+      unauthorizedMention.statusCode === 403,
+      "Cross-tenant mention was disclosed or accepted"
+    );
+    const reactionResponse = await app.inject({
+      method: "POST",
+      url: `/v1/comments/${commentId}/reactions`,
+      payload: { reaction: "thumbs_up" }
+    });
+    assert(reactionResponse.statusCode === 204, "Comment reaction failed");
+    const followResponse = await app.inject({
+      method: "POST",
+      url: `/v1/workflows/${workflowId}/follows`
+    });
+    assert(followResponse.statusCode === 204, "Workflow follow failed");
+    const editResponse = await app.inject({
+      method: "PATCH",
+      url: `/v1/comments/${commentId}`,
+      payload: { body: "Edited review" }
+    });
+    assert(editResponse.statusCode === 200, "Comment edit policy rejected the author");
   } finally {
     await app.close();
   }
@@ -402,6 +456,14 @@ async function runSuite(pool: DatabasePool) {
     isolation: { rls: true },
     api: { list: true, draft: true, etagConflict: true, version: true },
     generation: { durable: true, tenantIsolated: true, dryRunExternalWrites: 0, published: true },
+    collaboration: {
+      comments: true,
+      sanitized: true,
+      mentionsTenantScoped: true,
+      reactions: true,
+      follows: true,
+      activityAuditSeparated: true
+    },
     auditEvents: auditCount
   };
 }

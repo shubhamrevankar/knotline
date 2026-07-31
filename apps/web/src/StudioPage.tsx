@@ -1,4 +1,6 @@
 import {
+  changedWorkflowSections,
+  mergeChangedSections,
   validateWorkflowDefinition,
   type WorkflowDefinitionEdge,
   type WorkflowDefinitionNode
@@ -128,15 +130,19 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
   const [showHelp, setShowHelp] = useState(false);
   const [showOutline, setShowOutline] = useState(true);
   const [recoveryAvailable, setRecoveryAvailable] = useState(false);
+  const [conflictServer, setConflictServer] = useState<WorkflowDraft>();
+  const [conflictSections, setConflictSections] = useState<readonly string[]>([]);
   const saveTimer = useRef<number | undefined>(undefined);
   const fitView = useRef<(() => void) | undefined>(undefined);
   const savedSnapshot = useRef(JSON.stringify(initialDraft.definition));
+  const baseDefinition = useRef(initialDraft.definition);
 
   const save = useMutation({
     mutationFn: (definition: typeof state.definition) => saveWorkflowDraft(serverDraft, definition),
     onMutate: () => setStatus("saving"),
     onSuccess: (saved, submitted) => {
       savedSnapshot.current = JSON.stringify(submitted);
+      baseDefinition.current = submitted;
       setServerDraft(saved);
       setStatus("saved");
       clearEncryptedRecovery(saved.workflowId);
@@ -144,9 +150,20 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
     onError: async (error) => {
       await saveEncryptedRecovery(serverDraft.workflowId, state.definition);
       setRecoveryAvailable(true);
-      setStatus(
-        String(error).includes("409") || String(error).includes("412") ? "conflict" : "offline"
-      );
+      const conflicted = String(error).includes("409") || String(error).includes("412");
+      setStatus(conflicted ? "conflict" : "offline");
+      if (conflicted) {
+        let remote: WorkflowDraft | undefined;
+        try {
+          remote = await fetchWorkflowDraft(serverDraft.workflowId);
+        } catch {
+          remote = undefined;
+        }
+        if (remote) {
+          setConflictServer(remote);
+          setConflictSections(changedWorkflowSections(baseDefinition.current, remote.definition));
+        }
+      }
     }
   });
   const saveDraft = useCallback(() => save.mutate(state.definition), [save, state.definition]);
@@ -219,9 +236,29 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
   const reloadServer = async () => {
     const fresh = await fetchWorkflowDraft(serverDraft.workflowId);
     savedSnapshot.current = JSON.stringify(fresh.definition);
+    baseDefinition.current = fresh.definition;
     setServerDraft(fresh);
     dispatch({ type: "replace", definition: fresh.definition, revision: fresh.revision });
     setStatus("saved");
+    setConflictServer(undefined);
+    setConflictSections([]);
+  };
+
+  const reapplyLocalChanges = () => {
+    if (!conflictServer) return;
+    const result = mergeChangedSections(
+      baseDefinition.current,
+      state.definition,
+      conflictServer.definition
+    );
+    setConflictSections(result.conflicts);
+    if (result.conflicts.length > 0) return;
+    setServerDraft(conflictServer);
+    savedSnapshot.current = JSON.stringify(conflictServer.definition);
+    baseDefinition.current = conflictServer.definition;
+    dispatch({ type: "replace", definition: result.merged, revision: state.revision + 1 });
+    setConflictServer(undefined);
+    setStatus("offline");
   };
 
   const recoverLocal = async () => {
@@ -303,7 +340,12 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             <Button onClick={() => void recoverLocal()}>{msg("studio.recovery.available")}</Button>
           ) : null}
           {status === "conflict" ? (
-            <Button onClick={() => void reloadServer()}>{msg("studio.conflict.reload")}</Button>
+            <>
+              <Button onClick={() => void reloadServer()}>{msg("studio.conflict.reload")}</Button>
+              <Button onClick={reapplyLocalChanges} disabled={!conflictServer}>
+                {msg("studio.conflict.reapply")}
+              </Button>
+            </>
           ) : null}
         </div>
         <div className="action-row">
@@ -327,6 +369,16 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
           </Button>
         </div>
       </header>
+      {status === "conflict" ? (
+        <aside className="studio-conflict-banner" role="alert">
+          <strong>{msg("studio.conflict.heading")}</strong>
+          <p>
+            {conflictSections.length
+              ? msg("studio.conflict.sections", { sections: conflictSections.join(", ") })
+              : msg("studio.conflict.loading")}
+          </p>
+        </aside>
+      ) : null}
       <div className="studio-toolbar" role="toolbar" aria-label={msg("studio.toolbar")}>
         <Button onClick={() => setShowOutline((value) => !value)}>
           <ListTree aria-hidden="true" />

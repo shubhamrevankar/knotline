@@ -4,6 +4,11 @@ import {
   dryRunFixtureSchema,
   dryRunWorkflow,
   importWorkflowCsv,
+  createCommentRequestSchema,
+  commentBodySchema,
+  reactionSchema,
+  renderSafeMarkdown,
+  resourceTypeSchema,
   validateWorkflowDefinition,
   workflowDefinitionSchema,
   workflowGenerationRequestSchema,
@@ -20,7 +25,12 @@ import {
   parseRequestId,
   type RequestTraceContext
 } from "@knotline/operations";
-import type { TenantContext, VersionedWorkflowRepository, WorkflowRepository } from "@knotline/db";
+import type {
+  CollaborationRepository,
+  TenantContext,
+  VersionedWorkflowRepository,
+  WorkflowRepository
+} from "@knotline/db";
 import Fastify, {
   LogController,
   type FastifyInstance,
@@ -54,6 +64,7 @@ export interface BuildAppOptions {
   readonly trustedProxy?: string;
   readonly mutationsDisabled?: boolean;
   readonly workflowGeneration?: WorkflowGenerationService;
+  readonly collaboration?: CollaborationRepository;
 }
 
 interface ApiErrorReply {
@@ -89,6 +100,7 @@ function requestIdentifier(header: unknown): string {
 
 export async function buildApp(options: BuildAppOptions): Promise<FastifyInstance> {
   const workflowGeneration = options.workflowGeneration ?? new WorkflowGenerationService();
+  const presence = new Map<string, Map<string, { displayName: string; lastSeenAt: string }>>();
   const requestContexts = new WeakMap<FastifyRequest, RequestTraceContext>();
   const app = Fastify({
     trustProxy: options.trustedProxy ? [options.trustedProxy] : false,
@@ -339,6 +351,131 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       .parse(request.body);
     return { data: dryRunWorkflow(body.definition, body.fixture) };
   });
+
+  if (options.collaboration) {
+    const resourceParams = z
+      .object({ resourceType: resourceTypeSchema, resourceId: z.string().uuid() })
+      .strict();
+    const commentParams = z.object({ commentId: z.string().uuid() }).strict();
+    const reactionParams = z
+      .object({ commentId: z.string().uuid(), reaction: reactionSchema })
+      .strict();
+    const rememberPresence = (
+      workspaceId: string,
+      resourceType: string,
+      resourceId: string,
+      userId: string,
+      displayName: string
+    ) => {
+      const key = `${workspaceId}:${resourceType}:${resourceId}`;
+      const current =
+        presence.get(key) ?? new Map<string, { displayName: string; lastSeenAt: string }>();
+      const expiry = Date.now() - 60_000;
+      for (const [id, value] of current)
+        if (Date.parse(value.lastSeenAt) < expiry) current.delete(id);
+      current.set(userId, { displayName, lastSeenAt: new Date().toISOString() });
+      presence.set(key, current);
+      return [...current.entries()].map(([id, value]) => ({ id, ...value }));
+    };
+    app.get("/v1/resources/:resourceType/:resourceId/thread", async (request) => {
+      const authenticated = await authenticate(request);
+      const context = await workflowAccess(request, "workflow.read");
+      const { resourceType, resourceId } = resourceParams.parse(request.params);
+      const data = await options.collaboration!.thread(context, resourceType, resourceId);
+      return {
+        data: {
+          ...data,
+          sharePath: `/app/${resourceType === "workflow" ? "workflows" : `${resourceType}s`}/${resourceId}`,
+          presence: rememberPresence(
+            context.workspaceId,
+            resourceType,
+            resourceId,
+            authenticated.identity.user.id,
+            authenticated.identity.user.displayName
+          )
+        }
+      };
+    });
+    app.post("/v1/resources/:resourceType/:resourceId/comments", async (request, reply) => {
+      const context = await workflowAccess(request, "workflow.read", true);
+      const { resourceType, resourceId } = resourceParams.parse(request.params);
+      const body = createCommentRequestSchema.parse(request.body);
+      try {
+        const id = await options.collaboration!.createComment(context, resourceType, resourceId, {
+          body: body.body,
+          renderedHtml: renderSafeMarkdown(body.body),
+          mentionedUserIds: body.mentionedUserIds,
+          attachmentRefs: body.attachmentRefs,
+          ...(body.parentId ? { parentId: body.parentId } : {})
+        });
+        return reply.code(201).send({ id });
+      } catch (error) {
+        if (error instanceof Error && error.message === "MENTION_NOT_AUTHORIZED")
+          throw new AuthFailure(
+            "MENTION_NOT_AUTHORIZED",
+            403,
+            "Every mention must reference an active workspace member."
+          );
+        throw error;
+      }
+    });
+    app.patch("/v1/comments/:commentId", async (request) => {
+      const context = await workflowAccess(request, "workflow.read", true);
+      const { commentId } = commentParams.parse(request.params);
+      const { body } = z.object({ body: commentBodySchema }).strict().parse(request.body);
+      const updated = await options.collaboration!.editComment(
+        context,
+        commentId,
+        body,
+        renderSafeMarkdown(body)
+      );
+      if (!updated)
+        throw new AuthFailure(
+          "COMMENT_EDIT_FORBIDDEN",
+          403,
+          "The comment can no longer be edited."
+        );
+      return { updated: true };
+    });
+    app.delete("/v1/comments/:commentId", async (request, reply) => {
+      const context = await workflowAccess(request, "workflow.read", true);
+      const { commentId } = commentParams.parse(request.params);
+      if (!(await options.collaboration!.deleteComment(context, commentId)))
+        throw new AuthFailure("COMMENT_DELETE_FORBIDDEN", 403, "The comment cannot be deleted.");
+      return reply.code(204).send();
+    });
+    app.post("/v1/comments/:commentId/reactions", async (request, reply) => {
+      const context = await workflowAccess(request, "workflow.read", true);
+      const { commentId } = commentParams.parse(request.params);
+      const { reaction } = z.object({ reaction: reactionSchema }).strict().parse(request.body);
+      await options.collaboration!.setReaction(context, commentId, reaction, true);
+      return reply.code(204).send();
+    });
+    app.delete("/v1/comments/:commentId/reactions/:reaction", async (request, reply) => {
+      const context = await workflowAccess(request, "workflow.read", true);
+      const { commentId, reaction } = reactionParams.parse(request.params);
+      await options.collaboration!.setReaction(context, commentId, reaction, false);
+      return reply.code(204).send();
+    });
+    app.post("/v1/workflows/:workflowId/follows", async (request, reply) => {
+      const context = await workflowAccess(request, "workflow.read", true);
+      const { workflowId } = z
+        .object({ workflowId: z.string().uuid() })
+        .strict()
+        .parse(request.params);
+      await options.collaboration!.setFollow(context, "workflow", workflowId, true);
+      return reply.code(204).send();
+    });
+    app.delete("/v1/workflows/:workflowId/follows", async (request, reply) => {
+      const context = await workflowAccess(request, "workflow.read", true);
+      const { workflowId } = z
+        .object({ workflowId: z.string().uuid() })
+        .strict()
+        .parse(request.params);
+      await options.collaboration!.setFollow(context, "workflow", workflowId, false);
+      return reply.code(204).send();
+    });
+  }
 
   const magicRequestSchema = z
     .object({

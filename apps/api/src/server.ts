@@ -1,6 +1,7 @@
 import { loadConfig } from "@knotline/config";
 import {
   PostgresAuthRepository,
+  PostgresCollaborationRepository,
   PostgresWorkspaceRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
@@ -44,6 +45,7 @@ const workflowGeneration = new WorkflowGenerationService(
   undefined,
   new PostgresWorkflowGenerationRepository(pool)
 );
+const collaboration = new PostgresCollaborationRepository(pool);
 const isLocal = environment.environment === "local" || environment.environment === "ci";
 const googleIssuer = isLocal
   ? `${environment.api.publicOrigin.origin}/__local/oidc`
@@ -123,6 +125,7 @@ const app = await buildApp({
   workspace,
   workflowDefinitions,
   workflowGeneration,
+  collaboration,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),
   ...(process.env.KNOTLINE_TRUSTED_PROXY
