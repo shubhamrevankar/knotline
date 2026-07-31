@@ -29,7 +29,7 @@ async function request<T>(path: string): Promise<T> {
 
 async function mutate<T>(
   path: string,
-  method: "POST" | "PATCH" | "DELETE",
+  method: "POST" | "PUT" | "PATCH" | "DELETE",
   body?: unknown
 ): Promise<T> {
   const csrf = document.cookie
@@ -80,7 +80,73 @@ export interface MeBootstrap {
     readonly role: string;
   }[];
   readonly activeWorkspaceId?: string;
+  readonly permissions?: readonly string[];
+  readonly role?: string;
+  readonly onboarding?: OnboardingProgress;
   readonly serverTime: string;
+}
+
+export interface WorkspaceSummary {
+  readonly id: string;
+  readonly slug: string;
+  readonly name: string;
+  readonly state: "active" | "archived" | "deleting";
+  readonly timezone: string;
+  readonly locale: string;
+  readonly region: string;
+  readonly role: string;
+  readonly isSandbox: boolean;
+  readonly sandboxLabel?: string;
+}
+
+export interface WorkspaceMember {
+  readonly id: string;
+  readonly userId: string;
+  readonly email: string;
+  readonly displayName: string;
+  readonly role: string;
+  readonly customRoleId?: string;
+  readonly state: "active" | "suspended" | "removed";
+  readonly createdAt: string;
+}
+
+export interface WorkspaceRole {
+  readonly id: string;
+  readonly key: string;
+  readonly name: string;
+  readonly description: string;
+  readonly permissions: readonly string[];
+  readonly system: boolean;
+}
+
+export interface WorkspaceInvitation {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly workspaceName: string;
+  readonly email: string;
+  readonly role: string;
+  readonly state: string;
+  readonly expiresAt: string;
+  readonly createdAt: string;
+}
+
+export interface WorkspaceGroup {
+  readonly id: string;
+  readonly name: string;
+  readonly description: string;
+  readonly source: "manual" | "scim";
+  readonly memberIds: readonly string[];
+}
+
+export interface OnboardingProgress {
+  readonly workspaceId: string;
+  readonly userId: string;
+  readonly currentStep: string;
+  readonly completedSteps: readonly string[];
+  readonly skippedSteps: readonly string[];
+  readonly profile: Readonly<Record<string, unknown>>;
+  readonly revision: number;
+  readonly completedAt?: string;
 }
 
 export interface SessionSummary {
@@ -141,6 +207,160 @@ export const revokeOtherSessions = () =>
   mutate<{ readonly revoked: number }>("/v1/auth/sessions/revoke-others", "POST");
 
 export const logout = () => mutate<void>("/v1/auth/logout", "POST");
+
+export const fetchWorkspaces = async () =>
+  (await request<{ readonly data: readonly WorkspaceSummary[] }>("/v1/workspaces")).data;
+
+export const createWorkspace = async (input: {
+  readonly name: string;
+  readonly timezone: string;
+  readonly locale: string;
+  readonly region: string;
+  readonly sandbox?: boolean;
+}) => (await mutate<{ readonly data: WorkspaceSummary }>("/v1/workspaces", "POST", input)).data;
+
+export const updateWorkspace = async (workspace: string, input: Partial<WorkspaceSummary>) =>
+  (
+    await mutate<{ readonly data: WorkspaceSummary }>(
+      `/v1/workspaces/${encodeURIComponent(workspace)}`,
+      "PATCH",
+      input
+    )
+  ).data;
+
+export const switchWorkspace = (workspace: string) =>
+  mutate<{ readonly activeWorkspaceId: string; readonly cacheEpoch: number }>(
+    `/v1/workspaces/${encodeURIComponent(workspace)}/switch`,
+    "POST"
+  );
+
+export const archiveWorkspace = (workspace: string) =>
+  mutate<void>(`/v1/workspaces/${encodeURIComponent(workspace)}/archive`, "POST");
+
+export const restoreWorkspace = (workspace: string) =>
+  mutate<{ readonly restored: true }>(
+    `/v1/workspaces/${encodeURIComponent(workspace)}/restorations`,
+    "POST"
+  );
+
+export const fetchMembers = async (workspace: string) =>
+  (
+    await request<{ readonly data: readonly WorkspaceMember[] }>(
+      `/v1/workspaces/${encodeURIComponent(workspace)}/members`
+    )
+  ).data;
+
+export const updateMember = (workspace: string, member: string, input: unknown) =>
+  mutate<{ readonly updated: true }>(
+    `/v1/workspaces/${encodeURIComponent(workspace)}/members/${encodeURIComponent(member)}`,
+    "PATCH",
+    input
+  );
+
+export const transferOwnership = (workspace: string, targetMemberId: string) =>
+  mutate<{ readonly transferred: true }>(
+    `/v1/workspaces/${encodeURIComponent(workspace)}/ownership-transfers`,
+    "POST",
+    { targetMemberId }
+  );
+
+export const fetchInvitations = async (workspace: string) =>
+  (
+    await request<{ readonly data: readonly WorkspaceInvitation[] }>(
+      `/v1/workspaces/${encodeURIComponent(workspace)}/invitations`
+    )
+  ).data;
+
+export const inviteMember = async (workspace: string, email: string, role: string) =>
+  (
+    await mutate<{ readonly data: WorkspaceInvitation }>(
+      `/v1/workspaces/${encodeURIComponent(workspace)}/invitations`,
+      "POST",
+      { email, role }
+    )
+  ).data;
+
+export const cancelInvitation = (invitationId: string) =>
+  mutate<void>(`/v1/invitations/${encodeURIComponent(invitationId)}`, "DELETE");
+
+export const previewInvitation = async (token: string) =>
+  (
+    await mutate<{ readonly data: WorkspaceInvitation }>(
+      "/edge/v1/invitation-responses/preview",
+      "POST",
+      { token }
+    )
+  ).data;
+
+export const respondToInvitation = (token: string, response: "accept" | "decline") =>
+  mutate<{ readonly result: string }>("/edge/v1/invitation-responses", "POST", {
+    token,
+    response
+  });
+
+export const fetchRoles = async (workspace: string) =>
+  (
+    await request<{ readonly data: readonly WorkspaceRole[] }>(
+      `/v1/workspaces/${encodeURIComponent(workspace)}/roles`
+    )
+  ).data;
+
+export const createRole = async (
+  workspace: string,
+  input: {
+    readonly name: string;
+    readonly description: string;
+    readonly permissions: readonly string[];
+  }
+) =>
+  (
+    await mutate<{ readonly data: WorkspaceRole }>(
+      `/v1/workspaces/${encodeURIComponent(workspace)}/roles`,
+      "POST",
+      input
+    )
+  ).data;
+
+export const fetchGroups = async (workspace: string) =>
+  (
+    await request<{ readonly data: readonly WorkspaceGroup[] }>(
+      `/v1/workspaces/${encodeURIComponent(workspace)}/groups`
+    )
+  ).data;
+
+export const createGroup = (workspace: string, name: string, memberIds: readonly string[]) =>
+  mutate<{ readonly id: string }>(
+    `/v1/workspaces/${encodeURIComponent(workspace)}/groups`,
+    "POST",
+    { name, description: "", memberIds }
+  );
+
+export const fetchOnboarding = async () =>
+  (await request<{ readonly data: OnboardingProgress }>("/v1/me/onboarding")).data;
+
+export const saveOnboarding = async (progress: OnboardingProgress, complete = false) =>
+  (
+    await mutate<{ readonly data: OnboardingProgress }>("/v1/me/onboarding", "PUT", {
+      currentStep: progress.currentStep,
+      completedSteps: progress.completedSteps,
+      skippedSteps: progress.skippedSteps,
+      profile: progress.profile,
+      revision: progress.revision,
+      complete
+    })
+  ).data;
+
+export const createSampleWorkspace = () =>
+  mutate<{ readonly id: string; readonly label: string }>(
+    "/v1/me/onboarding/sample-workspaces",
+    "POST"
+  );
+
+export const removeSampleWorkspace = (sampleId: string) =>
+  mutate<{ readonly removed: number }>(
+    `/v1/me/onboarding/sample-workspaces/${encodeURIComponent(sampleId)}`,
+    "DELETE"
+  );
 
 export async function fetchWorkflows(): Promise<WorkflowSummary[]> {
   const response = await request<ApiEnvelope<WorkflowSummary[]>>(

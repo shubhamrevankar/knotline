@@ -1,0 +1,9 @@
+{
+  "id": "m05-access-review",
+  "kind": "manual",
+  "owner": "shurevan",
+  "recordedAt": "2026-07-31T23:55:00.000Z",
+  "schemaVersion": 1,
+  "status": "PASS",
+  "summary": "Reviewed workspace, invitation, ownership, permission-aware, responsive onboarding, sample-data, and clean-token browser surfaces."
+}

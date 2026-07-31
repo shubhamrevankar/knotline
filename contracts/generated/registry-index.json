@@ -2,72 +2,72 @@
   "entries": [
     {
       "count": 199,
-      "digest": "sha256:786b6516ca9a8eb35a16d9f3f92427d6902d1ab1634240285fd0480baab2c860",
+      "digest": "sha256:de291e2dbd5d17b37c423aa827dcc047c2348560c80e4700698033b64d782664",
       "file": "requirements.json",
       "name": "requirements"
     },
     {
       "count": 39,
-      "digest": "sha256:61fbc4c0054b727d84adce256d49af86d36efdcbbaca2dcb00677cd69d064ea7",
+      "digest": "sha256:7eab78cd002d3cf71d5db22f28c1c1f43a46bc16e362fcae0c2467a1cb7531be",
       "file": "milestones.json",
       "name": "milestones"
     },
     {
       "count": 105,
-      "digest": "sha256:c793ea81d48212eb03ed2cedc99e7ac33c83d31c5bc6912fcfd217c7c96c04d0",
+      "digest": "sha256:80e531bb88a0714c4a2fea3e92bb1eea74e2f0296da7a820f62b25a49d0b6944",
       "file": "routes.json",
       "name": "routes"
     },
     {
       "count": 6,
-      "digest": "sha256:7281c8d183973b38581801226dfccd608b389caa8fe63f3123f94d87fdb60109",
+      "digest": "sha256:2eb1366e49f91729ee9f5d0087248a7558d8d70b98c645c343616af4254a6438",
       "file": "route-states.json",
       "name": "routeStates"
     },
     {
       "count": 39,
-      "digest": "sha256:bfedf3ac3d0d488ac673077efb4fae3eb431d690389c6878676160d466299b00",
+      "digest": "sha256:3cc356ba5382c80746d5a3ea928fb97701fd574f7e8e4339f1601d848d816c93",
       "file": "journeys.json",
       "name": "journeys"
     },
     {
-      "count": 443,
-      "digest": "sha256:714dd3e8497168a6ab65b03dc040c31e8325756ce081a0af1aa2067a449142e5",
+      "count": 448,
+      "digest": "sha256:b21e9c8c82dd8084b5160cabda1363ef1190e0b625eabf5a8c92167ed1249489",
       "file": "api-operations.json",
       "name": "api"
     },
     {
       "count": 25,
-      "digest": "sha256:392cb9465674023976623a8692b2d75597e5e0520a1835a3ce505e65e9b4cf67",
+      "digest": "sha256:93c2b0a51226994b0fff1786e364967158f8842f7c2afac58c9c4b31d1abfa9a",
       "file": "external-gates.json",
       "name": "externalGates"
     },
     {
       "count": 199,
-      "digest": "sha256:c60082daa117587fab1a4d2fee22a74086f3c7637f18d0c4f5220275382b22d1",
+      "digest": "sha256:0a81d75e51d6c6b886b6c39cc53d7d036f7501bf7bba7db9db686fb0539cb095",
       "file": "traceability.json",
       "name": "traceability"
     },
     {
       "count": 79,
-      "digest": "sha256:c46f4ebfaa7dd1a8f115ed2cbcf142f47e787fd740170003c4ee774478922c69",
+      "digest": "sha256:2abb129534cc48de0637f161e0fdc4f4430bdb08db78b22d5cb4ad827144d686",
       "file": "environment-criteria.json",
       "name": "criteria"
     },
     {
       "count": 61,
-      "digest": "sha256:e154a138dbc34cb1687deb161997995e4bba37785deedea65b3ab7acb01f9e12",
+      "digest": "sha256:d29c9bbe94ef67e242d1bb401c394e589acb969777efbe19cab9125ff75160de",
       "file": "gate-activation.json",
       "name": "gateActivation"
     },
     {
       "count": 7,
-      "digest": "sha256:c20835e7ff4f9214e6c3cdb43d4109fe32a0b75ab76a91b4a04d16a7545403c7",
+      "digest": "sha256:338e680e449c94404ee942cbe522ce0d13feab57adf15c831ffc99b0590d63db",
       "file": "evidence-schemas.json",
       "name": "schemas"
     }
   ],
   "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
-  "planDigest": "sha256:10785726ab65305bdb8fad3aea960dbb6d2f82293bd5b7e11f7bfb025fb3ec2e",
+  "planDigest": "sha256:7017abb7ab2064f89112aa5ddb621beab5c87dcb13ec2a43ff9d3dc61190d728",
   "schemaVersion": 1
 }

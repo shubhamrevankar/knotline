@@ -2271,16 +2271,20 @@ GET    /v1/workspaces/:workspaceId
 PATCH  /v1/workspaces/:workspaceId
 DELETE /v1/workspaces/:workspaceId
 POST   /v1/workspaces/:workspaceId/restorations
+POST   /v1/workspaces/:workspaceId/archive
+POST   /v1/workspaces/:workspaceId/switch
 
 GET    /v1/workspaces/:workspaceId/members
 GET    /v1/workspaces/:workspaceId/members/:memberId
 PATCH  /v1/workspaces/:workspaceId/members/:memberId
 DELETE /v1/workspaces/:workspaceId/members/:memberId
+POST   /v1/workspaces/:workspaceId/ownership-transfers
 POST   /v1/workspaces/:workspaceId/invitations
 GET    /v1/workspaces/:workspaceId/invitations
 POST   /v1/invitations/:invitationId/resends
 DELETE /v1/invitations/:invitationId
 POST   /edge/v1/invitation-responses
+POST   /edge/v1/invitation-responses/preview
 
 GET    /v1/workspaces/:workspaceId/groups
 POST   /v1/workspaces/:workspaceId/groups
@@ -2288,6 +2292,7 @@ PATCH  /v1/groups/:groupId
 DELETE /v1/groups/:groupId
 PUT    /v1/groups/:groupId/members/:userId
 DELETE /v1/groups/:groupId/members/:userId
+POST   /v1/workspaces/:workspaceId/organization-relationships
 
 GET    /v1/workspaces/:workspaceId/roles
 POST   /v1/workspaces/:workspaceId/roles
@@ -5731,7 +5736,7 @@ devices, and sign out without browser-readable tokens.
 
 ### M05 — Workspaces, invitations, onboarding, members, roles, and groups
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M04\
 **Required commit:** `feat: enable complete workspace onboarding and access control`
 

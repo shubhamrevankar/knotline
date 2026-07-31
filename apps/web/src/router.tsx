@@ -14,6 +14,13 @@ import {
   SignInPage
 } from "./AuthPages.js";
 import { msg } from "./i18n.js";
+import {
+  InvitationAcceptPage,
+  MembersPage,
+  OnboardingPage,
+  RolesPage,
+  WorkspaceSettingsPage
+} from "./M05Pages.js";
 import { WEB_ROUTE_MANIFEST, type WebRouteManifestEntry } from "./routes/manifest.js";
 
 const WorkflowApp = lazy(async () => {
@@ -317,6 +324,10 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
     );
   if (route.id === "route.app.profile.sessions") return <SessionsPage />;
   if (route.id === "route.app.profile") return <ProfilePage />;
+  if (route.id === "route.app.onboarding") return <OnboardingPage />;
+  if (route.id === "route.app.settings.workspace") return <WorkspaceSettingsPage />;
+  if (route.id === "route.app.settings.members") return <MembersPage />;
+  if (route.id === "route.app.settings.roles") return <RolesPage />;
   return (
     <AuthGate>
       <div className="registered-shell">
@@ -368,6 +379,7 @@ function CanonicalRoute({ route }: { route: WebRouteManifestEntry }) {
   if (route.id === "route.auth.check-email") return <CheckEmailPage />;
   if (route.id === "route.auth.magic.callback") return <MagicCallbackPage />;
   if (route.id === "route.auth.google.callback") return <GoogleCallbackPage />;
+  if (route.id === "route.invitations.accept") return <InvitationAcceptPage />;
   if (route.plane === "operator") return <OperatorRoute route={route} />;
   if (route.plane === "customer") return <CustomerRoute route={route} />;
   return <PublicRoute route={route} />;

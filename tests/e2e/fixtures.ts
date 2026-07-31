@@ -41,8 +41,107 @@ export const test = base.extend<{ consoleMessages: string[] }>({
               }
             ],
             activeWorkspaceId: "10000000-0000-4000-8000-000000000001",
+            permissions: ["*"],
+            role: "owner",
             serverTime: "2026-07-31T00:00:00.000Z"
           };
+        } else if (pathname === "/v1/workspaces") {
+          body = {
+            data: [
+              {
+                id: "10000000-0000-4000-8000-000000000001",
+                slug: "northstar-studio",
+                name: "Northstar Studio",
+                state: "active",
+                timezone: "UTC",
+                locale: "en",
+                region: "local",
+                role: "owner",
+                isSandbox: false
+              },
+              {
+                id: "10000000-0000-4000-8000-000000000002",
+                slug: "sample-lab",
+                name: "Sample Lab",
+                state: "active",
+                timezone: "UTC",
+                locale: "en",
+                region: "local",
+                role: "admin",
+                isSandbox: true,
+                sandboxLabel: "Sandbox — sample data"
+              }
+            ]
+          };
+        } else if (pathname.endsWith("/members")) {
+          body = {
+            data: [
+              {
+                id: "40000000-0000-4000-8000-000000000001",
+                userId: "20000000-0000-4000-8000-000000000001",
+                email: "ava@northstar.example",
+                displayName: "Ava North",
+                role: "owner",
+                state: "active",
+                createdAt: "2026-07-31T00:00:00.000Z"
+              },
+              {
+                id: "40000000-0000-4000-8000-000000000002",
+                userId: "20000000-0000-4000-8000-000000000002",
+                email: "sam@northstar.example",
+                displayName: "Sam Rivers",
+                role: "builder",
+                state: "active",
+                createdAt: "2026-07-31T00:00:00.000Z"
+              }
+            ]
+          };
+        } else if (pathname.endsWith("/invitations")) {
+          body = { data: [] };
+        } else if (pathname.endsWith("/roles")) {
+          body = {
+            data: [
+              {
+                id: "50000000-0000-4000-8000-000000000001",
+                key: "owner",
+                name: "Owner",
+                description: "Built-in owner role",
+                permissions: ["*"],
+                system: true
+              }
+            ]
+          };
+        } else if (pathname.endsWith("/groups")) {
+          body = { data: [] };
+        } else if (pathname === "/v1/me/onboarding") {
+          body = {
+            data: {
+              workspaceId: "10000000-0000-4000-8000-000000000001",
+              userId: "20000000-0000-4000-8000-000000000001",
+              currentStep: "role_use_case",
+              completedSteps: [],
+              skippedSteps: [],
+              profile: {},
+              revision: 1
+            }
+          };
+        } else if (pathname === "/v1/me/onboarding/sample-workspaces") {
+          body = { id: "60000000-0000-4000-8000-000000000001", label: "SAMPLE DATA" };
+        } else if (pathname === "/edge/v1/invitation-responses/preview") {
+          body = {
+            data: {
+              id: "70000000-0000-4000-8000-000000000001",
+              workspaceId: "10000000-0000-4000-8000-000000000001",
+              workspaceName: "Northstar Studio",
+              email: "ava@northstar.example",
+              role: "builder",
+              state: "pending",
+              expiresAt: "2026-08-01T00:00:00.000Z",
+              createdAt: "2026-07-31T00:00:00.000Z"
+            }
+          };
+        } else if (pathname === "/edge/v1/invitation-responses") {
+          body = { result: "accepted" };
         } else if (pathname === "/v1/me") {
           body = {
             data: {

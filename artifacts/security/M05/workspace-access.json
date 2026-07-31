@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "image": "pgvector/pgvector:0.8.1-pg17-trixie@sha256:137f044b0efe3d57f39b972b9b53641b1f2045b99d879e298bbf514a25787dcf",
+  "result": {
+    "workspace": {
+      "create": true,
+      "switch": true,
+      "sandboxLabel": true,
+      "multiWorkspace": true
+    },
+    "invitation": {
+      "previewBinding": true,
+      "accept": true,
+      "replay": true,
+      "forwardingRejected": true
+    },
+    "access": {
+      "personaMatrix": true,
+      "permissionCeiling": true,
+      "lastOwner": true,
+      "transfer": true
+    },
+    "groups": {
+      "membership": true,
+      "cycleRejected": true
+    },
+    "onboarding": {
+      "persisted": true,
+      "skipResume": true,
+      "revisionConflict": true
+    },
+    "sampleData": {
+      "labeled": true,
+      "removed": true
+    },
+    "isolation": {
+      "rls": true
+    },
+    "auditEvents": 11
+  }
+}

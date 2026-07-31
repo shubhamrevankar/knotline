@@ -1,5 +1,5 @@
 {
-  "milestone": "M03",
+  "milestone": "M05",
   "planDigest": "sha256:7017abb7ab2064f89112aa5ddb621beab5c87dcb13ec2a43ff9d3dc61190d728",
   "routeRegistryDigest": "sha256:80e531bb88a0714c4a2fea3e92bb1eea74e2f0296da7a820f62b25a49d0b6944",
   "routes": [
@@ -3704,122 +3704,242 @@
       "routeId": "route.app.onboarding",
       "states": [
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.loading-skeleton",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading-skeleton"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.first-use-empty",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "first-use-empty"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.filtered-empty",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "filtered-empty"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.partial-page",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-page"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.refresh-stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "refresh-stale"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.error-retry",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error-retry"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.session-expired",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "session-expired"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.plan-limit",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.404",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "404"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.degraded-dependency",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-dependency"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.bulk-pending-partial",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "bulk-pending-partial"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.archived-scope",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-scope"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.onboarding.edit-conflict-unless-saved-view-mutation",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-unless-saved-view-mutation"
         }
@@ -3829,122 +3949,242 @@
       "routeId": "route.app.profile",
       "states": [
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.loading-skeleton",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading-skeleton"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.first-use-empty",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "first-use-empty"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.filtered-empty",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "filtered-empty"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.partial-page",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-page"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.refresh-stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "refresh-stale"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.error-retry",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error-retry"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.session-expired",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "session-expired"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.plan-limit",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.404",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "404"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.degraded-dependency",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-dependency"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.bulk-pending-partial",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "bulk-pending-partial"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.archived-scope",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-scope"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.edit-conflict-unless-saved-view-mutation",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-unless-saved-view-mutation"
         }
@@ -4079,122 +4319,242 @@
       "routeId": "route.app.profile.sessions",
       "states": [
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.loading-skeleton",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading-skeleton"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.first-use-empty",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "first-use-empty"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.filtered-empty",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "filtered-empty"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.partial-page",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-page"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.refresh-stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "refresh-stale"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.error-retry",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error-retry"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.session-expired",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "session-expired"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.plan-limit",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.404",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "404"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.degraded-dependency",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-dependency"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.bulk-pending-partial",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "bulk-pending-partial"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.archived-scope",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-scope"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.app.profile.sessions.edit-conflict-unless-saved-view-mutation",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-unless-saved-view-mutation"
         }
@@ -5819,146 +6179,290 @@
       "routeId": "route.app.settings.members",
       "states": [
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.loading",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.draft-saving-saved",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "draft-saving-saved"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.validation",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "validation"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.pending",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "pending"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.success",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.conflict",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "conflict"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.plan-limit",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.missing-deleted",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing-deleted"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.destructive-confirm",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "destructive-confirm"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.partial-degraded-dependency",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-degraded-dependency"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.archived-suspended",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-suspended"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.step-up",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "step-up"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.policy-denial",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "policy-denial"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.members.none-without-recorded-reason",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "none-without-recorded-reason"
         }
@@ -6266,146 +6770,290 @@
       "routeId": "route.app.settings.roles",
       "states": [
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.loading",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.draft-saving-saved",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "draft-saving-saved"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.validation",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "validation"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.pending",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "pending"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.success",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.conflict",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "conflict"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.plan-limit",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.missing-deleted",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing-deleted"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.destructive-confirm",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "destructive-confirm"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.partial-degraded-dependency",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-degraded-dependency"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.archived-suspended",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-suspended"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.step-up",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "step-up"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.policy-denial",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "policy-denial"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.roles.none-without-recorded-reason",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "none-without-recorded-reason"
         }
@@ -7011,146 +7659,290 @@
       "routeId": "route.app.settings.workspace",
       "states": [
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.loading",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.draft-saving-saved",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "draft-saving-saved"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.validation",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "validation"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.pending",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "pending"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.success",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.conflict",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "conflict"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.plan-limit",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.missing-deleted",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing-deleted"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.destructive-confirm",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "destructive-confirm"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.partial-degraded-dependency",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-degraded-dependency"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.archived-suspended",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-suspended"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.step-up",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "step-up"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.policy-denial",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "policy-denial"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.app.settings.workspace.none-without-recorded-reason",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "none-without-recorded-reason"
         }
@@ -8982,106 +9774,210 @@
       "routeId": "route.auth.check-email",
       "states": [
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.check-email.loading-pending",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading-pending"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.check-email.success",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.check-email.validation",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "validation"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.check-email.empty-result",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "empty-result"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.check-email.retryable-final-error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "retryable-final-error"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.check-email.rate-limit",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "rate-limit"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.check-email.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.check-email.404",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "404"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.check-email.provider-degraded",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "provider-degraded"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.check-email.consent-challenge",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "consent-challenge"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.check-email.expired-replayed-token",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "expired-replayed-token"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.check-email.partial-result",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-result"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.check-email.workspace-archive-unless-invitation-targets-one",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "workspace-archive-unless-invitation-targets-one"
         }
@@ -9091,106 +9987,210 @@
       "routeId": "route.auth.google.callback",
       "states": [
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.google.callback.loading-pending",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading-pending"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.google.callback.success",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.google.callback.validation",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "validation"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.google.callback.empty-result",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "empty-result"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.google.callback.retryable-final-error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "retryable-final-error"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.google.callback.rate-limit",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "rate-limit"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.google.callback.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.google.callback.404",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "404"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.google.callback.provider-degraded",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "provider-degraded"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.google.callback.consent-challenge",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "consent-challenge"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.google.callback.expired-replayed-token",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "expired-replayed-token"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.google.callback.partial-result",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-result"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.google.callback.workspace-archive-unless-invitation-targets-one",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "workspace-archive-unless-invitation-targets-one"
         }
@@ -9200,106 +10200,210 @@
       "routeId": "route.auth.magic.callback",
       "states": [
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.magic.callback.loading-pending",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading-pending"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.magic.callback.success",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.magic.callback.validation",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "validation"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.magic.callback.empty-result",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "empty-result"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.magic.callback.retryable-final-error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "retryable-final-error"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.magic.callback.rate-limit",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "rate-limit"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.magic.callback.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.magic.callback.404",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "404"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.magic.callback.provider-degraded",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "provider-degraded"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.magic.callback.consent-challenge",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "consent-challenge"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.magic.callback.expired-replayed-token",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "expired-replayed-token"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.magic.callback.partial-result",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-result"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.magic.callback.workspace-archive-unless-invitation-targets-one",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "workspace-archive-unless-invitation-targets-one"
         }
@@ -9309,106 +10413,210 @@
       "routeId": "route.auth.sign-in",
       "states": [
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.sign-in.loading-pending",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading-pending"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.sign-in.success",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.sign-in.validation",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "validation"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.sign-in.empty-result",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "empty-result"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.sign-in.retryable-final-error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "retryable-final-error"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.sign-in.rate-limit",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "rate-limit"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.sign-in.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.sign-in.404",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "404"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.sign-in.provider-degraded",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "provider-degraded"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.sign-in.consent-challenge",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "consent-challenge"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.sign-in.expired-replayed-token",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "expired-replayed-token"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.sign-in.partial-result",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-result"
         },
         {
-          "activationMilestone": "M04",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M04; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M04/test-results/accessibility",
+            "authorizationPersona": "new or returning customer identity",
+            "browserTest": "tests/e2e/auth.spec.ts",
+            "evidenceUri": "artifact://M04/test-results/browser",
+            "expectedTelemetry": "content-free auth route/state and request ID only",
+            "fixture": "auth-route.route.auth.sign-in.workspace-archive-unless-invitation-targets-one",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "workspace-archive-unless-invitation-targets-one"
         }
@@ -10517,106 +11725,210 @@
       "routeId": "route.invitations.accept",
       "states": [
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.invitations.accept.loading-pending",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading-pending"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.invitations.accept.success",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.invitations.accept.validation",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "validation"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.invitations.accept.empty-result",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "empty-result"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.invitations.accept.retryable-final-error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "retryable-final-error"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.invitations.accept.rate-limit",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "rate-limit"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.invitations.accept.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.invitations.accept.404",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "404"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.invitations.accept.provider-degraded",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "provider-degraded"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.invitations.accept.consent-challenge",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "consent-challenge"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.invitations.accept.expired-replayed-token",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "expired-replayed-token"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.invitations.accept.partial-result",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-result"
         },
         {
-          "activationMilestone": "M05",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M05; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M05/test-results/accessibility",
+            "authorizationPersona": "owner, admin, builder, member, auditor, or invited identity",
+            "browserTest": "tests/e2e/workspace-access.spec.ts",
+            "evidenceUri": "artifact://M05/test-results/browser",
+            "expectedTelemetry": "content-free workspace access event and request ID only",
+            "fixture": "workspace-access.route.invitations.accept.workspace-archive-unless-invitation-targets-one",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "workspace-archive-unless-invitation-targets-one"
         }

@@ -60,6 +60,13 @@ export const identitySessionPayloadV1Schema = z
   })
   .passthrough();
 
+export const workspaceAccessPayloadV1Schema = z
+  .object({
+    occurredAt: z.iso.datetime().optional(),
+    reason: z.string().max(160).optional()
+  })
+  .passthrough();
+
 export const EVENT_SCHEMA_REGISTRY = [
   {
     eventType: "workflow.created",
@@ -96,7 +103,36 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "identity-platform",
     schema: identitySessionPayloadV1Schema
-  }
+  },
+  ...[
+    "workspace.created",
+    "workspace.updated",
+    "workspace.archived",
+    "workspace.active",
+    "workspace.deleting",
+    "member.updated",
+    "member.removed",
+    "ownership.transferred",
+    "role.created",
+    "role.updated",
+    "role.deleted",
+    "invitation.created",
+    "invitation.cancelled",
+    "invitation.accepted",
+    "invitation.declined",
+    "group.created",
+    "group.updated",
+    "group.deleted",
+    "organization.relationship.created",
+    "onboarding.updated",
+    "sandbox.sample.created",
+    "sandbox.sample.removed"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "workspace-access",
+    schema: workspaceAccessPayloadV1Schema
+  }))
 ] as const;
 
 export type EventEnvelope = z.infer<typeof eventEnvelopeSchema>;

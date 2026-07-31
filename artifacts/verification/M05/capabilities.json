@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/security/M05/workspace-access.json",
+      "verifiedAt": "2026-07-31T23:55:00.000Z"
+    },
+    "externalGates": [],
+    "id": "workspace.access-onboarding",
+    "owner": {
+      "contact": "shurevan",
+      "team": "workspace-access"
+    },
+    "runbook": "docs/operations/knotline/workspace-access-onboarding.md",
+    "status": "DEMO",
+    "summary": "Multi-workspace lifecycle, invitations, RBAC, groups, ownership, and resumable onboarding are verified locally."
+  }
+]

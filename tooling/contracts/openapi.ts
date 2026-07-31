@@ -84,7 +84,7 @@ export function serializedOpenApi(): string {
 async function assertRuntimeRouteParity(): Promise<void> {
   const source = await readFile(apiSource, "utf8");
   const implemented = [
-    ...source.matchAll(/app\.(get|post|patch|delete)(?:<[\s\S]*?>)?\(\s*"([^"]+)"/gu)
+    ...source.matchAll(/app\.(get|post|put|patch|delete)(?:<[\s\S]*?>)?\(\s*"([^"]+)"/gu)
   ]
     .map((match) => {
       const method = match[1]?.toUpperCase();

@@ -142,6 +142,76 @@
       "retentionDays": 90,
       "exportHandler": "security-export",
       "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "permission_catalog",
+      "class": "access.permission",
+      "retentionDays": 36500,
+      "exportHandler": "access-export",
+      "deleteHandler": "never-delete"
+    },
+    {
+      "name": "workspace_roles",
+      "class": "access.role",
+      "retentionDays": 2555,
+      "exportHandler": "workspace-export",
+      "deleteHandler": "workspace-delete"
+    },
+    {
+      "name": "workspace_invitations",
+      "class": "access.invitation",
+      "retentionDays": 365,
+      "exportHandler": "workspace-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "workspace_groups",
+      "class": "access.group",
+      "retentionDays": 2555,
+      "exportHandler": "workspace-export",
+      "deleteHandler": "workspace-delete"
+    },
+    {
+      "name": "workspace_group_memberships",
+      "class": "access.groupmembership",
+      "retentionDays": 2555,
+      "exportHandler": "workspace-export",
+      "deleteHandler": "workspace-delete"
+    },
+    {
+      "name": "organization_relationships",
+      "class": "organization.relationship",
+      "retentionDays": 2555,
+      "exportHandler": "workspace-export",
+      "deleteHandler": "workspace-delete"
+    },
+    {
+      "name": "resource_grants",
+      "class": "access.resourcegrant",
+      "retentionDays": 2555,
+      "exportHandler": "workspace-export",
+      "deleteHandler": "workspace-delete"
+    },
+    {
+      "name": "onboarding_progress",
+      "class": "product.onboarding",
+      "retentionDays": 2555,
+      "exportHandler": "workspace-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "sandbox_resources",
+      "class": "product.sampledata",
+      "retentionDays": 90,
+      "exportHandler": "workspace-export",
+      "deleteHandler": "workspace-delete"
+    },
+    {
+      "name": "guest_identities",
+      "class": "access.guest",
+      "retentionDays": 365,
+      "exportHandler": "security-export",
+      "deleteHandler": "retention-delete"
     }
   ],
   "indexes": [
@@ -189,7 +259,24 @@
     "security_notifications_pkey",
     "security_notifications_user_created_idx",
     "auth_email_deliveries_pkey",
-    "auth_email_deliveries_provider_message_id_key"
+    "auth_email_deliveries_provider_message_id_key",
+    "permission_catalog_pkey",
+    "workspace_roles_pkey",
+    "workspace_roles_workspace_id_normalized_name_key",
+    "workspace_invitations_pkey",
+    "workspace_invitations_token_hash_key",
+    "workspace_invitations_pending_email_idx",
+    "workspace_invitations_workspace_state_idx",
+    "workspace_groups_pkey",
+    "workspace_groups_workspace_id_normalized_name_key",
+    "workspace_groups_external_key_idx",
+    "workspace_group_memberships_pkey",
+    "organization_relationships_pkey",
+    "organization_relationships_report_idx",
+    "resource_grants_pkey",
+    "onboarding_progress_pkey",
+    "sandbox_resources_pkey",
+    "guest_identities_pkey"
   ],
   "caches": []
 }

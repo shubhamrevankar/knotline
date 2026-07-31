@@ -1,6 +1,7 @@
 import { loadConfig } from "@knotline/config";
 import {
   PostgresAuthRepository,
+  PostgresWorkspaceRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -15,6 +16,7 @@ import {
   RemoteGoogleOidcClient,
   SesAuthMailer
 } from "./auth.js";
+import { CaptureInvitationMailer, SesInvitationMailer, WorkspaceService } from "./workspace.js";
 
 const environment = loadConfig(process.env);
 if (environment.environment === "local") {
@@ -33,6 +35,7 @@ const repository = new PostgresWorkflowRepository(pool, (observation) => {
   process.stdout.write(`${JSON.stringify({ event: "database.query", ...observation })}\n`);
 });
 const authRepository = new PostgresAuthRepository(pool);
+const workspaceRepository = new PostgresWorkspaceRepository(pool);
 const isLocal = environment.environment === "local" || environment.environment === "ci";
 const googleIssuer = isLocal
   ? `${environment.api.publicOrigin.origin}/__local/oidc`
@@ -63,6 +66,7 @@ const googleAuthorizationEndpoint = isLocal
   : (process.env.GOOGLE_OIDC_AUTHORIZATION_ENDPOINT ??
     "https://accounts.google.com/o/oauth2/v2/auth");
 const captureMailer = isLocal ? new CaptureAuthMailer() : undefined;
+const captureInvitationMailer = isLocal ? new CaptureInvitationMailer() : undefined;
 const mailer =
   captureMailer ??
   new SesAuthMailer(
@@ -90,6 +94,17 @@ const auth = new AuthService(authRepository, mailer, oidc, {
     authorizationEndpoint: googleAuthorizationEndpoint
   }
 });
+const invitationMailer =
+  captureInvitationMailer ??
+  new SesInvitationMailer(
+    process.env.AWS_SES_REGION ?? "us-east-1",
+    process.env.AUTH_EMAIL_FROM ?? "signin@localhost.invalid"
+  );
+const workspace = new WorkspaceService(
+  workspaceRepository,
+  invitationMailer,
+  environment.api.webOrigin.origin
+);
 
 const app = await buildApp({
   environment: environment.environment,
@@ -97,7 +112,9 @@ const app = await buildApp({
   webOrigin: environment.api.webOrigin.origin,
   repository,
   auth,
+  workspace,
   ...(captureMailer ? { captureMailer } : {}),
+  ...(captureInvitationMailer ? { captureInvitationMailer } : {}),
   ...(process.env.KNOTLINE_TRUSTED_PROXY
     ? { trustedProxy: process.env.KNOTLINE_TRUSTED_PROXY }
     : {}),

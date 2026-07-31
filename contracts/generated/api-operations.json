@@ -120,6 +120,13 @@
       "sourceSection": "10.4"
     },
     {
+      "exposure": "public_anonymous",
+      "id": "post-edge-v1-invitation-responses-preview",
+      "method": "POST",
+      "path": "/edge/v1/invitation-responses/preview",
+      "sourceSection": "10.4"
+    },
+    {
       "exposure": "platform_operator_auth",
       "id": "get-ops-callbacks-v1-auth-oidc",
       "method": "GET",
@@ -2515,6 +2522,13 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-archive",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/archive",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "get-v1-workspaces-by-workspace-id-audit-events",
       "method": "GET",
       "path": "/v1/workspaces/:workspaceId/audit-events",
@@ -2795,6 +2809,13 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-organization-relationships",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/organization-relationships",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "get-v1-workspaces-by-workspace-id-outgoing-webhooks",
       "method": "GET",
       "path": "/v1/workspaces/:workspaceId/outgoing-webhooks",
@@ -2806,6 +2827,13 @@
       "method": "POST",
       "path": "/v1/workspaces/:workspaceId/outgoing-webhooks",
       "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-ownership-transfers",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/ownership-transfers",
+      "sourceSection": "10.4"
     },
     {
       "exposure": "browser_internal",
@@ -2984,6 +3012,13 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-switch",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/switch",
+      "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "get-v1-workspaces-by-workspace-id-task-queues",
       "method": "GET",
       "path": "/v1/workspaces/:workspaceId/task-queues",
@@ -3103,6 +3138,6 @@
     }
   ],
   "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
-  "planDigest": "sha256:10785726ab65305bdb8fad3aea960dbb6d2f82293bd5b7e11f7bfb025fb3ec2e",
+  "planDigest": "sha256:7017abb7ab2064f89112aa5ddb621beab5c87dcb13ec2a43ff9d3dc61190d728",
   "schemaVersion": 1
 }

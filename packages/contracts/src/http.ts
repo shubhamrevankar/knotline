@@ -121,7 +121,7 @@ const returnTargetSchema = z.object({ returnTarget: z.string().startsWith("/") }
 const emptySchema = z.undefined();
 
 export interface HttpRouteContract {
-  readonly method: "GET" | "POST" | "PATCH" | "DELETE";
+  readonly method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   readonly path: string;
   readonly operationId: string;
   readonly summary: string;
@@ -137,6 +137,243 @@ export interface HttpRouteContract {
   readonly requestBody?: z.ZodType;
   readonly responses: Readonly<Record<number, z.ZodType>>;
 }
+
+const genericDataSchema = z.unknown();
+const workspaceAccessContract = (
+  method: HttpRouteContract["method"],
+  path: string,
+  operationId: string,
+  summary: string,
+  successStatus = 200
+): HttpRouteContract => ({
+  method,
+  path,
+  operationId,
+  summary,
+  tags: ["Workspace access"],
+  exposure: path.startsWith("/edge/") ? "public_customer" : "browser_internal",
+  ...(method === "GET" || method === "DELETE" ? {} : { requestBody: genericDataSchema }),
+  responses: {
+    [successStatus]: genericDataSchema,
+    400: apiErrorSchema,
+    401: apiErrorSchema,
+    403: apiErrorSchema,
+    404: apiErrorSchema,
+    409: apiErrorSchema,
+    500: apiErrorSchema
+  }
+});
+
+const WORKSPACE_ACCESS_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  workspaceAccessContract("GET", "/v1/workspaces", "listWorkspaces", "List accessible workspaces"),
+  workspaceAccessContract(
+    "GET",
+    "/v1/workspaces/{workspaceId}",
+    "getWorkspace",
+    "Read a workspace"
+  ),
+  workspaceAccessContract("POST", "/v1/workspaces", "createWorkspace", "Create a workspace", 201),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/switch",
+    "switchWorkspace",
+    "Switch active workspace"
+  ),
+  workspaceAccessContract(
+    "PATCH",
+    "/v1/workspaces/{workspaceId}",
+    "updateWorkspace",
+    "Update workspace preferences"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/archive",
+    "archiveWorkspace",
+    "Archive a workspace",
+    204
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/restorations",
+    "restoreWorkspace",
+    "Restore a workspace"
+  ),
+  workspaceAccessContract(
+    "DELETE",
+    "/v1/workspaces/{workspaceId}",
+    "requestWorkspaceDeletion",
+    "Request workspace deletion",
+    202
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/workspaces/{workspaceId}/members",
+    "listWorkspaceMembers",
+    "List workspace members"
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/workspaces/{workspaceId}/members/{memberId}",
+    "getWorkspaceMember",
+    "Read a workspace member"
+  ),
+  workspaceAccessContract(
+    "PATCH",
+    "/v1/workspaces/{workspaceId}/members/{memberId}",
+    "updateWorkspaceMember",
+    "Update member access"
+  ),
+  workspaceAccessContract(
+    "DELETE",
+    "/v1/workspaces/{workspaceId}/members/{memberId}",
+    "removeWorkspaceMember",
+    "Remove and reassign a member",
+    204
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/ownership-transfers",
+    "transferWorkspaceOwnership",
+    "Transfer workspace ownership"
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/workspaces/{workspaceId}/invitations",
+    "listWorkspaceInvitations",
+    "List workspace invitations"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/invitations",
+    "createWorkspaceInvitation",
+    "Invite a workspace member",
+    201
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/invitations/{invitationId}/resends",
+    "resendWorkspaceInvitation",
+    "Rotate and resend an invitation"
+  ),
+  workspaceAccessContract(
+    "DELETE",
+    "/v1/invitations/{invitationId}",
+    "cancelWorkspaceInvitation",
+    "Cancel an invitation",
+    204
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/edge/v1/invitation-responses/preview",
+    "previewWorkspaceInvitation",
+    "Preview an email-bound invitation"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/edge/v1/invitation-responses",
+    "respondToWorkspaceInvitation",
+    "Accept or decline an invitation"
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/workspaces/{workspaceId}/roles",
+    "listWorkspaceRoles",
+    "List workspace roles"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/roles",
+    "createWorkspaceRole",
+    "Create a custom role",
+    201
+  ),
+  workspaceAccessContract("GET", "/v1/roles/{roleId}", "getWorkspaceRole", "Read a custom role"),
+  workspaceAccessContract(
+    "PATCH",
+    "/v1/roles/{roleId}",
+    "updateWorkspaceRole",
+    "Update a custom role"
+  ),
+  workspaceAccessContract(
+    "DELETE",
+    "/v1/roles/{roleId}",
+    "deleteWorkspaceRole",
+    "Delete an unused custom role",
+    204
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/workspaces/{workspaceId}/groups",
+    "listWorkspaceGroups",
+    "List workspace groups"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/groups",
+    "createWorkspaceGroup",
+    "Create a workspace group",
+    201
+  ),
+  workspaceAccessContract(
+    "PATCH",
+    "/v1/groups/{groupId}",
+    "updateWorkspaceGroup",
+    "Update a workspace group"
+  ),
+  workspaceAccessContract(
+    "DELETE",
+    "/v1/groups/{groupId}",
+    "deleteWorkspaceGroup",
+    "Delete a workspace group",
+    204
+  ),
+  workspaceAccessContract(
+    "PUT",
+    "/v1/groups/{groupId}/members/{userId}",
+    "addWorkspaceGroupMember",
+    "Add a group member",
+    204
+  ),
+  workspaceAccessContract(
+    "DELETE",
+    "/v1/groups/{groupId}/members/{userId}",
+    "removeWorkspaceGroupMember",
+    "Remove a group member",
+    204
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/workspaces/{workspaceId}/organization-relationships",
+    "createOrganizationRelationship",
+    "Create a reporting relationship",
+    201
+  ),
+  workspaceAccessContract(
+    "GET",
+    "/v1/me/onboarding",
+    "getOnboardingProgress",
+    "Read persisted onboarding progress"
+  ),
+  workspaceAccessContract(
+    "PUT",
+    "/v1/me/onboarding",
+    "updateOnboardingProgress",
+    "Update persisted onboarding progress"
+  ),
+  workspaceAccessContract(
+    "POST",
+    "/v1/me/onboarding/sample-workspaces",
+    "createOnboardingSampleWorkspace",
+    "Create labeled sample data",
+    201
+  ),
+  workspaceAccessContract(
+    "DELETE",
+    "/v1/me/onboarding/sample-workspaces/{sampleId}",
+    "removeOnboardingSampleWorkspace",
+    "Remove labeled sample data"
+  )
+];
 
 export const OPERATIONAL_PROBE_CONTRACTS = [
   {
@@ -158,6 +395,7 @@ export const OPERATIONAL_PROBE_CONTRACTS = [
 ] as const;
 
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

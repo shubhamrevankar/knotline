@@ -32,6 +32,7 @@ import {
   clearAuthCookies,
   parseCookies
 } from "./auth.js";
+import { type CaptureInvitationMailer, type WorkspaceService } from "./workspace.js";
 
 export interface BuildAppOptions {
   readonly environment: string;
@@ -39,7 +40,9 @@ export interface BuildAppOptions {
   readonly webOrigin: string;
   readonly repository: WorkflowRepository;
   readonly auth: AuthService;
+  readonly workspace?: WorkspaceService;
   readonly captureMailer?: CaptureAuthMailer;
+  readonly captureInvitationMailer?: CaptureInvitationMailer;
   readonly trustedProxy?: string;
   readonly mutationsDisabled?: boolean;
 }
@@ -95,7 +98,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   await app.register(cors, {
     origin: options.webOrigin,
     credentials: true,
-    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["accept", "content-type", "knotline-request-id", "x-csrf-token"],
     exposedHeaders: ["Knotline-Request-Id", "traceparent"]
   });
@@ -194,6 +197,15 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     reply: FastifyReply,
     cookies: { readonly sessionCookie: string; readonly csrfCookie: string }
   ) => reply.header("set-cookie", [cookies.sessionCookie, cookies.csrfCookie]);
+  const workspaceService = () => {
+    if (!options.workspace) throw new Error("Workspace service is not configured");
+    return options.workspace;
+  };
+  const workspaceParamsSchema = z.object({ workspaceId: z.string().uuid() }).strict();
+  const requireActiveWorkspace = (authenticated: AuthenticatedRequest, workspaceId: string) => {
+    if (authenticated.identity.activeWorkspaceId !== workspaceId)
+      throw new AuthFailure("WORKSPACE_NOT_FOUND", 404, "The workspace does not exist.");
+  };
 
   const magicRequestSchema = z
     .object({
@@ -319,13 +331,19 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
 
   app.get("/v1/me/bootstrap", async (request) => {
     const authenticated = await authenticate(request);
+    const workspaceBootstrap = options.workspace
+      ? await options.workspace.bootstrap(authenticated.identity, request.id)
+      : undefined;
     return {
       ...(await options.auth.bootstrap(authenticated.identity)),
-      permissions: ["workflow.read", "workflow.create"],
+      ...(workspaceBootstrap ?? {
+        permissions: ["workflow.read", "workflow.create"],
+        role: "owner",
+        onboarding: { state: "not_started" }
+      }),
       entitlements: { agents: true, integrations: true, audit: true },
       featureFlags: {},
-      notificationCount: 0,
-      onboarding: { state: "not_started" }
+      notificationCount: 0
     };
   });
 
@@ -368,6 +386,484 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       ...(body.timezone ? { timezone: body.timezone } : {})
     });
     return { data: { locale: user.locale, timezone: user.timezone } };
+  });
+
+  const workspaceCreateSchema = z
+    .object({
+      name: z.string().trim().min(1).max(160),
+      timezone: z.string().min(1).max(80).default("UTC"),
+      locale: z.string().min(2).max(20).default("en"),
+      region: z.string().min(2).max(40).default("local"),
+      sandbox: z.boolean().optional()
+    })
+    .strict();
+  app.get("/v1/workspaces", async (request) => {
+    const authenticated = await authenticate(request);
+    return { data: await workspaceService().listWorkspaces(authenticated.identity) };
+  });
+  app.get("/v1/workspaces/:workspaceId", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    const workspace = (await workspaceService().listWorkspaces(authenticated.identity)).find(
+      (candidate) => candidate.id === workspaceId
+    );
+    if (!workspace)
+      throw new AuthFailure("WORKSPACE_NOT_FOUND", 404, "The workspace does not exist.");
+    return { data: workspace };
+  });
+  app.post("/v1/workspaces", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const body = workspaceCreateSchema.parse(request.body);
+    const workspace = await workspaceService().createWorkspace(authenticated.identity, request.id, {
+      name: body.name,
+      timezone: body.timezone,
+      locale: body.locale,
+      region: body.region,
+      ...(body.sandbox === undefined ? {} : { sandbox: body.sandbox })
+    });
+    return reply.code(201).send({ data: workspace });
+  });
+  app.post("/v1/workspaces/:workspaceId/switch", async (request) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    await workspaceService().switchWorkspace(authenticated.identity, workspaceId);
+    return { activeWorkspaceId: workspaceId, cacheEpoch: Date.now() };
+  });
+  const workspaceUpdateSchema = workspaceCreateSchema
+    .pick({ name: true, timezone: true, locale: true, region: true })
+    .partial()
+    .strict();
+  app.patch("/v1/workspaces/:workspaceId", async (request) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const data = await workspaceService().updateWorkspace(
+      authenticated.identity,
+      request.id,
+      (() => {
+        const body = workspaceUpdateSchema.parse(request.body);
+        return {
+          ...(body.name === undefined ? {} : { name: body.name }),
+          ...(body.timezone === undefined ? {} : { timezone: body.timezone }),
+          ...(body.locale === undefined ? {} : { locale: body.locale }),
+          ...(body.region === undefined ? {} : { region: body.region })
+        };
+      })()
+    );
+    if (!data) throw new AuthFailure("WORKSPACE_NOT_FOUND", 404, "The workspace does not exist.");
+    return { data };
+  });
+  app.post("/v1/workspaces/:workspaceId/archive", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    await workspaceService().setWorkspaceState(authenticated.identity, request.id, "archived");
+    return reply.code(204).send();
+  });
+  app.post("/v1/workspaces/:workspaceId/restorations", async (request) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    await workspaceService().setWorkspaceState(authenticated.identity, request.id, "active");
+    return { restored: true };
+  });
+  app.delete("/v1/workspaces/:workspaceId", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    await workspaceService().setWorkspaceState(authenticated.identity, request.id, "deleting");
+    return reply.code(202).send({ deletionRequested: true });
+  });
+
+  app.get("/v1/workspaces/:workspaceId/members", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await workspaceService().members(authenticated.identity, request.id) };
+  });
+  const memberParamsSchema = z
+    .object({ workspaceId: z.string().uuid(), memberId: z.string().uuid() })
+    .strict();
+  app.get("/v1/workspaces/:workspaceId/members/:memberId", async (request) => {
+    const authenticated = await authenticate(request);
+    const params = memberParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, params.workspaceId);
+    const member = (await workspaceService().members(authenticated.identity, request.id)).find(
+      (candidate) => candidate.id === params.memberId
+    );
+    if (!member) throw new AuthFailure("MEMBER_NOT_FOUND", 404, "The member does not exist.");
+    return { data: member };
+  });
+  app.patch("/v1/workspaces/:workspaceId/members/:memberId", async (request) => {
+    const authenticated = await protectMutation(request);
+    const params = memberParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, params.workspaceId);
+    const body = z
+      .object({
+        role: z
+          .enum(["owner", "admin", "builder", "member", "approver", "billing", "auditor", "custom"])
+          .optional(),
+        customRoleId: z.string().uuid().optional(),
+        state: z.enum(["active", "suspended", "removed"]).optional()
+      })
+      .strict()
+      .parse(request.body);
+    const updated = await workspaceService().updateMember(
+      authenticated.identity,
+      request.id,
+      params.memberId,
+      {
+        ...(body.role === undefined ? {} : { role: body.role }),
+        ...(body.customRoleId === undefined ? {} : { customRoleId: body.customRoleId }),
+        ...(body.state === undefined ? {} : { state: body.state })
+      }
+    );
+    if (!updated) throw new AuthFailure("MEMBER_NOT_FOUND", 404, "The member does not exist.");
+    return { updated: true };
+  });
+  app.post("/v1/workspaces/:workspaceId/ownership-transfers", async (request) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const body = z.object({ targetMemberId: z.string().uuid() }).strict().parse(request.body);
+    const transferred = await workspaceService().transferOwnership(
+      authenticated.identity,
+      request.id,
+      body.targetMemberId
+    );
+    if (!transferred)
+      throw new AuthFailure(
+        "OWNERSHIP_TRANSFER_INVALID",
+        409,
+        "Ownership could not be transferred."
+      );
+    return { transferred: true };
+  });
+  app.delete("/v1/workspaces/:workspaceId/members/:memberId", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const params = memberParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, params.workspaceId);
+    const query = z.object({ reassignToMemberId: z.string().uuid() }).parse(request.query);
+    const removed = await workspaceService().removeMember(
+      authenticated.identity,
+      request.id,
+      params.memberId,
+      query.reassignToMemberId
+    );
+    if (!removed) throw new AuthFailure("MEMBER_NOT_FOUND", 404, "The member does not exist.");
+    return reply.code(204).send();
+  });
+
+  const invitationRoleSchema = z.enum([
+    "admin",
+    "builder",
+    "member",
+    "approver",
+    "billing",
+    "auditor",
+    "custom"
+  ]);
+  app.get("/v1/workspaces/:workspaceId/invitations", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await workspaceService().invitations(authenticated.identity, request.id) };
+  });
+  app.post("/v1/workspaces/:workspaceId/invitations", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const body = z
+      .object({
+        email: z
+          .string()
+          .email()
+          .transform((value) => value.toLowerCase()),
+        role: invitationRoleSchema,
+        customRoleId: z.string().uuid().optional()
+      })
+      .strict()
+      .parse(request.body);
+    const result = await workspaceService().invite(authenticated.identity, request.id, {
+      email: body.email,
+      role: body.role,
+      ...(body.customRoleId === undefined ? {} : { customRoleId: body.customRoleId })
+    });
+    if (result === "existing_member")
+      throw new AuthFailure("MEMBER_ALREADY_EXISTS", 409, "This person is already a member.");
+    return reply.code(201).send({ data: result });
+  });
+  const invitationParamsSchema = z.object({ invitationId: z.string().uuid() }).strict();
+  app.post("/v1/invitations/:invitationId/resends", async (request) => {
+    const authenticated = await protectMutation(request);
+    const { invitationId } = invitationParamsSchema.parse(request.params);
+    return {
+      data: await workspaceService().resendInvitation(
+        authenticated.identity,
+        request.id,
+        invitationId
+      )
+    };
+  });
+  app.delete("/v1/invitations/:invitationId", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { invitationId } = invitationParamsSchema.parse(request.params);
+    const cancelled = await workspaceService().cancelInvitation(
+      authenticated.identity,
+      request.id,
+      invitationId
+    );
+    if (!cancelled)
+      throw new AuthFailure("INVITATION_NOT_FOUND", 404, "The invitation does not exist.");
+    return reply.code(204).send();
+  });
+  const invitationResponseSchema = z
+    .object({ token: z.string().min(32).max(256), response: z.enum(["accept", "decline"]) })
+    .strict();
+  app.post("/edge/v1/invitation-responses/preview", async (request) => {
+    const authenticated = await authenticate(request);
+    const body = invitationResponseSchema.pick({ token: true }).parse(request.body);
+    const invitation = await workspaceService().previewInvitation(
+      authenticated.identity,
+      body.token
+    );
+    if (!invitation)
+      throw new AuthFailure(
+        "INVITATION_INVALID",
+        404,
+        "The invitation is not valid for this account."
+      );
+    return { data: invitation };
+  });
+  app.post("/edge/v1/invitation-responses", async (request) => {
+    const authenticated = await protectMutation(request);
+    const body = invitationResponseSchema.parse(request.body);
+    const result = await workspaceService().respondToInvitation(
+      authenticated.identity,
+      request.id,
+      body.token,
+      body.response
+    );
+    if (["invalid", "expired", "used"].includes(result))
+      throw new AuthFailure(
+        `INVITATION_${result.toUpperCase()}`,
+        409,
+        "The invitation cannot be used."
+      );
+    return { result };
+  });
+
+  app.get("/v1/workspaces/:workspaceId/roles", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await workspaceService().roles(authenticated.identity, request.id) };
+  });
+  const roleBodySchema = z
+    .object({
+      name: z.string().trim().min(1).max(80),
+      description: z.string().max(500).default(""),
+      permissions: z
+        .array(z.string().regex(/^[a-z]+(?:\.[a-z]+)+$/u))
+        .min(1)
+        .max(40)
+    })
+    .strict();
+  app.post("/v1/workspaces/:workspaceId/roles", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const role = await workspaceService().saveRole(
+      authenticated.identity,
+      request.id,
+      roleBodySchema.parse(request.body)
+    );
+    return reply.code(201).send({ data: role });
+  });
+  const roleParamsSchema = z.object({ roleId: z.string().uuid() }).strict();
+  app.get("/v1/roles/:roleId", async (request) => {
+    const authenticated = await authenticate(request);
+    const { roleId } = roleParamsSchema.parse(request.params);
+    const role = (await workspaceService().roles(authenticated.identity, request.id)).find(
+      (candidate) => candidate.id === roleId
+    );
+    if (!role) throw new AuthFailure("ROLE_NOT_FOUND", 404, "The role does not exist.");
+    return { data: role };
+  });
+  app.patch("/v1/roles/:roleId", async (request) => {
+    const authenticated = await protectMutation(request);
+    const { roleId } = roleParamsSchema.parse(request.params);
+    return {
+      data: await workspaceService().saveRole(authenticated.identity, request.id, {
+        id: roleId,
+        ...roleBodySchema.parse(request.body)
+      })
+    };
+  });
+  app.delete("/v1/roles/:roleId", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { roleId } = roleParamsSchema.parse(request.params);
+    const deleted = await workspaceService().deleteRole(authenticated.identity, request.id, roleId);
+    if (!deleted)
+      throw new AuthFailure("ROLE_IN_USE", 409, "The role is built in or still assigned.");
+    return reply.code(204).send();
+  });
+
+  app.get("/v1/workspaces/:workspaceId/groups", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await workspaceService().groups(authenticated.identity, request.id) };
+  });
+  const groupBodySchema = z
+    .object({
+      name: z.string().trim().min(1).max(120),
+      description: z.string().max(500).default(""),
+      memberIds: z.array(z.string().uuid()).max(500).default([])
+    })
+    .strict();
+  app.post("/v1/workspaces/:workspaceId/groups", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const id = await workspaceService().saveGroup(
+      authenticated.identity,
+      request.id,
+      groupBodySchema.parse(request.body)
+    );
+    return reply.code(201).send({ id });
+  });
+  const groupParamsSchema = z.object({ groupId: z.string().uuid() }).strict();
+  app.patch("/v1/groups/:groupId", async (request) => {
+    const authenticated = await protectMutation(request);
+    const { groupId } = groupParamsSchema.parse(request.params);
+    const id = await workspaceService().saveGroup(authenticated.identity, request.id, {
+      id: groupId,
+      ...groupBodySchema.parse(request.body)
+    });
+    return { id };
+  });
+  app.delete("/v1/groups/:groupId", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { groupId } = groupParamsSchema.parse(request.params);
+    const deleted = await workspaceService().deleteGroup(
+      authenticated.identity,
+      request.id,
+      groupId
+    );
+    if (!deleted) throw new AuthFailure("GROUP_NOT_FOUND", 404, "The group does not exist.");
+    return reply.code(204).send();
+  });
+  const groupMemberParamsSchema = z
+    .object({ groupId: z.string().uuid(), userId: z.string().uuid() })
+    .strict();
+  app.put("/v1/groups/:groupId/members/:userId", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const params = groupMemberParamsSchema.parse(request.params);
+    const group = (await workspaceService().groups(authenticated.identity, request.id)).find(
+      (candidate) => candidate.id === params.groupId
+    );
+    if (!group) throw new AuthFailure("GROUP_NOT_FOUND", 404, "The group does not exist.");
+    await workspaceService().saveGroup(authenticated.identity, request.id, {
+      id: group.id,
+      name: group.name,
+      description: group.description,
+      memberIds: [...group.memberIds, params.userId]
+    });
+    return reply.code(204).send();
+  });
+  app.delete("/v1/groups/:groupId/members/:userId", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const params = groupMemberParamsSchema.parse(request.params);
+    const group = (await workspaceService().groups(authenticated.identity, request.id)).find(
+      (candidate) => candidate.id === params.groupId
+    );
+    if (!group) throw new AuthFailure("GROUP_NOT_FOUND", 404, "The group does not exist.");
+    await workspaceService().saveGroup(authenticated.identity, request.id, {
+      id: group.id,
+      name: group.name,
+      description: group.description,
+      memberIds: group.memberIds.filter((userId) => userId !== params.userId)
+    });
+    return reply.code(204).send();
+  });
+  app.post("/v1/workspaces/:workspaceId/organization-relationships", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const body = z
+      .object({ reportUserId: z.string().uuid(), managerUserId: z.string().uuid() })
+      .strict()
+      .parse(request.body);
+    const id = await workspaceService().saveReportingRelationship(
+      authenticated.identity,
+      request.id,
+      body
+    );
+    return reply.code(201).send({ id });
+  });
+
+  app.get("/v1/me/onboarding", async (request) => {
+    const authenticated = await authenticate(request);
+    return { data: await workspaceService().onboarding(authenticated.identity, request.id) };
+  });
+  const onboardingSchema = z
+    .object({
+      currentStep: z.enum([
+        "role_use_case",
+        "optional_connection",
+        "workflow_source",
+        "teammate_invite",
+        "readiness",
+        "first_real_run"
+      ]),
+      completedSteps: z.array(z.string()).max(20),
+      skippedSteps: z.array(z.string()).max(20),
+      profile: z.record(z.string(), z.unknown()),
+      revision: z.number().int().positive(),
+      complete: z.boolean().optional()
+    })
+    .strict();
+  app.put("/v1/me/onboarding", async (request) => {
+    const authenticated = await protectMutation(request);
+    const result = await workspaceService().updateOnboarding(
+      authenticated.identity,
+      request.id,
+      (() => {
+        const body = onboardingSchema.parse(request.body);
+        return {
+          currentStep: body.currentStep,
+          completedSteps: body.completedSteps,
+          skippedSteps: body.skippedSteps,
+          profile: body.profile,
+          revision: body.revision,
+          ...(body.complete === undefined ? {} : { complete: body.complete })
+        };
+      })()
+    );
+    if (result === "conflict")
+      throw new AuthFailure(
+        "ONBOARDING_REVISION_CONFLICT",
+        409,
+        "Onboarding changed on another device."
+      );
+    return { data: result };
+  });
+  app.post("/v1/me/onboarding/sample-workspaces", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const id = await workspaceService().createSampleData(authenticated.identity, request.id);
+    return reply.code(201).send({ id, label: "SAMPLE DATA" });
+  });
+  app.delete("/v1/me/onboarding/sample-workspaces/:sampleId", async (request) => {
+    const authenticated = await protectMutation(request);
+    const { sampleId } = z.object({ sampleId: z.string().uuid() }).parse(request.params);
+    return {
+      removed: await workspaceService().removeSampleData(
+        authenticated.identity,
+        request.id,
+        sampleId
+      )
+    };
   });
 
   if ((options.environment === "local" || options.environment === "ci") && options.captureMailer) {
@@ -423,6 +919,24 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
           ).toString("base64url")
         );
       return reply.redirect(destination.toString(), 303);
+    });
+  }
+  if (
+    (options.environment === "local" || options.environment === "ci") &&
+    options.captureInvitationMailer
+  ) {
+    app.get("/__local/invitations/latest", async (request, reply) => {
+      const query = z.object({ email: z.string().optional() }).parse(request.query);
+      return (
+        options.captureInvitationMailer?.latest(query.email?.toLowerCase()) ??
+        reply.code(404).send({
+          error: {
+            code: "INVITATION_NOT_FOUND",
+            message: "No captured invitation was found.",
+            requestId: request.id
+          }
+        })
+      );
     });
   }
 

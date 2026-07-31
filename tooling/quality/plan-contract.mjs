@@ -1082,6 +1082,7 @@ export async function validateCodeRoutes(apiEntries, root = ROOT) {
     "GET /health/live",
     "GET /health/ready",
     "GET /__local/auth/emails/latest",
+    "GET /__local/invitations/latest",
     "GET /__local/oidc/authorize"
   ]);
   const errors = [];

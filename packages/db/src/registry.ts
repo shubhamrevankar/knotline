@@ -35,7 +35,17 @@ export const REQUIRED_STORES = [
   "session_verifiers",
   "auth_rate_limits",
   "security_notifications",
-  "auth_email_deliveries"
+  "auth_email_deliveries",
+  "permission_catalog",
+  "workspace_roles",
+  "workspace_invitations",
+  "workspace_groups",
+  "workspace_group_memberships",
+  "organization_relationships",
+  "resource_grants",
+  "onboarding_progress",
+  "sandbox_resources",
+  "guest_identities"
 ] as const;
 
 export async function validateDataStoreRegistry(): Promise<Registry> {
