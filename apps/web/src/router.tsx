@@ -49,6 +49,16 @@ const GuidedWorkflowPage = lazy(async () => {
   return { default: module.GuidedWorkflowPage };
 });
 
+const RunsPage = lazy(async () => {
+  const module = await import("./M11Pages.js");
+  return { default: module.RunsPage };
+});
+
+const RunRoomPage = lazy(async () => {
+  const module = await import("./M11Pages.js");
+  return { default: module.RunRoomPage };
+});
+
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
   "go-to-market": msg("solution.gotomarket"),
@@ -365,6 +375,38 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
     return <WorkflowVersionsPage />;
   if (route.id === "route.app.templates" || route.id === "route.app.templates.detail")
     return <TemplatesPage />;
+  if (route.id === "route.app.runs")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("run.loading")} />}>
+          <RunsPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.runs.detail")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("run.loading")} />}>
+          <RunRoomPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.runs.detail.timeline")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("run.loading")} />}>
+          <RunRoomPage view="timeline" />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.runs.detail.tasks.detail")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("run.loading")} />}>
+          <RunRoomPage view="task" />
+        </Suspense>
+      </AuthGate>
+    );
   return (
     <AuthGate>
       <div className="registered-shell">

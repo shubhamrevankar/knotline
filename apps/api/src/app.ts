@@ -1734,6 +1734,35 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     return reply.code(202).send({ data: run });
   });
 
+  app.get("/v1/workflows/:workflowId/runs", async (request) => {
+    if (!options.runtime) throw new Error("Runtime is not configured");
+    const context = await workflowAccess(request, "workflow.read");
+    const { workflowId } = workflowParamsSchema.parse(request.params);
+    const query = z
+      .object({
+        state: z
+          .enum([
+            "queued",
+            "running",
+            "paused",
+            "cancelling",
+            "cancelled",
+            "succeeded",
+            "failed",
+            "policy_stopped"
+          ])
+          .optional(),
+        limit: z.coerce.number().int().min(1).max(200).optional()
+      })
+      .parse(request.query);
+    return {
+      data: await options.runtime.workflowRuns(context, workflowId, {
+        ...(query.state === undefined ? {} : { state: query.state }),
+        ...(query.limit === undefined ? {} : { limit: query.limit })
+      })
+    };
+  });
+
   app.get("/v1/runs/:runId", async (request, reply) => {
     if (!options.runtime) throw new Error("Runtime is not configured");
     const context = await workflowAccess(request, "workflow.read");
@@ -1755,6 +1784,33 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     const context = await workflowAccess(request, "workflow.read");
     const { runId } = z.object({ runId: z.string().uuid() }).parse(request.params);
     return { data: (await options.runtime.events(context, runId)) ?? [] };
+  });
+
+  app.get("/v1/runs/:runId/stream", async (request, reply) => {
+    if (!options.runtime) throw new Error("Runtime is not configured");
+    const context = await workflowAccess(request, "workflow.read");
+    const { runId } = z.object({ runId: z.string().uuid() }).parse(request.params);
+    const cursor = z.coerce
+      .number()
+      .int()
+      .nonnegative()
+      .catch(0)
+      .parse(request.headers["last-event-id"] ?? 0);
+    const events = ((await options.runtime.events(context, runId)) ?? []).filter(
+      (event) => Number(event.sequence) > cursor
+    );
+    const body = [
+      ...events.map(
+        (event) =>
+          `id: ${String(event.sequence)}\nevent: run-event\ndata: ${JSON.stringify(event)}\n`
+      ),
+      `event: heartbeat\ndata: ${JSON.stringify({ cursor: events.at(-1)?.sequence ?? cursor })}\n`
+    ].join("\n");
+    return reply
+      .header("content-type", "text/event-stream; charset=utf-8")
+      .header("cache-control", "no-cache, no-transform")
+      .header("x-accel-buffering", "no")
+      .send(`${body}\n`);
   });
 
   const signalRun =

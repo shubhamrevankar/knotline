@@ -6109,7 +6109,7 @@ usage or spend bounds.
 
 ### M11 — Run room and live operations
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M02, M10\
 **Required commit:** `feat: deliver the live Knotline run room`
 
@@ -9226,7 +9226,7 @@ must appear in that milestone's boundary cell.
 | M08 | `COMMITTED` | `NOT_DEPLOYED` | `SIMULATED`; EXT-004 `BLOCKED_EXTERNAL` for real activation | `feat: add guided workflow generation and safe test mode` |
 | M09 | `COMMITTED` | `NOT_DEPLOYED` | EXT-006 for email mention delivery later | `feat: add collaborative workflow and work discussions` |
 | M10 | `COMMITTED` | `NOT_DEPLOYED` | EXT-003 | `feat: execute workflows durably across failures` |
-| M11 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the live Knotline run room` |
+| M11 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the live Knotline run room` |
 | M12 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver complete human task execution` |
 | M13 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: add durable approvals and escalation policies` |
 | M14 | `NOT_STARTED` | `NOT_DEPLOYED` | `SIMULATED` for test console | `feat: deliver the Knotline agent foundry` |

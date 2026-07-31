@@ -347,6 +347,27 @@
       "deleteHandler": "retention-delete"
     },
     {
+      "name": "run_saved_views",
+      "class": "runtime.saved_view",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "run_follows",
+      "class": "runtime.follow",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "run_artifacts",
+      "class": "runtime.artifact",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
       "name": "task_runs",
       "class": "runtime.task",
       "retentionDays": 2555,
@@ -539,6 +560,10 @@
     "saved_resource_filters_pkey",
     "workflow_runs_pkey",
     "workflow_runs_workspace_state_idx",
+    "run_saved_views_pkey",
+    "run_follows_pkey",
+    "run_artifacts_pkey",
+    "run_artifacts_run_idx",
     "task_runs_pkey",
     "task_runs_dispatch_idx",
     "task_dependencies_pkey",

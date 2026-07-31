@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M11/test-results/run-room-browser.json",
+      "verifiedAt": "2026-08-01T05:00:00.000Z"
+    },
+    "externalGates": [],
+    "id": "runtime.live-run-room",
+    "owner": {
+      "contact": "shurevan",
+      "team": "runtime-platform"
+    },
+    "runbook": "docs/operations/knotline/durable-runtime.md",
+    "status": "DEMO",
+    "summary": "Responsive run filtering, equivalent outline/graph/timeline views, resumable cursor streaming, safe controls, redacted attempts, attention guidance, and CSV export are verified locally."
+  }
+]

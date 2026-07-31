@@ -532,6 +532,27 @@ async function runSuite(pool: DatabasePool) {
     const runtimeId = runStartResponse.json<{ data: { id: string } }>().data.id;
     const runResponse = await app.inject({ method: "GET", url: `/v1/runs/${runtimeId}` });
     assert(runResponse.statusCode === 200, "Durable run projection API failed");
+    const runListResponse = await app.inject({
+      method: "GET",
+      url: `/v1/workflows/${workflowId}/runs?limit=10`
+    });
+    assert(
+      runListResponse.statusCode === 200 &&
+        runListResponse.json<{ data: { id: string }[] }>().data.some((run) => run.id === runtimeId),
+      "Authorized run list did not include the new run"
+    );
+    const streamResponse = await app.inject({
+      method: "GET",
+      url: `/v1/runs/${runtimeId}/stream`,
+      headers: { "last-event-id": "0" }
+    });
+    assert(
+      streamResponse.statusCode === 200 &&
+        streamResponse.headers["content-type"]?.startsWith("text/event-stream") === true &&
+        streamResponse.body.includes("event: run-event") &&
+        streamResponse.body.includes("event: heartbeat"),
+      "Resumable run event stream did not emit an event and heartbeat"
+    );
   } finally {
     await app.close();
   }

@@ -106,7 +106,7 @@
       ],
       "id": "M11",
       "requiredCommit": "feat: deliver the live Knotline run room",
-      "status": "NOT_STARTED",
+      "status": "COMMITTED",
       "title": "Run room and live operations"
     },
     {
@@ -435,6 +435,6 @@
     }
   ],
   "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
-  "planDigest": "sha256:884722f67ac7169983a801f6201f6bd9922af51d5ad7febd48201b18b7cbcc5b",
+  "planDigest": "sha256:bae739fca4028c8dd8439c29feceae0a771594839dd8ea97f929284021e0cc71",
   "schemaVersion": 1
 }

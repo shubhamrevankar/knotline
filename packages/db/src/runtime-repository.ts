@@ -59,6 +59,11 @@ export interface RuntimeRepository {
     context: TenantContext,
     runId: string
   ): Promise<readonly Record<string, unknown>[] | undefined>;
+  workflowRuns(
+    context: TenantContext,
+    workflowId: string,
+    options?: { readonly state?: RunState; readonly limit?: number }
+  ): Promise<readonly Record<string, unknown>[]>;
   pendingStarts(context: TenantContext): Promise<PendingRuntimeStart[]>;
   markStartDispatched(context: TenantContext, runId: string): Promise<void>;
   completeSyntheticTask(
@@ -447,6 +452,24 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
 
   async events(context: TenantContext, runId: string) {
     return (await this.run(context, runId))?.events;
+  }
+
+  async workflowRuns(
+    context: TenantContext,
+    workflowId: string,
+    options: { readonly state?: RunState; readonly limit?: number } = {}
+  ) {
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const result = await client.query<Record<string, unknown>>(
+        `SELECT id,workflow_id,workflow_version,state,created_by,started_at,finished_at,created_at,updated_at,
+          extract(epoch FROM (coalesce(finished_at,clock_timestamp())-coalesce(started_at,created_at)))*1000 AS duration_ms,
+          policy_snapshot->>'maximumQuantity' AS reserved_quantity
+         FROM workflow_runs WHERE workspace_id=$1 AND workflow_id=$2 AND ($3::text IS NULL OR state=$3)
+         ORDER BY created_at DESC,id DESC LIMIT $4`,
+        [context.workspaceId, workflowId, options.state ?? null, Math.min(options.limit ?? 50, 200)]
+      );
+      return result.rows;
+    });
   }
 
   async pendingStarts(context: TenantContext) {

@@ -647,6 +647,22 @@ const VERSIONED_WORKFLOW_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
 
 export const RUNTIME_ROUTE_CONTRACTS = [
   {
+    method: "GET",
+    path: "/v1/workflows/{workflowId}/runs",
+    operationId: "listWorkflowRuns",
+    summary: "List authorized durable runs for a workflow",
+    tags: ["Runs"],
+    exposure: "browser_internal",
+    responses: {
+      200: z.object({
+        data: z.array(z.object({ id: z.uuid(), state: runStateSchema }).passthrough())
+      }),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
     method: "POST",
     path: "/v1/workflows/{workflowId}/runs",
     operationId: "startWorkflowRun",
@@ -699,6 +715,21 @@ export const RUNTIME_ROUTE_CONTRACTS = [
           z.object({ sequence: z.coerce.number(), event_type: z.string() }).passthrough()
         )
       }),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/runs/{runId}/stream",
+    operationId: "streamWorkflowRunEvents",
+    summary: "Resume the ordered run event stream from a durable cursor",
+    tags: ["Runs"],
+    exposure: "browser_internal",
+    responses: {
+      200: z.string(),
       401: apiErrorSchema,
       403: apiErrorSchema,
       404: apiErrorSchema,

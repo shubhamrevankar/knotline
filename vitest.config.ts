@@ -27,6 +27,7 @@ export default defineConfig({
         "apps/web/src/AuthPages.tsx",
         "apps/web/src/M05Pages.tsx",
         "apps/web/src/M06Pages.tsx",
+        "apps/web/src/M11Pages.tsx",
         "apps/web/src/StudioPage.tsx",
         "apps/web/src/api.ts",
         "packages/db/src/versioned-workflow-repository.ts"

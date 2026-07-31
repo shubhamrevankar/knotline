@@ -1,5 +1,5 @@
 {
-  "milestone": "M10",
+  "milestone": "M11",
   "planDigest": "sha256:bae739fca4028c8dd8439c29feceae0a771594839dd8ea97f929284021e0cc71",
   "routeRegistryDigest": "sha256:e179d178e050f45c450556139d6d22eae3c4cd894f01c6ee53aea5ccab120e5e",
   "routes": [
@@ -4564,146 +4564,290 @@
       "routeId": "route.app.runs",
       "states": [
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.connecting-live",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "connecting-live"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.reconnecting",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "reconnecting"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.polling-fallback",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "polling-fallback"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.partial-history",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-history"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.pending-action",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "pending-action"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.success-error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success-error"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.plan-policy",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-policy"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.missing",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.terminal",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "terminal"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.degraded-provider",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-provider"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.uncertain-reconciling",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "uncertain-reconciling"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.kill-throttle",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "kill-throttle"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.expired",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "expired"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.archived",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.edit-conflict-only-for-truly-immutable-views",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-only-for-truly-immutable-views"
         }
@@ -4713,146 +4857,290 @@
       "routeId": "route.app.runs.detail",
       "states": [
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.connecting-live",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "connecting-live"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.reconnecting",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "reconnecting"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.polling-fallback",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "polling-fallback"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.partial-history",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-history"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.pending-action",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "pending-action"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.success-error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success-error"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.plan-policy",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-policy"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.missing",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.terminal",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "terminal"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.degraded-provider",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-provider"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.uncertain-reconciling",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "uncertain-reconciling"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.kill-throttle",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "kill-throttle"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.expired",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "expired"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.archived",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.edit-conflict-only-for-truly-immutable-views",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-only-for-truly-immutable-views"
         }
@@ -4862,146 +5150,290 @@
       "routeId": "route.app.runs.detail.tasks.detail",
       "states": [
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.connecting-live",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "connecting-live"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.reconnecting",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "reconnecting"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.polling-fallback",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "polling-fallback"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.partial-history",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-history"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.pending-action",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "pending-action"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.success-error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success-error"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.plan-policy",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-policy"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.missing",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.terminal",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "terminal"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.degraded-provider",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-provider"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.uncertain-reconciling",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "uncertain-reconciling"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.kill-throttle",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "kill-throttle"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.expired",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "expired"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.archived",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.edit-conflict-only-for-truly-immutable-views",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-only-for-truly-immutable-views"
         }
@@ -5011,146 +5443,290 @@
       "routeId": "route.app.runs.detail.timeline",
       "states": [
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.connecting-live",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "connecting-live"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.reconnecting",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "reconnecting"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.stale",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.polling-fallback",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "polling-fallback"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.partial-history",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-history"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.pending-action",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "pending-action"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.success-error",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success-error"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.unauthorized",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.plan-policy",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-policy"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.offline",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.missing",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.terminal",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "terminal"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.degraded-provider",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-provider"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.uncertain-reconciling",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "uncertain-reconciling"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.kill-throttle",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "kill-throttle"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.expired",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "expired"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.archived",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived"
         },
         {
-          "activationMilestone": "M11",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M11; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M11/test-results/run-room-accessibility",
+            "authorizationPersona": "workspace operator with workflow read and manage permissions",
+            "browserTest": "tests/e2e/run-room.spec.ts",
+            "evidenceUri": "artifact://M11/test-results/run-room-browser",
+            "expectedTelemetry": "run ID, durable cursor, connection state, action intent, and redacted finding codes",
+            "fixture": "run-room.edit-conflict-only-for-truly-immutable-views",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "desktop and mobile pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-only-for-truly-immutable-views"
         }

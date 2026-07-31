@@ -78,7 +78,10 @@ export const REQUIRED_STORES = [
   "budget_periods",
   "admission_reservations",
   "admission_ledger_entries",
-  "runtime_control_switches"
+  "runtime_control_switches",
+  "run_saved_views",
+  "run_follows",
+  "run_artifacts"
 ] as const;
 
 export async function validateDataStoreRegistry(): Promise<Registry> {

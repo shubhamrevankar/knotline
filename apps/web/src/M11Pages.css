@@ -1,0 +1,343 @@
+.run-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  background: #f5f7f8;
+  color: #18211e;
+}
+.run-shell > aside {
+  padding: 24px 16px;
+  background: #10221c;
+  color: #dce8e2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.run-shell > aside a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  color: inherit;
+  border-radius: 9px;
+  text-decoration: none;
+}
+.run-shell > aside a[aria-current="page"] {
+  background: #244338;
+  color: #fff;
+}
+.run-shell > aside svg {
+  width: 18px;
+}
+.run-brand {
+  font-size: 1.15rem;
+  font-weight: 760;
+  margin-bottom: 18px;
+}
+.run-shell > main {
+  min-width: 0;
+  padding: 32px clamp(18px, 4vw, 56px);
+}
+.run-page-header,
+.run-room-header,
+.task-inspector > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+.run-page-header h1,
+.run-room-header h1 {
+  margin: 10px 0 4px;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+}
+.run-page-header p,
+.run-room-header p {
+  margin: 0;
+  color: #62706a;
+}
+.run-filters {
+  margin: 28px 0 18px;
+  display: flex;
+  gap: 16px;
+  align-items: end;
+}
+.run-filters label {
+  display: grid;
+  gap: 6px;
+  color: #4f5f58;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.run-filters label:first-child {
+  flex: 1;
+}
+.run-filters label div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid #d9e1dd;
+  border-radius: 9px;
+  padding: 0 12px;
+}
+.run-filters input,
+.run-filters select {
+  width: 100%;
+  min-height: 42px;
+  border: 0;
+  background: white;
+  border-radius: 9px;
+  padding: 0 12px;
+  color: inherit;
+}
+.run-filters label div input {
+  padding-inline: 0;
+  outline: 0;
+}
+.run-table-wrap {
+  overflow-x: auto;
+  background: white;
+  border: 1px solid #e0e6e3;
+  border-radius: 12px;
+}
+.run-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 840px;
+}
+.run-table-wrap th,
+.run-table-wrap td {
+  padding: 15px 18px;
+  text-align: left;
+  border-bottom: 1px solid #edf0ef;
+}
+.run-table-wrap th {
+  font-size: 0.75rem;
+  color: #67746f;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.run-table-wrap td a {
+  display: grid;
+  color: #18362c;
+  text-decoration: none;
+}
+.run-table-wrap td small {
+  color: #78847f;
+}
+.run-back {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  color: #345b4d;
+  text-decoration: none;
+  margin-bottom: 18px;
+}
+.run-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.run-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+.run-metrics > div {
+  display: grid;
+  gap: 6px;
+}
+.run-metrics span {
+  color: #68756f;
+  font-size: 0.8rem;
+}
+.run-metrics strong {
+  font-size: 1.05rem;
+}
+.run-connected {
+  color: #19734e;
+}
+.run-view-tabs {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-bottom: 1px solid #dce3df;
+  margin-bottom: 20px;
+}
+.run-view-tabs button,
+.run-view-tabs a {
+  padding: 11px 14px;
+  border: 0;
+  background: transparent;
+  color: #52635c;
+  text-decoration: none;
+}
+.run-view-tabs button[aria-pressed="true"] {
+  color: #155f45;
+  border-bottom: 2px solid #1f805e;
+}
+.run-view-tabs a {
+  margin-left: auto;
+}
+.run-execution {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
+  gap: 18px;
+}
+.run-execution > div {
+  display: grid;
+  gap: 12px;
+}
+.run-node {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 17px;
+  background: white;
+  border: 1px solid #dbe3df;
+  border-left: 4px solid #9aa8a2;
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+.run-node--succeeded {
+  border-left-color: #27835f;
+}
+.run-node--running {
+  border-left-color: #2f6fe4;
+}
+.run-node > span {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #edf2ef;
+}
+.run-node div {
+  display: grid;
+}
+.run-node small {
+  color: #718079;
+}
+.run-execution aside {
+  background: #fff9e8;
+  border: 1px solid #eadba9;
+  border-radius: 12px;
+  padding: 20px;
+  align-self: start;
+}
+.run-timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0;
+}
+.run-timeline li {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 12px;
+  position: relative;
+  padding-bottom: 22px;
+}
+.run-timeline li > span {
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: white;
+  background: #276b53;
+}
+.run-timeline li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 30px;
+  bottom: 0;
+  width: 1px;
+  background: #b9c9c2;
+}
+.run-timeline p {
+  margin: 4px 0;
+}
+.run-timeline small {
+  color: #718079;
+}
+.task-inspector header {
+  margin-bottom: 20px;
+}
+.task-inspector h2 {
+  margin: 8px 0 4px;
+}
+.task-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.task-grid pre {
+  overflow: auto;
+  padding: 14px;
+  background: #10221c;
+  color: #e9f2ee;
+  border-radius: 8px;
+}
+
+@media (max-width: 760px) {
+  .run-shell {
+    grid-template-columns: 1fr;
+    padding-bottom: 64px;
+  }
+  .run-shell > aside {
+    position: static;
+    z-index: 20;
+    order: 2;
+    height: 60px;
+    padding: 7px 12px;
+    flex-direction: row;
+    justify-content: space-around;
+    pointer-events: none;
+  }
+  .run-shell > aside a {
+    pointer-events: auto;
+  }
+  .run-shell > aside .run-brand {
+    display: none;
+  }
+  .run-shell > main {
+    order: 1;
+    padding: 20px 16px 140px;
+  }
+  .run-page-header,
+  .run-room-header,
+  .task-inspector > header {
+    display: grid;
+  }
+  .run-actions {
+    justify-content: flex-start;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 8px 0;
+    background: #f5f7f8;
+  }
+  .run-filters,
+  .run-execution {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .run-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .task-grid {
+    grid-template-columns: 1fr;
+  }
+  .run-view-tabs {
+    overflow-x: auto;
+  }
+}
