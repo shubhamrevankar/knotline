@@ -29,6 +29,7 @@ import {
   PostgresConnectorRepository,
   PostgresTriggerRepository,
   PostgresNotificationRepository,
+  PostgresAnalyticsRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -223,6 +224,7 @@ async function runSuite(pool: DatabasePool) {
   );
   const triggerRepository = new PostgresTriggerRepository(pool);
   const notificationRepository = new PostgresNotificationRepository(pool);
+  const analyticsRepository = new PostgresAnalyticsRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -1535,6 +1537,86 @@ async function runSuite(pool: DatabasePool) {
     ])
   ]);
   assert(mandatoryOff[0]?.status === "rejected", "Mandatory security notification was disabled");
+  const searchDocumentId = randomUUID(),
+    searchResourceId = randomUUID();
+  await withTenantTransaction(pool, contextA, (client) =>
+    client.query(
+      `INSERT INTO search_documents(workspace_id,id,resource_type,resource_id,search_text,display_fields)VALUES($1,$2,'run',$3,to_tsvector('simple','incident launch'),'{"title":"Incident launch"}')`,
+      [contextA.workspaceId, searchDocumentId, searchResourceId]
+    )
+  );
+  assert(
+    (await analyticsRepository.search(contextA, "incident")).length === 1,
+    "Authorized search missed indexed resource"
+  );
+  assert(
+    (await analyticsRepository.search(contextB, "incident")).length === 0,
+    "Search leaked across tenants"
+  );
+  const savedView = await analyticsRepository.createView(contextA, {
+    name: "Attention queue",
+    resourceType: "run",
+    visibility: "private",
+    definition: {
+      filters: { state: "attention" },
+      sort: ["updatedAt:desc"],
+      columns: ["title", "state"]
+    }
+  });
+  assert(
+    (await analyticsRepository.savedViews(contextA)).length === 1 &&
+      String(savedView.name) === "Attention queue",
+    "Saved view was not reproducible"
+  );
+  await withTenantTransaction(pool, contextA, (client) =>
+    client.query(
+      `INSERT INTO metric_buckets(workspace_id,id,metric_key,metric_version,bucket_start,bucket_end,value,contributing_count,source_watermark)VALUES($1,$2,'workflow.success_rate',1,clock_timestamp()-interval '1 day',clock_timestamp(),0.95,20,clock_timestamp())`,
+      [contextA.workspaceId, randomUUID()]
+    )
+  );
+  const dashboard = await analyticsRepository.dashboard(contextA);
+  assert(
+    Array.isArray(dashboard.metrics) && (dashboard.metrics as unknown[]).length === 1,
+    "Authoritative metric dashboard was empty"
+  );
+  const report = await analyticsRepository.createReport(contextA, {
+    name: "Operations health",
+    visibility: "private",
+    definition: {
+      metrics: ["workflow.success_rate"],
+      dimensions: ["workflow"],
+      range: "30d",
+      visualization: "table"
+    }
+  });
+  assert(
+    (await analyticsRepository.report(contextA, String(report.id))) !== undefined,
+    "Report could not be reproduced"
+  );
+  const reportSchedule = await analyticsRepository.scheduleReport(contextA, String(report.id), {
+    cadence: "weekly",
+    timeZone: "Asia/Kolkata"
+  });
+  const pausedSchedule = await analyticsRepository.updateSchedule(
+    contextA,
+    String(reportSchedule.id),
+    { state: "paused", expectedRevision: 1 }
+  );
+  assert(
+    pausedSchedule.state === "paused" && pausedSchedule.revision === 2,
+    "Report schedule update was not revision safe"
+  );
+  const staleScheduleUpdate = await Promise.allSettled([
+    analyticsRepository.updateSchedule(contextA, String(reportSchedule.id), {
+      cadence: "daily",
+      expectedRevision: 1
+    })
+  ]);
+  assert(
+    staleScheduleUpdate[0]?.status === "rejected",
+    "Stale report schedule update was accepted"
+  );
+  await analyticsRepository.deleteSchedule(contextA, String(reportSchedule.id));
 
   const immutable = await Promise.allSettled([
     withTenantTransaction(pool, contextA, (client) =>
@@ -2002,6 +2084,7 @@ async function runSuite(pool: DatabasePool) {
     connectors: connectorRepository,
     triggers: triggerRepository,
     notifications: notificationRepository,
+    analytics: analyticsRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),

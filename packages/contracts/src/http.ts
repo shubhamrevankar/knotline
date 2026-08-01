@@ -2427,6 +2427,81 @@ const NOTIFICATION_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
     500: apiErrorSchema
   }
 }));
+const ANALYTICS_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/search",
+    "searchWorkspace",
+    "Search authorized workspace resources"
+  ],
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/saved-views",
+    "listSavedViews",
+    "List accessible saved views"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/saved-views",
+    "createSavedView",
+    "Create a reproducible saved view"
+  ],
+  ["PATCH", "/v1/saved-views/{viewId}", "updateSavedView", "Update a revision-safe saved view"],
+  ["DELETE", "/v1/saved-views/{viewId}", "deleteSavedView", "Delete an unreferenced saved view"],
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/analytics",
+    "getOperationalAnalytics",
+    "Read authorized operational metrics"
+  ],
+  ["GET", "/v1/workspaces/{workspaceId}/reports", "listReports", "List accessible reports"],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/reports",
+    "createReport",
+    "Create a curated operational report"
+  ],
+  ["GET", "/v1/reports/{reportId}", "getReport", "Read a report and freshness state"],
+  ["POST", "/v1/reports/{reportId}/exports", "exportReport", "Queue a safe report export"],
+  [
+    "POST",
+    "/v1/reports/{reportId}/schedules",
+    "scheduleReport",
+    "Schedule authorized report delivery"
+  ],
+  [
+    "PATCH",
+    "/v1/report-schedules/{scheduleId}",
+    "updateReportSchedule",
+    "Update a revision-safe report delivery schedule"
+  ],
+  [
+    "DELETE",
+    "/v1/report-schedules/{scheduleId}",
+    "deleteReportSchedule",
+    "Delete an owned report delivery schedule"
+  ]
+].map(([method, path, operationId, summary]) => ({
+  method: method as HttpRouteContract["method"],
+  path: path!,
+  operationId: operationId!,
+  summary: summary!,
+  tags: ["Search and analytics"],
+  exposure: "browser_internal" as const,
+  ...(["POST", "PATCH"].includes(method!) ? { requestBody: genericDataSchema } : {}),
+  responses: {
+    200: apiEnvelope(genericDataSchema),
+    201: apiEnvelope(genericDataSchema),
+    202: apiEnvelope(genericDataSchema),
+    204: z.undefined(),
+    400: apiErrorSchema,
+    401: apiErrorSchema,
+    403: apiErrorSchema,
+    404: apiErrorSchema,
+    409: apiErrorSchema,
+    500: apiErrorSchema
+  }
+}));
 
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
@@ -2444,6 +2519,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...CONNECTOR_ROUTE_CONTRACTS,
   ...TRIGGER_ROUTE_CONTRACTS,
   ...NOTIFICATION_ROUTE_CONTRACTS,
+  ...ANALYTICS_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

@@ -153,6 +153,15 @@ const NotificationCenterPage = lazy(async () => ({
 const NotificationSettingsPage = lazy(async () => ({
   default: (await import("./M27Pages.js")).NotificationSettingsPage
 }));
+const GlobalSearchPage = lazy(async () => ({
+  default: (await import("./M28Pages.js")).GlobalSearchPage
+}));
+const AnalyticsPage = lazy(async () => ({
+  default: (await import("./M28Pages.js")).AnalyticsPage
+}));
+const ReportDetailPage = lazy(async () => ({
+  default: (await import("./M28Pages.js")).ReportDetailPage
+}));
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -691,6 +700,30 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label={msg("notification.settings.loading")} />}>
           <NotificationSettingsPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.search")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("search.loading")} />}>
+          <GlobalSearchPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app" || route.id === "route.app.analytics")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("analytics.loading")} />}>
+          <AnalyticsPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.analytics.reports.detail")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("analytics.loading")} />}>
+          <ReportDetailPage />
         </Suspense>
       </AuthGate>
     );

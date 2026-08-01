@@ -12,7 +12,7 @@
   "authorizedRecallAt20": 1,
   "citationCorrectness": 1,
   "aclLeakage": 0,
-  "p95SelectionMs": 0.0020410000000055106,
+  "p95SelectionMs": 0.0016250000000042064,
   "corpusDigest": "sha256:2944a6c055bd79ab4564d585c6ff2ceb6246f5473a0fd3b1a9d851bba6cfec77",
   "note": "Deterministic milestone-scale selection/ACL corpus; PostgreSQL GIN/HNSW plan is verified separately. SEARCH-100M-1 remains M36/M38."
 }

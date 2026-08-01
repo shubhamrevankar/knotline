@@ -1598,6 +1598,69 @@
       "retentionDays": 2555,
       "exportHandler": "notification-export",
       "deleteHandler": "workspace-delete"
+    },
+    {
+      "name": "search_documents",
+      "class": "search.document",
+      "retentionDays": 365,
+      "exportHandler": "analytics-export",
+      "deleteHandler": "search-delete"
+    },
+    {
+      "name": "recent_resources",
+      "class": "search.recent",
+      "retentionDays": 90,
+      "exportHandler": "analytics-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "saved_views",
+      "class": "analytics.saved_view",
+      "retentionDays": 2555,
+      "exportHandler": "analytics-export",
+      "deleteHandler": "reference-safe-delete"
+    },
+    {
+      "name": "metric_definitions",
+      "class": "analytics.metric_definition",
+      "retentionDays": 2555,
+      "exportHandler": "analytics-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "metric_buckets",
+      "class": "analytics.metric_bucket",
+      "retentionDays": 2555,
+      "exportHandler": "analytics-export",
+      "deleteHandler": "analytics-delete"
+    },
+    {
+      "name": "reports",
+      "class": "analytics.report",
+      "retentionDays": 2555,
+      "exportHandler": "analytics-export",
+      "deleteHandler": "reference-safe-delete"
+    },
+    {
+      "name": "report_exports",
+      "class": "analytics.report_export",
+      "retentionDays": 30,
+      "exportHandler": "analytics-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "report_schedules",
+      "class": "analytics.report_schedule",
+      "retentionDays": 2555,
+      "exportHandler": "analytics-export",
+      "deleteHandler": "workspace-delete"
+    },
+    {
+      "name": "product_analytics_events",
+      "class": "analytics.product_event",
+      "retentionDays": 365,
+      "exportHandler": "analytics-export",
+      "deleteHandler": "privacy-delete"
     }
   ],
   "indexes": [
@@ -1994,7 +2057,24 @@
     "notification_digests_pkey",
     "notification_digests_workspace_id_recipient_user_id_cadence_window_start_key",
     "notification_suppressions_pkey",
-    "notification_channel_installations_pkey"
+    "notification_channel_installations_pkey",
+    "search_documents_pkey",
+    "search_documents_workspace_id_resource_type_resource_id_key",
+    "search_documents_text_idx",
+    "search_documents_resource_idx",
+    "recent_resources_pkey",
+    "recent_resources_workspace_id_user_id_resource_type_resource_id_key",
+    "saved_views_pkey",
+    "saved_views_owner_idx",
+    "metric_definitions_pkey",
+    "metric_definitions_workspace_id_key_version_key",
+    "metric_buckets_pkey",
+    "metric_buckets_workspace_id_metric_key_metric_version_bucket_start_dimensions_key",
+    "metric_buckets_query_idx",
+    "reports_pkey",
+    "report_exports_pkey",
+    "report_schedules_pkey",
+    "product_analytics_events_pkey"
   ],
   "caches": []
 }

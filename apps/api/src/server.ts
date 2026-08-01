@@ -21,6 +21,7 @@ import {
   PostgresConnectorRepository,
   PostgresTriggerRepository,
   PostgresNotificationRepository,
+  PostgresAnalyticsRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -115,6 +116,7 @@ const connectorStateKey = process.env.CONNECTOR_STATE_SIGNING_KEY
 const connectors = new PostgresConnectorRepository(pool, connectorStateKey);
 const triggers = new PostgresTriggerRepository(pool);
 const notifications = new PostgresNotificationRepository(pool);
+const analytics = new PostgresAnalyticsRepository(pool);
 const temporalConnection = await Connection.connect({
   address: process.env.TEMPORAL_ADDRESS ?? "127.0.0.1:7233"
 });
@@ -256,6 +258,7 @@ const app = await buildApp({
   connectors,
   triggers,
   notifications,
+  analytics,
   runStarter,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),

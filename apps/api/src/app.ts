@@ -43,6 +43,7 @@ import type {
   ConnectorRepository,
   TriggerRepository,
   NotificationRepository,
+  AnalyticsRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -100,6 +101,7 @@ export interface BuildAppOptions {
   readonly connectors?: ConnectorRepository;
   readonly triggers?: TriggerRepository;
   readonly notifications?: NotificationRepository;
+  readonly analytics?: AnalyticsRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -2518,6 +2520,175 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     if (!options.notifications) throw new Error("Notifications are not configured");
     return options.notifications;
   };
+  const analyticsRepository = () => {
+    if (!options.analytics) throw new Error("Analytics are not configured");
+    return options.analytics;
+  };
+  const savedViewSchema = z
+    .object({
+      name: z.string().min(1).max(120),
+      resourceType: z.enum(["run", "task", "approval", "agent", "connection"]),
+      visibility: z.enum(["private", "workspace"]),
+      definition: z
+        .object({
+          filters: z.record(z.string(), z.unknown()).default({}),
+          sort: z.array(z.string()).default([]),
+          columns: z.array(z.string()).max(50),
+          grouping: z.string().optional()
+        })
+        .strict()
+    })
+    .strict();
+  const reportSchema = z
+    .object({
+      name: z.string().min(1).max(120),
+      visibility: z.enum(["private", "workspace"]),
+      definition: z
+        .object({
+          metrics: z.array(z.string()).min(1).max(20),
+          dimensions: z.array(z.string()).max(10),
+          range: z.enum(["7d", "30d", "90d"]),
+          visualization: z.enum(["table", "line", "bar"])
+        })
+        .strict()
+    })
+    .strict();
+  const viewParams = z.object({ viewId: z.string().uuid() }).strict(),
+    reportParams = z.object({ reportId: z.string().uuid() }).strict(),
+    scheduleParams = z.object({ scheduleId: z.string().uuid() }).strict();
+  app.get("/v1/workspaces/:workspaceId/search", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const query = z.object({ q: z.string().min(2).max(200) }).parse(request.query);
+    return { data: await analyticsRepository().search(await agentAccess(request), query.q) };
+  });
+  app.get("/v1/workspaces/:workspaceId/saved-views", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await analyticsRepository().savedViews(await agentAccess(request)) };
+  });
+  app.post("/v1/workspaces/:workspaceId/saved-views", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await analyticsRepository().createView(
+        await agentAccess(request, true),
+        savedViewSchema.parse(request.body)
+      )
+    });
+  });
+  app.patch("/v1/saved-views/:viewId", async (request) => {
+    const { viewId } = viewParams.parse(request.params);
+    return {
+      data: await analyticsRepository().updateView(
+        await agentAccess(request, true),
+        viewId,
+        savedViewSchema
+          .partial()
+          .extend({ expectedRevision: z.number().int().positive() })
+          .parse(request.body)
+      )
+    };
+  });
+  app.delete("/v1/saved-views/:viewId", async (request, reply) => {
+    const { viewId } = viewParams.parse(request.params);
+    await analyticsRepository().deleteView(await agentAccess(request, true), viewId);
+    return reply.code(204).send();
+  });
+  app.get("/v1/workspaces/:workspaceId/analytics", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await analyticsRepository().dashboard(await agentAccess(request)) };
+  });
+  app.get("/v1/workspaces/:workspaceId/reports", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await analyticsRepository().reports(await agentAccess(request)) };
+  });
+  app.post("/v1/workspaces/:workspaceId/reports", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await analyticsRepository().createReport(
+        await agentAccess(request, true),
+        reportSchema.parse(request.body)
+      )
+    });
+  });
+  app.get("/v1/reports/:reportId", async (request, reply) => {
+    const { reportId } = reportParams.parse(request.params);
+    const data = await analyticsRepository().report(await agentAccess(request), reportId);
+    return data
+      ? { data }
+      : reply.code(404).send({
+          error: {
+            code: "REPORT_NOT_FOUND",
+            message: "The report does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  app.post("/v1/reports/:reportId/exports", async (request, reply) => {
+    const { reportId } = reportParams.parse(request.params);
+    const { format } = z
+      .object({ format: z.enum(["csv", "pdf"]) })
+      .strict()
+      .parse(request.body);
+    return reply.code(202).send({
+      data: await analyticsRepository().exportReport(
+        await agentAccess(request, true),
+        reportId,
+        format
+      )
+    });
+  });
+  app.post("/v1/reports/:reportId/schedules", async (request, reply) => {
+    const { reportId } = reportParams.parse(request.params);
+    const body = z
+      .object({
+        cadence: z.enum(["daily", "weekly", "monthly"]),
+        timeZone: z.string().min(1).max(120)
+      })
+      .strict()
+      .parse(request.body);
+    return reply.code(201).send({
+      data: await analyticsRepository().scheduleReport(
+        await agentAccess(request, true),
+        reportId,
+        body
+      )
+    });
+  });
+  app.patch("/v1/report-schedules/:scheduleId", async (request) => {
+    const { scheduleId } = scheduleParams.parse(request.params);
+    const body = z
+      .object({
+        cadence: z.enum(["daily", "weekly", "monthly"]).optional(),
+        timeZone: z.string().min(1).max(120).optional(),
+        state: z.enum(["active", "paused"]).optional(),
+        expectedRevision: z.number().int().positive()
+      })
+      .strict()
+      .parse(request.body);
+    return {
+      data: await analyticsRepository().updateSchedule(
+        await agentAccess(request, true),
+        scheduleId,
+        body
+      )
+    };
+  });
+  app.delete("/v1/report-schedules/:scheduleId", async (request, reply) => {
+    const { scheduleId } = scheduleParams.parse(request.params);
+    await analyticsRepository().deleteSchedule(await agentAccess(request, true), scheduleId);
+    return reply.code(204).send();
+  });
   const notificationPreferenceSchema = z
     .object({
       eventType: z.string().min(1).max(160),

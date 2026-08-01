@@ -18,6 +18,7 @@ export * from "./knowledge-graph-repository.js";
 export * from "./connector-repository.js";
 export * from "./trigger-repository.js";
 export * from "./notification-repository.js";
+export * from "./analytics-repository.js";
 export * from "./agent-execution-repository.js";
 export * from "./registry.js";
 export * from "./repository.js";

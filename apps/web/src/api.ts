@@ -280,6 +280,70 @@ export const updateWorkspaceNotificationPolicy = async (
     )
   ).data;
 
+export interface SearchResult {
+  readonly id: string;
+  readonly resourceType: string;
+  readonly resourceId: string;
+  readonly fields: Readonly<Record<string, unknown>>;
+  readonly updatedAt: string;
+}
+export interface SavedView {
+  readonly id: string;
+  readonly name: string;
+  readonly resourceType: string;
+  readonly visibility: "private" | "workspace";
+  readonly definition: Readonly<Record<string, unknown>>;
+  readonly schemaVersion: number;
+  readonly isDefault: boolean;
+  readonly revision: number;
+}
+export interface ReportSummary {
+  readonly id: string;
+  readonly name: string;
+  readonly definition: Readonly<Record<string, unknown>>;
+  readonly visibility: string;
+  readonly state: string;
+  readonly revision: number;
+  readonly updatedAt?: string;
+}
+export const searchWorkspace = async (query: string) =>
+  (
+    await request<{ data: readonly SearchResult[] }>(
+      `/v1/workspaces/${workspaceId}/search?q=${encodeURIComponent(query)}`
+    )
+  ).data;
+export const fetchSavedViews = async () =>
+  (await request<{ data: readonly SavedView[] }>(`/v1/workspaces/${workspaceId}/saved-views`)).data;
+export const createSavedView = async (body: unknown) =>
+  (await mutate<{ data: SavedView }>(`/v1/workspaces/${workspaceId}/saved-views`, "POST", body))
+    .data;
+export const fetchAnalytics = async () =>
+  (
+    await request<{
+      data: {
+        metrics: readonly Readonly<Record<string, unknown>>[];
+        freshThrough: string | null;
+        partial: boolean;
+        demoExcluded: boolean;
+      };
+    }>(`/v1/workspaces/${workspaceId}/analytics`)
+  ).data;
+export const fetchReports = async () =>
+  (await request<{ data: readonly ReportSummary[] }>(`/v1/workspaces/${workspaceId}/reports`)).data;
+export const fetchReport = async (id: string) =>
+  (await request<{ data: ReportSummary }>(`/v1/reports/${encodeURIComponent(id)}`)).data;
+export const createReport = async (body: unknown) =>
+  (await mutate<{ data: ReportSummary }>(`/v1/workspaces/${workspaceId}/reports`, "POST", body))
+    .data;
+export const exportReport = async (id: string, format: "csv" | "pdf" = "csv") =>
+  (
+    await mutate<{ data: Readonly<Record<string, unknown>> }>(
+      `/v1/reports/${encodeURIComponent(id)}/exports`,
+      "POST",
+      { format }
+    )
+  ).data;
+
 export const fetchWorkflowTriggers = async (workflowId: string) =>
   (
     await request<{ readonly data: readonly WorkflowTriggerSummary[] }>(

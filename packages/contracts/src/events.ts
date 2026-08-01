@@ -287,6 +287,19 @@ export const notificationEventPayloadV1Schema = z
     providerReceiptId: z.string().max(240).optional()
   })
   .passthrough();
+export const analyticsEventPayloadV1Schema = z
+  .object({
+    resourceId: z.string().uuid().optional(),
+    viewId: z.string().uuid().optional(),
+    reportId: z.string().uuid().optional(),
+    exportId: z.string().uuid().optional(),
+    metricKey: z.string().max(160).optional(),
+    definitionVersion: z.number().int().positive().optional(),
+    state: z.string().max(80).optional(),
+    sourceWatermark: z.iso.datetime().optional(),
+    contributingCount: z.number().int().nonnegative().optional()
+  })
+  .passthrough();
 
 export const EVENT_SCHEMA_REGISTRY = [
   {
@@ -618,6 +631,25 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "notification-platform",
     schema: notificationEventPayloadV1Schema
+  })),
+  ...[
+    "search.document_indexed",
+    "search.document_removed",
+    "search.authorization_invalidated",
+    "saved_view.created",
+    "saved_view.updated",
+    "saved_view.deleted",
+    "metric.bucket_corrected",
+    "report.created",
+    "report.export_queued",
+    "report.export_ready",
+    "report.schedule_changed",
+    "analytics.product_event_accepted"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "analytics-platform",
+    schema: analyticsEventPayloadV1Schema
   }))
 ] as const;
 

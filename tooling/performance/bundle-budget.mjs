@@ -10,13 +10,13 @@ const ROOT = resolve(new URL("../..", import.meta.url).pathname);
 const DIST = join(ROOT, "apps", "web", "dist");
 const REPORT = join(ROOT, "artifacts", "performance", "M02", "bundle-budget.json");
 const MAX_JS_BYTES = 350_000;
-// M26 adds the localized trigger operator route while keeping its implementation
-// in a lazy chunk. The reviewed measurement is 159,659 initial / 275,028 total
-// gzip. These ceilings retain roughly 1.3 KB of initial and 6 KB of total
-// headroom; the unchanged 350 KB per-JavaScript-chunk cap still prevents a large
+// M28 adds localized global search and analytics routes in a lazy chunk. The
+// reviewed measurement is 162,161 initial / 283,863 total gzip. These ceilings
+// retain modest headroom for deterministic build variance and the next planned
+// slice; the unchanged 350 KB per-JavaScript-chunk cap still prevents a large
 // route from hiding behind aggregate compression.
-const MAX_INITIAL_GZIP_BYTES = 161_000;
-const MAX_TOTAL_GZIP_BYTES = 281_000;
+const MAX_INITIAL_GZIP_BYTES = 166_000;
+const MAX_TOTAL_GZIP_BYTES = 290_000;
 
 export function evaluateAssets(assets, initialAssetNames = new Set()) {
   const errors = [];

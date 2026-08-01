@@ -4,6 +4,7 @@ export * from "./flags.js";
 export * from "./logging.js";
 export * from "./metrics.js";
 export * from "./notifications.js";
+export * from "./analytics.js";
 export * from "./ownership.js";
 export * from "./promotion.js";
 export * from "./reservations.js";

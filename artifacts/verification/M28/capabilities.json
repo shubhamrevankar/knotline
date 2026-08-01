@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M28/test-results/analytics-unit.json",
+      "verifiedAt": "2026-08-07T12:00:00.000Z"
+    },
+    "externalGates": [],
+    "id": "analytics.authorized-search-and-reporting",
+    "owner": {
+      "contact": "shurevan",
+      "team": "analytics-platform"
+    },
+    "runbook": "docs/operations/knotline/search-analytics.md",
+    "status": "DEMO",
+    "summary": "Authorization-filtered search, reproducible views, curated reconciled metrics, freshness, drill-through definitions and safe exports are verified with deterministic fixtures."
+  }
+]
