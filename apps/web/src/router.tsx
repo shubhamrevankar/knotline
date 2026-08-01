@@ -135,6 +135,15 @@ const KnowledgeEntityPage = lazy(async () => {
   const module = await import("./M21Pages.js");
   return { default: module.KnowledgeEntityPage };
 });
+const ConnectionsPage = lazy(async () => ({
+  default: (await import("./M22Pages.js")).ConnectionsPage
+}));
+const ConnectionSetupPage = lazy(async () => ({
+  default: (await import("./M22Pages.js")).ConnectionSetupPage
+}));
+const ConnectionDetailPage = lazy(async () => ({
+  default: (await import("./M22Pages.js")).ConnectionDetailPage
+}));
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -625,6 +634,30 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label={msg("graph.loading")} />}>
           <KnowledgeEntityPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.connections")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("connections.loading")} />}>
+          <ConnectionsPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.connections.new.detail")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("connections.loading")} />}>
+          <ConnectionSetupPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.connections.detail")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("connections.loading")} />}>
+          <ConnectionDetailPage />
         </Suspense>
       </AuthGate>
     );

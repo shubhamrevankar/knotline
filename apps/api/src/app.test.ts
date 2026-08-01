@@ -183,6 +183,17 @@ describe("API application", () => {
     expect(unsupportedBody.error.code).toBe("UNSUPPORTED_MEDIA_TYPE");
   });
 
+  it("fails closed when a provider webhook receiver is not configured", async () => {
+    const selected = await app();
+    const response = await selected.inject({
+      method: "POST",
+      url: "/callbacks/v1/provider-webhooks/fixture/unconfigured",
+      payload: { tenant: "untrusted" }
+    });
+    expect(response.statusCode).toBe(503);
+    expect(apiErrorSchema.parse(response.json()).error.code).toBe("WEBHOOK_INTAKE_UNAVAILABLE");
+  });
+
   it("rejects unknown create fields and keeps tenant list isolation", async () => {
     const selected = await app();
     const invalid = await selected.inject({

@@ -15,6 +15,7 @@ export * from "./evaluation-repository.js";
 export * from "./file-repository.js";
 export * from "./retrieval-repository.js";
 export * from "./knowledge-graph-repository.js";
+export * from "./connector-repository.js";
 export * from "./agent-execution-repository.js";
 export * from "./registry.js";
 export * from "./repository.js";

@@ -70,6 +70,41 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
        ON CONFLICT (workspace_id, id) DO NOTHING`,
       [SEED.workspaceA, SEED.workflow, SEED.workspaceB]
     );
+    const fixtureConnector = {
+      key: "fixture-cloud",
+      version: "1.0.0",
+      displayName: "Fixture Cloud",
+      provider: "fixture",
+      authMethods: ["oauth2"],
+      capabilities: ["discover", "read", "webhook", "poll", "permissions", "reconcile"],
+      requiredScopes: ["objects.read"],
+      optionalScopes: ["profile.read"],
+      objectTypes: ["page", "person"],
+      triggers: ["object.changed"],
+      actions: [],
+      permissionFidelity: "exact",
+      webhookMode: "application",
+      regions: ["local"],
+      rateLimits: { concurrency: 2, requestsPerMinute: 60 },
+      oauth: {
+        authorizationEndpoint: "http://127.0.0.1:4100/__local/connectors/fixture/authorize",
+        tokenEndpoint: "http://127.0.0.1:4100/__local/connectors/fixture/token"
+      }
+    };
+    await client.query(
+      `INSERT INTO connector_manifest_versions(workspace_id,id,connector_key,semantic_version,manifest,content_hash,state,rollout_percent,created_by) VALUES
+       ($1,'22000000-0000-4000-8000-000000000001','fixture-cloud','1.0.0',$2,$3,'active',100,$4),
+       ($5,'22000000-0000-4000-8000-000000000001','fixture-cloud','1.0.0',$2,$3,'active',100,$6)
+       ON CONFLICT(workspace_id,id) DO NOTHING`,
+      [
+        SEED.workspaceA,
+        fixtureConnector,
+        contentHash(fixtureConnector),
+        SEED.userA,
+        SEED.workspaceB,
+        SEED.userB
+      ]
+    );
     await client.query("COMMIT");
   } catch (error) {
     await client.query("ROLLBACK");

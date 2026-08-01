@@ -1248,6 +1248,104 @@
       "retentionDays": 2555,
       "exportHandler": "knowledge-export",
       "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "connector_manifest_versions",
+      "class": "connector.manifest",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "connections",
+      "class": "connector.connection",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "connector-delete"
+    },
+    {
+      "name": "connection_authorization_transactions",
+      "class": "connector.authorization",
+      "retentionDays": 30,
+      "exportHandler": "security-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "connection_scope_snapshots",
+      "class": "connector.scope",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "connector-delete"
+    },
+    {
+      "name": "connection_sync_runs",
+      "class": "connector.sync_run",
+      "retentionDays": 365,
+      "exportHandler": "connector-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "connection_sync_checkpoints",
+      "class": "connector.checkpoint",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "connector-delete"
+    },
+    {
+      "name": "connection_sync_pages",
+      "class": "connector.sync_page",
+      "retentionDays": 90,
+      "exportHandler": "connector-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "connection_external_objects",
+      "class": "connector.external_object",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "connector-delete"
+    },
+    {
+      "name": "connector_webhook_endpoints",
+      "class": "connector.webhook_endpoint",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "connector-delete"
+    },
+    {
+      "name": "provider_installation_bindings",
+      "class": "connector.installation_binding",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "connector-delete"
+    },
+    {
+      "name": "connector_webhook_receipts",
+      "class": "connector.webhook_receipt",
+      "retentionDays": 365,
+      "exportHandler": "connector-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "connector_reconciliations",
+      "class": "connector.reconciliation",
+      "retentionDays": 365,
+      "exportHandler": "connector-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "connector_control_switches",
+      "class": "connector.control",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "connector_rate_buckets",
+      "class": "connector.rate",
+      "retentionDays": 30,
+      "exportHandler": "connector-export",
+      "deleteHandler": "retention-delete"
     }
   ],
   "indexes": [
@@ -1552,7 +1650,30 @@
     "knowledge_entity_changes_workspace_id_entity_id_revision_key",
     "knowledge_provenance_packets_pkey",
     "knowledge_graph_query_receipts_pkey",
-    "knowledge_admin_actions_pkey"
+    "knowledge_admin_actions_pkey",
+    "connector_manifest_versions_pkey",
+    "connector_manifest_versions_workspace_id_connector_key_semantic_version_key",
+    "connector_manifest_versions_workspace_id_connector_key_content_hash_key",
+    "connections_pkey",
+    "connections_health_idx",
+    "connection_authorization_transactions_pkey",
+    "connection_authorization_transactions_workspace_id_state_hash_key",
+    "connection_scope_snapshots_pkey",
+    "connection_sync_runs_pkey",
+    "connection_sync_runs_queue_idx",
+    "connection_sync_checkpoints_pkey",
+    "connection_sync_pages_pkey",
+    "connection_sync_pages_workspace_id_connection_id_object_type_provider_page_id_key",
+    "connection_external_objects_pkey",
+    "connector_webhook_endpoints_pkey",
+    "connector_webhook_endpoints_workspace_id_endpoint_locator_hash_key",
+    "provider_installation_bindings_pkey",
+    "provider_installation_active_idx",
+    "connector_webhook_receipts_pkey",
+    "connector_webhook_receipts_workspace_id_endpoint_id_dedupe_hash_key",
+    "connector_reconciliations_pkey",
+    "connector_control_switches_pkey",
+    "connector_rate_buckets_pkey"
   ],
   "caches": []
 }

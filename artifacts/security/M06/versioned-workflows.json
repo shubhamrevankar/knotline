@@ -158,6 +158,15 @@
       "tenantIsolated": true,
       "api": true
     },
+    "connectors": {
+      "manifestCertified": true,
+      "oauthBoundAndOneTime": true,
+      "reducedScopeReconciled": true,
+      "durableSyncQueued": true,
+      "deletionStopsActivity": true,
+      "tenantIsolated": true,
+      "api": true
+    },
     "auditEvents": 7
   }
 }

@@ -536,6 +536,22 @@ importers:
         specifier: 'catalog:'
         version: 4.1.10(@types/node@24.13.3)(@vitest/coverage-v8@4.1.10)(jsdom@27.0.1)(vite@8.2.0(@types/node@24.13.3)(esbuild@0.27.7)(terser@5.49.0)(tsx@4.20.6))
 
+  packages/connector-sdk:
+    dependencies:
+      '@knotline/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.13.3
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vitest:
+        specifier: 'catalog:'
+        version: 4.1.10(@types/node@24.13.3)(@vitest/coverage-v8@4.1.10)(jsdom@27.0.1)(vite@8.2.0(@types/node@24.13.3)(esbuild@0.27.7)(terser@5.49.0)(tsx@4.20.6))
+
   packages/contracts:
     dependencies:
       zod:
@@ -551,6 +567,9 @@ importers:
 
   packages/db:
     dependencies:
+      '@knotline/connector-sdk':
+        specifier: workspace:*
+        version: link:../connector-sdk
       '@knotline/contracts':
         specifier: workspace:*
         version: link:../contracts

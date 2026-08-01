@@ -40,6 +40,7 @@ import type {
   FileRepository,
   RetrievalRepository,
   KnowledgeGraphRepository,
+  ConnectorRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -94,6 +95,7 @@ export interface BuildAppOptions {
   readonly files?: FileRepository;
   readonly retrieval?: RetrievalRepository;
   readonly knowledgeGraph?: KnowledgeGraphRepository;
+  readonly connectors?: ConnectorRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -2500,6 +2502,196 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     if (!options.knowledgeGraph) throw new Error("Knowledge graph is not configured");
     return options.knowledgeGraph;
   };
+  const connectorRepository = () => {
+    if (!options.connectors) throw new Error("Connectors are not configured");
+    return options.connectors;
+  };
+  const connectionParams = z.object({ connectionId: z.string().uuid() }).strict();
+  app.get("/v1/workspaces/:workspaceId/connections", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const context = await agentAccess(request);
+    return {
+      data: {
+        items: await connectorRepository().connections(context),
+        catalog: await connectorRepository().catalog(context)
+      }
+    };
+  });
+  app.get("/v1/connections/:connectionId", async (request, reply) => {
+    const { connectionId } = connectionParams.parse(request.params);
+    const data = await connectorRepository().get(await agentAccess(request), connectionId);
+    return data
+      ? { data }
+      : reply.code(404).send({
+          error: {
+            code: "CONNECTION_NOT_FOUND",
+            message: "The connection does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  app.patch("/v1/connections/:connectionId", async (request) => {
+    const { connectionId } = connectionParams.parse(request.params);
+    return {
+      data: await connectorRepository().patch(
+        await agentAccess(request, true),
+        connectionId,
+        request.body
+      )
+    };
+  });
+  app.post("/v1/workspaces/:workspaceId/connection-authorizations", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const body = z
+      .object({
+        connectorKey: z.string(),
+        manifestVersion: z.string(),
+        displayName: z.string(),
+        region: z.string(),
+        authMethod: z.string(),
+        sessionId: z.string().uuid(),
+        browserNonce: z.string(),
+        returnTarget: z.string(),
+        requestedScopes: z.array(z.string())
+      })
+      .strict()
+      .parse(request.body);
+    const context = await agentAccess(request, true);
+    const connection = await connectorRepository().create(context, {
+      connectorKey: body.connectorKey,
+      manifestVersion: body.manifestVersion,
+      displayName: body.displayName,
+      requestedScopes: body.requestedScopes,
+      region: body.region,
+      authMethod: body.authMethod
+    });
+    return reply.code(201).send({
+      data: await connectorRepository().startAuthorization(context, String(connection.id), {
+        sessionId: body.sessionId,
+        browserNonce: body.browserNonce,
+        returnTarget: `/app/connections/${String(connection.id)}`,
+        requestedScopes: body.requestedScopes
+      })
+    });
+  });
+  app.get("/v1/connection-authorizations/:authorizationId", async (request, reply) => {
+    const { authorizationId } = z
+      .object({ authorizationId: z.string().uuid() })
+      .parse(request.params);
+    const data = await connectorRepository().authorization(
+      await agentAccess(request),
+      authorizationId
+    );
+    return data
+      ? { data }
+      : reply.code(404).send({
+          error: {
+            code: "AUTHORIZATION_NOT_FOUND",
+            message: "The authorization does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  app.get("/callbacks/v1/connections/oauth/:provider", async (request) => {
+    const query = z
+      .object({
+        connection_id: z.string().uuid(),
+        state: z.string().min(20),
+        granted_scope: z.string().default("objects.read"),
+        account_id: z.string().default("fixture-account"),
+        account_label: z.string().default("Fixture account")
+      })
+      .parse(request.query);
+    return {
+      data: await connectorRepository().activate(
+        await agentAccess(request, true),
+        query.connection_id,
+        {
+          state: query.state,
+          grantedScopes: query.granted_scope.split(" ").filter(Boolean),
+          accountId: query.account_id,
+          accountLabel: query.account_label,
+          credentialReference: `credential://connections/${query.connection_id}`
+        }
+      )
+    };
+  });
+  if (options.environment === "local" || options.environment === "ci")
+    app.get(`/__local/connectors/fixture/authorize`, async (request, reply) => {
+      const query = z
+        .object({ state: z.string().min(20), connection_id: z.string().uuid() })
+        .parse(request.query);
+      return reply.redirect(
+        `/callbacks/v1/connections/oauth/fixture?connection_id=${query.connection_id}&state=${encodeURIComponent(query.state)}&granted_scope=objects.read&account_id=fixture-account&account_label=Fixture%20account`
+      );
+    });
+  app.post("/v1/connections/:connectionId/syncs", async (request, reply) => {
+    const { connectionId } = connectionParams.parse(request.params);
+    return reply.code(202).send({
+      data: await connectorRepository().sync(
+        await agentAccess(request, true),
+        connectionId,
+        request.body
+      )
+    });
+  });
+  app.get("/v1/connections/:connectionId/syncs", async (request) => {
+    const { connectionId } = connectionParams.parse(request.params);
+    return { data: await connectorRepository().syncs(await agentAccess(request), connectionId) };
+  });
+  app.get("/v1/connections/:connectionId/syncs/:syncId", async (request, reply) => {
+    const { connectionId, syncId } = z
+      .object({ connectionId: z.string().uuid(), syncId: z.string().uuid() })
+      .parse(request.params);
+    const items = await connectorRepository().syncs(
+      await agentAccess(request),
+      connectionId,
+      syncId
+    );
+    return items[0]
+      ? { data: items[0] }
+      : reply.code(404).send({
+          error: {
+            code: "SYNC_NOT_FOUND",
+            message: "The sync does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  const transitionConnection =
+    (action: string) => async (request: FastifyRequest, reply: FastifyReply) => {
+      const { connectionId } = connectionParams.parse(request.params);
+      return reply.code(202).send({
+        data: await connectorRepository().transition(
+          await agentAccess(request, true),
+          connectionId,
+          action
+        )
+      });
+    };
+  app.post("/v1/connections/:connectionId/pauses", transitionConnection("pause"));
+  app.post("/v1/connections/:connectionId/resumptions", transitionConnection("resume"));
+  app.post("/v1/connections/:connectionId/reauthorizations", transitionConnection("reauthorize"));
+  app.post("/v1/connections/:connectionId/reconciliations", transitionConnection("reconcile"));
+  app.delete("/v1/connections/:connectionId", async (request, reply) => {
+    const { connectionId } = connectionParams.parse(request.params);
+    return reply.code(202).send({
+      data: await connectorRepository().remove(await agentAccess(request, true), connectionId)
+    });
+  });
+  app.post("/callbacks/v1/provider-webhooks/:provider/:endpointLocator", async (request, reply) =>
+    reply.code(503).send({
+      error: {
+        code: "WEBHOOK_INTAKE_UNAVAILABLE",
+        message: "This provider webhook endpoint is not configured.",
+        requestId: request.id
+      }
+    })
+  );
   const fileParams = z.object({ fileId: z.string().uuid() }).strict();
   const fileUploadParams = z.object({ uploadId: z.string().uuid() }).strict();
   app.get("/v1/workspaces/:workspaceId/files", async (request) => {

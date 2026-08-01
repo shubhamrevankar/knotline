@@ -10,12 +10,13 @@ const ROOT = resolve(new URL("../..", import.meta.url).pathname);
 const DIST = join(ROOT, "apps", "web", "dist");
 const REPORT = join(ROOT, "artifacts", "performance", "M02", "bundle-budget.json");
 const MAX_JS_BYTES = 350_000;
-// M20 adds shared authorization-proof/search clients and a lazy retrieval
-// debugger. The measured review point is 154,752 initial / 260,719 total gzip;
-// these ceilings retain roughly 4 KB initial and 5 KB total headroom so
-// subsequent growth still requires an explicit performance review.
+// M22 adds the lazy-loaded connection catalog, setup, health, scope, sync, and
+// remediation surfaces. The measured review point is 158,165 initial / 269,267
+// total gzip. The initial ceiling remains unchanged and the total ceiling keeps
+// roughly 5 KB headroom, so subsequent growth still requires an explicit
+// performance review rather than silently weakening the per-chunk limit.
 const MAX_INITIAL_GZIP_BYTES = 159_000;
-const MAX_TOTAL_GZIP_BYTES = 266_000;
+const MAX_TOTAL_GZIP_BYTES = 275_000;
 
 export function evaluateAssets(assets, initialAssetNames = new Set()) {
   const errors = [];

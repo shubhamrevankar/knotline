@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { modelRoleSchema } from "./model-gateway.js";
+import { connectorKeySchema } from "./connector.js";
 
 export const eventEnvelopeSchema = z
   .object({
@@ -238,6 +239,19 @@ export const knowledgeGraphEventPayloadV1Schema = z
     factKind: z.enum(["provider", "user", "inferred", "suggestion"]).optional(),
     provenancePacketId: z.uuid().optional(),
     reason: z.string().optional()
+  })
+  .passthrough();
+
+export const connectorEventPayloadV1Schema = z
+  .object({
+    connectionId: z.string().uuid(),
+    connectorKey: connectorKeySchema.optional(),
+    syncId: z.string().uuid().optional(),
+    state: z.string().max(80).optional(),
+    errorKind: z.string().max(80).optional(),
+    objectCount: z.number().int().nonnegative().optional(),
+    permissionChangeCount: z.number().int().nonnegative().optional(),
+    webhookReceiptId: z.string().uuid().optional()
   })
   .passthrough();
 
@@ -501,6 +515,24 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "knowledge-graph",
     schema: knowledgeGraphEventPayloadV1Schema
+  })),
+  ...[
+    "connection.authorized",
+    "connection.auth_expired",
+    "connection.degraded",
+    "connection.disabled",
+    "connection.resumed",
+    "connection.sync_started",
+    "connection.sync_completed",
+    "connection.sync_failed",
+    "connection.removed",
+    "connection.webhook_received",
+    "source_object.changed"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "connector-platform",
+    schema: connectorEventPayloadV1Schema
   }))
 ] as const;
 

@@ -18,6 +18,7 @@ import {
   PostgresFileRepository,
   PostgresRetrievalRepository,
   PostgresKnowledgeGraphRepository,
+  PostgresConnectorRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -100,6 +101,16 @@ const authorizationProofKey = process.env.AUTHORIZATION_PROOF_SIGNING_KEY
   : createHash("sha256").update("knotline-local-authorization-proofs").digest();
 const retrieval = new PostgresRetrievalRepository(pool, authorizationProofKey);
 const knowledgeGraph = new PostgresKnowledgeGraphRepository(pool);
+if (
+  environment.environment !== "local" &&
+  environment.environment !== "ci" &&
+  !process.env.CONNECTOR_STATE_SIGNING_KEY
+)
+  throw new Error("CONNECTOR_STATE_SIGNING_KEY is required outside local mode");
+const connectorStateKey = process.env.CONNECTOR_STATE_SIGNING_KEY
+  ? Buffer.from(process.env.CONNECTOR_STATE_SIGNING_KEY, "base64")
+  : createHash("sha256").update("knotline-local-connector-state").digest();
+const connectors = new PostgresConnectorRepository(pool, connectorStateKey);
 const temporalConnection = await Connection.connect({
   address: process.env.TEMPORAL_ADDRESS ?? "127.0.0.1:7233"
 });
@@ -238,6 +249,7 @@ const app = await buildApp({
   files,
   retrieval,
   knowledgeGraph,
+  connectors,
   runStarter,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),

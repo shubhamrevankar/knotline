@@ -26,6 +26,7 @@ import {
   PostgresFileRepository,
   PostgresRetrievalRepository,
   PostgresKnowledgeGraphRepository,
+  PostgresConnectorRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -52,40 +53,49 @@ function docker(...args: string[]) {
 }
 
 async function startPostgres() {
-  docker(
-    "run",
-    "--detach",
-    "--rm",
-    "--name",
-    containerName,
-    "--publish",
-    "127.0.0.1::5432",
-    "--env",
-    "POSTGRES_DB=knotline",
-    "--env",
-    "POSTGRES_USER=knotline_local",
-    "--env",
-    `POSTGRES_PASSWORD=${password}`,
-    IMAGE
-  );
-  let port = "";
-  for (let attempt = 0; attempt < 80; attempt += 1) {
-    port = docker("port", containerName, "5432/tcp").match(/:(\d+)$/u)?.[1] ?? "";
-    if (port) break;
-    await delay(100);
-  }
-  assert(port, "PostgreSQL did not publish a local port");
-  const adminUrl = `postgresql://knotline_local:${password}@127.0.0.1:${port}/knotline`;
-  const pool = createPool(adminUrl, { max: 20 });
-  for (let attempt = 0; attempt < 80; attempt += 1) {
-    try {
-      await pool.query("SELECT 1");
-      return { adminUrl, pool };
-    } catch {
-      await delay(250);
+  let lastReadinessError: unknown;
+  for (let launchAttempt = 0; launchAttempt < 3; launchAttempt += 1) {
+    docker(
+      "run",
+      "--detach",
+      "--rm",
+      "--name",
+      containerName,
+      "--publish",
+      "127.0.0.1::5432",
+      "--env",
+      "POSTGRES_DB=knotline",
+      "--env",
+      "POSTGRES_USER=knotline_local",
+      "--env",
+      `POSTGRES_PASSWORD=${password}`,
+      IMAGE
+    );
+    let port = "";
+    for (let attempt = 0; attempt < 80; attempt += 1) {
+      port = docker("port", containerName, "5432/tcp").match(/:(\d+)$/u)?.[1] ?? "";
+      if (port) break;
+      await delay(100);
     }
+    assert(port, "PostgreSQL did not publish a local port");
+    const adminUrl = `postgresql://knotline_local:${password}@127.0.0.1:${port}/knotline`;
+    const pool = createPool(adminUrl, { max: 20, connectionTimeoutMillis: 1_000 });
+    for (let attempt = 0; attempt < 80; attempt += 1) {
+      try {
+        await pool.query("SELECT 1");
+        return { adminUrl, pool };
+      } catch (error) {
+        lastReadinessError = error;
+        await delay(250);
+      }
+    }
+    await pool.end();
+    spawnSync("docker", ["rm", "--force", containerName], { encoding: "utf8" });
+    await delay(500);
   }
-  throw new Error("PostgreSQL did not become ready");
+  throw new Error("PostgreSQL did not become ready after three isolated launches", {
+    cause: lastReadinessError
+  });
 }
 
 const definition = (name = "Incident response"): WorkflowDefinition => ({
@@ -205,6 +215,10 @@ async function runSuite(pool: DatabasePool) {
     createHash("sha256").update("m20-authorization-proofs").digest()
   );
   const knowledgeGraphRepository = new PostgresKnowledgeGraphRepository(pool);
+  const connectorRepository = new PostgresConnectorRepository(
+    pool,
+    createHash("sha256").update("m22-connector-state").digest()
+  );
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -1035,6 +1049,66 @@ async function runSuite(pool: DatabasePool) {
     (await knowledgeGraphRepository.get(contextB, String(projectEntity.id))) === undefined,
     "Graph entity crossed tenant RLS"
   );
+  const connectorCatalog = await connectorRepository.catalog(contextA, "fixture-cloud");
+  assert(connectorCatalog.length === 1, "Certified fixture manifest was not discoverable");
+  const connection = await connectorRepository.create(contextA, {
+    connectorKey: "fixture-cloud",
+    manifestVersion: "1.0.0",
+    displayName: "Northstar fixture",
+    requestedScopes: ["objects.read", "profile.read"],
+    region: "local",
+    authMethod: "oauth2"
+  });
+  const authorization = await connectorRepository.startAuthorization(
+    contextA,
+    String(connection.id),
+    {
+      sessionId: "30000000-0000-4000-8000-000000000001",
+      browserNonce: "m22-browser-nonce-fixture",
+      returnTarget: `/app/connections/${String(connection.id)}`,
+      requestedScopes: ["objects.read", "profile.read"]
+    }
+  );
+  const oauthState = new URL(String(authorization.authorizationUrl)).searchParams.get("state");
+  assert(oauthState, "Authorization URL omitted signed state");
+  const activatedConnection = await connectorRepository.activate(contextA, String(connection.id), {
+    state: oauthState,
+    grantedScopes: ["objects.read"],
+    accountId: "fixture-account",
+    accountLabel: "Northstar fixture account",
+    credentialReference: `credential://connections/${String(connection.id)}`
+  });
+  assert(
+    activatedConnection.state === "active" && activatedConnection.reduced === true,
+    "Reduced optional consent did not activate with reconciled scopes"
+  );
+  let replayRejected = false;
+  try {
+    await connectorRepository.activate(contextA, String(connection.id), {
+      state: oauthState,
+      grantedScopes: ["objects.read"],
+      accountId: "fixture-account",
+      accountLabel: "Northstar fixture account",
+      credentialReference: `credential://connections/${String(connection.id)}`
+    });
+  } catch {
+    replayRejected = true;
+  }
+  assert(replayRejected, "Consumed OAuth state was accepted twice");
+  const syncRun = await connectorRepository.sync(contextA, String(connection.id), {
+    mode: "backfill"
+  });
+  assert(syncRun.state === "queued", "Durable connector sync was not queued");
+  assert(
+    (await connectorRepository.get(contextB, String(connection.id))) === undefined,
+    "Connection crossed tenant RLS"
+  );
+  const connectorDeletion = await connectorRepository.remove(contextA, String(connection.id));
+  assert(
+    connectorDeletion.activityStopped === true &&
+      connectorDeletion.retentionDeletionQueued === true,
+    "Connection deletion did not stop activity and queue governed deletion"
+  );
   const quarantineUpload = await fileRepository.createUpload(contextA, {
     filename: "active.svg",
     purpose: "knowledge_source",
@@ -1701,6 +1775,7 @@ async function runSuite(pool: DatabasePool) {
     files: fileRepository,
     retrieval: retrievalRepository,
     knowledgeGraph: knowledgeGraphRepository,
+    connectors: connectorRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),
@@ -1830,6 +1905,41 @@ async function runSuite(pool: DatabasePool) {
       }
     });
     assert(retrievalApiResponse.statusCode === 200, "Knowledge retrieval API failed");
+    const connectionsResponse = await app.inject({
+      method: "GET",
+      url: `/v1/workspaces/${SEED.workspaceA}/connections`
+    });
+    const connectionSurface = connectionsResponse.json<{
+      data: { items: unknown[]; catalog: unknown[] };
+    }>().data;
+    assert(
+      connectionsResponse.statusCode === 200 && connectionSurface.catalog.length === 1,
+      "Connection catalog and health API failed"
+    );
+    const connectionAuthorizationResponse = await app.inject({
+      method: "POST",
+      url: `/v1/workspaces/${SEED.workspaceA}/connection-authorizations`,
+      payload: {
+        connectorKey: "fixture-cloud",
+        manifestVersion: "1.0.0",
+        displayName: "API fixture",
+        region: "local",
+        authMethod: "oauth2",
+        sessionId: "30000000-0000-4000-8000-000000000001",
+        browserNonce: "m22-api-browser-nonce",
+        returnTarget: "/app/connections",
+        requestedScopes: ["objects.read"]
+      }
+    });
+    const authorizationBody = connectionAuthorizationResponse.json<{
+      data: { authorizationId: string; authorizationUrl: string; verifier?: string };
+    }>().data;
+    assert(
+      connectionAuthorizationResponse.statusCode === 201 &&
+        Boolean(authorizationBody.authorizationId) &&
+        !authorizationBody.verifier,
+      "Connection authorization API failed or exposed the PKCE verifier"
+    );
     const draftResponse = await app.inject({
       method: "GET",
       url: `/v1/workflows/${workflowId}/draft`
@@ -2115,6 +2225,15 @@ async function runSuite(pool: DatabasePool) {
       aclIntersection: true,
       boundedTraversal: true,
       authorizedExport: true,
+      tenantIsolated: true,
+      api: true
+    },
+    connectors: {
+      manifestCertified: true,
+      oauthBoundAndOneTime: true,
+      reducedScopeReconciled: true,
+      durableSyncQueued: true,
+      deletionStopsActivity: true,
       tenantIsolated: true,
       api: true
     },

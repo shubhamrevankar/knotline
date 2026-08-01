@@ -1,7 +1,7 @@
 {
   "milestone": "M20",
-  "planDigest": "sha256:9d10915ebb7cd752c33e6643d21c615f1265ced56f7bf15d4d02d6289ddbdff4",
-  "routeRegistryDigest": "sha256:1964af1c58be0cdd2c1197b214c432276ab307296eac9a1c769077a838d78d00",
+  "planDigest": "sha256:df354c3b5efcb3b33b8e3ca284b4be7123c17b9ecf960b1e50a300e48636d54d",
+  "routeRegistryDigest": "sha256:a3d6fce3623d9326eb1df22dd395a181475a70794939674fcaee3fda407cb49f",
   "routes": [
     {
       "routeId": "route.public.home",

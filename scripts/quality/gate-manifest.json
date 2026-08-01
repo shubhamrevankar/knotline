@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "milestone": "M21",
+  "milestone": "M22",
   "rows": [
     {
       "name": "format:check",
@@ -127,8 +127,13 @@
     },
     {
       "name": "test:contract",
-      "status": "NOT_YET_APPLICABLE",
-      "activationMilestone": "M22"
+      "status": "ACTIVE",
+      "script": "test:connectors",
+      "declarationRow": "connector contract/oauth/webhook/sync fixture suites",
+      "requiredTestFiles": [
+        "packages/connector-sdk/src/**/*.test.ts",
+        "tests/e2e/connections.spec.ts"
+      ]
     },
     {
       "name": "test:api",

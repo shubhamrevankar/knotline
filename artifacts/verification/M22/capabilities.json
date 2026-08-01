@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M22/test-results/connector-unit.json",
+      "verifiedAt": "2026-08-02T12:00:00.000Z"
+    },
+    "externalGates": [],
+    "id": "connectors.secure-platform",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/secure-connector-platform.md",
+    "status": "DEMO",
+    "summary": "Manifest-certified connector SDK, one-time bound OAuth and PKCE, credential references, reduced-scope reconciliation, durable sync identity, authenticated webhook primitives, historical routing, health, reconciliation, deletion, and kill controls are locally verified against a synthetic fixture."
+  }
+]

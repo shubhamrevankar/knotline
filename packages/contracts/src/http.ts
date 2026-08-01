@@ -2139,6 +2139,132 @@ const FILE_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }
 ];
 
+const CONNECTOR_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/connections",
+    "listConnections",
+    "List connector catalog and connections",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/connection-authorizations",
+    "startConnectionAuthorization",
+    "Create a draft connection and start authorization",
+    "browser_internal"
+  ],
+  [
+    "GET",
+    "/v1/connection-authorizations/{authorizationId}",
+    "getConnectionAuthorization",
+    "Read authorization status",
+    "browser_internal"
+  ],
+  [
+    "GET",
+    "/callbacks/v1/connections/oauth/{provider}",
+    "completeConnectionAuthorization",
+    "Complete provider authorization",
+    "provider_callback"
+  ],
+  [
+    "GET",
+    "/v1/connections/{connectionId}",
+    "getConnection",
+    "Read connection health",
+    "browser_internal"
+  ],
+  [
+    "PATCH",
+    "/v1/connections/{connectionId}",
+    "updateConnection",
+    "Update a connection",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/connections/{connectionId}/syncs",
+    "startConnectionSync",
+    "Start a durable sync",
+    "browser_internal"
+  ],
+  [
+    "GET",
+    "/v1/connections/{connectionId}/syncs",
+    "listConnectionSyncs",
+    "List sync history",
+    "browser_internal"
+  ],
+  [
+    "GET",
+    "/v1/connections/{connectionId}/syncs/{syncId}",
+    "getConnectionSync",
+    "Read one sync",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/connections/{connectionId}/pauses",
+    "pauseConnection",
+    "Pause a connection",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/connections/{connectionId}/resumptions",
+    "resumeConnection",
+    "Resume a connection",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/connections/{connectionId}/reauthorizations",
+    "reauthorizeConnection",
+    "Request reauthorization",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/connections/{connectionId}/reconciliations",
+    "reconcileConnection",
+    "Reconcile provider inventory",
+    "browser_internal"
+  ],
+  [
+    "DELETE",
+    "/v1/connections/{connectionId}",
+    "deleteConnection",
+    "Stop and delete a connection",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/callbacks/v1/provider-webhooks/{provider}/{endpointLocator}",
+    "receiveProviderWebhook",
+    "Authenticate and enqueue a provider webhook",
+    "provider_callback"
+  ]
+].map(([method, path, operationId, summary, exposure]) => ({
+  method: method as HttpRouteContract["method"],
+  path: path!,
+  operationId: operationId!,
+  summary: summary!,
+  tags: ["Connectors"],
+  exposure: exposure as HttpRouteContract["exposure"],
+  responses: {
+    200: apiEnvelope(genericDataSchema),
+    201: apiEnvelope(genericDataSchema),
+    202: apiEnvelope(genericDataSchema),
+    400: apiErrorSchema,
+    401: apiErrorSchema,
+    403: apiErrorSchema,
+    404: apiErrorSchema,
+    409: apiErrorSchema,
+    500: apiErrorSchema
+  }
+}));
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
@@ -2152,6 +2278,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...AGENT_RUNTIME_ROUTE_CONTRACTS,
   ...AGENT_EVALUATION_ROUTE_CONTRACTS,
   ...FILE_ROUTE_CONTRACTS,
+  ...CONNECTOR_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

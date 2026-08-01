@@ -1,0 +1,61 @@
+.connection-shell {
+  display: grid;
+  gap: 2rem;
+}
+.connection-shell header {
+  display: grid;
+  gap: 0.75rem;
+}
+.connection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+}
+.connection-grid a {
+  color: inherit;
+  text-decoration: none;
+}
+.connection-grid a:hover {
+  transform: translateY(-2px);
+}
+.connection-title,
+.connection-actions,
+.connection-shell li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.connection-actions {
+  flex-wrap: wrap;
+}
+.connection-health {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1rem;
+}
+.connection-health dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.connection-health dt {
+  color: var(--color-text-muted);
+}
+.connection-health dd {
+  margin: 0;
+  font-weight: 700;
+}
+.connection-shell ul {
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+@media (max-width: 640px) {
+  .connection-actions > * {
+    width: 100%;
+  }
+  .connection-health dl {
+    grid-template-columns: 1fr;
+  }
+}

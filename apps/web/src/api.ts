@@ -1210,3 +1210,69 @@ export const requestKnowledgeReindex = async () =>
       }
     )
   ).data;
+
+export interface ConnectionSummary {
+  readonly id: string;
+  readonly connectorKey: string;
+  readonly displayName: string;
+  readonly state: string;
+  readonly accountLabel?: string;
+  readonly grantedScopes: readonly string[];
+  readonly requestedScopes: readonly string[];
+  readonly permissionFidelity: "exact" | "conservative" | "unsupported";
+  readonly lastSuccessAt?: string;
+  readonly freshnessLagSeconds?: number;
+  readonly nextRetryAt?: string;
+  readonly currentOperation?: string;
+  readonly objectCount: number;
+  readonly errorCount: number;
+  readonly errorSummary?: Readonly<Record<string, unknown>>;
+}
+export interface ConnectorCatalogItem {
+  readonly id: string;
+  readonly key: string;
+  readonly version: string;
+  readonly manifest: Readonly<Record<string, unknown>>;
+  readonly state: string;
+}
+const fetchConnectionSurface = async () =>
+  (
+    await request<ApiEnvelope<{ items: ConnectionSummary[]; catalog: ConnectorCatalogItem[] }>>(
+      `/v1/workspaces/${workspaceId}/connections`
+    )
+  ).data;
+export const fetchConnectorCatalog = async () => (await fetchConnectionSurface()).catalog;
+export const fetchConnections = async () => (await fetchConnectionSurface()).items;
+export const fetchConnection = async (id: string) =>
+  (
+    await request<
+      ApiEnvelope<ConnectionSummary & { runs: readonly Readonly<Record<string, unknown>>[] }>
+    >(`/v1/connections/${id}`)
+  ).data;
+export const startConnectionAuthorization = async (input: Readonly<Record<string, unknown>>) =>
+  (
+    await mutate<ApiEnvelope<{ authorizationUrl: string; expiresAt: string }>>(
+      `/v1/workspaces/${workspaceId}/connection-authorizations`,
+      "POST",
+      input
+    )
+  ).data;
+export const requestConnectionSync = async (id: string, mode = "incremental") =>
+  (
+    await mutate<ApiEnvelope<Record<string, unknown>>>(`/v1/connections/${id}/syncs`, "POST", {
+      mode
+    })
+  ).data;
+export const transitionConnection = async (
+  id: string,
+  action: "pauses" | "resumptions" | "reauthorizations" | "reconciliations"
+) =>
+  (
+    await mutate<ApiEnvelope<Record<string, unknown>>>(
+      `/v1/connections/${id}/${action}`,
+      "POST",
+      {}
+    )
+  ).data;
+export const deleteConnection = async (id: string) =>
+  (await mutate<ApiEnvelope<Record<string, unknown>>>(`/v1/connections/${id}`, "DELETE", {})).data;
