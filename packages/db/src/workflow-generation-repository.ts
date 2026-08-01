@@ -62,7 +62,7 @@ export class PostgresWorkflowGenerationRepository implements WorkflowGenerationR
         `INSERT INTO workflow_generations(
            workspace_id,id,principal_id,retry_of,prompt_version,provider,source_prompt,lifecycle,
            progress_phase,result,failure_code,accepted_workflow_id,created_at,updated_at
-         ) VALUES ($1,$2,$3,$4,'workflow-generation.v1','fixture-v1',$5,$6,$7,$8,$9,$10,$11,$12)
+         ) VALUES ($1,$2,$3,$4,'workflow-generation.v1',$5,$6,$7,$8,$9,$10,$11,$12,$13)
          ON CONFLICT (workspace_id,id) DO UPDATE SET
            lifecycle=EXCLUDED.lifecycle,progress_phase=EXCLUDED.progress_phase,
            result=EXCLUDED.result,failure_code=EXCLUDED.failure_code,
@@ -72,6 +72,7 @@ export class PostgresWorkflowGenerationRepository implements WorkflowGenerationR
           resource.id,
           resource.principalId,
           resource.retryOf ?? null,
+          resource.result?.provider ?? "pending-gateway",
           resource.sourcePrompt,
           resource.lifecycle,
           resource.phase ?? null,

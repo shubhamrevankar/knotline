@@ -636,7 +636,7 @@ export const cancelWorkflowGeneration = async (generationId: string) =>
   ).data;
 
 export const acceptWorkflowGeneration = (generationId: string, publish = true) =>
-  mutate<{ readonly workflowId: string; readonly simulated: true; readonly published: boolean }>(
+  mutate<{ readonly workflowId: string; readonly simulated: boolean; readonly published: boolean }>(
     `/v1/workflow-generations/${encodeURIComponent(generationId)}/acceptances`,
     "POST",
     { publish }

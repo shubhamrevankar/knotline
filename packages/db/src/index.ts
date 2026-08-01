@@ -8,6 +8,7 @@ export * from "./agent-repository.js";
 export * from "./auth-repository.js";
 export * from "./context.js";
 export * from "./migrations.js";
+export * from "./model-repository.js";
 export * from "./registry.js";
 export * from "./repository.js";
 export * from "./schema.js";

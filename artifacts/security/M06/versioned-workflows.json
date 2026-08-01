@@ -82,6 +82,13 @@
       "tenantIsolated": true,
       "api": true
     },
+    "models": {
+      "immutablePolicies": true,
+      "optimisticPolicyRevision": true,
+      "providerNeutralRoles": true,
+      "tenantIsolated": true,
+      "api": true
+    },
     "auditEvents": 7
   }
 }

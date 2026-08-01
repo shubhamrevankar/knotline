@@ -36,8 +36,13 @@ export const workflowGenerationRequestSchema = z
 export const workflowGenerationResultSchema = z
   .object({
     promptVersion: z.literal(WORKFLOW_GENERATION_PROMPT_VERSION),
-    provider: z.literal(DETERMINISTIC_GENERATION_PROVIDER),
-    simulated: z.literal(true),
+    provider: z.string().min(1),
+    simulated: z.boolean(),
+    environmentStatus: z
+      .enum(["RECORDED_CONTRACT", "PROVIDER_SANDBOX"])
+      .default("RECORDED_CONTRACT"),
+    providerResponseId: z.string().optional(),
+    exactModelId: z.string().optional(),
     definition: workflowDefinitionSchema,
     assumptions: z.array(z.string().min(1).max(500)).max(50),
     assignments: z.array(z.string().min(1).max(500)).max(50),
@@ -58,7 +63,7 @@ export const workflowGenerationResultSchema = z
     usage: z.object({
       inputUnits: z.number().int().nonnegative(),
       outputUnits: z.number().int().nonnegative(),
-      costMinor: z.literal(0),
+      costMinor: z.number().int().nonnegative(),
       currency: z.literal("USD")
     }),
     diff: z.object({
@@ -160,6 +165,7 @@ export async function runDeterministicGeneration(
     promptVersion: WORKFLOW_GENERATION_PROMPT_VERSION,
     provider: DETERMINISTIC_GENERATION_PROVIDER,
     simulated: true,
+    environmentStatus: "RECORDED_CONTRACT",
     definition,
     assumptions: [
       "The workflow starts manually.",

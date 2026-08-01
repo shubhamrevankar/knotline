@@ -1,8 +1,16 @@
 import { describe, expect, it, vi } from "vitest";
 
-import type { WorkflowGenerationRequest, WorkflowGenerationResult } from "@knotline/contracts";
+import {
+  runDeterministicGeneration,
+  type WorkflowGenerationRequest,
+  type WorkflowGenerationResult
+} from "@knotline/contracts";
 
-import { WorkflowGenerationService, type WorkflowGenerationWorker } from "./workflow-generation.js";
+import {
+  GatewayWorkflowGenerationWorker,
+  WorkflowGenerationService,
+  type WorkflowGenerationWorker
+} from "./workflow-generation.js";
 
 const workspaceId = "10000000-0000-4000-8000-000000000001";
 const principalId = "20000000-0000-4000-8000-000000000001";
@@ -83,5 +91,68 @@ describe("WorkflowGenerationService", () => {
         created.id
       )
     ).toBeUndefined();
+  });
+
+  it("routes provider generation through the internal gateway contract", async () => {
+    const fixture = await runDeterministicGeneration({
+      prompt: "Create a detailed launch request approval workflow.",
+      fixture: "standard"
+    });
+    const gatewayResponse = new Response(
+      JSON.stringify({
+        data: {
+          kind: "generation",
+          provider: "openai",
+          modelId: "gpt-5.6-terra-2026-07-30",
+          responseId: "resp_recorded_contract",
+          status: "completed",
+          latencyMs: 100,
+          estimatedCost: {
+            amountDecimal: "0.010000000000",
+            currency: "USD",
+            scale: 12,
+            priceVersionId: "provider-price-v1"
+          },
+          outputItems: [],
+          parsedOutput: {
+            definition: fixture.definition,
+            assumptions: fixture.assumptions,
+            assignments: fixture.assignments,
+            missingIntegrations: fixture.missingIntegrations
+          },
+          usage: { inputTokens: 100, cachedInputTokens: 0, outputTokens: 200 }
+        }
+      }),
+      { status: 200, headers: { "content-type": "application/json" } }
+    );
+    const fetcher = vi.fn((input: string | URL | Request, init?: RequestInit) => {
+      void input;
+      void init;
+      return Promise.resolve(gatewayResponse);
+    });
+    const worker = new GatewayWorkflowGenerationWorker(
+      "http://127.0.0.1:4200",
+      "internal-test-token",
+      fetcher
+    );
+    const result = await worker.generate(
+      { prompt: "Create a detailed launch request approval workflow.", fixture: "standard" },
+      new AbortController().signal,
+      context
+    );
+    expect(result).toMatchObject({
+      provider: "openai",
+      simulated: false,
+      environmentStatus: "PROVIDER_SANDBOX",
+      exactModelId: "gpt-5.6-terra-2026-07-30",
+      usage: { costMinor: 1 }
+    });
+    const requestBody = fetcher.mock.calls[0]?.[1]?.body;
+    const sent = JSON.parse(typeof requestBody === "string" ? requestBody : "{}") as Record<
+      string,
+      unknown
+    >;
+    expect(sent).toMatchObject({ retention: "no-store", role: "balanced" });
+    expect(JSON.stringify(fetcher.mock.calls)).not.toContain("OPENAI_API_KEY");
   });
 });

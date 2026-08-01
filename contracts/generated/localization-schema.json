@@ -1100,21 +1100,21 @@
       "key": "dryrun.blocked",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:319"
+        "apps/web/src/GuidedWorkflowCreate.tsx:326"
       ]
     },
     {
       "key": "dryrun.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:317"
+        "apps/web/src/GuidedWorkflowCreate.tsx:324"
       ]
     },
     {
       "key": "dryrun.ready",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:319"
+        "apps/web/src/GuidedWorkflowCreate.tsx:326"
       ]
     },
     {
@@ -1123,28 +1123,28 @@
         "count"
       ],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:322"
+        "apps/web/src/GuidedWorkflowCreate.tsx:329"
       ]
     },
     {
       "key": "generation.accept.publish",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:307"
+        "apps/web/src/GuidedWorkflowCreate.tsx:314"
       ]
     },
     {
       "key": "generation.assignments",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:260"
+        "apps/web/src/GuidedWorkflowCreate.tsx:267"
       ]
     },
     {
       "key": "generation.assumptions",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:254"
+        "apps/web/src/GuidedWorkflowCreate.tsx:261"
       ]
     },
     {
@@ -1186,7 +1186,7 @@
       "key": "generation.cost",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:244"
+        "apps/web/src/GuidedWorkflowCreate.tsx:251"
       ]
     },
     {
@@ -1196,35 +1196,35 @@
         "nodes"
       ],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:229"
+        "apps/web/src/GuidedWorkflowCreate.tsx:232"
       ]
     },
     {
       "key": "generation.discard",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:304"
+        "apps/web/src/GuidedWorkflowCreate.tsx:311"
       ]
     },
     {
       "key": "generation.dryrun",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:290"
+        "apps/web/src/GuidedWorkflowCreate.tsx:297"
       ]
     },
     {
       "key": "generation.findings",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:276"
+        "apps/web/src/GuidedWorkflowCreate.tsx:283"
       ]
     },
     {
       "key": "generation.findings.none",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:286"
+        "apps/web/src/GuidedWorkflowCreate.tsx:293"
       ]
     },
     {
@@ -1232,6 +1232,14 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/App.tsx:284"
+      ]
+    },
+    {
+      "key": "generation.gateway",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/GuidedWorkflowCreate.tsx:191",
+        "apps/web/src/GuidedWorkflowCreate.tsx:42"
       ]
     },
     {
@@ -1252,14 +1260,14 @@
       "key": "generation.integrations",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:266"
+        "apps/web/src/GuidedWorkflowCreate.tsx:273"
       ]
     },
     {
       "key": "generation.integrations.none",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:274"
+        "apps/web/src/GuidedWorkflowCreate.tsx:281"
       ]
     },
     {
@@ -1267,6 +1275,20 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/router.tsx:397"
+      ]
+    },
+    {
+      "key": "generation.model",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/GuidedWorkflowCreate.tsx:243"
+      ]
+    },
+    {
+      "key": "generation.model.recorded",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/GuidedWorkflowCreate.tsx:244"
       ]
     },
     {
@@ -1301,37 +1323,34 @@
       "key": "generation.prompt.version",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:240"
+        "apps/web/src/GuidedWorkflowCreate.tsx:247"
       ]
     },
     {
       "key": "generation.provider",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:236"
+        "apps/web/src/GuidedWorkflowCreate.tsx:239"
       ]
     },
     {
       "key": "generation.regenerate",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:296"
+        "apps/web/src/GuidedWorkflowCreate.tsx:303"
       ]
     },
     {
       "key": "generation.repairs",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:250"
+        "apps/web/src/GuidedWorkflowCreate.tsx:257"
       ]
     },
     {
       "key": "generation.simulated",
       "placeholders": [],
-      "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:191",
-        "apps/web/src/GuidedWorkflowCreate.tsx:42"
-      ]
+      "usedBy": []
     },
     {
       "key": "generation.status",
@@ -1404,56 +1423,56 @@
       "key": "import.accept",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:385"
+        "apps/web/src/GuidedWorkflowCreate.tsx:392"
       ]
     },
     {
       "key": "import.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:345"
+        "apps/web/src/GuidedWorkflowCreate.tsx:352"
       ]
     },
     {
       "key": "import.content",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:358"
+        "apps/web/src/GuidedWorkflowCreate.tsx:365"
       ]
     },
     {
       "key": "import.csv",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:354"
+        "apps/web/src/GuidedWorkflowCreate.tsx:361"
       ]
     },
     {
       "key": "import.format",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:348"
+        "apps/web/src/GuidedWorkflowCreate.tsx:355"
       ]
     },
     {
       "key": "import.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:343"
+        "apps/web/src/GuidedWorkflowCreate.tsx:350"
       ]
     },
     {
       "key": "import.json",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:353"
+        "apps/web/src/GuidedWorkflowCreate.tsx:360"
       ]
     },
     {
       "key": "import.preview",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:366"
+        "apps/web/src/GuidedWorkflowCreate.tsx:373"
       ]
     },
     {
@@ -1463,7 +1482,7 @@
         "nodes"
       ],
       "usedBy": [
-        "apps/web/src/GuidedWorkflowCreate.tsx:373"
+        "apps/web/src/GuidedWorkflowCreate.tsx:380"
       ]
     },
     {

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { modelRoleSchema } from "./model-gateway.js";
+
 export const eventEnvelopeSchema = z
   .object({
     eventId: z.string().regex(/^evt_[A-Za-z0-9]+$/u),
@@ -105,6 +107,21 @@ export const agentFoundryEventPayloadV1Schema = z
     revision: z.number().int().positive().optional(),
     simulationId: z.string().uuid().optional(),
     executionClass: z.literal("SIMULATED").optional()
+  })
+  .passthrough();
+
+export const modelGatewayEventPayloadV1Schema = z
+  .object({
+    invocationId: z.string().uuid().optional(),
+    operationId: z.string().max(160).optional(),
+    provider: z.string().max(80).optional(),
+    modelRole: modelRoleSchema.optional(),
+    status: z
+      .enum(["started", "completed", "incomplete", "refused", "failed", "unknown"])
+      .optional(),
+    inputTokens: z.number().int().min(0).optional(),
+    outputTokens: z.number().int().min(0).optional(),
+    errorCode: z.string().max(80).optional()
   })
   .passthrough();
 
@@ -236,6 +253,19 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "agent-platform",
     schema: agentFoundryEventPayloadV1Schema
+  })),
+  ...[
+    "model.invocation_started",
+    "model.invocation_completed",
+    "model.invocation_incomplete",
+    "model.invocation_refused",
+    "model.invocation_failed",
+    "model.circuit_opened"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "model-platform",
+    schema: modelGatewayEventPayloadV1Schema
   }))
 ] as const;
 

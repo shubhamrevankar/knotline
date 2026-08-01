@@ -91,6 +91,14 @@ export async function verifyBoundaries(root) {
     }
     for (const file of await sourceFiles(workspace.directory)) {
       const source = await readFile(file, "utf8");
+      if (
+        source.includes("process.env.OPENAI_API_KEY") &&
+        workspace.name !== "@knotline/model-gateway-service"
+      ) {
+        errors.push(
+          `${relative(root, file)}: only the model gateway service may read the OpenAI credential`
+        );
+      }
       for (const specifier of imports(source)) {
         if (specifier.startsWith("@knotline/") && !workspace.declared.has(specifier)) {
           errors.push(`${relative(root, file)}: undeclared workspace import ${specifier}`);

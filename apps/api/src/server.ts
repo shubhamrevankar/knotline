@@ -10,6 +10,7 @@ import {
   PostgresTaskAdministrationRepository,
   PostgresApprovalRepository,
   PostgresAgentRepository,
+  PostgresModelRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -26,7 +27,10 @@ import {
   SesAuthMailer
 } from "./auth.js";
 import { CaptureInvitationMailer, SesInvitationMailer, WorkspaceService } from "./workspace.js";
-import { WorkflowGenerationService } from "./workflow-generation.js";
+import {
+  GatewayWorkflowGenerationWorker,
+  WorkflowGenerationService
+} from "./workflow-generation.js";
 
 const environment = loadConfig(process.env);
 if (environment.environment === "local") {
@@ -47,8 +51,14 @@ const repository = new PostgresWorkflowRepository(pool, (observation) => {
 const authRepository = new PostgresAuthRepository(pool);
 const workspaceRepository = new PostgresWorkspaceRepository(pool);
 const workflowDefinitions = new PostgresVersionedWorkflowRepository(pool);
+const gatewayUrl = process.env.MODEL_GATEWAY_URL;
+const gatewayWorker = gatewayUrl
+  ? new GatewayWorkflowGenerationWorker(gatewayUrl, process.env.MODEL_GATEWAY_INTERNAL_TOKEN ?? "")
+  : undefined;
+if (gatewayUrl && !process.env.MODEL_GATEWAY_INTERNAL_TOKEN)
+  throw new Error("MODEL_GATEWAY_INTERNAL_TOKEN is required when MODEL_GATEWAY_URL is configured");
 const workflowGeneration = new WorkflowGenerationService(
-  undefined,
+  gatewayWorker,
   new PostgresWorkflowGenerationRepository(pool)
 );
 const collaboration = new PostgresCollaborationRepository(pool);
@@ -57,6 +67,7 @@ const humanTasks = new PostgresHumanTaskRepository(pool);
 const taskAdministration = new PostgresTaskAdministrationRepository(pool);
 const approvals = new PostgresApprovalRepository(pool);
 const agents = new PostgresAgentRepository(pool);
+const models = new PostgresModelRepository(pool);
 const temporalConnection = await Connection.connect({
   address: process.env.TEMPORAL_ADDRESS ?? "127.0.0.1:7233"
 });
@@ -188,6 +199,7 @@ const app = await buildApp({
   taskAdministration,
   approvals,
   agents,
+  models,
   runStarter,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),

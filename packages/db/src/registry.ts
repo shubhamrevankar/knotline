@@ -119,7 +119,15 @@ export const REQUIRED_STORES = [
   "agent_simulations",
   "reusable_schemas",
   "reusable_schema_versions",
-  "agent_activity_events"
+  "agent_activity_events",
+  "model_providers",
+  "model_registry",
+  "model_policies",
+  "model_policy_versions",
+  "prompt_versions",
+  "model_invocations",
+  "model_usage_charges",
+  "provider_circuit_states"
 ] as const;
 
 export async function validateDataStoreRegistry(): Promise<Registry> {

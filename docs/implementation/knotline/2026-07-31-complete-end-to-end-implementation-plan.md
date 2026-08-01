@@ -6415,7 +6415,7 @@ capabilities, and publish immutable versions for workflow use.
 
 ### M15 — Provider-neutral model gateway and OpenAI Responses integration
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M08, M10, M14\
 **Required commit:** `feat: integrate the governed OpenAI model gateway`
 
@@ -9234,7 +9234,7 @@ must appear in that milestone's boundary cell.
 | M12 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver complete human task execution` |
 | M13 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: add durable approvals and escalation policies` |
 | M14 | `COMMITTED` | `NOT_DEPLOYED` | `SIMULATED` for test console | `feat: deliver the Knotline agent foundry` |
-| M15 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-004 | `feat: integrate the governed OpenAI model gateway` |
+| M15 | `COMMITTED` | `NOT_DEPLOYED` | Recorded-contract path verified; EXT-004 `BLOCKED_EXTERNAL` for live provider activation | `feat: integrate the governed OpenAI model gateway` |
 | M16 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-002 for deployed sandbox/vault; EXT-004 for live model-requested tool smoke | `feat: secure agent tools with isolated execution` |
 | M17 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-003, EXT-004 | `feat: execute governed agents with full provenance` |
 | M18 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-004 | `feat: add agent evaluations and controlled releases` |

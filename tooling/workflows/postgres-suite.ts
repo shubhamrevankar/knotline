@@ -17,6 +17,7 @@ import {
   PostgresTaskAdministrationRepository,
   PostgresApprovalRepository,
   PostgresAgentRepository,
+  PostgresModelRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -179,6 +180,7 @@ async function runSuite(pool: DatabasePool) {
   const taskAdministration = new PostgresTaskAdministrationRepository(pool);
   const approvalRepository = new PostgresApprovalRepository(pool);
   const agentRepository = new PostgresAgentRepository(pool);
+  const modelRepository = new PostgresModelRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -257,6 +259,64 @@ async function runSuite(pool: DatabasePool) {
   );
   const unsafeArchive = await Promise.allSettled([agentRepository.archive(contextA, agent.id)]);
   assert(unsafeArchive[0]?.status === "rejected", "Referenced agent was destructively archived");
+  await withTenantTransaction(pool, contextA, async (client) => {
+    await client.query(
+      `INSERT INTO model_providers(workspace_id,provider_key,endpoint_class,region,state)
+       VALUES($1,'recorded','responses-contract','local','recorded')`,
+      [contextA.workspaceId]
+    );
+    await client.query(
+      `INSERT INTO model_registry(workspace_id,id,provider_key,model_id,role,capabilities,context_tokens,max_output_tokens,pricing_version,residency,state)
+       VALUES($1,$2,'recorded','recorded-balanced-v1','balanced','["text","structured_output"]',100000,8000,'recorded-zero-cost-v1','["local"]','recorded')`,
+      [contextA.workspaceId, crypto.randomUUID()]
+    );
+  });
+  const modelPolicyDefinition = {
+    allowedRoles: ["balanced"],
+    allowedProviders: ["recorded"],
+    maxCostDecimal: "1.000000000000",
+    emergencyDisabled: false,
+    allowedResidencies: ["local"],
+    fallback: [],
+    retention: "no-store" as const
+  };
+  const modelPolicy = await modelRepository.createPolicy(contextA, {
+    name: "Default recorded policy",
+    definition: modelPolicyDefinition
+  });
+  const policyRecord = await modelRepository.getPolicy(contextA, modelPolicy.id);
+  assert(policyRecord?.current_version === 1, "Model policy version one was not created");
+  const [modelUpdateA, modelUpdateB] = await Promise.allSettled([
+    modelRepository.updatePolicy(contextA, modelPolicy.id, {
+      expectedRevision: 1,
+      definition: { ...modelPolicyDefinition, maxCostDecimal: "2.000000000000" }
+    }),
+    modelRepository.updatePolicy(contextA, modelPolicy.id, {
+      expectedRevision: 1,
+      definition: { ...modelPolicyDefinition, emergencyDisabled: true }
+    })
+  ]);
+  assert(
+    [modelUpdateA, modelUpdateB].filter(({ status }) => status === "fulfilled").length === 1,
+    "Model policy optimistic concurrency did not choose one winner"
+  );
+  const immutableModelPolicy = await Promise.allSettled([
+    withTenantTransaction(pool, contextA, (client) =>
+      client.query(
+        `UPDATE model_policy_versions SET definition='{}' WHERE workspace_id=$1 AND policy_id=$2 AND version=1`,
+        [contextA.workspaceId, modelPolicy.id]
+      )
+    )
+  ]);
+  assert(immutableModelPolicy[0]?.status === "rejected", "Model policy version was mutable");
+  assert(
+    (await modelRepository.listPolicies(contextB)).length === 0,
+    "Model policy crossed tenant RLS"
+  );
+  assert(
+    (await modelRepository.listModels(contextA)).length === 1,
+    "Approved model mapping was unavailable"
+  );
   const draft = await repository.getDraft(contextA, workflowId);
   assert(
     draft?.revision === 1 && draft.definition.nodes.length === 3,
@@ -782,6 +842,7 @@ async function runSuite(pool: DatabasePool) {
     taskAdministration,
     approvals: approvalRepository,
     agents: agentRepository,
+    models: modelRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),
@@ -828,6 +889,15 @@ async function runSuite(pool: DatabasePool) {
       agentListResponse.statusCode === 200 &&
         agentListResponse.json<{ data: unknown[] }>().data.length >= 2,
       "Agent catalog API did not return authorized agents"
+    );
+    const modelListResponse = await app.inject({
+      method: "GET",
+      url: `/v1/workspaces/${SEED.workspaceA}/models`
+    });
+    assert(
+      modelListResponse.statusCode === 200 &&
+        modelListResponse.json<{ data: unknown[] }>().data.length === 1,
+      "Model registry API did not return the approved mapping"
     );
     const draftResponse = await app.inject({
       method: "GET",
@@ -1038,6 +1108,13 @@ async function runSuite(pool: DatabasePool) {
       simulationLabel: "SIMULATED",
       privateFork: true,
       referenceSafety: true,
+      tenantIsolated: true,
+      api: true
+    },
+    models: {
+      immutablePolicies: true,
+      optimisticPolicyRevision: true,
+      providerNeutralRoles: true,
       tenantIsolated: true,
       api: true
     },

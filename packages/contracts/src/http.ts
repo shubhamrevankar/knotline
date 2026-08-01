@@ -1252,6 +1252,107 @@ const AGENT_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }))
 ];
 
+const modelPolicyDefinitionHttpSchema = z
+  .object({
+    allowedRoles: z
+      .array(z.enum(["fast", "balanced", "quality", "judge", "embedding", "moderation"]))
+      .min(1),
+    allowedProviders: z.array(z.string().min(1)).min(1),
+    maxCostDecimal: z.string().regex(/^\d+(?:\.\d{1,12})?$/u),
+    emergencyDisabled: z.boolean(),
+    allowedResidencies: z.array(z.string().min(1)).min(1),
+    fallback: z.array(z.enum(["fast", "balanced", "quality", "judge", "embedding", "moderation"])),
+    retention: z.literal("no-store")
+  })
+  .strict();
+
+const MODEL_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  {
+    method: "GET",
+    path: "/v1/workspaces/{workspaceId}/model-policies",
+    operationId: "listModelPolicies",
+    summary: "List governed model policies",
+    tags: ["Model gateway"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/workspaces/{workspaceId}/model-policies",
+    operationId: "createModelPolicy",
+    summary: "Create a governed model policy",
+    tags: ["Model gateway"],
+    exposure: "browser_internal",
+    requestBody: z
+      .object({ name: z.string().min(2).max(120), definition: modelPolicyDefinitionHttpSchema })
+      .strict(),
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/model-policies/{policyId}",
+    operationId: "getModelPolicy",
+    summary: "Read a governed model policy version",
+    tags: ["Model gateway"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "PATCH",
+    path: "/v1/model-policies/{policyId}",
+    operationId: "updateModelPolicy",
+    summary: "Publish a new immutable model policy version",
+    tags: ["Model gateway"],
+    exposure: "browser_internal",
+    requestBody: z
+      .object({
+        expectedRevision: z.number().int().positive(),
+        definition: modelPolicyDefinitionHttpSchema
+      })
+      .strict(),
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/workspaces/{workspaceId}/models",
+    operationId: "listApprovedModels",
+    summary: "List approved provider model mappings by role",
+    tags: ["Model gateway"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  }
+];
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
@@ -1260,6 +1361,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...TASK_ADMIN_ROUTE_CONTRACTS,
   ...APPROVAL_ROUTE_CONTRACTS,
   ...AGENT_ROUTE_CONTRACTS,
+  ...MODEL_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

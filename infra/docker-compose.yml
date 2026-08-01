@@ -115,6 +115,33 @@ services:
       start_period: 5s
     restart: unless-stopped
 
+  model-gateway:
+    build:
+      context: ..
+      dockerfile: apps/model-gateway/Dockerfile
+    environment:
+      MODEL_GATEWAY_PROVIDER: recorded
+      MODEL_GATEWAY_HOST: 0.0.0.0
+      MODEL_GATEWAY_PORT: "4200"
+      MODEL_GATEWAY_RESIDENCY: local
+      MODEL_GATEWAY_SAFETY_SALT: local-only-model-safety-salt
+      MODEL_GATEWAY_INTERNAL_TOKEN: local-only-model-gateway-token
+    ports:
+      - "127.0.0.1:4200:4200"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:4200/healthz').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+
   api:
     build:
       context: ..
@@ -127,6 +154,8 @@ services:
       minio:
         condition: service_healthy
       temporal:
+        condition: service_healthy
+      model-gateway:
         condition: service_healthy
     environment:
       KNOTLINE_ENV: local
@@ -143,6 +172,8 @@ services:
       S3_ACCESS_KEY_REFERENCE: local-only:knotline-local
       S3_SECRET_KEY_REFERENCE: local-only:local-only-minio-password
       LOG_LEVEL: info
+      MODEL_GATEWAY_URL: http://model-gateway:4200
+      MODEL_GATEWAY_INTERNAL_TOKEN: local-only-model-gateway-token
     ports:
       - "127.0.0.1:4100:4100"
     healthcheck:

@@ -5,7 +5,7 @@ test("@a11y guided generation reviews, safely tests, and publishes accepted outp
 }) => {
   await page.goto("/app/workflows");
   await page.getByRole("main").getByRole("button", { name: "New workflow" }).click();
-  await expect(page.getByText("SIMULATED", { exact: true })).toBeVisible();
+  await expect(page.getByText("GOVERNED GATEWAY", { exact: true }).first()).toBeVisible();
   await page
     .getByLabel("Describe the workflow")
     .fill("Collect a launch request, require owner approval, and notify the requester.");
@@ -13,6 +13,8 @@ test("@a11y guided generation reviews, safely tests, and publishes accepted outp
   await expect(page.getByText("Generation status: READY_TO_ACCEPT")).toBeVisible();
   await expect(page.getByText("The workflow starts manually.")).toBeVisible();
   await expect(page.getByText("fixture-v1")).toBeVisible();
+  await expect(page.getByText("RECORDED_CONTRACT")).toBeVisible();
+  await expect(page.getByText("recorded-balanced-v1")).toBeVisible();
   await expect(page.getByText("0 USD")).toBeVisible();
 
   await page.getByRole("button", { name: "Run safe test" }).click();

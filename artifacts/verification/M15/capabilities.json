@@ -1,0 +1,20 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M15/test-results/model-contract.json",
+      "verifiedAt": "2026-08-01T12:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-004"
+    ],
+    "id": "models.governed-gateway",
+    "owner": {
+      "contact": "shurevan",
+      "team": "agent-platform"
+    },
+    "runbook": "docs/operations/knotline/model-gateway.md",
+    "status": "DEMO",
+    "summary": "Provider-neutral invocation, policy, schema validation, bounded repair, cost truth, resilience, credential isolation, and recorded workflow generation are locally verified; live provider activation remains externally blocked."
+  }
+]

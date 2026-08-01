@@ -288,6 +288,8 @@ export const test = base.extend<{ consoleMessages: string[] }>({
                 promptVersion: "workflow-generation.v1",
                 provider: "fixture-v1",
                 simulated: true,
+                environmentStatus: "RECORDED_CONTRACT",
+                exactModelId: "recorded-balanced-v1",
                 definition: generatedDefinition,
                 assumptions: ["The workflow starts manually."],
                 assignments: ["Prepare request → workflow initiator"],

@@ -39,7 +39,7 @@ export function GuidedWorkflowPage() {
       <main className="guided-create-page">
         <header>
           <Link to="/app/workflows">{msg("generation.back")}</Link>
-          <Badge tone="warning">{msg("generation.simulated")}</Badge>
+          <Badge tone="accent">{msg("generation.gateway")}</Badge>
           <h1>{msg("generation.page.heading")}</h1>
           <p>{msg("generation.page.body")}</p>
         </header>
@@ -188,7 +188,7 @@ export function GuidedWorkflowCreate({
           <h3>
             <Sparkles aria-hidden="true" /> {msg("generation.heading")}
           </h3>
-          <Badge tone="warning">{msg("generation.simulated")}</Badge>
+          <Badge tone="accent">{msg("generation.gateway")}</Badge>
         </div>
         <p>{msg("generation.body")}</p>
         <form onSubmit={(event) => void generate(event)}>
@@ -224,6 +224,9 @@ export function GuidedWorkflowCreate({
             {generation.failureCode ? <p role="alert">{generation.failureCode}</p> : null}
             {generation.result ? (
               <>
+                <Badge tone={generation.result.simulated ? "warning" : "accent"}>
+                  {generation.result.environmentStatus}
+                </Badge>
                 <h4>{generation.result.definition.name}</h4>
                 <p>
                   {msg("generation.diff", {
@@ -235,6 +238,10 @@ export function GuidedWorkflowCreate({
                   <div>
                     <dt>{msg("generation.provider")}</dt>
                     <dd>{generation.result.provider}</dd>
+                  </div>
+                  <div>
+                    <dt>{msg("generation.model")}</dt>
+                    <dd>{generation.result.exactModelId ?? msg("generation.model.recorded")}</dd>
                   </div>
                   <div>
                     <dt>{msg("generation.prompt.version")}</dt>

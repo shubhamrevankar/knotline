@@ -34,6 +34,7 @@ import type {
   ApprovalRepository,
   AgentRepository,
   HumanTaskRepository,
+  ModelRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
   TenantContext,
@@ -80,6 +81,7 @@ export interface BuildAppOptions {
   readonly taskAdministration?: TaskAdministrationRepository;
   readonly approvals?: ApprovalRepository;
   readonly agents?: AgentRepository;
+  readonly models?: ModelRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -357,7 +359,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     await workflowGeneration.accept(context, generationId, workflowId);
     return reply
       .code(alreadyAccepted ? 200 : 201)
-      .send({ workflowId, simulated: true, published: publish });
+      .send({ workflowId, simulated: resource.result.simulated, published: publish });
   });
 
   app.post("/v1/workflow-import-previews", async (request) => {
@@ -2347,6 +2349,55 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     const { agentId } = agentParams.parse(request.params);
     await agentRepository().archive(context, agentId);
     return reply.code(204).send();
+  });
+
+  const modelRepository = () => {
+    if (!options.models) throw new Error("Models are not configured");
+    return options.models;
+  };
+  const modelPolicyParams = z.object({ policyId: z.string().uuid() }).strict();
+  app.get("/v1/workspaces/:workspaceId/model-policies", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await modelRepository().listPolicies(await agentAccess(request)) };
+  });
+  app.post("/v1/workspaces/:workspaceId/model-policies", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await modelRepository().createPolicy(await agentAccess(request, true), request.body)
+    });
+  });
+  app.get("/v1/model-policies/:policyId", async (request, reply) => {
+    const { policyId } = modelPolicyParams.parse(request.params);
+    const result = await modelRepository().getPolicy(await agentAccess(request), policyId);
+    if (!result)
+      return reply.code(404).send({
+        error: {
+          code: "MODEL_POLICY_NOT_FOUND",
+          message: "The model policy does not exist.",
+          requestId: request.id
+        }
+      });
+    return { data: result };
+  });
+  app.patch("/v1/model-policies/:policyId", async (request) => {
+    const { policyId } = modelPolicyParams.parse(request.params);
+    return {
+      data: await modelRepository().updatePolicy(
+        await agentAccess(request, true),
+        policyId,
+        request.body
+      )
+    };
+  });
+  app.get("/v1/workspaces/:workspaceId/models", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await modelRepository().listModels(await agentAccess(request)) };
   });
 
   app.setErrorHandler((error, request, reply) => {

@@ -730,6 +730,62 @@
       "retentionDays": 2555,
       "exportHandler": "agent-export",
       "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "model_providers",
+      "class": "model.provider",
+      "retentionDays": 2555,
+      "exportHandler": "model-export",
+      "deleteHandler": "model-delete"
+    },
+    {
+      "name": "model_registry",
+      "class": "model.registry",
+      "retentionDays": 2555,
+      "exportHandler": "model-export",
+      "deleteHandler": "model-delete"
+    },
+    {
+      "name": "model_policies",
+      "class": "model.policy",
+      "retentionDays": 2555,
+      "exportHandler": "model-export",
+      "deleteHandler": "model-delete"
+    },
+    {
+      "name": "model_policy_versions",
+      "class": "model.policy_version",
+      "retentionDays": 2555,
+      "exportHandler": "model-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "prompt_versions",
+      "class": "model.prompt_version",
+      "retentionDays": 2555,
+      "exportHandler": "model-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "model_invocations",
+      "class": "model.invocation",
+      "retentionDays": 365,
+      "exportHandler": "model-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "model_usage_charges",
+      "class": "model.usage_charge",
+      "retentionDays": 2555,
+      "exportHandler": "model-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "provider_circuit_states",
+      "class": "model.circuit_state",
+      "retentionDays": 90,
+      "exportHandler": "model-export",
+      "deleteHandler": "retention-delete"
     }
   ],
   "indexes": [
@@ -903,7 +959,23 @@
     "reusable_schemas_workspace_id_name_key",
     "reusable_schema_versions_pkey",
     "reusable_schema_versions_workspace_id_schema_id_content_hash_key",
-    "agent_activity_events_pkey"
+    "agent_activity_events_pkey",
+    "model_providers_pkey",
+    "model_registry_pkey",
+    "model_registry_workspace_id_provider_key_model_id_role_key",
+    "model_registry_role_idx",
+    "model_policies_pkey",
+    "model_policies_workspace_id_name_key",
+    "model_policy_versions_pkey",
+    "model_policy_versions_workspace_id_policy_id_content_hash_key",
+    "prompt_versions_pkey",
+    "prompt_versions_workspace_id_prompt_key_version_key",
+    "prompt_versions_workspace_id_prompt_key_content_hash_key",
+    "model_invocations_pkey",
+    "model_invocations_workspace_id_operation_id_key",
+    "model_invocations_status_idx",
+    "model_usage_charges_pkey",
+    "provider_circuit_states_pkey"
   ],
   "caches": []
 }
