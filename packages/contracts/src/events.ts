@@ -272,6 +272,22 @@ export const triggerEventPayloadV1Schema = z
   })
   .passthrough();
 
+export const notificationEventPayloadV1Schema = z
+  .object({
+    intentId: z.string().uuid().optional(),
+    notificationId: z.string().uuid().optional(),
+    deliveryId: z.string().uuid().optional(),
+    digestId: z.string().uuid().optional(),
+    recipientId: z.string().uuid().optional(),
+    channel: z.enum(["in_app", "email", "slack", "teams", "webhook"]).optional(),
+    eventType: z.string().max(160).optional(),
+    state: z.string().max(80).optional(),
+    reason: z.string().max(240).optional(),
+    operationId: z.string().uuid().optional(),
+    providerReceiptId: z.string().max(240).optional()
+  })
+  .passthrough();
+
 export const EVENT_SCHEMA_REGISTRY = [
   {
     eventType: "workflow.created",
@@ -580,6 +596,28 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "trigger-platform",
     schema: triggerEventPayloadV1Schema
+  })),
+  ...[
+    "notification.intent_created",
+    "notification.recipient_resolved",
+    "notification.grouped",
+    "notification.suppressed",
+    "notification.delivery_queued",
+    "notification.delivery_succeeded",
+    "notification.delivery_failed",
+    "notification.delivery_uncertain",
+    "notification.delivery_dead_lettered",
+    "notification.read",
+    "notification.digest_compiled",
+    "notification.preference_changed",
+    "notification.escalation_bypassed",
+    "notification.interaction_accepted",
+    "notification.authorization_revoked"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "notification-platform",
+    schema: notificationEventPayloadV1Schema
   }))
 ] as const;
 

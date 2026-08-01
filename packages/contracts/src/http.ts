@@ -2371,6 +2371,63 @@ const TRIGGER_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }
 }));
 
+const NOTIFICATION_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  ["GET", "/v1/me/notifications", "listMyNotifications", "List in-app notifications"],
+  [
+    "POST",
+    "/v1/me/notifications/{notificationId}/read",
+    "markNotificationRead",
+    "Mark one notification read"
+  ],
+  [
+    "POST",
+    "/v1/me/notifications/read-all",
+    "markAllNotificationsRead",
+    "Mark all notifications read"
+  ],
+  [
+    "GET",
+    "/v1/me/notification-preferences",
+    "getMyNotificationPreferences",
+    "Read personal notification preferences"
+  ],
+  [
+    "PATCH",
+    "/v1/me/notification-preferences",
+    "updateMyNotificationPreferences",
+    "Update personal notification preferences"
+  ],
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/notification-preferences",
+    "getWorkspaceNotificationPolicy",
+    "Read workspace notification and escalation policy"
+  ],
+  [
+    "PATCH",
+    "/v1/workspaces/{workspaceId}/notification-preferences",
+    "updateWorkspaceNotificationPolicy",
+    "Update workspace notification and escalation policy"
+  ]
+].map(([method, path, operationId, summary]) => ({
+  method: method as HttpRouteContract["method"],
+  path: path!,
+  operationId: operationId!,
+  summary: summary!,
+  tags: ["Notifications"],
+  exposure: "browser_internal" as const,
+  ...(method === "PATCH" ? { requestBody: genericDataSchema } : {}),
+  responses: {
+    200: apiEnvelope(genericDataSchema),
+    400: apiErrorSchema,
+    401: apiErrorSchema,
+    403: apiErrorSchema,
+    404: apiErrorSchema,
+    409: apiErrorSchema,
+    500: apiErrorSchema
+  }
+}));
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
@@ -2386,6 +2443,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...FILE_ROUTE_CONTRACTS,
   ...CONNECTOR_ROUTE_CONTRACTS,
   ...TRIGGER_ROUTE_CONTRACTS,
+  ...NOTIFICATION_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

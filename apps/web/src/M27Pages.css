@@ -1,0 +1,145 @@
+.notification-shell {
+  max-width: 1180px;
+  margin: auto;
+}
+.notification-heading,
+.notification-card,
+.notification-meta,
+.notification-actions,
+.notification-filters,
+.notification-groups h2,
+.channel-health li,
+.preference-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.notification-heading,
+.notification-card,
+.preference-row {
+  justify-content: space-between;
+}
+.notification-heading {
+  align-items: flex-start;
+}
+.notification-filters {
+  margin-block: 1.2rem;
+}
+.notification-groups,
+.notification-groups section,
+.preference-layout > section,
+.preference-layout > aside {
+  display: grid;
+  gap: 1rem;
+}
+.notification-groups h2 {
+  font-size: 1rem;
+}
+.notification-read {
+  opacity: 0.72;
+}
+.notification-unread {
+  border-inline-start: 4px solid var(--color-accent);
+}
+.notification-card {
+  align-items: flex-start;
+}
+.notification-meta {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+.notification-actions {
+  flex-shrink: 0;
+}
+.notification-unavailable {
+  display: flex;
+  gap: 0.4rem;
+  color: var(--color-text-muted);
+}
+.notification-unavailable svg {
+  width: 1rem;
+}
+.preference-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
+  gap: 1rem;
+  align-items: start;
+}
+.preference-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+}
+.preference-fields label,
+.preference-row label {
+  display: grid;
+  gap: 0.3rem;
+}
+.preference-fields input,
+.preference-row select {
+  min-height: 2.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.6rem;
+  padding: 0.55rem;
+  background: var(--color-surface);
+  color: inherit;
+}
+.preference-table {
+  display: grid;
+}
+.preference-row {
+  padding-block: 0.9rem;
+  border-block-start: 1px solid var(--color-border);
+}
+.preference-row span,
+.channel-health span {
+  display: grid;
+}
+.preference-row small {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--color-text-muted);
+}
+.preference-row small svg {
+  width: 1rem;
+}
+.channel-health {
+  display: grid;
+  gap: 0.9rem;
+  list-style: none;
+  padding: 0;
+}
+.channel-health li > svg {
+  width: 1.25rem;
+}
+.channel-health span {
+  flex: 1;
+}
+.channel-health small {
+  color: var(--color-text-muted);
+}
+.notification-status {
+  padding: 0.65rem 1rem;
+  border-radius: 0.7rem;
+  background: var(--color-surface-accent);
+}
+@media (max-width: 760px) {
+  .notification-heading,
+  .notification-card,
+  .notification-actions,
+  .preference-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .preference-layout {
+    grid-template-columns: 1fr;
+  }
+  .preference-fields {
+    grid-template-columns: 1fr;
+  }
+  .notification-actions button,
+  .notification-actions a {
+    width: 100%;
+  }
+}

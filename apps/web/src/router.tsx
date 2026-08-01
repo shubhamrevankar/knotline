@@ -147,6 +147,12 @@ const ConnectionDetailPage = lazy(async () => ({
 const WorkflowTriggersPage = lazy(async () => ({
   default: (await import("./M26Pages.js")).WorkflowTriggersPage
 }));
+const NotificationCenterPage = lazy(async () => ({
+  default: (await import("./M27Pages.js")).NotificationCenterPage
+}));
+const NotificationSettingsPage = lazy(async () => ({
+  default: (await import("./M27Pages.js")).NotificationSettingsPage
+}));
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -669,6 +675,22 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label={msg("triggers.loading")} />}>
           <WorkflowTriggersPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.notifications")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("notifications.loading")} />}>
+          <NotificationCenterPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.settings.notifications")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("notification.settings.loading")} />}>
+          <NotificationSettingsPage />
         </Suspense>
       </AuthGate>
     );

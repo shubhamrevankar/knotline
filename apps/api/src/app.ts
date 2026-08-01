@@ -42,6 +42,7 @@ import type {
   KnowledgeGraphRepository,
   ConnectorRepository,
   TriggerRepository,
+  NotificationRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -98,6 +99,7 @@ export interface BuildAppOptions {
   readonly knowledgeGraph?: KnowledgeGraphRepository;
   readonly connectors?: ConnectorRepository;
   readonly triggers?: TriggerRepository;
+  readonly notifications?: NotificationRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -2512,6 +2514,97 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     if (!options.triggers) throw new Error("Triggers are not configured");
     return options.triggers;
   };
+  const notificationRepository = () => {
+    if (!options.notifications) throw new Error("Notifications are not configured");
+    return options.notifications;
+  };
+  const notificationPreferenceSchema = z
+    .object({
+      eventType: z.string().min(1).max(160),
+      channels: z.record(
+        z.enum(["in_app", "email", "slack", "teams", "webhook"]),
+        z.enum(["immediate", "daily_digest", "weekly_digest", "off"])
+      ),
+      quietStart: z
+        .string()
+        .regex(/^([01]\d|2[0-3]):[0-5]\d$/u)
+        .optional(),
+      quietEnd: z
+        .string()
+        .regex(/^([01]\d|2[0-3]):[0-5]\d$/u)
+        .optional(),
+      timeZone: z.string().min(1).max(120),
+      language: z.string().min(2).max(20),
+      expectedRevision: z.number().int().nonnegative().optional()
+    })
+    .strict();
+  const notificationPolicySchema = z
+    .object({
+      mandatoryEvents: z.array(z.string().min(1).max(160)).min(1).max(100),
+      escalationPolicy: z.record(z.string(), z.unknown()),
+      rateLimits: z.record(z.string(), z.number().int().positive().max(1_000_000)),
+      verifiedEmailDomain: z.string().min(3).max(253).nullable().optional(),
+      replyPolicy: z.enum(["no_reply", "support", "workspace_owner"]),
+      expectedRevision: z.number().int().nonnegative()
+    })
+    .strict();
+  const notificationItemParams = z.object({ notificationId: z.string().uuid() }).strict();
+
+  app.get("/v1/me/notifications", async (request) => {
+    const query = z
+      .object({ filter: z.enum(["all", "unread"]).default("all") })
+      .parse(request.query);
+    return { data: await notificationRepository().list(await agentAccess(request), query.filter) };
+  });
+  app.post("/v1/me/notifications/:notificationId/read", async (request) => {
+    const { notificationId } = notificationItemParams.parse(request.params);
+    return {
+      data: await notificationRepository().markRead(
+        await agentAccess(request, true),
+        notificationId
+      )
+    };
+  });
+  app.post("/v1/me/notifications/read-all", async (request) => ({
+    data: await notificationRepository().markAllRead(await agentAccess(request, true))
+  }));
+  app.get("/v1/me/notification-preferences", async (request) => ({
+    data: await notificationRepository().userPreferences(await agentAccess(request))
+  }));
+  app.patch("/v1/me/notification-preferences", async (request) => ({
+    data: await notificationRepository().updateUserPreferences(
+      await agentAccess(request, true),
+      z
+        .object({ preferences: z.array(notificationPreferenceSchema).max(100) })
+        .strict()
+        .parse(request.body).preferences
+    )
+  }));
+  app.get("/v1/workspaces/:workspaceId/notification-preferences", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const context = options.workspace
+      ? (await options.workspace.require(authenticated.identity, request.id, "workflow.manage"))
+          .context
+      : tenantContext(options, request, authenticated);
+    return { data: await notificationRepository().workspacePolicy(context) };
+  });
+  app.patch("/v1/workspaces/:workspaceId/notification-preferences", async (request) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const context = options.workspace
+      ? (await options.workspace.require(authenticated.identity, request.id, "workflow.manage"))
+          .context
+      : tenantContext(options, request, authenticated);
+    return {
+      data: await notificationRepository().updateWorkspacePolicy(
+        context,
+        notificationPolicySchema.parse(request.body)
+      )
+    };
+  });
   const triggerInputSchema = z
     .object({
       type: z.enum([

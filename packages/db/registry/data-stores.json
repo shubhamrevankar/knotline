@@ -1528,6 +1528,76 @@
       "retentionDays": 2555,
       "exportHandler": "runtime-export",
       "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "notification_templates",
+      "class": "notification.template",
+      "retentionDays": 2555,
+      "exportHandler": "notification-export",
+      "deleteHandler": "notification-delete"
+    },
+    {
+      "name": "notification_template_versions",
+      "class": "notification.template_version",
+      "retentionDays": 2555,
+      "exportHandler": "notification-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "notification_preferences",
+      "class": "notification.preference",
+      "retentionDays": 2555,
+      "exportHandler": "notification-export",
+      "deleteHandler": "identity-delete"
+    },
+    {
+      "name": "notification_workspace_policies",
+      "class": "notification.policy",
+      "retentionDays": 2555,
+      "exportHandler": "notification-export",
+      "deleteHandler": "workspace-delete"
+    },
+    {
+      "name": "notification_items",
+      "class": "notification.in_app",
+      "retentionDays": 365,
+      "exportHandler": "notification-export",
+      "deleteHandler": "notification-delete"
+    },
+    {
+      "name": "notification_deliveries",
+      "class": "notification.delivery",
+      "retentionDays": 365,
+      "exportHandler": "notification-export",
+      "deleteHandler": "notification-delete"
+    },
+    {
+      "name": "notification_receipts",
+      "class": "notification.receipt",
+      "retentionDays": 2555,
+      "exportHandler": "notification-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "notification_digests",
+      "class": "notification.digest",
+      "retentionDays": 365,
+      "exportHandler": "notification-export",
+      "deleteHandler": "notification-delete"
+    },
+    {
+      "name": "notification_suppressions",
+      "class": "notification.suppression",
+      "retentionDays": 365,
+      "exportHandler": "notification-export",
+      "deleteHandler": "notification-delete"
+    },
+    {
+      "name": "notification_channel_installations",
+      "class": "notification.channel",
+      "retentionDays": 2555,
+      "exportHandler": "notification-export",
+      "deleteHandler": "workspace-delete"
     }
   ],
   "indexes": [
@@ -1906,7 +1976,25 @@
     "trigger_health_snapshots_pkey",
     "captured_trigger_events_pkey",
     "outbound_sync_lineage_pkey",
-    "outbound_sync_lineage_workspace_id_provider_operation_id_key"
+    "outbound_sync_lineage_workspace_id_provider_operation_id_key",
+    "notification_templates_pkey",
+    "notification_templates_workspace_id_event_type_channel_locale_key",
+    "notification_template_versions_pkey",
+    "notification_template_versions_workspace_id_template_id_version_key",
+    "notification_preferences_pkey",
+    "notification_workspace_policies_pkey",
+    "notification_workspace_policies_workspace_id_key",
+    "notification_items_pkey",
+    "notification_items_workspace_id_intent_id_recipient_user_id_key",
+    "notification_items_recipient_idx",
+    "notification_deliveries_pkey",
+    "notification_deliveries_workspace_id_idempotency_key_key",
+    "notification_deliveries_health_idx",
+    "notification_receipts_pkey",
+    "notification_digests_pkey",
+    "notification_digests_workspace_id_recipient_user_id_cadence_window_start_key",
+    "notification_suppressions_pkey",
+    "notification_channel_installations_pkey"
   ],
   "caches": []
 }

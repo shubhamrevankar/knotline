@@ -1,0 +1,22 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M27/test-results/notification-unit.json",
+      "verifiedAt": "2026-08-06T12:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-006",
+      "EXT-008",
+      "EXT-012"
+    ],
+    "id": "notifications.multichannel-delivery",
+    "owner": {
+      "contact": "shurevan",
+      "team": "notification-platform"
+    },
+    "runbook": "docs/operations/knotline/notification-delivery.md",
+    "status": "DEMO",
+    "summary": "Authorization-aware in-app delivery, safe email and signed chat/webhook adapters, preferences, quiet hours, digests, escalation, suppression and provider-health fixtures are verified."
+  }
+]

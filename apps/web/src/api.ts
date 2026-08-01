@@ -202,6 +202,84 @@ export interface TriggerDelivery {
   readonly runId?: string;
 }
 
+export interface NotificationItem {
+  readonly id: string;
+  readonly groupKey: string;
+  readonly title: string;
+  readonly body: string;
+  readonly deepLink: string;
+  readonly readAt?: string;
+  readonly unavailableReason?: string;
+  readonly createdAt: string;
+  readonly eventType: string;
+  readonly priority: "normal" | "critical";
+}
+
+export interface NotificationPreference {
+  readonly eventType: string;
+  readonly channels: Readonly<
+    Record<string, "immediate" | "daily_digest" | "weekly_digest" | "off">
+  >;
+  readonly quietStart?: string;
+  readonly quietEnd?: string;
+  readonly timeZone: string;
+  readonly language: string;
+  readonly revision: number;
+}
+
+export const fetchNotifications = async (filter: "all" | "unread" = "all") =>
+  (
+    await request<{ readonly data: readonly NotificationItem[] }>(
+      `/v1/me/notifications?filter=${filter}`
+    )
+  ).data;
+export const markNotificationRead = async (notificationId: string) =>
+  (
+    await mutate<{ readonly data: { readonly id: string; readonly readAt: string } }>(
+      `/v1/me/notifications/${encodeURIComponent(notificationId)}/read`,
+      "POST"
+    )
+  ).data;
+export const markAllNotificationsRead = async () =>
+  (
+    await mutate<{ readonly data: { readonly updated: number } }>(
+      "/v1/me/notifications/read-all",
+      "POST"
+    )
+  ).data;
+export const fetchNotificationPreferences = async () =>
+  (
+    await request<{ readonly data: readonly NotificationPreference[] }>(
+      "/v1/me/notification-preferences"
+    )
+  ).data;
+export const updateNotificationPreferences = async (
+  preferences: readonly Omit<NotificationPreference, "revision">[]
+) =>
+  (
+    await mutate<{ readonly data: readonly NotificationPreference[] }>(
+      "/v1/me/notification-preferences",
+      "PATCH",
+      { preferences }
+    )
+  ).data;
+export const fetchWorkspaceNotificationPolicy = async () =>
+  (
+    await request<{ readonly data: Readonly<Record<string, unknown>> }>(
+      `/v1/workspaces/${workspaceId}/notification-preferences`
+    )
+  ).data;
+export const updateWorkspaceNotificationPolicy = async (
+  policy: Readonly<Record<string, unknown>>
+) =>
+  (
+    await mutate<{ readonly data: Readonly<Record<string, unknown>> }>(
+      `/v1/workspaces/${workspaceId}/notification-preferences`,
+      "PATCH",
+      policy
+    )
+  ).data;
+
 export const fetchWorkflowTriggers = async (workflowId: string) =>
   (
     await request<{ readonly data: readonly WorkflowTriggerSummary[] }>(

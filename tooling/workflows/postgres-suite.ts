@@ -28,6 +28,7 @@ import {
   PostgresKnowledgeGraphRepository,
   PostgresConnectorRepository,
   PostgresTriggerRepository,
+  PostgresNotificationRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -221,6 +222,7 @@ async function runSuite(pool: DatabasePool) {
     createHash("sha256").update("m22-connector-state").digest()
   );
   const triggerRepository = new PostgresTriggerRepository(pool);
+  const notificationRepository = new PostgresNotificationRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -1478,6 +1480,62 @@ async function runSuite(pool: DatabasePool) {
   );
   await triggerRepository.transition(contextA, triggerId, "disabled");
 
+  const notificationIntentId = randomUUID();
+  const notificationId = randomUUID();
+  await withTenantTransaction(pool, contextA, async (client) => {
+    await client.query(
+      `INSERT INTO notification_intents(workspace_id,id,dedupe_key,recipient_user_id,source_type,resource_type,resource_id,event_type,priority) VALUES($1,$2,$3,$4,'task_assignment','task',$5,'task.assigned','normal')`,
+      [
+        contextA.workspaceId,
+        notificationIntentId,
+        "task-assigned-1",
+        contextA.principalId,
+        randomUUID()
+      ]
+    );
+    await client.query(
+      `INSERT INTO notification_items(workspace_id,id,intent_id,recipient_user_id,group_key,title,body_summary,deep_link) VALUES($1,$2,$3,$4,'assigned-work','A task needs your review','Open the assigned task before its due date.','/app/tasks/00000000-0000-4000-8000-000000000001')`,
+      [contextA.workspaceId, notificationId, notificationIntentId, contextA.principalId]
+    );
+  });
+  assert(
+    (await notificationRepository.list(contextA, "unread")).length === 1,
+    "Unread notification was not projected"
+  );
+  assert(
+    (await notificationRepository.list(contextB)).length === 0,
+    "Notification crossed tenant RLS"
+  );
+  await notificationRepository.markRead(contextA, notificationId);
+  await notificationRepository.markRead(contextA, notificationId);
+  assert(
+    (await notificationRepository.list(contextA, "unread")).length === 0,
+    "Notification logical read was not exact-once"
+  );
+  const preferences = await notificationRepository.updateUserPreferences(contextA, [
+    {
+      eventType: "task.assigned",
+      channels: { in_app: "immediate", email: "daily_digest" },
+      quietStart: "22:00",
+      quietEnd: "07:00",
+      timeZone: "Asia/Kolkata",
+      language: "en",
+      expectedRevision: 1
+    }
+  ]);
+  assert(preferences.length === 1, "Notification preference was not persisted");
+  const mandatoryOff = await Promise.allSettled([
+    notificationRepository.updateUserPreferences(contextA, [
+      {
+        eventType: "security.account_compromised",
+        channels: { in_app: "off", email: "off" },
+        timeZone: "UTC",
+        language: "en"
+      }
+    ])
+  ]);
+  assert(mandatoryOff[0]?.status === "rejected", "Mandatory security notification was disabled");
+
   const immutable = await Promise.allSettled([
     withTenantTransaction(pool, contextA, (client) =>
       client.query(
@@ -1943,6 +2001,7 @@ async function runSuite(pool: DatabasePool) {
     knowledgeGraph: knowledgeGraphRepository,
     connectors: connectorRepository,
     triggers: triggerRepository,
+    notifications: notificationRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),
