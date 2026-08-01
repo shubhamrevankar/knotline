@@ -2826,6 +2826,124 @@ const GOVERNANCE_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }
 }));
 
+const ENTERPRISE_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/sso-connections",
+    "listSsoConnections",
+    "List enterprise identity connections"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/sso-connections",
+    "createSsoConnection",
+    "Create an enterprise identity connection"
+  ],
+  [
+    "PATCH",
+    "/v1/sso-connections/{connectionId}",
+    "updateSsoConnection",
+    "Update an enterprise identity connection"
+  ],
+  [
+    "POST",
+    "/v1/sso-connections/{connectionId}/tests",
+    "testSsoConnection",
+    "Test an enterprise identity connection"
+  ],
+  [
+    "POST",
+    "/v1/sso-connections/{connectionId}/activations",
+    "activateSsoConnection",
+    "Activate a tested identity connection"
+  ],
+  [
+    "POST",
+    "/v1/sso-connections/{connectionId}/rotations",
+    "rotateSsoConnection",
+    "Rotate identity connection keys"
+  ],
+  [
+    "DELETE",
+    "/v1/sso-connections/{connectionId}",
+    "disableSsoConnection",
+    "Disable an identity connection"
+  ],
+  ["GET", "/v1/workspaces/{workspaceId}/domains", "listVerifiedDomains", "List workspace domains"],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/domains",
+    "createVerifiedDomain",
+    "Create a DNS domain challenge"
+  ],
+  ["POST", "/v1/domains/{domainId}/verifications", "verifyDomain", "Verify a DNS domain challenge"],
+  [
+    "PATCH",
+    "/v1/domains/{domainId}/enforcement",
+    "enforceDomain",
+    "Update verified-domain enforcement"
+  ],
+  ["DELETE", "/v1/domains/{domainId}", "deleteDomain", "Delete a workspace domain"],
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/scim-tokens",
+    "listScimTokens",
+    "List SCIM credential metadata"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/scim-tokens",
+    "createScimToken",
+    "Issue a one-time SCIM credential"
+  ],
+  ["POST", "/v1/scim-tokens/{tokenId}/rotations", "rotateScimToken", "Rotate a SCIM credential"],
+  ["DELETE", "/v1/scim-tokens/{tokenId}", "revokeScimToken", "Revoke a SCIM credential"],
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/enterprise-policies",
+    "listEnterprisePolicies",
+    "List enterprise access policies"
+  ],
+  [
+    "PUT",
+    "/v1/workspaces/{workspaceId}/enterprise-policies",
+    "putEnterprisePolicy",
+    "Create or update an enterprise access policy"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/region-migrations",
+    "createRegionMigration",
+    "Create a region migration"
+  ],
+  [
+    "GET",
+    "/v1/region-migrations/{migrationId}",
+    "getRegionMigration",
+    "Get region migration status"
+  ]
+].map(([method, path, operationId, summary]) => ({
+  method: method as HttpRouteContract["method"],
+  path: path!,
+  operationId: operationId!,
+  summary: summary!,
+  tags: ["Enterprise"],
+  exposure: "browser_internal" as const,
+  ...(["POST", "PUT", "PATCH"].includes(method!) ? { requestBody: genericDataSchema } : {}),
+  responses: {
+    200: apiEnvelope(genericDataSchema),
+    201: apiEnvelope(genericDataSchema),
+    202: apiEnvelope(genericDataSchema),
+    204: z.undefined(),
+    400: apiErrorSchema,
+    401: apiErrorSchema,
+    403: apiErrorSchema,
+    404: apiErrorSchema,
+    409: apiErrorSchema,
+    500: apiErrorSchema
+  }
+}));
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
@@ -2847,6 +2965,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...DEVELOPER_ROUTE_CONTRACTS,
   ...PUBLIC_DEVELOPER_ROUTE_CONTRACTS,
   ...GOVERNANCE_ROUTE_CONTRACTS,
+  ...ENTERPRISE_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

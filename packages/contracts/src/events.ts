@@ -450,6 +450,21 @@ export const EVENT_SCHEMA_REGISTRY = [
     schema: runtimeTransitionPayloadV1Schema
   })),
   ...[
+    "enterprise.sso_connection_changed",
+    "enterprise.sso_tested",
+    "enterprise.domain_changed",
+    "enterprise.scim_credential_changed",
+    "enterprise.scim_resource_changed",
+    "enterprise.policy_changed",
+    "enterprise.session_revoked",
+    "enterprise.region_migration_changed"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "enterprise-platform",
+    schema: runtimeTransitionPayloadV1Schema
+  })),
+  ...[
     "approval.requested",
     "approval.delegated",
     "approval.abstained",

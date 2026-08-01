@@ -47,6 +47,7 @@ import type {
   BillingRepository,
   DeveloperRepository,
   GovernanceRepository,
+  EnterpriseRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -108,6 +109,7 @@ export interface BuildAppOptions {
   readonly billing?: BillingRepository;
   readonly developer?: DeveloperRepository;
   readonly governance?: GovernanceRepository;
+  readonly enterprise?: EnterpriseRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -3475,6 +3477,184 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     );
     return reply.code(204).send();
   });
+  const enterpriseRepository = () => {
+    if (!options.enterprise) throw new Error("Enterprise identity is not configured");
+    return options.enterprise;
+  };
+  const ssoParams = z.object({ connectionId: z.string().uuid() }).strict(),
+    domainParams = z.object({ domainId: z.string().uuid() }).strict(),
+    scimParams = z.object({ tokenId: z.string().uuid() }).strict(),
+    regionParams = z.object({ migrationId: z.string().uuid() }).strict();
+  const ssoSchema = z
+    .object({
+      name: z.string().min(1).max(120),
+      protocol: z.enum(["saml", "oidc"]),
+      issuer: z.url(),
+      metadata: z.record(z.string(), z.unknown()).default({}),
+      encryptedConfiguration: z.string().min(16)
+    })
+    .strict();
+  app.get("/v1/workspaces/:workspaceId/sso-connections", async (request) => ({
+    data: await enterpriseRepository().connections(await workspaceAccess(request))
+  }));
+  app.post("/v1/workspaces/:workspaceId/sso-connections", async (request, reply) =>
+    reply.code(201).send({
+      data: await enterpriseRepository().createConnection(
+        await workspaceAccess(request, true),
+        ssoSchema.parse(request.body)
+      )
+    })
+  );
+  app.patch("/v1/sso-connections/:connectionId", async (request) => {
+    const { connectionId } = ssoParams.parse(request.params);
+    return {
+      data: await enterpriseRepository().updateConnection(
+        await agentAccess(request, true),
+        connectionId,
+        ssoSchema
+          .partial()
+          .extend({ expectedRevision: z.number().int().positive() })
+          .parse(request.body)
+      )
+    };
+  });
+  app.post("/v1/sso-connections/:connectionId/tests", async (request, reply) => {
+    const { connectionId } = ssoParams.parse(request.params);
+    return reply.code(202).send({
+      data: await enterpriseRepository().transitionConnection(
+        await agentAccess(request, true),
+        connectionId,
+        "tested"
+      )
+    });
+  });
+  app.post("/v1/sso-connections/:connectionId/activations", async (request, reply) => {
+    const { connectionId } = ssoParams.parse(request.params);
+    return reply.code(202).send({
+      data: await enterpriseRepository().transitionConnection(
+        await agentAccess(request, true),
+        connectionId,
+        "active"
+      )
+    });
+  });
+  app.post("/v1/sso-connections/:connectionId/rotations", async (request, reply) => {
+    const { connectionId } = ssoParams.parse(request.params);
+    return reply.code(202).send({
+      data: await enterpriseRepository().rotateConnection(
+        await agentAccess(request, true),
+        connectionId
+      )
+    });
+  });
+  app.delete("/v1/sso-connections/:connectionId", async (request, reply) => {
+    const { connectionId } = ssoParams.parse(request.params);
+    await enterpriseRepository().deleteConnection(await agentAccess(request, true), connectionId);
+    return reply.code(204).send();
+  });
+  app.get("/v1/workspaces/:workspaceId/domains", async (request) => ({
+    data: await enterpriseRepository().domains(await workspaceAccess(request))
+  }));
+  app.post("/v1/workspaces/:workspaceId/domains", async (request, reply) =>
+    reply.code(201).send({
+      data: await enterpriseRepository().createDomain(
+        await workspaceAccess(request, true),
+        z
+          .object({
+            domain: z.string().regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/u)
+          })
+          .strict()
+          .parse(request.body)
+      )
+    })
+  );
+  app.post("/v1/domains/:domainId/verifications", async (request, reply) => {
+    const { domainId } = domainParams.parse(request.params);
+    return reply.code(202).send({
+      data: await enterpriseRepository().verifyDomain(await agentAccess(request, true), domainId)
+    });
+  });
+  app.patch("/v1/domains/:domainId/enforcement", async (request) => {
+    const { domainId } = domainParams.parse(request.params);
+    return {
+      data: await enterpriseRepository().enforceDomain(
+        await agentAccess(request, true),
+        domainId,
+        z
+          .object({ enforcement: z.enum(["none", "discover", "required"]) })
+          .strict()
+          .parse(request.body)
+      )
+    };
+  });
+  app.delete("/v1/domains/:domainId", async (request, reply) => {
+    const { domainId } = domainParams.parse(request.params);
+    await enterpriseRepository().deleteDomain(await agentAccess(request, true), domainId);
+    return reply.code(204).send();
+  });
+  app.get("/v1/workspaces/:workspaceId/scim-tokens", async (request) => ({
+    data: await enterpriseRepository().scimCredentials(await workspaceAccess(request))
+  }));
+  app.post("/v1/workspaces/:workspaceId/scim-tokens", async (request, reply) =>
+    reply.code(201).send({
+      data: await enterpriseRepository().createScimCredential(
+        await workspaceAccess(request, true),
+        z.object({ expiresAt: z.iso.datetime() }).strict().parse(request.body)
+      )
+    })
+  );
+  app.post("/v1/scim-tokens/:tokenId/rotations", async (request, reply) => {
+    const { tokenId } = scimParams.parse(request.params);
+    return reply.code(201).send({
+      data: await enterpriseRepository().rotateScimCredential(
+        await agentAccess(request, true),
+        tokenId
+      )
+    });
+  });
+  app.delete("/v1/scim-tokens/:tokenId", async (request, reply) => {
+    const { tokenId } = scimParams.parse(request.params);
+    await enterpriseRepository().deleteScimCredential(await agentAccess(request, true), tokenId);
+    return reply.code(204).send();
+  });
+  app.get("/v1/workspaces/:workspaceId/enterprise-policies", async (request) => ({
+    data: await enterpriseRepository().policies(await workspaceAccess(request))
+  }));
+  app.put("/v1/workspaces/:workspaceId/enterprise-policies", async (request) => ({
+    data: await enterpriseRepository().putPolicy(
+      await workspaceAccess(request, true),
+      z
+        .object({
+          policyKey: z.string().min(1).max(100),
+          mode: z.enum(["dry_run", "staged", "enforced"]),
+          rules: z.record(z.string(), z.unknown()),
+          exceptions: z.array(z.unknown()).default([])
+        })
+        .strict()
+        .parse(request.body)
+    )
+  }));
+  app.post("/v1/workspaces/:workspaceId/region-migrations", async (request, reply) =>
+    reply.code(202).send({
+      data: await enterpriseRepository().createRegionMigration(
+        await workspaceAccess(request, true),
+        z
+          .object({
+            sourceRegion: z.enum(["us", "eu"]),
+            targetRegion: z.enum(["us", "eu"]),
+            checks: z.array(z.unknown()).default([])
+          })
+          .refine((v) => v.sourceRegion !== v.targetRegion, "Target region must differ")
+          .parse(request.body)
+      )
+    })
+  );
+  app.get("/v1/region-migrations/:migrationId", async (request) => ({
+    data: await enterpriseRepository().regionMigration(
+      await agentAccess(request),
+      regionParams.parse(request.params).migrationId
+    )
+  }));
   const connectionParams = z.object({ connectionId: z.string().uuid() }).strict();
   app.get("/v1/workspaces/:workspaceId/connections", async (request) => {
     const authenticated = await authenticate(request);

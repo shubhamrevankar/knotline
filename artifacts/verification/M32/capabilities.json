@@ -1,0 +1,21 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M32/test-results/m32-enterprise-browser.json",
+      "verifiedAt": "2026-08-11T12:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-015",
+      "EXT-022"
+    ],
+    "id": "enterprise.identity-provisioning-policy-and-residency",
+    "owner": {
+      "contact": "shurevan",
+      "team": "enterprise-platform"
+    },
+    "runbook": "docs/operations/knotline/enterprise-identity.md",
+    "status": "DEMO",
+    "summary": "Safe-test enterprise identity, DNS domain control, one-time SCIM credentials, staged policy and explicit region migration are verified locally."
+  }
+]

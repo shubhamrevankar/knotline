@@ -1801,6 +1801,48 @@
       "retentionDays": 2555,
       "exportHandler": "governance-export",
       "deleteHandler": "grant-revoke-delete"
+    },
+    {
+      "name": "enterprise_identity_connections",
+      "class": "enterprise.identity",
+      "retentionDays": 2555,
+      "exportHandler": "enterprise-export",
+      "deleteHandler": "credential-revoke-delete"
+    },
+    {
+      "name": "verified_domains",
+      "class": "enterprise.domain",
+      "retentionDays": 2555,
+      "exportHandler": "enterprise-export",
+      "deleteHandler": "domain-release-delete"
+    },
+    {
+      "name": "scim_credentials",
+      "class": "enterprise.credential",
+      "retentionDays": 2555,
+      "exportHandler": "credential-metadata-export",
+      "deleteHandler": "credential-revoke-delete"
+    },
+    {
+      "name": "enterprise_policies",
+      "class": "enterprise.policy",
+      "retentionDays": 2555,
+      "exportHandler": "enterprise-export",
+      "deleteHandler": "tenant-delete"
+    },
+    {
+      "name": "scim_resources",
+      "class": "enterprise.provisioning",
+      "retentionDays": 2555,
+      "exportHandler": "enterprise-export",
+      "deleteHandler": "deprovision-delete"
+    },
+    {
+      "name": "region_migrations",
+      "class": "enterprise.residency",
+      "retentionDays": 2555,
+      "exportHandler": "migration-proof-export",
+      "deleteHandler": "immutable-proof-retention"
     }
   ],
   "indexes": [
@@ -2246,7 +2288,17 @@
     "legal_holds_pkey",
     "data_deletion_jobs_pkey",
     "workspace_data_policies_pkey",
-    "support_access_grants_pkey"
+    "support_access_grants_pkey",
+    "enterprise_identity_connections_pkey",
+    "verified_domains_pkey",
+    "verified_domains_domain_key",
+    "scim_credentials_pkey",
+    "scim_credentials_prefix_key",
+    "enterprise_policies_pkey",
+    "enterprise_policies_workspace_id_policy_key_key",
+    "scim_resources_pkey",
+    "scim_resources_workspace_id_resource_type_external_id_key",
+    "region_migrations_pkey"
   ],
   "caches": []
 }

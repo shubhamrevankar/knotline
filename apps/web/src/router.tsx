@@ -170,6 +170,9 @@ const DeveloperPlatformPage = lazy(async () => ({
 const GovernancePage = lazy(async () => ({
   default: (await import("./M31Pages.js")).GovernancePage
 }));
+const EnterpriseIdentityPage = lazy(async () => ({
+  default: (await import("./M32Pages.js")).EnterpriseIdentityPage
+}));
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -771,6 +774,20 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label="Loading governance controls" />}>
           <GovernancePage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (
+    [
+      "route.app.settings.identity",
+      "route.app.settings.policies",
+      "route.app.settings.security"
+    ].includes(route.id)
+  )
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading enterprise controls" />}>
+          <EnterpriseIdentityPage />
         </Suspense>
       </AuthGate>
     );

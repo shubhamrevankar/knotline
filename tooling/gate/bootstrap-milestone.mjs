@@ -43,6 +43,16 @@ export async function bootstrapMilestone(config) {
     reviewExpiresAt: null,
     evidenceUris: []
   }));
+  const environmentGates = registries.criteria.entries
+    .filter((item) => item.milestone === milestone)
+    .map((item) => ({
+      criterionId: item.criterionId,
+      sourceBulletDigest: item.sourceBulletDigest,
+      requiredTerminalState: item.requiredTerminalState,
+      actualState: "NOT_DEPLOYED",
+      environmentId: null,
+      evidenceUris: []
+    }));
   const declaration = {
     schemaVersion: 1,
     milestone,
@@ -52,7 +62,7 @@ export async function bootstrapMilestone(config) {
     requirements: [],
     activeGateRows,
     notYetApplicable,
-    environmentGates: [],
+    environmentGates,
     externalGates,
     testRuns,
     manualReviews: [],

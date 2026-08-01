@@ -33,6 +33,7 @@ import {
   PostgresBillingRepository,
   PostgresDeveloperRepository,
   PostgresGovernanceRepository,
+  PostgresEnterpriseRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -231,6 +232,7 @@ async function runSuite(pool: DatabasePool) {
   const billingRepository = new PostgresBillingRepository(pool);
   const developerRepository = new PostgresDeveloperRepository(pool);
   const governanceRepository = new PostgresGovernanceRepository(pool);
+  const enterpriseRepository = new PostgresEnterpriseRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -1716,6 +1718,32 @@ async function runSuite(pool: DatabasePool) {
     scope: "workspace"
   });
   assert(governanceDeletion.state === "blocked_hold", "Legal hold did not block deletion");
+  const identityConnection = await enterpriseRepository.createConnection(contextA, {
+    name: "Workforce identity",
+    protocol: "saml",
+    issuer: "https://identity.example.test",
+    metadata: { spInitiatedOnly: true },
+    encryptedConfiguration: "local-encrypted-fixture"
+  });
+  const testedConnection = await enterpriseRepository.transitionConnection(
+    contextA,
+    String(identityConnection.id),
+    "tested"
+  );
+  assert(testedConnection.state === "tested", "Enterprise connection safe test did not advance");
+  const domain = await enterpriseRepository.createDomain(contextA, { domain: "example.test" });
+  assert(domain.displayedOnce === true, "Domain challenge was not one-time");
+  assert(
+    (await enterpriseRepository.connections(contextB)).length === 0,
+    "Enterprise connection crossed tenant RLS"
+  );
+  const enterprisePolicy = await enterpriseRepository.putPolicy(contextA, {
+    policyKey: "session-security",
+    mode: "dry_run",
+    rules: { mfaRequired: true },
+    exceptions: []
+  });
+  assert(enterprisePolicy.mode === "dry_run", "Enterprise policy skipped dry-run");
 
   const immutable = await Promise.allSettled([
     withTenantTransaction(pool, contextA, (client) =>
@@ -2187,6 +2215,7 @@ async function runSuite(pool: DatabasePool) {
     billing: billingRepository,
     developer: developerRepository,
     governance: governanceRepository,
+    enterprise: enterpriseRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),

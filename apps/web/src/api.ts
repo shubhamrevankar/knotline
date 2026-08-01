@@ -1752,3 +1752,60 @@ export const createSupportAccess = async (input: Readonly<Record<string, unknown
       input
     )
   ).data;
+export interface SsoConnection {
+  readonly id: string;
+  readonly name: string;
+  readonly protocol: "saml" | "oidc";
+  readonly issuer: string;
+  readonly state: string;
+  readonly revision: number;
+}
+export interface VerifiedDomain {
+  readonly id: string;
+  readonly domain: string;
+  readonly state: string;
+  readonly enforcement: string;
+  readonly challenge?: string;
+}
+export interface EnterprisePolicy {
+  readonly id: string;
+  readonly policyKey: string;
+  readonly version: number;
+  readonly mode: string;
+  readonly rules: Readonly<Record<string, unknown>>;
+}
+export const fetchSsoConnections = async () =>
+  (await request<ApiEnvelope<SsoConnection[]>>(`/v1/workspaces/${workspaceId}/sso-connections`))
+    .data;
+export const createSsoConnection = async (input: Readonly<Record<string, unknown>>) =>
+  (
+    await mutate<ApiEnvelope<SsoConnection>>(
+      `/v1/workspaces/${workspaceId}/sso-connections`,
+      "POST",
+      input
+    )
+  ).data;
+export const testSsoConnection = async (id: string) =>
+  (await mutate<ApiEnvelope<SsoConnection>>(`/v1/sso-connections/${id}/tests`, "POST", {})).data;
+export const fetchVerifiedDomains = async () =>
+  (await request<ApiEnvelope<VerifiedDomain[]>>(`/v1/workspaces/${workspaceId}/domains`)).data;
+export const createVerifiedDomain = async (domain: string) =>
+  (
+    await mutate<ApiEnvelope<VerifiedDomain>>(`/v1/workspaces/${workspaceId}/domains`, "POST", {
+      domain
+    })
+  ).data;
+export const fetchEnterprisePolicies = async () =>
+  (
+    await request<ApiEnvelope<EnterprisePolicy[]>>(
+      `/v1/workspaces/${workspaceId}/enterprise-policies`
+    )
+  ).data;
+export const putEnterprisePolicy = async (input: Readonly<Record<string, unknown>>) =>
+  (
+    await mutate<ApiEnvelope<EnterprisePolicy>>(
+      `/v1/workspaces/${workspaceId}/enterprise-policies`,
+      "PUT",
+      input
+    )
+  ).data;
