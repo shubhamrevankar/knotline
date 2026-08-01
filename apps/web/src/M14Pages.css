@@ -1,0 +1,350 @@
+.foundry-shell {
+  min-height: 100vh;
+  background: #f5f5f2;
+  color: #17211c;
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+}
+.foundry-shell > aside {
+  background: #16221e;
+  color: #edf5f0;
+  padding: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.foundry-shell > aside a {
+  color: inherit;
+  text-decoration: none;
+  padding: 0.75rem;
+  border-radius: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.foundry-shell > aside a[aria-current="page"],
+.foundry-shell > aside a:hover {
+  background: #2b4339;
+}
+.foundry-brand {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+}
+.foundry-shell > main {
+  padding: clamp(1rem, 3vw, 3rem);
+  min-width: 0;
+}
+.foundry-header,
+.builder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.foundry-header h1,
+.builder-header h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  margin: 0.45rem 0;
+}
+.foundry-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #e5ff69;
+  color: #16221e;
+  padding: 0.75rem 1rem;
+  border-radius: 0.7rem;
+  text-decoration: none;
+  font-weight: 800;
+}
+.foundry-search {
+  display: grid;
+  gap: 0.35rem;
+  max-width: 30rem;
+  margin-bottom: 1.3rem;
+}
+.foundry-search > div {
+  background: white;
+  border: 1px solid #ccd4ce;
+  border-radius: 0.7rem;
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.7rem;
+}
+.foundry-search input {
+  border: 0;
+  min-height: 2.6rem;
+  flex: 1;
+  font: inherit;
+}
+.agent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1rem;
+}
+.agent-card {
+  background: white;
+  border: 1px solid #d5dcd7;
+  border-radius: 1rem;
+  padding: 1.2rem;
+  color: inherit;
+  text-decoration: none;
+  display: grid;
+  gap: 1rem;
+}
+.agent-icon {
+  display: grid;
+  place-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 0.8rem;
+  background: #e5ff69;
+}
+.agent-card h2 {
+  margin: 0.5rem 0;
+}
+.agent-card dl {
+  display: grid;
+  gap: 0.5rem;
+}
+.agent-card dl div {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #e2e6e3;
+  padding-top: 0.5rem;
+}
+.agent-card dt {
+  color: #637068;
+}
+.agent-tags {
+  color: #476554;
+}
+.agent-create {
+  max-width: 45rem;
+  background: white;
+  border: 1px solid #d5dcd7;
+  border-radius: 1rem;
+  padding: 1.4rem;
+  display: grid;
+  gap: 1rem;
+}
+.agent-create label,
+.builder-panel label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 700;
+}
+.agent-create input,
+.agent-create textarea,
+.agent-create select,
+.builder-panel textarea,
+.builder-panel select {
+  padding: 0.75rem;
+  border: 1px solid #89958d;
+  border-radius: 0.6rem;
+  font: inherit;
+}
+.agent-create textarea,
+.builder-panel textarea {
+  min-height: 7rem;
+}
+.foundry-header-actions,
+.builder-header > div:last-child {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.agent-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.agent-overview ol {
+  padding-left: 1.2rem;
+}
+.agent-overview li {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e2e6e3;
+}
+.builder-header p {
+  margin: 0.2rem 0;
+}
+.builder-header a {
+  color: #315c47;
+}
+.saved {
+  color: #27734a;
+}
+.unsaved {
+  color: #a45c19;
+}
+.builder-tabs {
+  display: flex;
+  gap: 0.4rem;
+  overflow: auto;
+  border-bottom: 1px solid #cdd5cf;
+  margin-bottom: 1.2rem;
+}
+.builder-tabs button {
+  border: 0;
+  background: transparent;
+  padding: 0.8rem;
+  font: inherit;
+  white-space: nowrap;
+}
+.builder-tabs button[aria-pressed="true"] {
+  border-bottom: 3px solid #416c58;
+  font-weight: 800;
+}
+.builder-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 19rem;
+  gap: 1rem;
+  align-items: start;
+}
+.builder-panel {
+  background: white;
+  border: 1px solid #d5dcd7;
+  border-radius: 1rem;
+  padding: 1.3rem;
+  display: grid;
+  gap: 1rem;
+}
+.builder-panel fieldset {
+  border: 1px solid #d5dcd7;
+  border-radius: 0.8rem;
+  display: grid;
+  gap: 1rem;
+}
+.variable-list > div {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-top: 1px solid #e2e6e3;
+}
+.builder-panel h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.schema-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.schema-cards pre,
+.simulation-result pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: #eef1ed;
+  padding: 0.8rem;
+  border-radius: 0.6rem;
+}
+.builder-review {
+  background: #203029;
+  color: #edf5f0;
+  border-radius: 1rem;
+  padding: 1.2rem;
+  position: sticky;
+  top: 1rem;
+}
+.builder-review ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+.builder-review li {
+  display: flex;
+  gap: 0.5rem;
+}
+.validation-clear {
+  color: #b8efcb;
+}
+.limit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.7rem;
+}
+.limit-grid div {
+  background: #f0f3ef;
+  padding: 0.75rem;
+  border-radius: 0.6rem;
+}
+.limit-grid dt {
+  text-transform: capitalize;
+  color: #637068;
+}
+.limit-grid dd {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0.2rem 0;
+}
+.simulation-label {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.simulation-label h2 {
+  margin: 0;
+}
+.simulation-result {
+  border: 2px solid #df9f43;
+  border-radius: 0.8rem;
+  padding: 1rem;
+}
+@media (max-width: 850px) {
+  .foundry-shell {
+    display: block;
+  }
+  .foundry-shell > aside {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+    padding: 0.55rem;
+  }
+  .foundry-shell > aside a {
+    white-space: nowrap;
+  }
+  .foundry-brand {
+    margin: 0;
+  }
+  .builder-layout,
+  .agent-overview {
+    grid-template-columns: 1fr;
+  }
+  .builder-review {
+    position: static;
+  }
+  .schema-cards {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 520px) {
+  .foundry-header,
+  .builder-header {
+    display: block;
+  }
+  .foundry-header-actions,
+  .builder-header > div:last-child {
+    margin-top: 1rem;
+  }
+  .limit-grid {
+    grid-template-columns: 1fr;
+  }
+  .variable-list > div {
+    grid-template-columns: 1fr;
+  }
+  .foundry-shell > main {
+    padding: 1rem;
+  }
+}

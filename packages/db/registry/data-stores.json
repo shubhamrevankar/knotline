@@ -653,6 +653,83 @@
       "retentionDays": 2555,
       "exportHandler": "approval-export",
       "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "agent_definitions",
+      "class": "agent.definition",
+      "retentionDays": 2555,
+      "exportHandler": "agent-export",
+      "deleteHandler": "agent-delete"
+    },
+    {
+      "name": "agent_drafts",
+      "class": "agent.draft",
+      "retentionDays": 365,
+      "exportHandler": "agent-export",
+      "deleteHandler": "agent-delete"
+    },
+    {
+      "name": "agent_versions",
+      "class": "agent.version",
+      "retentionDays": 2555,
+      "exportHandler": "agent-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "agent_release_channels",
+      "class": "agent.release_channel",
+      "retentionDays": 2555,
+      "exportHandler": "agent-export",
+      "deleteHandler": "agent-delete"
+    },
+    {
+      "name": "agent_tags",
+      "class": "agent.tag",
+      "retentionDays": 2555,
+      "exportHandler": "agent-export",
+      "deleteHandler": "agent-delete"
+    },
+    {
+      "name": "agent_tag_assignments",
+      "class": "agent.tag_assignment",
+      "retentionDays": 2555,
+      "exportHandler": "agent-export",
+      "deleteHandler": "agent-delete"
+    },
+    {
+      "name": "agent_version_references",
+      "class": "agent.reference",
+      "retentionDays": 2555,
+      "exportHandler": "agent-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "agent_simulations",
+      "class": "agent.simulation",
+      "retentionDays": 90,
+      "exportHandler": "agent-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "reusable_schemas",
+      "class": "agent.schema",
+      "retentionDays": 2555,
+      "exportHandler": "agent-export",
+      "deleteHandler": "agent-delete"
+    },
+    {
+      "name": "reusable_schema_versions",
+      "class": "agent.schema_version",
+      "retentionDays": 2555,
+      "exportHandler": "agent-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "agent_activity_events",
+      "class": "agent.activity",
+      "retentionDays": 2555,
+      "exportHandler": "agent-export",
+      "deleteHandler": "governed-delete"
     }
   ],
   "indexes": [
@@ -808,7 +885,25 @@
     "sla_timer_due_idx",
     "approval_consumptions_pkey",
     "approval_consumptions_workspace_id_operation_id_key",
-    "notification_intents_dedupe_idx"
+    "notification_intents_dedupe_idx",
+    "agent_definitions_pkey",
+    "agent_definitions_workspace_id_stable_key_key",
+    "agent_definitions_catalog_idx",
+    "agent_drafts_pkey",
+    "agent_versions_pkey",
+    "agent_versions_workspace_id_agent_id_content_hash_key",
+    "agent_release_channels_pkey",
+    "agent_tags_pkey",
+    "agent_tags_workspace_id_normalized_name_key",
+    "agent_tag_assignments_pkey",
+    "agent_version_references_pkey",
+    "agent_simulations_pkey",
+    "agent_simulations_agent_idx",
+    "reusable_schemas_pkey",
+    "reusable_schemas_workspace_id_name_key",
+    "reusable_schema_versions_pkey",
+    "reusable_schema_versions_workspace_id_schema_id_content_hash_key",
+    "agent_activity_events_pkey"
   ],
   "caches": []
 }

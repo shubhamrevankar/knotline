@@ -3,6 +3,7 @@ export * from "./collaboration.js";
 export * from "./runtime.js";
 export * from "./human-task.js";
 export * from "./approval.js";
+export * from "./agent.js";
 export * from "./evidence.js";
 export * from "./http.js";
 export * from "./routes.generated.js";

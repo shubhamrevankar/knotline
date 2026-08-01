@@ -242,6 +242,134 @@ export const remindApproval = (approvalId: string, idempotencyKey: string) =>
     { idempotencyKey }
   );
 
+export interface AgentDefinition {
+  readonly schemaVersion: 1;
+  readonly name: string;
+  readonly description: string;
+  readonly purpose: string;
+  readonly visibility: "private" | "workspace";
+  readonly tags: readonly string[];
+  readonly prompts: {
+    readonly system: string;
+    readonly developer: string;
+    readonly user: string;
+    readonly variables: readonly {
+      key: string;
+      type: "string" | "number" | "boolean" | "object" | "array";
+      required: boolean;
+      description: string;
+      sensitive: boolean;
+    }[];
+  };
+  readonly modelPolicy: Readonly<Record<string, unknown>> & { readonly role: string };
+  readonly inputSchema: Readonly<Record<string, unknown>>;
+  readonly outputSchema: Readonly<Record<string, unknown>>;
+  readonly tools: readonly Readonly<Record<string, unknown>>[];
+  readonly knowledge: readonly Readonly<Record<string, unknown>>[];
+  readonly memory: Readonly<Record<string, unknown>>;
+  readonly limits: Readonly<Record<string, unknown>>;
+  readonly fallback: Readonly<Record<string, unknown>>;
+  readonly humanApproval: Readonly<Record<string, unknown>>;
+}
+
+export interface AgentSummary {
+  readonly id: string;
+  readonly name: string;
+  readonly description: string;
+  readonly visibility: string;
+  readonly state: string;
+  readonly current_version?: number;
+  readonly stable_version?: number;
+  readonly tags: readonly string[];
+  readonly usage_references: number;
+}
+
+export interface AgentDetail extends AgentSummary {
+  readonly revision: number;
+  readonly definition: AgentDefinition;
+  readonly validation_findings: readonly {
+    code: string;
+    severity: string;
+    path: string;
+    message: string;
+  }[];
+  readonly release_channels: readonly Readonly<Record<string, unknown>>[];
+  readonly activity: readonly Readonly<Record<string, unknown>>[];
+}
+
+export const fetchAgents = async (search = "") =>
+  (
+    await request<{ readonly data: readonly AgentSummary[] }>(
+      `/v1/workspaces/${workspaceId}/agents?search=${encodeURIComponent(search)}`
+    )
+  ).data;
+
+export const createAgent = async (definition: AgentDefinition) =>
+  (
+    await mutate<{ readonly data: { readonly id: string; readonly revision: number } }>(
+      `/v1/workspaces/${workspaceId}/agents`,
+      "POST",
+      { definition }
+    )
+  ).data;
+
+export const fetchAgent = async (agentId: string) =>
+  (await request<{ readonly data: AgentDetail }>(`/v1/agents/${encodeURIComponent(agentId)}`)).data;
+
+export const saveAgentDraft = async (
+  agentId: string,
+  expectedRevision: number,
+  definition: AgentDefinition
+) =>
+  (
+    await mutate<{ readonly data: { readonly revision: number } }>(
+      `/v1/agents/${encodeURIComponent(agentId)}`,
+      "PATCH",
+      { expectedRevision, definition }
+    )
+  ).data;
+
+export const publishAgent = async (
+  agentId: string,
+  expectedRevision: number,
+  changeSummary: string
+) =>
+  (
+    await mutate<{ readonly data: { readonly version: number; readonly contentHash: string } }>(
+      `/v1/agents/${encodeURIComponent(agentId)}/versions`,
+      "POST",
+      { expectedRevision, changeSummary }
+    )
+  ).data;
+
+export const simulateAgent = async (agentId: string, fixture: Readonly<Record<string, unknown>>) =>
+  (
+    await mutate<{
+      readonly data: {
+        readonly executionClass: "SIMULATED";
+        readonly promptPreview: Readonly<Record<string, string>>;
+        readonly output: Readonly<Record<string, unknown>>;
+        readonly tokenEstimate: number;
+      };
+    }>(`/v1/agents/${encodeURIComponent(agentId)}/simulations`, "POST", { fixture })
+  ).data;
+
+export const forkAgent = async (agentId: string, version: number, name: string) =>
+  (
+    await mutate<{ readonly data: { readonly id: string } }>(
+      `/v1/agents/${encodeURIComponent(agentId)}/forks`,
+      "POST",
+      { version, name }
+    )
+  ).data;
+
+export const fetchAgentVersions = async (agentId: string) =>
+  (
+    await request<{ readonly data: readonly Readonly<Record<string, unknown>>[] }>(
+      `/v1/agents/${encodeURIComponent(agentId)}/versions`
+    )
+  ).data;
+
 export const fetchMeBootstrap = () => request<MeBootstrap>("/v1/me/bootstrap");
 
 export const fetchProfile = async () =>

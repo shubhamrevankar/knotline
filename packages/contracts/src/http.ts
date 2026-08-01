@@ -6,6 +6,7 @@ import {
   approvalDelegationSchema,
   approvalRevocationSchema
 } from "./approval.js";
+import { agentCreateSchema, agentDraftSaveSchema, agentSimulationSchema } from "./agent.js";
 import {
   restrictedUploadCompletionSchema,
   restrictedUploadRequestSchema,
@@ -1124,6 +1125,133 @@ export const APPROVAL_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }))
 ];
 
+const AGENT_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  ...(
+    [
+      [
+        "GET",
+        "/v1/workspaces/{workspaceId}/agents",
+        "listAgents",
+        "List the authorized agent catalog",
+        undefined,
+        200
+      ],
+      [
+        "POST",
+        "/v1/workspaces/{workspaceId}/agents",
+        "createAgent",
+        "Create an editable agent draft",
+        agentCreateSchema,
+        201
+      ],
+      [
+        "GET",
+        "/v1/agents/{agentId}",
+        "getAgent",
+        "Read an agent definition and draft",
+        undefined,
+        200
+      ],
+      [
+        "PATCH",
+        "/v1/agents/{agentId}",
+        "updateAgentDraft",
+        "Optimistically update an agent draft",
+        agentDraftSaveSchema,
+        200
+      ],
+      [
+        "DELETE",
+        "/v1/agents/{agentId}",
+        "archiveAgent",
+        "Archive an unreferenced agent",
+        undefined,
+        204
+      ],
+      [
+        "GET",
+        "/v1/agents/{agentId}/versions",
+        "listAgentVersions",
+        "List immutable agent versions",
+        undefined,
+        200
+      ],
+      [
+        "POST",
+        "/v1/agents/{agentId}/versions",
+        "publishAgentVersion",
+        "Publish a validated immutable agent version",
+        z
+          .object({
+            expectedRevision: z.number().int().positive(),
+            changeSummary: z.string().min(1).max(1_000)
+          })
+          .strict(),
+        201
+      ],
+      [
+        "GET",
+        "/v1/agents/{agentId}/versions/{version}",
+        "getAgentVersion",
+        "Read an immutable agent version",
+        undefined,
+        200
+      ],
+      [
+        "POST",
+        "/v1/agents/{agentId}/versions/{version}/validations",
+        "validateAgentVersion",
+        "Validate one immutable agent version",
+        z.object({}).strict(),
+        200
+      ],
+      [
+        "GET",
+        "/v1/agents/{agentId}/diffs",
+        "diffAgentVersions",
+        "Read a semantic agent-version diff",
+        undefined,
+        200
+      ],
+      [
+        "POST",
+        "/v1/agents/{agentId}/simulations",
+        "simulateAgent",
+        "Run a visibly simulated deterministic agent preview",
+        agentSimulationSchema,
+        201
+      ],
+      [
+        "POST",
+        "/v1/agents/{agentId}/forks",
+        "forkAgent",
+        "Fork an immutable version into a private draft",
+        z
+          .object({ version: z.number().int().positive(), name: z.string().min(2).max(120) })
+          .strict(),
+        201
+      ]
+    ] as const
+  ).map(([method, path, operationId, summary, requestBody, status]) => ({
+    method,
+    path,
+    operationId,
+    summary,
+    tags: ["Agent foundry"],
+    exposure: "browser_internal" as const,
+    ...(requestBody ? { requestBody } : {}),
+    responses: {
+      [status]: status === 204 ? z.undefined() : apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  }))
+];
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
@@ -1131,6 +1259,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...HUMAN_TASK_ROUTE_CONTRACTS,
   ...TASK_ADMIN_ROUTE_CONTRACTS,
   ...APPROVAL_ROUTE_CONTRACTS,
+  ...AGENT_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

@@ -2537,6 +2537,9 @@ GET    /v1/agents/:agentId/versions/:version
 POST   /v1/agents/:agentId/versions/:version/validations
 POST   /v1/agents/:agentId/versions/:version/evaluation-runs
 POST   /v1/agents/:agentId/versions/:version/releases
+GET    /v1/agents/:agentId/diffs
+POST   /v1/agents/:agentId/simulations
+POST   /v1/agents/:agentId/forks
 POST   /v1/agents/:agentId/disables
 POST   /v1/agents/:agentId/enables
 DELETE /v1/agents/:agentId
@@ -6346,7 +6349,7 @@ deadlines, delegation, and escalation continue reliably across restarts.
 
 ### M14 — Agent foundry, versioning, prompt studio, and catalog
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M05, M07\
 **Required commit:** `feat: deliver the Knotline agent foundry`
 
@@ -9230,7 +9233,7 @@ must appear in that milestone's boundary cell.
 | M11 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver the live Knotline run room` |
 | M12 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver complete human task execution` |
 | M13 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: add durable approvals and escalation policies` |
-| M14 | `NOT_STARTED` | `NOT_DEPLOYED` | `SIMULATED` for test console | `feat: deliver the Knotline agent foundry` |
+| M14 | `COMMITTED` | `NOT_DEPLOYED` | `SIMULATED` for test console | `feat: deliver the Knotline agent foundry` |
 | M15 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-004 | `feat: integrate the governed OpenAI model gateway` |
 | M16 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-002 for deployed sandbox/vault; EXT-004 for live model-requested tool smoke | `feat: secure agent tools with isolated execution` |
 | M17 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-003, EXT-004 | `feat: execute governed agents with full provenance` |

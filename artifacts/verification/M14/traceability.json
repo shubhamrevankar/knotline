@@ -344,20 +344,57 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#agentAccess",
+        "packages/db/src/agent-repository.ts#requireOwner",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/agent.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/agents.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "agent.created.v1",
+        "agent.draft_updated.v1",
+        "agent.version_published.v1",
+        "agent.simulated.v1",
+        "agent.archived.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-10"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "delete-v1-agents-by-agent-id",
+        "get-v1-agents-by-agent-id",
+        "patch-v1-agents-by-agent-id",
+        "get-v1-agents-by-agent-id-diffs",
+        "post-v1-agents-by-agent-id-disables",
+        "post-v1-agents-by-agent-id-enables",
+        "post-v1-agents-by-agent-id-forks",
+        "get-v1-agents-by-agent-id-memory-policy",
+        "put-v1-agents-by-agent-id-memory-policy",
+        "post-v1-agents-by-agent-id-simulations",
+        "get-v1-agents-by-agent-id-versions",
+        "post-v1-agents-by-agent-id-versions",
+        "get-v1-agents-by-agent-id-versions-by-version",
+        "post-v1-agents-by-agent-id-versions-by-version-evaluation-runs",
+        "post-v1-agents-by-agent-id-versions-by-version-releases",
+        "post-v1-agents-by-agent-id-versions-by-version-validations",
+        "get-v1-workspaces-by-workspace-id-agents",
+        "post-v1-workspaces-by-workspace-id-agents"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/agent-foundry.md"
+      ],
       "primaryMilestone": "M14",
       "regressionMilestones": [
         "M38"
@@ -369,25 +406,81 @@
         "route.app.agents.detail.builder",
         "route.app.agents.new"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/agents.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M14Pages.tsx#AgentBuilderPage",
+        "apps/web/src/M14Pages.tsx#AgentCatalogPage",
+        "packages/contracts/src/agent.ts#agentDefinitionSchema",
+        "packages/db/src/agent-repository.ts#PostgresAgentRepository"
+      ],
+      "tablesAndObjects": [
+        "agent_definitions",
+        "agent_drafts",
+        "agent_versions",
+        "agent_release_channels",
+        "agent_tags",
+        "agent_tag_assignments",
+        "agent_version_references",
+        "agent_simulations",
+        "reusable_schemas",
+        "reusable_schema_versions",
+        "agent_activity_events"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#agentAccess",
+        "packages/db/src/agent-repository.ts#requireOwner",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/agent.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/agents.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "agent.created.v1",
+        "agent.draft_updated.v1",
+        "agent.version_published.v1",
+        "agent.simulated.v1",
+        "agent.archived.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-10"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "delete-v1-agents-by-agent-id",
+        "get-v1-agents-by-agent-id",
+        "patch-v1-agents-by-agent-id",
+        "get-v1-agents-by-agent-id-diffs",
+        "post-v1-agents-by-agent-id-disables",
+        "post-v1-agents-by-agent-id-enables",
+        "post-v1-agents-by-agent-id-forks",
+        "get-v1-agents-by-agent-id-memory-policy",
+        "put-v1-agents-by-agent-id-memory-policy",
+        "post-v1-agents-by-agent-id-simulations",
+        "get-v1-agents-by-agent-id-versions",
+        "post-v1-agents-by-agent-id-versions",
+        "get-v1-agents-by-agent-id-versions-by-version",
+        "post-v1-agents-by-agent-id-versions-by-version-evaluation-runs",
+        "post-v1-agents-by-agent-id-versions-by-version-releases",
+        "post-v1-agents-by-agent-id-versions-by-version-validations",
+        "get-v1-workspaces-by-workspace-id-agents",
+        "post-v1-workspaces-by-workspace-id-agents"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/agent-foundry.md"
+      ],
       "primaryMilestone": "M14",
       "regressionMilestones": [
         "M38"
@@ -399,9 +492,28 @@
         "route.app.agents.detail.builder",
         "route.app.agents.new"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/agents.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M14Pages.tsx#AgentBuilderPage",
+        "apps/web/src/M14Pages.tsx#AgentCatalogPage",
+        "packages/contracts/src/agent.ts#agentDefinitionSchema",
+        "packages/db/src/agent-repository.ts#PostgresAgentRepository"
+      ],
+      "tablesAndObjects": [
+        "agent_definitions",
+        "agent_drafts",
+        "agent_versions",
+        "agent_release_channels",
+        "agent_tags",
+        "agent_tag_assignments",
+        "agent_version_references",
+        "agent_simulations",
+        "reusable_schemas",
+        "reusable_schema_versions",
+        "agent_activity_events"
+      ]
     },
     {
       "authorizationRules": [],
@@ -432,20 +544,57 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#agentAccess",
+        "packages/db/src/agent-repository.ts#requireOwner",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/agent.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/agents.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "agent.created.v1",
+        "agent.draft_updated.v1",
+        "agent.version_published.v1",
+        "agent.simulated.v1",
+        "agent.archived.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-10"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "delete-v1-agents-by-agent-id",
+        "get-v1-agents-by-agent-id",
+        "patch-v1-agents-by-agent-id",
+        "get-v1-agents-by-agent-id-diffs",
+        "post-v1-agents-by-agent-id-disables",
+        "post-v1-agents-by-agent-id-enables",
+        "post-v1-agents-by-agent-id-forks",
+        "get-v1-agents-by-agent-id-memory-policy",
+        "put-v1-agents-by-agent-id-memory-policy",
+        "post-v1-agents-by-agent-id-simulations",
+        "get-v1-agents-by-agent-id-versions",
+        "post-v1-agents-by-agent-id-versions",
+        "get-v1-agents-by-agent-id-versions-by-version",
+        "post-v1-agents-by-agent-id-versions-by-version-evaluation-runs",
+        "post-v1-agents-by-agent-id-versions-by-version-releases",
+        "post-v1-agents-by-agent-id-versions-by-version-validations",
+        "get-v1-workspaces-by-workspace-id-agents",
+        "post-v1-workspaces-by-workspace-id-agents"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/agent-foundry.md"
+      ],
       "primaryMilestone": "M14",
       "regressionMilestones": [
         "M38"
@@ -457,9 +606,28 @@
         "route.app.agents.detail.builder",
         "route.app.agents.new"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/agents.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M14Pages.tsx#AgentBuilderPage",
+        "apps/web/src/M14Pages.tsx#AgentCatalogPage",
+        "packages/contracts/src/agent.ts#agentDefinitionSchema",
+        "packages/db/src/agent-repository.ts#PostgresAgentRepository"
+      ],
+      "tablesAndObjects": [
+        "agent_definitions",
+        "agent_drafts",
+        "agent_versions",
+        "agent_release_channels",
+        "agent_tags",
+        "agent_tag_assignments",
+        "agent_version_references",
+        "agent_simulations",
+        "reusable_schemas",
+        "reusable_schema_versions",
+        "agent_activity_events"
+      ]
     },
     {
       "authorizationRules": [],
@@ -3051,12 +3219,26 @@
       "tablesAndObjects": []
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#humanTaskAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/human-task.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "task.claimed.v1",
+        "task.delegated.v1",
+        "task.submitted.v1",
+        "task.reopened.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
@@ -3064,8 +3246,51 @@
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-v1-artifact-uploads-by-upload-id-completions",
+        "delete-v1-artifacts-by-artifact-id",
+        "get-v1-artifacts-by-artifact-id-download",
+        "delete-v1-task-queues-by-queue-id",
+        "get-v1-task-queues-by-queue-id",
+        "patch-v1-task-queues-by-queue-id",
+        "delete-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-routing-policy",
+        "post-v1-task-queues-by-queue-id-routing-simulations",
+        "get-v1-task-runs",
+        "get-v1-task-runs-by-task-run-id",
+        "post-v1-task-runs-by-task-run-id-artifact-uploads",
+        "get-v1-task-runs-by-task-run-id-artifacts",
+        "get-v1-task-runs-by-task-run-id-attempts",
+        "get-v1-task-runs-by-task-run-id-attempts-by-attempt",
+        "post-v1-task-runs-by-task-run-id-claims",
+        "post-v1-task-runs-by-task-run-id-clarification-requests",
+        "get-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-delegations",
+        "put-v1-task-runs-by-task-run-id-draft",
+        "post-v1-task-runs-by-task-run-id-reassignments",
+        "post-v1-task-runs-by-task-run-id-reopenings",
+        "post-v1-task-runs-by-task-run-id-returns-to-queue",
+        "post-v1-task-runs-by-task-run-id-submissions",
+        "post-v1-task-runs-by-task-run-id-unclaims",
+        "delete-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-bulk-actions",
+        "delete-v1-task-templates-by-template-id",
+        "get-v1-task-templates-by-template-id",
+        "patch-v1-task-templates-by-template-id",
+        "post-v1-task-templates-by-template-id-previews",
+        "post-v1-task-templates-by-template-id-publications",
+        "post-v1-task-templates-by-template-id-versions",
+        "get-v1-workspaces-by-workspace-id-task-queues",
+        "post-v1-workspaces-by-workspace-id-task-queues",
+        "get-v1-workspaces-by-workspace-id-task-templates",
+        "post-v1-workspaces-by-workspace-id-task-templates"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md"
+      ],
       "primaryMilestone": "M12",
       "regressionMilestones": [
         "M38"
@@ -3076,17 +3301,56 @@
         "route.app.tasks",
         "route.app.tasks.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M12Pages.tsx#TaskInboxPage",
+        "apps/web/src/M12Pages.tsx#TaskDetailPage",
+        "packages/db/src/human-task-repository.ts#PostgresHumanTaskRepository",
+        "packages/db/src/task-administration-repository.ts#PostgresTaskAdministrationRepository"
+      ],
+      "tablesAndObjects": [
+        "human_task_details",
+        "human_task_drafts",
+        "human_task_submissions",
+        "task_delegations",
+        "task_watchers",
+        "task_queues",
+        "task_queue_members",
+        "task_routing_policy_versions",
+        "task_routing_decisions",
+        "business_calendars",
+        "business_calendar_versions",
+        "task_templates",
+        "task_template_versions",
+        "files",
+        "file_versions",
+        "file_upload_sessions",
+        "task_file_attachments"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#humanTaskAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/human-task.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "task.claimed.v1",
+        "task.delegated.v1",
+        "task.submitted.v1",
+        "task.reopened.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
@@ -3094,8 +3358,51 @@
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-v1-artifact-uploads-by-upload-id-completions",
+        "delete-v1-artifacts-by-artifact-id",
+        "get-v1-artifacts-by-artifact-id-download",
+        "delete-v1-task-queues-by-queue-id",
+        "get-v1-task-queues-by-queue-id",
+        "patch-v1-task-queues-by-queue-id",
+        "delete-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-routing-policy",
+        "post-v1-task-queues-by-queue-id-routing-simulations",
+        "get-v1-task-runs",
+        "get-v1-task-runs-by-task-run-id",
+        "post-v1-task-runs-by-task-run-id-artifact-uploads",
+        "get-v1-task-runs-by-task-run-id-artifacts",
+        "get-v1-task-runs-by-task-run-id-attempts",
+        "get-v1-task-runs-by-task-run-id-attempts-by-attempt",
+        "post-v1-task-runs-by-task-run-id-claims",
+        "post-v1-task-runs-by-task-run-id-clarification-requests",
+        "get-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-delegations",
+        "put-v1-task-runs-by-task-run-id-draft",
+        "post-v1-task-runs-by-task-run-id-reassignments",
+        "post-v1-task-runs-by-task-run-id-reopenings",
+        "post-v1-task-runs-by-task-run-id-returns-to-queue",
+        "post-v1-task-runs-by-task-run-id-submissions",
+        "post-v1-task-runs-by-task-run-id-unclaims",
+        "delete-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-bulk-actions",
+        "delete-v1-task-templates-by-template-id",
+        "get-v1-task-templates-by-template-id",
+        "patch-v1-task-templates-by-template-id",
+        "post-v1-task-templates-by-template-id-previews",
+        "post-v1-task-templates-by-template-id-publications",
+        "post-v1-task-templates-by-template-id-versions",
+        "get-v1-workspaces-by-workspace-id-task-queues",
+        "post-v1-workspaces-by-workspace-id-task-queues",
+        "get-v1-workspaces-by-workspace-id-task-templates",
+        "post-v1-workspaces-by-workspace-id-task-templates"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md"
+      ],
       "primaryMilestone": "M12",
       "regressionMilestones": [
         "M38"
@@ -3106,17 +3413,56 @@
         "route.app.tasks",
         "route.app.tasks.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M12Pages.tsx#TaskInboxPage",
+        "apps/web/src/M12Pages.tsx#TaskDetailPage",
+        "packages/db/src/human-task-repository.ts#PostgresHumanTaskRepository",
+        "packages/db/src/task-administration-repository.ts#PostgresTaskAdministrationRepository"
+      ],
+      "tablesAndObjects": [
+        "human_task_details",
+        "human_task_drafts",
+        "human_task_submissions",
+        "task_delegations",
+        "task_watchers",
+        "task_queues",
+        "task_queue_members",
+        "task_routing_policy_versions",
+        "task_routing_decisions",
+        "business_calendars",
+        "business_calendar_versions",
+        "task_templates",
+        "task_template_versions",
+        "files",
+        "file_versions",
+        "file_upload_sessions",
+        "task_file_attachments"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#humanTaskAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/human-task.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "task.claimed.v1",
+        "task.delegated.v1",
+        "task.submitted.v1",
+        "task.reopened.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
@@ -3124,8 +3470,51 @@
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-v1-artifact-uploads-by-upload-id-completions",
+        "delete-v1-artifacts-by-artifact-id",
+        "get-v1-artifacts-by-artifact-id-download",
+        "delete-v1-task-queues-by-queue-id",
+        "get-v1-task-queues-by-queue-id",
+        "patch-v1-task-queues-by-queue-id",
+        "delete-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-routing-policy",
+        "post-v1-task-queues-by-queue-id-routing-simulations",
+        "get-v1-task-runs",
+        "get-v1-task-runs-by-task-run-id",
+        "post-v1-task-runs-by-task-run-id-artifact-uploads",
+        "get-v1-task-runs-by-task-run-id-artifacts",
+        "get-v1-task-runs-by-task-run-id-attempts",
+        "get-v1-task-runs-by-task-run-id-attempts-by-attempt",
+        "post-v1-task-runs-by-task-run-id-claims",
+        "post-v1-task-runs-by-task-run-id-clarification-requests",
+        "get-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-delegations",
+        "put-v1-task-runs-by-task-run-id-draft",
+        "post-v1-task-runs-by-task-run-id-reassignments",
+        "post-v1-task-runs-by-task-run-id-reopenings",
+        "post-v1-task-runs-by-task-run-id-returns-to-queue",
+        "post-v1-task-runs-by-task-run-id-submissions",
+        "post-v1-task-runs-by-task-run-id-unclaims",
+        "delete-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-bulk-actions",
+        "delete-v1-task-templates-by-template-id",
+        "get-v1-task-templates-by-template-id",
+        "patch-v1-task-templates-by-template-id",
+        "post-v1-task-templates-by-template-id-previews",
+        "post-v1-task-templates-by-template-id-publications",
+        "post-v1-task-templates-by-template-id-versions",
+        "get-v1-workspaces-by-workspace-id-task-queues",
+        "post-v1-workspaces-by-workspace-id-task-queues",
+        "get-v1-workspaces-by-workspace-id-task-templates",
+        "post-v1-workspaces-by-workspace-id-task-templates"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md"
+      ],
       "primaryMilestone": "M12",
       "regressionMilestones": [
         "M38"
@@ -3136,17 +3525,56 @@
         "route.app.tasks",
         "route.app.tasks.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M12Pages.tsx#TaskInboxPage",
+        "apps/web/src/M12Pages.tsx#TaskDetailPage",
+        "packages/db/src/human-task-repository.ts#PostgresHumanTaskRepository",
+        "packages/db/src/task-administration-repository.ts#PostgresTaskAdministrationRepository"
+      ],
+      "tablesAndObjects": [
+        "human_task_details",
+        "human_task_drafts",
+        "human_task_submissions",
+        "task_delegations",
+        "task_watchers",
+        "task_queues",
+        "task_queue_members",
+        "task_routing_policy_versions",
+        "task_routing_decisions",
+        "business_calendars",
+        "business_calendar_versions",
+        "task_templates",
+        "task_template_versions",
+        "files",
+        "file_versions",
+        "file_upload_sessions",
+        "task_file_attachments"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#humanTaskAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/human-task.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "task.claimed.v1",
+        "task.delegated.v1",
+        "task.submitted.v1",
+        "task.reopened.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
@@ -3154,8 +3582,51 @@
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-v1-artifact-uploads-by-upload-id-completions",
+        "delete-v1-artifacts-by-artifact-id",
+        "get-v1-artifacts-by-artifact-id-download",
+        "delete-v1-task-queues-by-queue-id",
+        "get-v1-task-queues-by-queue-id",
+        "patch-v1-task-queues-by-queue-id",
+        "delete-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-routing-policy",
+        "post-v1-task-queues-by-queue-id-routing-simulations",
+        "get-v1-task-runs",
+        "get-v1-task-runs-by-task-run-id",
+        "post-v1-task-runs-by-task-run-id-artifact-uploads",
+        "get-v1-task-runs-by-task-run-id-artifacts",
+        "get-v1-task-runs-by-task-run-id-attempts",
+        "get-v1-task-runs-by-task-run-id-attempts-by-attempt",
+        "post-v1-task-runs-by-task-run-id-claims",
+        "post-v1-task-runs-by-task-run-id-clarification-requests",
+        "get-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-delegations",
+        "put-v1-task-runs-by-task-run-id-draft",
+        "post-v1-task-runs-by-task-run-id-reassignments",
+        "post-v1-task-runs-by-task-run-id-reopenings",
+        "post-v1-task-runs-by-task-run-id-returns-to-queue",
+        "post-v1-task-runs-by-task-run-id-submissions",
+        "post-v1-task-runs-by-task-run-id-unclaims",
+        "delete-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-bulk-actions",
+        "delete-v1-task-templates-by-template-id",
+        "get-v1-task-templates-by-template-id",
+        "patch-v1-task-templates-by-template-id",
+        "post-v1-task-templates-by-template-id-previews",
+        "post-v1-task-templates-by-template-id-publications",
+        "post-v1-task-templates-by-template-id-versions",
+        "get-v1-workspaces-by-workspace-id-task-queues",
+        "post-v1-workspaces-by-workspace-id-task-queues",
+        "get-v1-workspaces-by-workspace-id-task-templates",
+        "post-v1-workspaces-by-workspace-id-task-templates"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md"
+      ],
       "primaryMilestone": "M12",
       "regressionMilestones": [
         "M38"
@@ -3166,17 +3637,56 @@
         "route.app.tasks",
         "route.app.tasks.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M12Pages.tsx#TaskInboxPage",
+        "apps/web/src/M12Pages.tsx#TaskDetailPage",
+        "packages/db/src/human-task-repository.ts#PostgresHumanTaskRepository",
+        "packages/db/src/task-administration-repository.ts#PostgresTaskAdministrationRepository"
+      ],
+      "tablesAndObjects": [
+        "human_task_details",
+        "human_task_drafts",
+        "human_task_submissions",
+        "task_delegations",
+        "task_watchers",
+        "task_queues",
+        "task_queue_members",
+        "task_routing_policy_versions",
+        "task_routing_decisions",
+        "business_calendars",
+        "business_calendar_versions",
+        "task_templates",
+        "task_template_versions",
+        "files",
+        "file_versions",
+        "file_upload_sessions",
+        "task_file_attachments"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#humanTaskAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/human-task.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "task.claimed.v1",
+        "task.delegated.v1",
+        "task.submitted.v1",
+        "task.reopened.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
@@ -3184,8 +3694,51 @@
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-v1-artifact-uploads-by-upload-id-completions",
+        "delete-v1-artifacts-by-artifact-id",
+        "get-v1-artifacts-by-artifact-id-download",
+        "delete-v1-task-queues-by-queue-id",
+        "get-v1-task-queues-by-queue-id",
+        "patch-v1-task-queues-by-queue-id",
+        "delete-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-routing-policy",
+        "post-v1-task-queues-by-queue-id-routing-simulations",
+        "get-v1-task-runs",
+        "get-v1-task-runs-by-task-run-id",
+        "post-v1-task-runs-by-task-run-id-artifact-uploads",
+        "get-v1-task-runs-by-task-run-id-artifacts",
+        "get-v1-task-runs-by-task-run-id-attempts",
+        "get-v1-task-runs-by-task-run-id-attempts-by-attempt",
+        "post-v1-task-runs-by-task-run-id-claims",
+        "post-v1-task-runs-by-task-run-id-clarification-requests",
+        "get-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-delegations",
+        "put-v1-task-runs-by-task-run-id-draft",
+        "post-v1-task-runs-by-task-run-id-reassignments",
+        "post-v1-task-runs-by-task-run-id-reopenings",
+        "post-v1-task-runs-by-task-run-id-returns-to-queue",
+        "post-v1-task-runs-by-task-run-id-submissions",
+        "post-v1-task-runs-by-task-run-id-unclaims",
+        "delete-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-bulk-actions",
+        "delete-v1-task-templates-by-template-id",
+        "get-v1-task-templates-by-template-id",
+        "patch-v1-task-templates-by-template-id",
+        "post-v1-task-templates-by-template-id-previews",
+        "post-v1-task-templates-by-template-id-publications",
+        "post-v1-task-templates-by-template-id-versions",
+        "get-v1-workspaces-by-workspace-id-task-queues",
+        "post-v1-workspaces-by-workspace-id-task-queues",
+        "get-v1-workspaces-by-workspace-id-task-templates",
+        "post-v1-workspaces-by-workspace-id-task-templates"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md"
+      ],
       "primaryMilestone": "M12",
       "regressionMilestones": [
         "M38"
@@ -3196,25 +3749,76 @@
         "route.app.tasks",
         "route.app.tasks.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M12Pages.tsx#TaskInboxPage",
+        "apps/web/src/M12Pages.tsx#TaskDetailPage",
+        "packages/db/src/human-task-repository.ts#PostgresHumanTaskRepository",
+        "packages/db/src/task-administration-repository.ts#PostgresTaskAdministrationRepository"
+      ],
+      "tablesAndObjects": [
+        "human_task_details",
+        "human_task_drafts",
+        "human_task_submissions",
+        "task_delegations",
+        "task_watchers",
+        "task_queues",
+        "task_queue_members",
+        "task_routing_policy_versions",
+        "task_routing_decisions",
+        "business_calendars",
+        "business_calendar_versions",
+        "task_templates",
+        "task_template_versions",
+        "files",
+        "file_versions",
+        "file_upload_sessions",
+        "task_file_attachments"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#approvalAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/approval.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "approval.requested.v1",
+        "approval.decided.v1",
+        "approval.expired.v1",
+        "approval.revoked.v1",
+        "approval.consumed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-ops-v1-break-glass-requests-by-request-id-approvals",
+        "post-ops-v1-usage-adjustment-requests-by-request-id-approvals",
+        "get-v1-approvals",
+        "get-v1-approvals-by-approval-id",
+        "post-v1-approvals-by-approval-id-decisions",
+        "post-v1-approvals-by-approval-id-delegations",
+        "post-v1-approvals-by-approval-id-reminders",
+        "post-v1-approvals-by-approval-id-revocations"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/approvals-and-sla.md"
+      ],
       "primaryMilestone": "M13",
       "regressionMilestones": [
         "M38"
@@ -3224,25 +3828,70 @@
         "route.app.approvals",
         "route.app.approvals.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M13Pages.tsx#ApprovalInboxPage",
+        "apps/web/src/M13Pages.tsx#ApprovalDetailPage",
+        "packages/db/src/approval-repository.ts#PostgresApprovalRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun"
+      ],
+      "tablesAndObjects": [
+        "approval_policies",
+        "approval_policy_versions",
+        "approvals",
+        "approval_steps",
+        "approval_decisions",
+        "approval_delegations",
+        "sla_definitions",
+        "sla_definition_versions",
+        "sla_timer_events",
+        "approval_consumptions",
+        "notification_intents"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#approvalAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/approval.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "approval.requested.v1",
+        "approval.decided.v1",
+        "approval.expired.v1",
+        "approval.revoked.v1",
+        "approval.consumed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-ops-v1-break-glass-requests-by-request-id-approvals",
+        "post-ops-v1-usage-adjustment-requests-by-request-id-approvals",
+        "get-v1-approvals",
+        "get-v1-approvals-by-approval-id",
+        "post-v1-approvals-by-approval-id-decisions",
+        "post-v1-approvals-by-approval-id-delegations",
+        "post-v1-approvals-by-approval-id-reminders",
+        "post-v1-approvals-by-approval-id-revocations"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/approvals-and-sla.md"
+      ],
       "primaryMilestone": "M13",
       "regressionMilestones": [
         "M38"
@@ -3252,25 +3901,70 @@
         "route.app.approvals",
         "route.app.approvals.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M13Pages.tsx#ApprovalInboxPage",
+        "apps/web/src/M13Pages.tsx#ApprovalDetailPage",
+        "packages/db/src/approval-repository.ts#PostgresApprovalRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun"
+      ],
+      "tablesAndObjects": [
+        "approval_policies",
+        "approval_policy_versions",
+        "approvals",
+        "approval_steps",
+        "approval_decisions",
+        "approval_delegations",
+        "sla_definitions",
+        "sla_definition_versions",
+        "sla_timer_events",
+        "approval_consumptions",
+        "notification_intents"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#approvalAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/approval.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "approval.requested.v1",
+        "approval.decided.v1",
+        "approval.expired.v1",
+        "approval.revoked.v1",
+        "approval.consumed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-ops-v1-break-glass-requests-by-request-id-approvals",
+        "post-ops-v1-usage-adjustment-requests-by-request-id-approvals",
+        "get-v1-approvals",
+        "get-v1-approvals-by-approval-id",
+        "post-v1-approvals-by-approval-id-decisions",
+        "post-v1-approvals-by-approval-id-delegations",
+        "post-v1-approvals-by-approval-id-reminders",
+        "post-v1-approvals-by-approval-id-revocations"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/approvals-and-sla.md"
+      ],
       "primaryMilestone": "M13",
       "regressionMilestones": [
         "M38"
@@ -3280,25 +3974,70 @@
         "route.app.approvals",
         "route.app.approvals.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M13Pages.tsx#ApprovalInboxPage",
+        "apps/web/src/M13Pages.tsx#ApprovalDetailPage",
+        "packages/db/src/approval-repository.ts#PostgresApprovalRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun"
+      ],
+      "tablesAndObjects": [
+        "approval_policies",
+        "approval_policy_versions",
+        "approvals",
+        "approval_steps",
+        "approval_decisions",
+        "approval_delegations",
+        "sla_definitions",
+        "sla_definition_versions",
+        "sla_timer_events",
+        "approval_consumptions",
+        "notification_intents"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#approvalAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/approval.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "approval.requested.v1",
+        "approval.decided.v1",
+        "approval.expired.v1",
+        "approval.revoked.v1",
+        "approval.consumed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-ops-v1-break-glass-requests-by-request-id-approvals",
+        "post-ops-v1-usage-adjustment-requests-by-request-id-approvals",
+        "get-v1-approvals",
+        "get-v1-approvals-by-approval-id",
+        "post-v1-approvals-by-approval-id-decisions",
+        "post-v1-approvals-by-approval-id-delegations",
+        "post-v1-approvals-by-approval-id-reminders",
+        "post-v1-approvals-by-approval-id-revocations"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/approvals-and-sla.md"
+      ],
       "primaryMilestone": "M13",
       "regressionMilestones": [
         "M38"
@@ -3308,25 +4047,70 @@
         "route.app.approvals",
         "route.app.approvals.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M13Pages.tsx#ApprovalInboxPage",
+        "apps/web/src/M13Pages.tsx#ApprovalDetailPage",
+        "packages/db/src/approval-repository.ts#PostgresApprovalRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun"
+      ],
+      "tablesAndObjects": [
+        "approval_policies",
+        "approval_policy_versions",
+        "approvals",
+        "approval_steps",
+        "approval_decisions",
+        "approval_delegations",
+        "sla_definitions",
+        "sla_definition_versions",
+        "sla_timer_events",
+        "approval_consumptions",
+        "notification_intents"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#approvalAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/approval.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "approval.requested.v1",
+        "approval.decided.v1",
+        "approval.expired.v1",
+        "approval.revoked.v1",
+        "approval.consumed.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-ops-v1-break-glass-requests-by-request-id-approvals",
+        "post-ops-v1-usage-adjustment-requests-by-request-id-approvals",
+        "get-v1-approvals",
+        "get-v1-approvals-by-approval-id",
+        "post-v1-approvals-by-approval-id-decisions",
+        "post-v1-approvals-by-approval-id-delegations",
+        "post-v1-approvals-by-approval-id-reminders",
+        "post-v1-approvals-by-approval-id-revocations"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/approvals-and-sla.md"
+      ],
       "primaryMilestone": "M13",
       "regressionMilestones": [
         "M38"
@@ -3336,17 +4120,50 @@
         "route.app.approvals",
         "route.app.approvals.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/approvals.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M13Pages.tsx#ApprovalInboxPage",
+        "apps/web/src/M13Pages.tsx#ApprovalDetailPage",
+        "packages/db/src/approval-repository.ts#PostgresApprovalRepository",
+        "apps/worker/src/workflows.ts#durableWorkflowRun"
+      ],
+      "tablesAndObjects": [
+        "approval_policies",
+        "approval_policy_versions",
+        "approvals",
+        "approval_steps",
+        "approval_decisions",
+        "approval_delegations",
+        "sla_definitions",
+        "sla_definition_versions",
+        "sla_timer_events",
+        "approval_consumptions",
+        "notification_intents"
+      ]
     },
     {
-      "authorizationRules": [],
-      "automatedTests": [],
-      "dataLifecycleRules": [],
-      "engineeringState": "NOT_STARTED",
+      "authorizationRules": [
+        "apps/api/src/app.ts#humanTaskAccess",
+        "packages/db/src/context.ts#withTenantTransaction"
+      ],
+      "automatedTests": [
+        "packages/contracts/src/human-task.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "dataLifecycleRules": [
+        "packages/db/registry/data-stores.json"
+      ],
+      "engineeringState": "COMMITTED",
       "environmentState": "NOT_DEPLOYED",
-      "events": [],
+      "events": [
+        "task.claimed.v1",
+        "task.delegated.v1",
+        "task.submitted.v1",
+        "task.reopened.v1"
+      ],
       "externalGates": [],
       "journeyBranchIds": [],
       "journeyIds": [
@@ -3354,8 +4171,51 @@
         "CJ-09"
       ],
       "manualEvidence": [],
-      "openapiOperationIds": [],
-      "operationalControls": [],
+      "openapiOperationIds": [
+        "post-v1-artifact-uploads-by-upload-id-completions",
+        "delete-v1-artifacts-by-artifact-id",
+        "get-v1-artifacts-by-artifact-id-download",
+        "delete-v1-task-queues-by-queue-id",
+        "get-v1-task-queues-by-queue-id",
+        "patch-v1-task-queues-by-queue-id",
+        "delete-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-members-by-principal-id",
+        "put-v1-task-queues-by-queue-id-routing-policy",
+        "post-v1-task-queues-by-queue-id-routing-simulations",
+        "get-v1-task-runs",
+        "get-v1-task-runs-by-task-run-id",
+        "post-v1-task-runs-by-task-run-id-artifact-uploads",
+        "get-v1-task-runs-by-task-run-id-artifacts",
+        "get-v1-task-runs-by-task-run-id-attempts",
+        "get-v1-task-runs-by-task-run-id-attempts-by-attempt",
+        "post-v1-task-runs-by-task-run-id-claims",
+        "post-v1-task-runs-by-task-run-id-clarification-requests",
+        "get-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-comments",
+        "post-v1-task-runs-by-task-run-id-delegations",
+        "put-v1-task-runs-by-task-run-id-draft",
+        "post-v1-task-runs-by-task-run-id-reassignments",
+        "post-v1-task-runs-by-task-run-id-reopenings",
+        "post-v1-task-runs-by-task-run-id-returns-to-queue",
+        "post-v1-task-runs-by-task-run-id-submissions",
+        "post-v1-task-runs-by-task-run-id-unclaims",
+        "delete-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-by-task-run-id-watches",
+        "post-v1-task-runs-bulk-actions",
+        "delete-v1-task-templates-by-template-id",
+        "get-v1-task-templates-by-template-id",
+        "patch-v1-task-templates-by-template-id",
+        "post-v1-task-templates-by-template-id-previews",
+        "post-v1-task-templates-by-template-id-publications",
+        "post-v1-task-templates-by-template-id-versions",
+        "get-v1-workspaces-by-workspace-id-task-queues",
+        "post-v1-workspaces-by-workspace-id-task-queues",
+        "get-v1-workspaces-by-workspace-id-task-templates",
+        "post-v1-workspaces-by-workspace-id-task-templates"
+      ],
+      "operationalControls": [
+        "docs/operations/knotline/durable-runtime.md"
+      ],
       "primaryMilestone": "M12",
       "regressionMilestones": [
         "M38"
@@ -3366,9 +4226,34 @@
         "route.app.tasks",
         "route.app.tasks.detail"
       ],
-      "routeStateEvidence": [],
-      "sourceSymbols": [],
-      "tablesAndObjects": []
+      "routeStateEvidence": [
+        "tests/e2e/human-tasks.spec.ts"
+      ],
+      "sourceSymbols": [
+        "apps/web/src/M12Pages.tsx#TaskInboxPage",
+        "apps/web/src/M12Pages.tsx#TaskDetailPage",
+        "packages/db/src/human-task-repository.ts#PostgresHumanTaskRepository",
+        "packages/db/src/task-administration-repository.ts#PostgresTaskAdministrationRepository"
+      ],
+      "tablesAndObjects": [
+        "human_task_details",
+        "human_task_drafts",
+        "human_task_submissions",
+        "task_delegations",
+        "task_watchers",
+        "task_queues",
+        "task_queue_members",
+        "task_routing_policy_versions",
+        "task_routing_decisions",
+        "business_calendars",
+        "business_calendar_versions",
+        "task_templates",
+        "task_template_versions",
+        "files",
+        "file_versions",
+        "file_upload_sessions",
+        "task_file_attachments"
+      ]
     },
     {
       "authorizationRules": [

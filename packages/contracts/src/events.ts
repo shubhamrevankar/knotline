@@ -97,6 +97,17 @@ export const approvalEventPayloadV1Schema = z
   })
   .passthrough();
 
+export const agentFoundryEventPayloadV1Schema = z
+  .object({
+    agentId: z.string().uuid().optional(),
+    version: z.number().int().positive().optional(),
+    contentHash: z.string().max(200).optional(),
+    revision: z.number().int().positive().optional(),
+    simulationId: z.string().uuid().optional(),
+    executionClass: z.literal("SIMULATED").optional()
+  })
+  .passthrough();
+
 export const EVENT_SCHEMA_REGISTRY = [
   {
     eventType: "workflow.created",
@@ -213,6 +224,18 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "approval-platform",
     schema: approvalEventPayloadV1Schema
+  })),
+  ...[
+    "agent.created",
+    "agent.draft_updated",
+    "agent.version_published",
+    "agent.simulated",
+    "agent.archived"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "agent-platform",
+    schema: agentFoundryEventPayloadV1Schema
   }))
 ] as const;
 

@@ -72,6 +72,16 @@
       "tenantIsolated": true,
       "api": true
     },
+    "agents": {
+      "optimisticDraft": true,
+      "immutableVersions": 2,
+      "semanticDiff": true,
+      "simulationLabel": "SIMULATED",
+      "privateFork": true,
+      "referenceSafety": true,
+      "tenantIsolated": true,
+      "api": true
+    },
     "auditEvents": 7
   }
 }

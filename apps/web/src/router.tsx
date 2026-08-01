@@ -79,6 +79,23 @@ const ApprovalDetailPage = lazy(async () => {
   return { default: module.ApprovalDetailPage };
 });
 
+const AgentCatalogPage = lazy(async () => {
+  const module = await import("./M14Pages.js");
+  return { default: module.AgentCatalogPage };
+});
+const AgentCreatePage = lazy(async () => {
+  const module = await import("./M14Pages.js");
+  return { default: module.AgentCreatePage };
+});
+const AgentOverviewPage = lazy(async () => {
+  const module = await import("./M14Pages.js");
+  return { default: module.AgentOverviewPage };
+});
+const AgentBuilderPage = lazy(async () => {
+  const module = await import("./M14Pages.js");
+  return { default: module.AgentBuilderPage };
+});
+
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
   "go-to-market": msg("solution.gotomarket"),
@@ -456,6 +473,38 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label="Loading approval" />}>
           <ApprovalDetailPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.agents")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading agent catalog" />}>
+          <AgentCatalogPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.agents.new")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading agent creation" />}>
+          <AgentCreatePage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.agents.detail")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading agent" />}>
+          <AgentOverviewPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.agents.detail.builder")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading agent builder" />}>
+          <AgentBuilderPage />
         </Suspense>
       </AuthGate>
     );

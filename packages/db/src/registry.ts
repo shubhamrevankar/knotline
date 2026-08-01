@@ -108,7 +108,18 @@ export const REQUIRED_STORES = [
   "sla_definitions",
   "sla_definition_versions",
   "sla_timer_events",
-  "approval_consumptions"
+  "approval_consumptions",
+  "agent_definitions",
+  "agent_drafts",
+  "agent_versions",
+  "agent_release_channels",
+  "agent_tags",
+  "agent_tag_assignments",
+  "agent_version_references",
+  "agent_simulations",
+  "reusable_schemas",
+  "reusable_schema_versions",
+  "agent_activity_events"
 ] as const;
 
 export async function validateDataStoreRegistry(): Promise<Registry> {

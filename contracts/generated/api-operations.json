@@ -667,6 +667,13 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "get-v1-agents-by-agent-id-diffs",
+      "method": "GET",
+      "path": "/v1/agents/:agentId/diffs",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "post-v1-agents-by-agent-id-disables",
       "method": "POST",
       "path": "/v1/agents/:agentId/disables",
@@ -681,6 +688,13 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "post-v1-agents-by-agent-id-forks",
+      "method": "POST",
+      "path": "/v1/agents/:agentId/forks",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "get-v1-agents-by-agent-id-memory-policy",
       "method": "GET",
       "path": "/v1/agents/:agentId/memory-policy",
@@ -691,6 +705,13 @@
       "id": "put-v1-agents-by-agent-id-memory-policy",
       "method": "PUT",
       "path": "/v1/agents/:agentId/memory-policy",
+      "sourceSection": "10.7"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-agents-by-agent-id-simulations",
+      "method": "POST",
+      "path": "/v1/agents/:agentId/simulations",
       "sourceSection": "10.7"
     },
     {
@@ -3166,6 +3187,6 @@
     }
   ],
   "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
-  "planDigest": "sha256:436b3a2ea0b0b660a9e36c14b06965c420b1a147b2b1b94364e39d2239e21216",
+  "planDigest": "sha256:f4c9b4d19154055a36ac9d1c743edc196d4df1369db42124b25a5dc51691088a",
   "schemaVersion": 1
 }

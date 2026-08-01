@@ -4,6 +4,7 @@ export * from "./runtime-repository.js";
 export * from "./human-task-repository.js";
 export * from "./task-administration-repository.js";
 export * from "./approval-repository.js";
+export * from "./agent-repository.js";
 export * from "./auth-repository.js";
 export * from "./context.js";
 export * from "./migrations.js";

@@ -2,6 +2,7 @@ import cors from "@fastify/cors";
 import { randomUUID } from "node:crypto";
 import {
   createWorkflowRequestSchema,
+  validateAgentDefinition,
   dryRunFixtureSchema,
   dryRunWorkflow,
   importWorkflowCsv,
@@ -31,6 +32,7 @@ import {
 import type {
   CollaborationRepository,
   ApprovalRepository,
+  AgentRepository,
   HumanTaskRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -77,6 +79,7 @@ export interface BuildAppOptions {
   readonly humanTasks?: HumanTaskRepository;
   readonly taskAdministration?: TaskAdministrationRepository;
   readonly approvals?: ApprovalRepository;
+  readonly agents?: AgentRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -2222,6 +2225,128 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     return reply
       .code(202)
       .send({ data: await options.approvals!.revoke(context, approvalId, request.body) });
+  });
+
+  const agentRepository = () => {
+    if (!options.agents) throw new Error("Agents are not configured");
+    return options.agents;
+  };
+  const agentAccess = (request: FastifyRequest, mutation = false) =>
+    workflowAccess(request, mutation ? "workflow.manage" : "workflow.read", mutation);
+  const agentParams = z.object({ agentId: z.string().uuid() }).strict();
+  const agentVersionParams = z
+    .object({ agentId: z.string().uuid(), version: z.coerce.number().int().positive() })
+    .strict();
+
+  app.get("/v1/workspaces/:workspaceId/agents", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await agentRepository().list(await agentAccess(request), request.query) };
+  });
+  app.post("/v1/workspaces/:workspaceId/agents", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await agentRepository().create(await agentAccess(request, true), request.body)
+    });
+  });
+  app.get("/v1/agents/:agentId", async (request, reply) => {
+    const context = await agentAccess(request);
+    const { agentId } = agentParams.parse(request.params);
+    const agent = await agentRepository().get(context, agentId);
+    if (!agent)
+      return reply.code(404).send({
+        error: {
+          code: "AGENT_NOT_FOUND",
+          message: "The agent does not exist.",
+          requestId: request.id
+        }
+      });
+    return { data: agent };
+  });
+  app.patch("/v1/agents/:agentId", async (request) => {
+    const context = await agentAccess(request, true);
+    const { agentId } = agentParams.parse(request.params);
+    return { data: await agentRepository().saveDraft(context, agentId, request.body) };
+  });
+  app.get("/v1/agents/:agentId/versions", async (request) => {
+    const context = await agentAccess(request);
+    const { agentId } = agentParams.parse(request.params);
+    return { data: await agentRepository().versions(context, agentId) };
+  });
+  app.post("/v1/agents/:agentId/versions", async (request, reply) => {
+    const context = await agentAccess(request, true);
+    const { agentId } = agentParams.parse(request.params);
+    const body = z
+      .object({
+        expectedRevision: z.number().int().positive(),
+        changeSummary: z.string().min(1).max(1_000)
+      })
+      .strict()
+      .parse(request.body);
+    return reply.code(201).send({
+      data: await agentRepository().publish(
+        context,
+        agentId,
+        body.expectedRevision,
+        body.changeSummary
+      )
+    });
+  });
+  app.get("/v1/agents/:agentId/versions/:version", async (request, reply) => {
+    const context = await agentAccess(request);
+    const { agentId, version } = agentVersionParams.parse(request.params);
+    const record = await agentRepository().version(context, agentId, version);
+    if (!record)
+      return reply.code(404).send({
+        error: {
+          code: "AGENT_VERSION_NOT_FOUND",
+          message: "The agent version does not exist.",
+          requestId: request.id
+        }
+      });
+    return { data: record };
+  });
+  app.post("/v1/agents/:agentId/versions/:version/validations", async (request) => {
+    const context = await agentAccess(request, true);
+    const { agentId, version } = agentVersionParams.parse(request.params);
+    const record = await agentRepository().version(context, agentId, version);
+    if (!record) throw new Error("AGENT_VERSION_NOT_FOUND");
+    return { data: { findings: validateAgentDefinition(record.definition) } };
+  });
+  app.get("/v1/agents/:agentId/diffs", async (request) => {
+    const context = await agentAccess(request);
+    const { agentId } = agentParams.parse(request.params);
+    const { from, to } = z
+      .object({ from: z.coerce.number().int().positive(), to: z.coerce.number().int().positive() })
+      .parse(request.query);
+    return { data: await agentRepository().diff(context, agentId, from, to) };
+  });
+  app.post("/v1/agents/:agentId/simulations", async (request, reply) => {
+    const context = await agentAccess(request, true);
+    const { agentId } = agentParams.parse(request.params);
+    return reply
+      .code(201)
+      .send({ data: await agentRepository().simulate(context, agentId, request.body) });
+  });
+  app.post("/v1/agents/:agentId/forks", async (request, reply) => {
+    const context = await agentAccess(request, true);
+    const { agentId } = agentParams.parse(request.params);
+    const body = z
+      .object({ version: z.number().int().positive(), name: z.string().min(2).max(120) })
+      .strict()
+      .parse(request.body);
+    return reply
+      .code(201)
+      .send({ data: await agentRepository().fork(context, agentId, body.version, body.name) });
+  });
+  app.delete("/v1/agents/:agentId", async (request, reply) => {
+    const context = await agentAccess(request, true);
+    const { agentId } = agentParams.parse(request.params);
+    await agentRepository().archive(context, agentId);
+    return reply.code(204).send();
   });
 
   app.setErrorHandler((error, request, reply) => {

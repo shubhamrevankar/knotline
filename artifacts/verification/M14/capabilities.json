@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M14/test-results/agent-api.json",
+      "verifiedAt": "2026-08-01T09:00:00.000Z"
+    },
+    "externalGates": [],
+    "id": "agents.governed-foundry",
+    "owner": {
+      "contact": "shurevan",
+      "team": "agent-platform"
+    },
+    "runbook": "docs/operations/knotline/agent-foundry.md",
+    "status": "DEMO",
+    "summary": "Provider-neutral definitions, typed prompts, strict schemas, bounded capabilities, immutable versions, semantic diffs, safe references, and visibly simulated previews are locally verified."
+  }
+]
