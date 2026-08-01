@@ -35,6 +35,7 @@ import type {
   AgentRepository,
   HumanTaskRepository,
   ModelRepository,
+  MemoryRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -84,6 +85,7 @@ export interface BuildAppOptions {
   readonly agents?: AgentRepository;
   readonly models?: ModelRepository;
   readonly tools?: ToolRepository;
+  readonly memory?: MemoryRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -2453,6 +2455,94 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     const { toolId } = toolParams.parse(request.params);
     await toolRepository().setToolState(await agentAccess(request, true), toolId, true);
     return reply.code(204).send();
+  });
+
+  const memoryRepository = () => {
+    if (!options.memory) throw new Error("Memory is not configured");
+    return options.memory;
+  };
+  const memoryParams = z.object({ memoryId: z.string().uuid() }).strict();
+  app.get("/v1/agents/:agentId/memory-policy", async (request, reply) => {
+    const { agentId } = agentParams.parse(request.params);
+    const result = await memoryRepository().getPolicy(await agentAccess(request), agentId);
+    if (!result)
+      return reply.code(404).send({
+        error: {
+          code: "MEMORY_POLICY_NOT_FOUND",
+          message: "The memory policy does not exist.",
+          requestId: request.id
+        }
+      });
+    return { data: result };
+  });
+  app.put("/v1/agents/:agentId/memory-policy", async (request) => {
+    const { agentId } = agentParams.parse(request.params);
+    return {
+      data: await memoryRepository().setPolicy(
+        await agentAccess(request, true),
+        agentId,
+        request.body
+      )
+    };
+  });
+  app.get("/v1/me/memory-records", async (request) => {
+    const authenticated = await authenticate(request);
+    const query = z.object({ q: z.string().max(200).optional() }).parse(request.query);
+    return {
+      data: await memoryRepository().listMine(
+        tenantContext(options, request, authenticated),
+        query.q
+      )
+    };
+  });
+  app.get("/v1/me/memory-records/:memoryId", async (request, reply) => {
+    const authenticated = await authenticate(request);
+    const { memoryId } = memoryParams.parse(request.params);
+    const result = await memoryRepository().getMine(
+      tenantContext(options, request, authenticated),
+      memoryId
+    );
+    if (!result)
+      return reply.code(404).send({
+        error: {
+          code: "MEMORY_NOT_FOUND",
+          message: "The memory record does not exist.",
+          requestId: request.id
+        }
+      });
+    return { data: result };
+  });
+  app.post("/v1/me/memory-records/:memoryId/corrections", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { memoryId } = memoryParams.parse(request.params);
+    return reply.code(201).send({
+      data: await memoryRepository().correctMine(
+        tenantContext(options, request, authenticated),
+        memoryId,
+        request.body
+      )
+    });
+  });
+  app.delete("/v1/me/memory-records/:memoryId", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { memoryId } = memoryParams.parse(request.params);
+    await memoryRepository().deleteMine(tenantContext(options, request, authenticated), memoryId);
+    return reply.code(204).send();
+  });
+  app.post("/v1/me/memory-exports", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    return reply.code(201).send({
+      data: await memoryRepository().exportMine(tenantContext(options, request, authenticated))
+    });
+  });
+  app.get("/v1/workspaces/:workspaceId/memory-records", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const query = z.object({ agentId: z.string().uuid().optional() }).parse(request.query);
+    return {
+      data: await memoryRepository().listWorkspace(await agentAccess(request), query.agentId)
+    };
   });
 
   app.setErrorHandler((error, request, reply) => {

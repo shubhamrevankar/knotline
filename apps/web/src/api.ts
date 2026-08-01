@@ -864,3 +864,86 @@ export async function fetchWorkflow(id: string): Promise<Workflow> {
   const response = await request<ApiEnvelope<Workflow>>(`/v1/workflows/${id}`);
   return response.data;
 }
+
+export type MemoryRecordView = Readonly<{
+  id: string;
+  agent_id: string;
+  subject_id: string;
+  purpose: string;
+  sensitivity: string;
+  state: string;
+  current_version: number;
+  value?: unknown;
+  value_hash?: string;
+  source_references?: readonly string[];
+  provenance?: Readonly<Record<string, unknown>>;
+  history?: readonly Readonly<Record<string, unknown>>[];
+  retention_expires_at?: string;
+  legal_hold?: boolean;
+}>;
+
+export const fetchMyMemory = async (query = "") =>
+  (
+    await request<ApiEnvelope<MemoryRecordView[]>>(
+      `/v1/me/memory-records${query ? `?q=${encodeURIComponent(query)}` : ""}`
+    )
+  ).data;
+
+export const fetchMyMemoryRecord = async (memoryId: string) =>
+  (await request<ApiEnvelope<MemoryRecordView>>(`/v1/me/memory-records/${memoryId}`)).data;
+
+export const correctMyMemoryRecord = async (
+  memoryId: string,
+  input: {
+    readonly expectedVersion: number;
+    readonly value: unknown;
+    readonly reason: string;
+    readonly scope?: "execution" | "user_private" | "workspace_shared";
+  }
+) =>
+  (
+    await mutate<ApiEnvelope<{ version: number }>>(
+      `/v1/me/memory-records/${memoryId}/corrections`,
+      "POST",
+      input
+    )
+  ).data;
+
+export const deleteMyMemoryRecord = (memoryId: string) =>
+  mutate<void>(`/v1/me/memory-records/${memoryId}`, "DELETE");
+
+export const exportMyMemory = async () =>
+  (await mutate<ApiEnvelope<MemoryRecordView[]>>("/v1/me/memory-exports", "POST")).data;
+
+export const fetchAgentMemoryPolicy = async (agentId: string) =>
+  (
+    await request<
+      ApiEnvelope<{
+        agent_id: string;
+        revision: string;
+        definition: Readonly<Record<string, unknown>>;
+      }>
+    >(`/v1/agents/${agentId}/memory-policy`)
+  ).data;
+
+export const updateAgentMemoryPolicy = async (
+  agentId: string,
+  input: {
+    readonly expectedRevision: number;
+    readonly definition: Readonly<Record<string, unknown>>;
+  }
+) =>
+  (
+    await mutate<ApiEnvelope<{ revision: number }>>(
+      `/v1/agents/${agentId}/memory-policy`,
+      "PUT",
+      input
+    )
+  ).data;
+
+export const fetchWorkspaceMemory = async (agentId?: string) =>
+  (
+    await request<ApiEnvelope<MemoryRecordView[]>>(
+      `/v1/workspaces/${workspaceId}/memory-records${agentId ? `?agentId=${agentId}` : ""}`
+    )
+  ).data;

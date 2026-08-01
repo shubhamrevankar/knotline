@@ -1,4 +1,5 @@
 import { execFileSync, spawnSync } from "node:child_process";
+import { createHash, randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
@@ -19,6 +20,8 @@ import {
   PostgresAgentRepository,
   PostgresModelRepository,
   PostgresToolRepository,
+  PostgresMemoryRepository,
+  PostgresAgentExecutionRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -183,6 +186,8 @@ async function runSuite(pool: DatabasePool) {
   const agentRepository = new PostgresAgentRepository(pool);
   const modelRepository = new PostgresModelRepository(pool);
   const toolRepository = new PostgresToolRepository(pool);
+  const memoryRepository = new PostgresMemoryRepository(pool);
+  const agentExecutionRepository = new PostgresAgentExecutionRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -289,6 +294,167 @@ async function runSuite(pool: DatabasePool) {
     "Clarify uncertainty"
   );
   assert(secondAgentVersion.version === 2, "Agent version two was not published");
+  const executionId = randomUUID();
+  const manifestId = randomUUID();
+  const agentExecutionRequest = {
+    workspaceId: contextA.workspaceId,
+    executionId,
+    runId: randomUUID(),
+    taskId: randomUUID(),
+    attemptId: randomUUID(),
+    principalId: contextA.principalId,
+    agentId: agent.id,
+    agentVersion: 2,
+    modelPolicyVersionId: "default-v1",
+    promptVersionId: "agent-prompt-v1",
+    outputSchema: {
+      type: "object",
+      required: ["summary"],
+      additionalProperties: false,
+      properties: { summary: { type: "string" } }
+    },
+    contextManifest: {
+      manifestId,
+      workspaceId: contextA.workspaceId,
+      principalId: contextA.principalId,
+      executionId,
+      references: [
+        {
+          kind: "workflow_input" as const,
+          referenceId: "fixture-input",
+          contentHash: createHash("sha256").update("fixture-input").digest("hex"),
+          permissionProofId: "membership-proof-1",
+          permissionRevision: 1,
+          authorizedAt: "2026-08-01T00:00:00.000Z",
+          reauthorizeBefore: "2099-08-01T00:00:00.000Z",
+          dataClassification: "internal" as const,
+          content: "Fixture context"
+        }
+      ],
+      totalBytes: 15,
+      totalTokensEstimate: 4,
+      assembledAt: "2026-08-01T00:00:00.000Z",
+      dispatchProofExpiresAt: "2099-08-01T00:00:00.000Z"
+    },
+    limits: {
+      maxTurns: 5,
+      maxModelCalls: 5,
+      maxToolCalls: 2,
+      maxInputTokens: 1000,
+      maxOutputTokens: 1000,
+      maxCostDecimal: "1.000000000000",
+      maxWallTimeMs: 60_000,
+      maxOutputBytes: 10_000,
+      maxContextBytes: 10_000
+    },
+    reviewMode: "selected_tools" as const,
+    deadlineAt: "2099-08-01T00:00:00.000Z"
+  };
+  await agentExecutionRepository.create(contextA, agentExecutionRequest);
+  await agentExecutionRepository.transition(contextA, executionId, "running", {
+    turns: 0,
+    modelCalls: 0
+  });
+  await agentExecutionRepository.appendTurn(contextA, executionId, 1, {
+    stepType: "model",
+    state: "completed",
+    usage: { inputTokens: 10, outputTokens: 5 }
+  });
+  const provenanceId = await agentExecutionRepository.addProvenance(
+    contextA,
+    executionId,
+    "typed_output",
+    "fixture-output",
+    createHash("sha256").update("fixture-output").digest("hex")
+  );
+  assert(Boolean(provenanceId), "Agent provenance was not recorded");
+  assert(
+    (await agentExecutionRepository.get(contextB, executionId)) === undefined,
+    "Agent execution crossed tenant RLS"
+  );
+  await memoryRepository.setPolicy(contextA, agent.id, {
+    expectedRevision: 0,
+    definition: {
+      allowedScopes: ["execution", "user_private", "workspace_shared"],
+      retentionDays: 365,
+      maxRecordsPerSubject: 10,
+      allowSensitive: false,
+      requireSourceReferences: true,
+      disabled: false
+    }
+  });
+  const privateMemory = await memoryRepository.writeExplicit(contextA, agent.id, executionId, {
+    operationId: "memory-write-private-1",
+    scope: "user_private",
+    subjectId: "preference:locale",
+    purpose: "Remember preferred report language",
+    sensitivity: "confidential",
+    value: { locale: "en" },
+    sourceReferences: ["fixture-input"],
+    permissionDependencies: ["membership-proof-1"],
+    authorizerId: contextA.principalId
+  });
+  await memoryRepository.writeExplicit(contextA, agent.id, executionId, {
+    operationId: "memory-write-shared-1",
+    scope: "workspace_shared",
+    subjectId: "workspace:procedure",
+    purpose: "Approved escalation procedure",
+    sensitivity: "internal",
+    value: { route: "operations" },
+    sourceReferences: ["fixture-input"],
+    permissionDependencies: ["membership-proof-1"],
+    authorizerId: contextA.principalId
+  });
+  assert((await memoryRepository.listMine(contextA)).length === 1, "Private memory was not listed");
+  assert(
+    (await memoryRepository.listWorkspace(contextA, agent.id)).length === 1,
+    "Workspace memory included private records or missed shared records"
+  );
+  assert(
+    (await memoryRepository.listMine(contextB)).length === 0,
+    "Private memory crossed user or tenant isolation"
+  );
+  await memoryRepository.correctMine(contextA, privateMemory.id, {
+    expectedVersion: 1,
+    value: { locale: "en-GB" },
+    reason: "User correction"
+  });
+  const correctedMemory = await memoryRepository.getMine(contextA, privateMemory.id);
+  assert(
+    correctedMemory?.current_version === 2 &&
+      Array.isArray(correctedMemory.history) &&
+      correctedMemory.history.length === 2,
+    "Memory correction history was incomplete"
+  );
+  await memoryRepository.deleteMine(contextA, privateMemory.id);
+  const deletedMemory = await memoryRepository.getMine(contextA, privateMemory.id);
+  assert(
+    deletedMemory?.state === "tombstoned" && deletedMemory.value === null,
+    "Deleted memory remained in current context"
+  );
+  const invalidatedMemory = await memoryRepository.writeExplicit(contextA, agent.id, executionId, {
+    operationId: "memory-write-revocation-1",
+    scope: "user_private",
+    subjectId: "preference:timezone",
+    purpose: "Remember report timezone",
+    sensitivity: "internal",
+    value: { timezone: "UTC" },
+    sourceReferences: ["fixture-input-2"],
+    permissionDependencies: ["membership-proof-revoked"],
+    authorizerId: contextA.principalId
+  });
+  const invalidation = await memoryRepository.invalidateDependencies(contextA, {
+    dependencyType: "permission",
+    dependencyId: "membership-proof-revoked",
+    reason: "permission_revoked"
+  });
+  const invalidatedRecord = await memoryRepository.getMine(contextA, invalidatedMemory.id);
+  assert(
+    invalidation.tombstoned === 1 &&
+      invalidatedRecord?.state === "tombstoned" &&
+      invalidatedRecord.value === null,
+    "Permission invalidation did not remove memory from future context"
+  );
   const agentDiff = await agentRepository.diff(contextA, agent.id, 1, 2);
   assert(
     agentDiff.some(({ section }) => section === "prompts"),
@@ -900,6 +1066,7 @@ async function runSuite(pool: DatabasePool) {
     agents: agentRepository,
     models: modelRepository,
     tools: toolRepository,
+    memory: memoryRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),
@@ -965,6 +1132,31 @@ async function runSuite(pool: DatabasePool) {
         toolListResponse.json<{ data: unknown[] }>().data.length === 1,
       "Tool registry API did not return the governed tool"
     );
+    const memoryPolicyResponse = await app.inject({
+      method: "GET",
+      url: `/v1/agents/${agent.id}/memory-policy`
+    });
+    assert(memoryPolicyResponse.statusCode === 200, "Agent memory policy API failed");
+    const privateMemoryResponse = await app.inject({ method: "GET", url: "/v1/me/memory-records" });
+    assert(
+      privateMemoryResponse.statusCode === 200 &&
+        privateMemoryResponse.json<{ data: unknown[] }>().data.length >= 1,
+      "User-private memory API failed"
+    );
+    const workspaceMemoryResponse = await app.inject({
+      method: "GET",
+      url: `/v1/workspaces/${SEED.workspaceA}/memory-records?agentId=${agent.id}`
+    });
+    assert(
+      workspaceMemoryResponse.statusCode === 200 &&
+        workspaceMemoryResponse.json<{ data: unknown[] }>().data.length === 1,
+      "Workspace memory API leaked private records or missed shared records"
+    );
+    const memoryExportResponse = await app.inject({
+      method: "POST",
+      url: "/v1/me/memory-exports"
+    });
+    assert(memoryExportResponse.statusCode === 201, "Private memory export API failed");
     const draftResponse = await app.inject({
       method: "GET",
       url: `/v1/workflows/${workflowId}/draft`
@@ -1188,6 +1380,22 @@ async function runSuite(pool: DatabasePool) {
       immutableVersions: true,
       scopedCredentials: true,
       tenantIsolated: true,
+      api: true
+    },
+    agentRuntime: {
+      durableExecution: true,
+      authorizedContextManifest: true,
+      immutableTurns: true,
+      provenance: true,
+      tenantIsolated: true
+    },
+    memory: {
+      explicitWritesOnly: true,
+      privateIsolation: true,
+      workspaceAdministrationExcludesPrivate: true,
+      correctionHistory: true,
+      deletionTombstone: true,
+      dependencyInvalidation: true,
       api: true
     },
     auditEvents: auditCount

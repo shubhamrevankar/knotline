@@ -95,6 +95,22 @@
       "tenantIsolated": true,
       "api": true
     },
+    "agentRuntime": {
+      "durableExecution": true,
+      "authorizedContextManifest": true,
+      "immutableTurns": true,
+      "provenance": true,
+      "tenantIsolated": true
+    },
+    "memory": {
+      "explicitWritesOnly": true,
+      "privateIsolation": true,
+      "workspaceAdministrationExcludesPrivate": true,
+      "correctionHistory": true,
+      "deletionTombstone": true,
+      "dependencyInvalidation": true,
+      "api": true
+    },
     "auditEvents": 7
   }
 }

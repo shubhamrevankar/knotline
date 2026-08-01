@@ -9,11 +9,16 @@ const resumeSignal = defineSignal("resume");
 const cancelSignal = defineSignal("cancel");
 const completeHumanTaskSignal = defineSignal<[string]>("completeHumanTask");
 const completeApprovalSignal = defineSignal<[string, string]>("completeApproval");
-const { recordRunTransition, executeSyntheticTask, consumeApproval, expireApproval } =
-  proxyActivities<typeof activities>({
-    startToCloseTimeout: "2 minutes",
-    retry: { maximumAttempts: 3, initialInterval: "1 second" }
-  });
+const {
+  recordRunTransition,
+  executeSyntheticTask,
+  executeGovernedAgent,
+  consumeApproval,
+  expireApproval
+} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "2 minutes",
+  retry: { maximumAttempts: 3, initialInterval: "1 second" }
+});
 
 export interface DurableRunInput {
   readonly workspaceId: string;
@@ -101,7 +106,8 @@ export async function durableWorkflowRun(input: DurableRunInput) {
       } else if (node.kind === "delay") {
         await sleep(Math.min(Number(node.configuration.delayMs ?? 1), 86_400_000));
         await executeSyntheticTask({ ...input, node });
-      } else await executeSyntheticTask({ ...input, node });
+      } else if (node.kind === "agent") await executeGovernedAgent({ ...input, node });
+      else await executeSyntheticTask({ ...input, node });
       complete.add(node.key);
     }
     if (policyStopped) break;

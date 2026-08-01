@@ -142,6 +142,34 @@ export const toolBrokerEventPayloadV1Schema = z
   })
   .passthrough();
 
+export const agentExecutionEventPayloadV1Schema = z
+  .object({
+    executionId: z.uuid(),
+    runId: z.uuid().optional(),
+    taskId: z.uuid().optional(),
+    agentId: z.uuid().optional(),
+    agentVersion: z.number().int().positive().optional(),
+    state: z.string().max(80),
+    turn: z.number().int().positive().optional(),
+    contextManifestId: z.uuid().optional(),
+    outputHash: z.string().optional(),
+    errorCode: z.string().optional()
+  })
+  .passthrough();
+
+export const memoryLifecycleEventPayloadV1Schema = z
+  .object({
+    memoryId: z.uuid(),
+    agentId: z.uuid(),
+    scope: z.enum(["execution", "user_private", "workspace_shared"]),
+    version: z.number().int().positive(),
+    operation: z.string().max(80),
+    valueHash: z.string().optional(),
+    reason: z.string().optional(),
+    purgeAfter: z.iso.datetime().optional()
+  })
+  .passthrough();
+
 export const EVENT_SCHEMA_REGISTRY = [
   {
     eventType: "workflow.created",
@@ -296,6 +324,34 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "tool-platform",
     schema: toolBrokerEventPayloadV1Schema
+  })),
+  ...[
+    "agent.execution_queued",
+    "agent.execution_started",
+    "agent.turn_completed",
+    "agent.approval_waiting",
+    "agent.execution_succeeded",
+    "agent.execution_failed",
+    "agent.execution_cancelled"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "agent-runtime",
+    schema: agentExecutionEventPayloadV1Schema
+  })),
+  ...[
+    "memory.created",
+    "memory.corrected",
+    "memory.scope_changed",
+    "memory.tombstoned",
+    "memory.expired",
+    "memory.permission_invalidated",
+    "memory.purged"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "agent-memory",
+    schema: memoryLifecycleEventPayloadV1Schema
   }))
 ] as const;
 

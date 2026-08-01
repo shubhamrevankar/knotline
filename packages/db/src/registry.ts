@@ -136,7 +136,17 @@ export const REQUIRED_STORES = [
   "tool_operation_bindings",
   "tool_execution_receipts",
   "sandbox_executions",
-  "tool_control_switches"
+  "tool_control_switches",
+  "agent_executions",
+  "agent_execution_turns",
+  "agent_context_manifests",
+  "provenance_nodes",
+  "provenance_edges",
+  "memory_policies",
+  "memory_records",
+  "memory_versions",
+  "memory_uses",
+  "memory_tombstones"
 ] as const;
 
 export async function validateDataStoreRegistry(): Promise<Registry> {

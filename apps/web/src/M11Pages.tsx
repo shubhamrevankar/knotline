@@ -407,6 +407,30 @@ function TaskInspector({ taskRunId }: { readonly taskRunId: string }) {
           <h3>{msg("run.task.logs")}</h3>
           <p>{msg("run.task.logs.body")}</p>
         </Card>
+        <Card>
+          <Badge tone="warning">{msg("run.agent.badge")}</Badge>
+          <h3>{msg("run.agent.controls")}</h3>
+          <dl>
+            <dt>{msg("run.agent.context")}</dt>
+            <dd>{msg("run.agent.context.value")}</dd>
+            <dt>{msg("run.agent.loop")}</dt>
+            <dd>{msg("run.agent.loop.value")}</dd>
+            <dt>{msg("run.agent.budget")}</dt>
+            <dd>{msg("run.agent.budget.value")}</dd>
+            <dt>{msg("run.agent.review")}</dt>
+            <dd>{msg("run.agent.review.value")}</dd>
+          </dl>
+        </Card>
+        <Card>
+          <h3>{msg("run.agent.provenance")}</h3>
+          <ol>
+            <li>{msg("run.agent.provenance.version")}</li>
+            <li>{msg("run.agent.provenance.context")}</li>
+            <li>{msg("run.agent.provenance.tool")}</li>
+            <li>{msg("run.agent.provenance.output")}</li>
+          </ol>
+          <p>{msg("run.agent.reasoning")}</p>
+        </Card>
       </div>
     </section>
   );

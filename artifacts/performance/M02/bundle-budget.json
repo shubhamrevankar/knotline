@@ -2,23 +2,28 @@
   "assets": [
     {
       "bytes": 15047,
-      "gzipBytes": 4320,
-      "name": "App-C4ol2mxF.js"
+      "gzipBytes": 4319,
+      "name": "App-DryqWPY6.js"
     },
     {
       "bytes": 6781,
-      "gzipBytes": 2495,
-      "name": "CollaborationPanel-CNTeIkH-.js"
+      "gzipBytes": 2498,
+      "name": "CollaborationPanel-Dqizq332.js"
     },
     {
       "bytes": 5113,
       "gzipBytes": 1297,
-      "name": "ComponentWorkbench-CEHXqUzr.js"
+      "name": "ComponentWorkbench-B6bgOX-z.js"
     },
     {
-      "bytes": 7853,
-      "gzipBytes": 2482,
-      "name": "GuidedWorkflowCreate-BO7d6e5g.js"
+      "bytes": 8086,
+      "gzipBytes": 2547,
+      "name": "GuidedWorkflowCreate-CCuiA6pe.js"
+    },
+    {
+      "bytes": 10335,
+      "gzipBytes": 3115,
+      "name": "M11Pages-CiOKS0iC.js"
     },
     {
       "bytes": 4827,
@@ -26,14 +31,9 @@
       "name": "M11Pages-D4gQqCLn.css"
     },
     {
-      "bytes": 9437,
-      "gzipBytes": 2988,
-      "name": "M11Pages-DhEkd-fK.js"
-    },
-    {
       "bytes": 8285,
       "gzipBytes": 2888,
-      "name": "M12Pages-DgPzWvfU.js"
+      "name": "M12Pages-ChqUPpag.js"
     },
     {
       "bytes": 4751,
@@ -48,7 +48,7 @@
     {
       "bytes": 6545,
       "gzipBytes": 2352,
-      "name": "M13Pages-BQTRGStW.js"
+      "name": "M13Pages-BMcBE-Sm.js"
     },
     {
       "bytes": 4989,
@@ -56,39 +56,49 @@
       "name": "M14Pages-BGpIh7pk.css"
     },
     {
-      "bytes": 15552,
-      "gzipBytes": 4799,
-      "name": "M14Pages-C8eyrphD.js"
+      "bytes": 16448,
+      "gzipBytes": 5077,
+      "name": "M14Pages-DFgaE0Nw.js"
+    },
+    {
+      "bytes": 809,
+      "gzipBytes": 414,
+      "name": "M17Pages-BU119oOv.css"
+    },
+    {
+      "bytes": 4534,
+      "gzipBytes": 1478,
+      "name": "M17Pages-COj6IhsK.js"
     },
     {
       "bytes": 24208,
-      "gzipBytes": 6991,
-      "name": "StudioPage-Bdkzg9Kf.js"
+      "gzipBytes": 6994,
+      "name": "StudioPage-CsZZhGBr.js"
     },
     {
       "bytes": 235,
       "gzipBytes": 201,
-      "name": "activity-7ONI-SOf.js"
+      "name": "activity-vgtMjdjG.js"
     },
     {
       "bytes": 291,
-      "gzipBytes": 237,
-      "name": "bell-C3o8kEeX.js"
+      "gzipBytes": 239,
+      "name": "bell-CstTYMkZ.js"
     },
     {
       "bytes": 329,
       "gzipBytes": 230,
-      "name": "bot-ChCML74Q.js"
+      "name": "bot-B2ihl3j7.js"
     },
     {
       "bytes": 280,
-      "gzipBytes": 211,
-      "name": "braces-BtWUgaUN.js"
+      "gzipBytes": 208,
+      "name": "braces-DpfhIE88.js"
     },
     {
       "bytes": 165,
-      "gzipBytes": 165,
-      "name": "clock-3-Xmbq8lXV.js"
+      "gzipBytes": 166,
+      "name": "clock-3-BJMAEe0p.js"
     },
     {
       "bytes": 178911,
@@ -101,19 +111,19 @@
       "name": "index-BxfnZxQ3.css"
     },
     {
-      "bytes": 216487,
-      "gzipBytes": 56707,
-      "name": "index-D_PuY1tD.js"
+      "bytes": 233857,
+      "gzipBytes": 60792,
+      "name": "index-DqK4EEkW.js"
     },
     {
       "bytes": 297,
-      "gzipBytes": 199,
-      "name": "list-tree-udMQlaT6.js"
+      "gzipBytes": 200,
+      "name": "list-tree-D3KZfvtP.js"
     },
     {
       "bytes": 349,
-      "gzipBytes": 251,
-      "name": "plus-BFUUPqBv.js"
+      "gzipBytes": 254,
+      "name": "plus-xbKH6lQp.js"
     },
     {
       "bytes": 248730,
@@ -122,13 +132,13 @@
     },
     {
       "bytes": 328,
-      "gzipBytes": 229,
-      "name": "save-CeVZbcdu.js"
+      "gzipBytes": 230,
+      "name": "save-3s1MJEGf.js"
     },
     {
       "bytes": 749,
-      "gzipBytes": 393,
-      "name": "sparkles-jNtB_1nN.js"
+      "gzipBytes": 392,
+      "name": "sparkles-B32_U7OH.js"
     },
     {
       "bytes": 755,
@@ -137,23 +147,23 @@
     },
     {
       "bytes": 329,
-      "gzipBytes": 219,
-      "name": "trash-2-FVoM68Pi.js"
+      "gzipBytes": 216,
+      "name": "trash-2-CZXom1MS.js"
     }
   ],
   "errors": [],
   "initialAssets": [
     "index-BxfnZxQ3.css",
-    "index-D_PuY1tD.js",
+    "index-DqK4EEkW.js",
     "react-vendor-Ca2lDvkd.js"
   ],
-  "initialGzipBytes": 145735,
+  "initialGzipBytes": 149820,
   "limits": {
-    "maxInitialGzipBytes": 147000,
+    "maxInitialGzipBytes": 153000,
     "maxJavaScriptBytes": 350000,
-    "maxTotalGzipBytes": 246000
+    "maxTotalGzipBytes": 255000
   },
   "schemaVersion": 1,
   "status": "PASS",
-  "totalGzipBytes": 243099
+  "totalGzipBytes": 249552
 }

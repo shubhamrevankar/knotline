@@ -337,6 +337,7 @@ export function ProfilePage() {
             <p>{msg("profile.body")}</p>
           </div>
           <Link to="/app/profile/sessions">{msg("profile.sessions")}</Link>
+          <Link to="/app/profile/memory">{msg("memory.nav")}</Link>
         </div>
         {!profile && !error ? <Skeleton label={msg("profile.loading")} /> : null}
         {error && !profile ? (

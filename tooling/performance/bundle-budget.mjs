@@ -10,11 +10,11 @@ const ROOT = resolve(new URL("../..", import.meta.url).pathname);
 const DIST = join(ROOT, "apps", "web", "dist");
 const REPORT = join(ROOT, "artifacts", "performance", "M02", "bundle-budget.json");
 const MAX_JS_BYTES = 350_000;
-// M14 adds the lazy foundry catalog, guided builder, and simulated console. These
-// ceilings preserve about 1 KB initial and 3 KB total headroom over the reviewed
-// production build, so future growth still requires an explicit review.
-const MAX_INITIAL_GZIP_BYTES = 147_000;
-const MAX_TOTAL_GZIP_BYTES = 246_000;
+// M17 adds localized governed-execution and memory controls plus a lazy memory
+// surface. These reviewed ceilings retain roughly 3 KB initial and 5 KB total
+// headroom, so subsequent growth still requires an explicit performance review.
+const MAX_INITIAL_GZIP_BYTES = 153_000;
+const MAX_TOTAL_GZIP_BYTES = 255_000;
 
 export function evaluateAssets(assets, initialAssetNames = new Set()) {
   const errors = [];

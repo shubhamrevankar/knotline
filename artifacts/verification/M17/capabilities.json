@@ -1,0 +1,21 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M17/test-results/runtime-unit.json",
+      "verifiedAt": "2026-08-01T15:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-003",
+      "EXT-004"
+    ],
+    "id": "agents.governed-execution",
+    "owner": {
+      "contact": "shurevan",
+      "team": "agent-platform"
+    },
+    "runbook": "docs/operations/knotline/agent-runtime-and-memory.md",
+    "status": "DEMO",
+    "summary": "Durable bounded execution, reauthorized context, model and broker dispatch, typed output, provenance, and explicit lifecycle-governed memory are locally verified."
+  }
+]

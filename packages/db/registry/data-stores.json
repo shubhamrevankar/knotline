@@ -849,6 +849,76 @@
       "retentionDays": 2555,
       "exportHandler": "tool-export",
       "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "agent_executions",
+      "class": "agent.execution",
+      "retentionDays": 365,
+      "exportHandler": "agent-execution-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "agent_execution_turns",
+      "class": "agent.execution_turn",
+      "retentionDays": 365,
+      "exportHandler": "agent-execution-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "agent_context_manifests",
+      "class": "agent.context_manifest",
+      "retentionDays": 365,
+      "exportHandler": "agent-execution-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "provenance_nodes",
+      "class": "agent.provenance_node",
+      "retentionDays": 2555,
+      "exportHandler": "provenance-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "provenance_edges",
+      "class": "agent.provenance_edge",
+      "retentionDays": 2555,
+      "exportHandler": "provenance-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "memory_policies",
+      "class": "memory.policy",
+      "retentionDays": 2555,
+      "exportHandler": "memory-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "memory_records",
+      "class": "memory.record",
+      "retentionDays": 3650,
+      "exportHandler": "memory-export",
+      "deleteHandler": "memory-tombstone-delete"
+    },
+    {
+      "name": "memory_versions",
+      "class": "memory.version",
+      "retentionDays": 3650,
+      "exportHandler": "memory-export",
+      "deleteHandler": "memory-tombstone-delete"
+    },
+    {
+      "name": "memory_uses",
+      "class": "memory.use",
+      "retentionDays": 2555,
+      "exportHandler": "memory-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "memory_tombstones",
+      "class": "memory.tombstone",
+      "retentionDays": 2555,
+      "exportHandler": "memory-export",
+      "deleteHandler": "governed-delete"
     }
   ],
   "indexes": [
@@ -1055,7 +1125,23 @@
     "sandbox_executions_pkey",
     "sandbox_executions_workspace_id_operation_id_key",
     "sandbox_executions_state_idx",
-    "tool_control_switches_pkey"
+    "tool_control_switches_pkey",
+    "agent_executions_pkey",
+    "agent_executions_workspace_id_attempt_id_key",
+    "agent_executions_run_idx",
+    "agent_execution_turns_pkey",
+    "agent_context_manifests_pkey",
+    "agent_context_manifests_workspace_id_execution_id_manifest_hash_key",
+    "provenance_nodes_pkey",
+    "provenance_nodes_workspace_id_execution_id_node_type_reference_content_hash_key",
+    "provenance_edges_pkey",
+    "memory_policies_pkey",
+    "memory_records_pkey",
+    "memory_records_user_idx",
+    "memory_records_agent_idx",
+    "memory_versions_pkey",
+    "memory_uses_pkey",
+    "memory_tombstones_pkey"
   ],
   "caches": []
 }

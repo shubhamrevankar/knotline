@@ -95,6 +95,14 @@ const AgentBuilderPage = lazy(async () => {
   const module = await import("./M14Pages.js");
   return { default: module.AgentBuilderPage };
 });
+const ProfileMemoryPage = lazy(async () => {
+  const module = await import("./M17Pages.js");
+  return { default: module.ProfileMemoryPage };
+});
+const AgentMemoryPage = lazy(async () => {
+  const module = await import("./M17Pages.js");
+  return { default: module.AgentMemoryPage };
+});
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -505,6 +513,22 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label="Loading agent builder" />}>
           <AgentBuilderPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.profile.memory")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading private memory" />}>
+          <ProfileMemoryPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.agents.detail.memory")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading agent memory" />}>
+          <AgentMemoryPage />
         </Suspense>
       </AuthGate>
     );

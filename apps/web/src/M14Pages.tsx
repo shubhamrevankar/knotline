@@ -314,6 +314,9 @@ export function AgentOverviewPage() {
           <Link className="foundry-primary" to={`/app/agents/${agent.id}/builder`}>
             Open builder
           </Link>
+          <Link className="foundry-primary" to={`/app/agents/${agent.id}/memory`}>
+            Memory policy
+          </Link>
           {agent.current_version && (
             <Button
               onClick={() =>

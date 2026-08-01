@@ -1419,6 +1419,83 @@ const TOOL_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }))
 ];
 
+const AGENT_RUNTIME_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  ...(["GET", "PUT"] as const).map((method): HttpRouteContract => ({
+    method,
+    path: "/v1/agents/{agentId}/memory-policy",
+    operationId: method === "GET" ? "getAgentMemoryPolicy" : "updateAgentMemoryPolicy",
+    summary: method === "GET" ? "Read agent memory policy" : "Update agent memory policy",
+    tags: ["Agent memory"],
+    exposure: "browser_internal",
+    ...(method === "PUT" ? { requestBody: genericDataSchema } : {}),
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  })),
+  {
+    method: "GET",
+    path: "/v1/me/memory-records",
+    operationId: "listMyMemoryRecords",
+    summary: "List user-private memory records",
+    tags: ["Agent memory"],
+    exposure: "browser_internal",
+    responses: { 200: apiEnvelope(genericDataSchema), 401: apiErrorSchema, 403: apiErrorSchema }
+  },
+  ...(["GET", "DELETE"] as const).map((method): HttpRouteContract => ({
+    method,
+    path: "/v1/me/memory-records/{memoryId}",
+    operationId: method === "GET" ? "getMyMemoryRecord" : "deleteMyMemoryRecord",
+    summary: method === "GET" ? "Read user-private memory" : "Delete user-private memory",
+    tags: ["Agent memory"],
+    exposure: "browser_internal",
+    responses: {
+      ...(method === "GET" ? { 200: apiEnvelope(genericDataSchema) } : { 204: z.undefined() }),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema
+    }
+  })),
+  {
+    method: "POST",
+    path: "/v1/me/memory-records/{memoryId}/corrections",
+    operationId: "correctMyMemoryRecord",
+    summary: "Correct or rescope user-private memory",
+    tags: ["Agent memory"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/me/memory-exports",
+    operationId: "exportMyMemoryRecords",
+    summary: "Export user-private memory",
+    tags: ["Agent memory"],
+    exposure: "browser_internal",
+    responses: { 201: apiEnvelope(genericDataSchema), 401: apiErrorSchema, 403: apiErrorSchema }
+  },
+  {
+    method: "GET",
+    path: "/v1/workspaces/{workspaceId}/memory-records",
+    operationId: "listWorkspaceMemoryRecords",
+    summary: "List workspace-shared memory without private records",
+    tags: ["Agent memory"],
+    exposure: "browser_internal",
+    responses: { 200: apiEnvelope(genericDataSchema), 401: apiErrorSchema, 403: apiErrorSchema }
+  }
+];
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
@@ -1429,6 +1506,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...AGENT_ROUTE_CONTRACTS,
   ...MODEL_ROUTE_CONTRACTS,
   ...TOOL_ROUTE_CONTRACTS,
+  ...AGENT_RUNTIME_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

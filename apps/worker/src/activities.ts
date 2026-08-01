@@ -1,5 +1,21 @@
-import { activityInfo } from "@temporalio/activity";
-import { createPool, PostgresApprovalRepository, PostgresRuntimeRepository } from "@knotline/db";
+import { createHash } from "node:crypto";
+
+import { Context, activityInfo } from "@temporalio/activity";
+import { GovernedAgentRuntime, type AgentModelStep } from "@knotline/agent-runtime";
+import {
+  generationResultSchema,
+  toolExecutionReceiptSchema,
+  type AgentExecutionRequest,
+  type GenerationResult,
+  type ToolExecutionReceipt
+} from "@knotline/contracts";
+import {
+  createPool,
+  PostgresAgentExecutionRepository,
+  PostgresApprovalRepository,
+  PostgresMemoryRepository,
+  PostgresRuntimeRepository
+} from "@knotline/db";
 
 import type { DurableRunInput } from "./workflows.js";
 
@@ -9,6 +25,8 @@ const pool = databaseUrl
   : undefined;
 const repository = pool ? new PostgresRuntimeRepository(pool) : undefined;
 const approvals = pool ? new PostgresApprovalRepository(pool) : undefined;
+const agentExecutions = pool ? new PostgresAgentExecutionRepository(pool) : undefined;
+const memories = pool ? new PostgresMemoryRepository(pool) : undefined;
 
 export async function recordRunTransition(
   input: DurableRunInput & {
@@ -98,6 +116,209 @@ export async function executeSyntheticTask(
     result.output
   );
   return result;
+}
+
+export async function executeGovernedAgent(
+  input: DurableRunInput & { readonly node: DurableRunInput["plan"][number] }
+) {
+  if (!repository || !agentExecutions || !memories) throw new Error("DATABASE_URL_REQUIRED");
+  const request = input.node.configuration.agentExecutionRequest as AgentExecutionRequest;
+  const context = {
+    workspaceId: input.workspaceId,
+    principalId: input.principalId,
+    requestId: `activity-${activityInfo().activityId}`
+  };
+  await agentExecutions.create(context, request);
+  let journalTurn = 0;
+  const runtime = new GovernedAgentRuntime(
+    {
+      async next(agentRequest, transcript, signal) {
+        const fixture = input.node.configuration.fixtureAgentSteps as
+          readonly AgentModelStep[] | undefined;
+        if (fixture) {
+          const next = fixture[Math.min(journalTurn, fixture.length - 1)];
+          if (!next) throw new Error("AGENT_FIXTURE_EXHAUSTED");
+          return structuredClone(next);
+        }
+        const result = await invokeModelGateway(agentRequest, transcript, signal, journalTurn);
+        return modelResultToStep(result, input.node.configuration);
+      }
+    },
+    {
+      async execute(call, agentRequest, signal) {
+        return invokeToolBroker(call, agentRequest, input.node.configuration, signal);
+      }
+    },
+    {
+      reauthorize(agentRequest) {
+        const now = Date.now();
+        return Promise.resolve(
+          agentRequest.contextManifest.workspaceId === context.workspaceId &&
+            agentRequest.contextManifest.principalId === context.principalId &&
+            agentRequest.contextManifest.references.every(
+              (reference) => Date.parse(reference.reauthorizeBefore) > now
+            )
+        );
+      }
+    },
+    {
+      async write(agentRequest, operation) {
+        const record = await memories.writeExplicit(
+          context,
+          agentRequest.agentId,
+          agentRequest.executionId,
+          operation
+        );
+        return record.id;
+      }
+    },
+    {
+      transition(executionId, state, detail) {
+        return agentExecutions.transition(context, executionId, state, detail);
+      },
+      provenance(executionId, kind, reference, hash) {
+        return agentExecutions.addProvenance(context, executionId, kind, reference, hash);
+      },
+      turn(executionId, turn, detail) {
+        journalTurn = turn;
+        return agentExecutions.appendTurn(context, executionId, turn, detail);
+      }
+    }
+  );
+  try {
+    const result = await runtime.execute(request, Context.current().cancellationSignal);
+    if (result.state === "succeeded")
+      await repository.completeSyntheticTask(
+        context,
+        input.runId,
+        input.node.key,
+        activityInfo().activityId,
+        result.output ?? {}
+      );
+    return result;
+  } catch (cause) {
+    const code = cause instanceof Error ? cause.message : "AGENT_EXECUTION_FAILED";
+    await agentExecutions.transition(
+      context,
+      request.executionId,
+      Context.current().cancellationSignal.aborted ? "cancelled" : "failed",
+      { errorCode: code }
+    );
+    throw cause;
+  }
+}
+
+async function invokeModelGateway(
+  request: AgentExecutionRequest,
+  transcript: readonly Readonly<Record<string, unknown>>[],
+  signal: AbortSignal,
+  turn: number
+): Promise<GenerationResult> {
+  const url = process.env.MODEL_GATEWAY_URL ?? "http://127.0.0.1:4200";
+  const token = process.env.MODEL_GATEWAY_INTERNAL_TOKEN;
+  if (!token) throw new Error("MODEL_GATEWAY_INTERNAL_TOKEN_REQUIRED");
+  const context = request.contextManifest.references
+    .map((reference) => reference.content)
+    .join("\n\n");
+  const response = await fetch(`${url}/internal/v1/model-invocations`, {
+    method: "POST",
+    headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      kind: "generation",
+      workspaceId: request.workspaceId,
+      operationId: `${request.executionId}:turn:${String(turn + 1)}`,
+      taskAttemptId: request.attemptId,
+      modelPolicyVersionId: request.modelPolicyVersionId,
+      deadlineAt: request.deadlineAt,
+      safetyIdentifier: request.principalId,
+      retention: "no-store",
+      role: "balanced",
+      promptVersionId: request.promptVersionId,
+      messages: [
+        { role: "system", content: context },
+        { role: "user", content: JSON.stringify(transcript) }
+      ],
+      outputSchema: request.outputSchema,
+      tools: [],
+      maxOutputTokens: request.limits.maxOutputTokens,
+      maxToolCalls: request.limits.maxToolCalls
+    }),
+    signal
+  });
+  const body = (await response.json()) as { data?: unknown; error?: { code?: string } };
+  if (!response.ok || !body.data) throw new Error(body.error?.code ?? "MODEL_GATEWAY_FAILED");
+  return generationResultSchema.parse(body.data);
+}
+
+function modelResultToStep(
+  result: GenerationResult,
+  configuration: Readonly<Record<string, unknown>>
+): AgentModelStep {
+  const usage = {
+    inputTokens: result.usage.inputTokens,
+    outputTokens: result.usage.outputTokens,
+    costDecimal: result.estimatedCost.amountDecimal
+  };
+  const tool = result.outputItems.find((item) => item.type === "tool_call");
+  if (tool?.type === "tool_call")
+    return {
+      type: "tool_call",
+      name: tool.name,
+      version: typeof configuration.toolVersion === "string" ? configuration.toolVersion : "1.0.0",
+      input: JSON.parse(tool.arguments),
+      requiresApproval: Boolean(configuration.toolRequiresApproval),
+      usage
+    };
+  return {
+    type: "final",
+    output: result.parsedOutput,
+    summary: "Completed with governed context, policy, and provenance.",
+    usage
+  };
+}
+
+async function invokeToolBroker(
+  call: Extract<AgentModelStep, { type: "tool_call" }>,
+  request: AgentExecutionRequest,
+  configuration: Readonly<Record<string, unknown>>,
+  signal: AbortSignal
+): Promise<ToolExecutionReceipt> {
+  const url = process.env.TOOL_BROKER_URL ?? "http://127.0.0.1:4400";
+  const token = process.env.TOOL_BROKER_INTERNAL_TOKEN;
+  if (!token) throw new Error("TOOL_BROKER_INTERNAL_TOKEN_REQUIRED");
+  const operationId = `${request.executionId}:${call.name}`;
+  const invocation = {
+    operationId,
+    requestHash: createHash("sha256").update(JSON.stringify(call.input)).digest("hex"),
+    toolName: call.name,
+    toolVersion: call.version,
+    input: call.input,
+    context: {
+      workspaceId: request.workspaceId,
+      principalId: request.principalId,
+      agentVersionId: request.agentId,
+      environment: configuration.testMode ? "test" : "production",
+      dataClassification: "internal",
+      budgetRemainingDecimal: request.limits.maxCostDecimal
+    }
+  };
+  const response = await fetch(`${url}/internal/v1/tool-executions`, {
+    method: "POST",
+    headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+    body: JSON.stringify(invocation),
+    signal
+  });
+  const body = (await response.json()) as {
+    data?: unknown;
+    error?: { code?: string; uncertain?: boolean };
+  };
+  if (!response.ok || !body.data)
+    throw new Error(
+      body.error?.uncertain
+        ? "EXTERNAL_OPERATION_UNCERTAIN"
+        : (body.error?.code ?? "TOOL_BROKER_FAILED")
+    );
+  return toolExecutionReceiptSchema.parse(body.data);
 }
 
 export async function closeActivityPool() {
