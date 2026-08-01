@@ -1661,6 +1661,55 @@
       "retentionDays": 365,
       "exportHandler": "analytics-export",
       "deleteHandler": "privacy-delete"
+    },
+    {
+      "name": "billing_plan_versions",
+      "class": "billing.catalog",
+      "retentionDays": 2555,
+      "exportHandler": "billing-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "billing_subscriptions",
+      "class": "billing.subscription",
+      "retentionDays": 2555,
+      "exportHandler": "billing-export",
+      "deleteHandler": "billing-delete"
+    },
+    {
+      "name": "billing_webhook_receipts",
+      "class": "billing.receipt",
+      "retentionDays": 2555,
+      "exportHandler": "billing-export",
+      "deleteHandler": "billing-delete"
+    },
+    {
+      "name": "budget_policies",
+      "class": "billing.budget",
+      "retentionDays": 2555,
+      "exportHandler": "billing-export",
+      "deleteHandler": "billing-delete"
+    },
+    {
+      "name": "budget_thresholds",
+      "class": "billing.threshold",
+      "retentionDays": 2555,
+      "exportHandler": "billing-export",
+      "deleteHandler": "billing-delete"
+    },
+    {
+      "name": "usage_ledger",
+      "class": "billing.usage",
+      "retentionDays": 2555,
+      "exportHandler": "billing-export",
+      "deleteHandler": "immutable-finance-retention"
+    },
+    {
+      "name": "billing_invoices",
+      "class": "billing.invoice",
+      "retentionDays": 2555,
+      "exportHandler": "billing-export",
+      "deleteHandler": "billing-delete"
     }
   ],
   "indexes": [
@@ -2074,7 +2123,19 @@
     "reports_pkey",
     "report_exports_pkey",
     "report_schedules_pkey",
-    "product_analytics_events_pkey"
+    "product_analytics_events_pkey",
+    "billing_plan_versions_pkey",
+    "billing_plan_versions_workspace_id_plan_key_version_key",
+    "billing_subscriptions_pkey",
+    "billing_subscriptions_current_idx",
+    "billing_webhook_receipts_pkey",
+    "billing_webhook_receipts_workspace_id_provider_event_id_key",
+    "budget_policies_pkey",
+    "budget_thresholds_pkey",
+    "usage_ledger_pkey",
+    "usage_ledger_workspace_id_idempotency_key_key",
+    "usage_ledger_meter_idx",
+    "billing_invoices_pkey"
   ],
   "caches": []
 }

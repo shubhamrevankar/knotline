@@ -7600,7 +7600,7 @@ real throughput, quality, cost, and bottlenecks from authoritative data.
 
 ### M29 — Stripe billing, plans, entitlements, usage, and spend controls
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M05, M10, M15, M19, M28\
 **Required commit:** `feat: add Stripe billing usage and enforced entitlements`
 
@@ -9271,7 +9271,7 @@ must appear in that milestone's boundary cell.
 | M26 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic trigger, schedule, receipt, fairness, and reconciliation fixtures verified locally; each provider branch retains EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, or EXT-025 individually | `feat: add production triggers and reconciled outbound sync` |
 | M27 | `COMMITTED` | `NOT_DEPLOYED` | EXT-006, EXT-008, EXT-012 | `feat: deliver multichannel notifications and escalation delivery` |
 | M28 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver global search saved views and operational analytics` |
-| M29 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-005, EXT-020 | `feat: add Stripe billing usage and enforced entitlements` |
+| M29 | `COMMITTED` | `NOT_DEPLOYED` | EXT-005, EXT-020 | `feat: add Stripe billing usage and enforced entitlements` |
 | M30 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-001, EXT-021 | `feat: deliver the Knotline developer platform` |
 | M31 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-016, EXT-022 | `feat: deliver audit privacy export and deletion governance` |
 | M32 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-015, EXT-022 | `feat: add enterprise identity provisioning and data policy` |

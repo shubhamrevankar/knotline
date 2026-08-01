@@ -44,6 +44,7 @@ import type {
   TriggerRepository,
   NotificationRepository,
   AnalyticsRepository,
+  BillingRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -102,6 +103,7 @@ export interface BuildAppOptions {
   readonly triggers?: TriggerRepository;
   readonly notifications?: NotificationRepository;
   readonly analytics?: AnalyticsRepository;
+  readonly billing?: BillingRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -2524,6 +2526,178 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     if (!options.analytics) throw new Error("Analytics are not configured");
     return options.analytics;
   };
+  const billingRepository = () => {
+    if (!options.billing) throw new Error("Billing is not configured");
+    return options.billing;
+  };
+  const budgetSchema = z
+    .object({
+      name: z.string().min(1).max(120),
+      currency: z.string().length(3),
+      amount: z.string().regex(/^\d+(?:\.\d{1,6})?$/u),
+      mode: z.enum(["soft", "hard"]),
+      period: z.enum(["monthly", "quarterly", "annual"]),
+      scope: z.record(z.string(), z.unknown()).default({})
+    })
+    .strict();
+  const thresholdSchema = z
+    .object({
+      percent: z.number().positive().max(100),
+      action: z.enum(["notify", "stop"]),
+      channels: z.array(z.enum(["in_app", "email", "slack", "teams", "webhook"])).min(1)
+    })
+    .strict();
+  const budgetParams = z.object({ budgetId: z.string().uuid() }).strict(),
+    thresholdParams = z.object({ thresholdId: z.string().uuid() }).strict();
+  app.get("/v1/workspaces/:workspaceId/plans", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await billingRepository().plans(await agentAccess(request)) };
+  });
+  app.post("/v1/workspaces/:workspaceId/checkout-sessions", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const body = z
+      .object({ planVersionId: z.string().uuid(), returnTarget: z.string().startsWith("/") })
+      .strict()
+      .parse(request.body);
+    return reply.code(201).send({
+      data: {
+        id: randomUUID(),
+        state: "fixture_only",
+        planVersionId: body.planVersionId,
+        returnTarget: body.returnTarget,
+        externalGate: "EXT-005"
+      }
+    });
+  });
+  app.post("/v1/workspaces/:workspaceId/billing-portal-sessions", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({ data: { state: "fixture_only", externalGate: "EXT-005" } });
+  });
+  app.get("/v1/workspaces/:workspaceId/subscription", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await billingRepository().summary(await agentAccess(request)) };
+  });
+  app.get("/v1/workspaces/:workspaceId/invoices", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: (await billingRepository().summary(await agentAccess(request))).invoices };
+  });
+  app.get("/v1/workspaces/:workspaceId/usage", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await billingRepository().usage(await agentAccess(request)) };
+  });
+  app.get("/v1/workspaces/:workspaceId/usage/forecast", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await billingRepository().forecast(await agentAccess(request)) };
+  });
+  app.get("/v1/workspaces/:workspaceId/budgets", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await billingRepository().budgets(await agentAccess(request)) };
+  });
+  app.post("/v1/workspaces/:workspaceId/budgets", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await billingRepository().createBudget(
+        await agentAccess(request, true),
+        budgetSchema.parse(request.body)
+      )
+    });
+  });
+  app.get("/v1/budgets/:budgetId", async (request, reply) => {
+    const { budgetId } = budgetParams.parse(request.params);
+    const data = await billingRepository().budget(await agentAccess(request), budgetId);
+    return data
+      ? { data }
+      : reply.code(404).send({
+          error: {
+            code: "BUDGET_NOT_FOUND",
+            message: "The budget does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  app.patch("/v1/budgets/:budgetId", async (request) => {
+    const { budgetId } = budgetParams.parse(request.params);
+    return {
+      data: await billingRepository().updateBudget(
+        await agentAccess(request, true),
+        budgetId,
+        budgetSchema
+          .partial()
+          .extend({ expectedRevision: z.number().int().positive() })
+          .parse(request.body)
+      )
+    };
+  });
+  app.post("/v1/budgets/:budgetId/thresholds", async (request, reply) => {
+    const { budgetId } = budgetParams.parse(request.params);
+    return reply.code(201).send({
+      data: await billingRepository().addThreshold(
+        await agentAccess(request, true),
+        budgetId,
+        thresholdSchema.parse(request.body)
+      )
+    });
+  });
+  app.patch("/v1/budget-thresholds/:thresholdId", async (request) => {
+    const { thresholdId } = thresholdParams.parse(request.params);
+    return {
+      data: await billingRepository().updateThreshold(
+        await agentAccess(request, true),
+        thresholdId,
+        thresholdSchema
+          .partial()
+          .extend({ expectedRevision: z.number().int().positive() })
+          .parse(request.body)
+      )
+    };
+  });
+  app.delete("/v1/budget-thresholds/:thresholdId", async (request, reply) => {
+    const { thresholdId } = thresholdParams.parse(request.params);
+    await billingRepository().deleteThreshold(await agentAccess(request, true), thresholdId);
+    return reply.code(204).send();
+  });
+  app.post("/v1/workspaces/:workspaceId/spend-stops", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const { reason } = z
+      .object({ reason: z.string().min(3).max(500) })
+      .strict()
+      .parse(request.body);
+    return reply.code(201).send({
+      data: await billingRepository().setSpendStop(await agentAccess(request, true), true, reason)
+    });
+  });
+  app.post("/v1/workspaces/:workspaceId/spend-resumptions", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const { reason } = z
+      .object({ reason: z.string().min(3).max(500) })
+      .strict()
+      .parse(request.body);
+    return reply.code(201).send({
+      data: await billingRepository().setSpendStop(await agentAccess(request, true), false, reason)
+    });
+  });
   const savedViewSchema = z
     .object({
       name: z.string().min(1).max(120),

@@ -1,0 +1,204 @@
+{
+  "activeGateRows": [
+    "format",
+    "lint",
+    "strict type",
+    "unit coverage",
+    "build",
+    "brand/provenance guard",
+    "package boundaries",
+    "license",
+    "dependency",
+    "secret",
+    "evidence",
+    "docs validation",
+    "browser e2e",
+    "automated accessibility",
+    "responsive/visual regression",
+    "bundle and web vitals smoke",
+    "real postgresql integration",
+    "migration",
+    "rls/tenant isolation",
+    "query plan",
+    "backup smoke",
+    "auth/session/csrf/cors/abuse security suite",
+    "workflow schema/property",
+    "api/openapi",
+    "event compatibility",
+    "temporal replay/restart/concurrency/idempotency",
+    "outbox/dlq",
+    "runtime load-lite",
+    "kill/repair smoke",
+    "restricted task/comment attachment upload",
+    "checksum/quota",
+    "quarantine/malware",
+    "authorization",
+    "download",
+    "and lifecycle gate",
+    "model contract/live-sandbox gate",
+    "structured output",
+    "evaluation smoke",
+    "ai usage/cost and kill switch",
+    "tool/credential/ssrf/sandbox security",
+    "full agent evaluation",
+    "release/canary/rollback",
+    "file malware/parser/object lifecycle",
+    "retrieval quality/acl/citation/performance",
+    "connector contract/oauth/webhook/sync fixture suites",
+    "each named provider’s real sandbox certification row",
+    "notification delivery/render/access-recheck",
+    "billing/entitlement/ledger/stripe sandbox"
+  ],
+  "declaredEnvironmentState": "NOT_DEPLOYED",
+  "deployments": [],
+  "environmentGates": [],
+  "evidenceUris": [
+    "repo://packages/operations/src/billing.ts",
+    "repo://packages/db/src/billing-repository.ts",
+    "repo://packages/db/migrations/0026_billing_entitlements.sql",
+    "repo://tests/e2e/billing.spec.ts",
+    "repo://docs/operations/knotline/billing-entitlements.md"
+  ],
+  "externalGates": [
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-005",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-020",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    }
+  ],
+  "flags": [
+    {
+      "evidenceUri": "repo://docs/operations/knotline/billing-entitlements.md",
+      "id": "billing-entitlements"
+    }
+  ],
+  "knownRisks": [
+    {
+      "evidenceUri": "repo://artifacts/verification/external-gates.json",
+      "id": "m29-live-billing-provider-certification",
+      "owner": "shurevan",
+      "status": "blocked-external-before-production"
+    }
+  ],
+  "manualReviews": [],
+  "migrations": [
+    {
+      "evidenceUri": "repo://packages/db/migrations/0026_billing_entitlements.sql",
+      "id": "0026-billing-entitlements"
+    }
+  ],
+  "milestone": "M29",
+  "notYetApplicable": [
+    {
+      "activationMilestone": "M31",
+      "reason": "This gate activates with M31.",
+      "row": "privacy/export/delete/retention/hold/restore-deletion"
+    },
+    {
+      "activationMilestone": "M32",
+      "reason": "This gate activates with M32.",
+      "row": "sso/scim/policy/residency/migration"
+    },
+    {
+      "activationMilestone": "M33",
+      "reason": "This gate activates with M33.",
+      "row": "complete browser/device/locale/pwa/guest/support/manual at matrix"
+    },
+    {
+      "activationMilestone": "M34",
+      "reason": "This gate activates with M34.",
+      "row": "aws staging terraform/fresh deploy/canary/rollback plus workforce operator identity"
+    },
+    {
+      "activationMilestone": "M34",
+      "reason": "This gate activates with M34.",
+      "row": "trace/redaction/sli/alert/runbook/kill/game-day"
+    },
+    {
+      "activationMilestone": "M35",
+      "reason": "This gate activates with M35.",
+      "row": "sast/dast/iac/container/sbom/signature/penetration evidence"
+    },
+    {
+      "activationMilestone": "M36",
+      "reason": "This gate activates with M36.",
+      "row": "section 4.2 full load/soak/chaos/backup/restore/dr profiles"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "terraform"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "fresh bootstrap"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "deployment"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "canary"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "rollback"
+    },
+    {
+      "activationMilestone": "M38",
+      "reason": "This gate activates with M38.",
+      "row": "every gate row above and every external gate in ga scope; zero gate-row n/a/skip/quarantine. reasoned route-state not_applicable remains governed by section 5.8"
+    }
+  ],
+  "owners": [
+    "shurevan"
+  ],
+  "requirements": [],
+  "schemaVersion": 1,
+  "targetEngineeringState": "COMMITTED",
+  "testRuns": [
+    {
+      "command": "pnpm --filter @knotline/operations test",
+      "evidenceUri": "artifact://M29/test-results/billing-unit",
+      "id": "m29-billing-unit"
+    },
+    {
+      "command": "pnpm test:api",
+      "evidenceUri": "artifact://M29/test-results/billing-api",
+      "id": "m29-billing-api"
+    },
+    {
+      "command": "pnpm exec playwright test tests/e2e/billing.spec.ts",
+      "evidenceUri": "artifact://M29/test-results/billing-browser",
+      "id": "m29-billing-browser"
+    },
+    {
+      "command": "pnpm verify:migrations",
+      "evidenceUri": "artifact://M29/test-results/billing-migrations",
+      "id": "m29-billing-migrations"
+    },
+    {
+      "command": "pnpm verify:events && pnpm verify:secrets",
+      "evidenceUri": "artifact://M29/test-results/billing-security",
+      "id": "m29-billing-security"
+    }
+  ]
+}

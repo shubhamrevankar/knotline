@@ -2503,6 +2503,89 @@ const ANALYTICS_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }
 }));
 
+const BILLING_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/plans",
+    "listBillingPlans",
+    "List effective commercial plans"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/checkout-sessions",
+    "createCheckoutSession",
+    "Create a provider checkout handoff"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/billing-portal-sessions",
+    "createBillingPortalSession",
+    "Create a provider billing portal handoff"
+  ],
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/subscription",
+    "getSubscription",
+    "Read projected subscription state"
+  ],
+  ["GET", "/v1/workspaces/{workspaceId}/invoices", "listInvoices", "List invoice projections"],
+  ["GET", "/v1/workspaces/{workspaceId}/usage", "getUsage", "Read reconciled usage"],
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/usage/forecast",
+    "getUsageForecast",
+    "Read a disclosed usage forecast"
+  ],
+  ["GET", "/v1/workspaces/{workspaceId}/budgets", "listBudgets", "List governed budgets"],
+  ["POST", "/v1/workspaces/{workspaceId}/budgets", "createBudget", "Create a governed budget"],
+  ["GET", "/v1/budgets/{budgetId}", "getBudget", "Read a budget"],
+  ["PATCH", "/v1/budgets/{budgetId}", "updateBudget", "Update a revision-safe budget"],
+  [
+    "POST",
+    "/v1/budgets/{budgetId}/thresholds",
+    "createBudgetThreshold",
+    "Create a budget threshold"
+  ],
+  [
+    "PATCH",
+    "/v1/budget-thresholds/{thresholdId}",
+    "updateBudgetThreshold",
+    "Update a budget threshold"
+  ],
+  [
+    "DELETE",
+    "/v1/budget-thresholds/{thresholdId}",
+    "deleteBudgetThreshold",
+    "Delete a budget threshold"
+  ],
+  ["POST", "/v1/workspaces/{workspaceId}/spend-stops", "stopWorkspaceSpend", "Fence new paid work"],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/spend-resumptions",
+    "resumeWorkspaceSpend",
+    "Resume paid work after review"
+  ]
+].map(([method, path, operationId, summary]) => ({
+  method: method as HttpRouteContract["method"],
+  path: path!,
+  operationId: operationId!,
+  summary: summary!,
+  tags: ["Billing"],
+  exposure: "browser_internal" as const,
+  ...(["POST", "PATCH"].includes(method!) ? { requestBody: genericDataSchema } : {}),
+  responses: {
+    200: apiEnvelope(genericDataSchema),
+    201: apiEnvelope(genericDataSchema),
+    204: z.undefined(),
+    400: apiErrorSchema,
+    401: apiErrorSchema,
+    403: apiErrorSchema,
+    404: apiErrorSchema,
+    409: apiErrorSchema,
+    500: apiErrorSchema
+  }
+}));
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
@@ -2520,6 +2603,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...TRIGGER_ROUTE_CONTRACTS,
   ...NOTIFICATION_ROUTE_CONTRACTS,
   ...ANALYTICS_ROUTE_CONTRACTS,
+  ...BILLING_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

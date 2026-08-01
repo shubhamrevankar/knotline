@@ -1,0 +1,21 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M29/test-results/billing-unit.json",
+      "verifiedAt": "2026-08-08T12:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-005",
+      "EXT-020"
+    ],
+    "id": "billing.entitlements-usage-and-spend",
+    "owner": {
+      "contact": "shurevan",
+      "team": "billing-platform"
+    },
+    "runbook": "docs/operations/knotline/billing-entitlements.md",
+    "status": "DEMO",
+    "summary": "Versioned commercial plans, projected subscription state, exact usage, budgets, hard spend fences and honest provider gating are verified with deterministic fixtures."
+  }
+]

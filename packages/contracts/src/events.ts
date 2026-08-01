@@ -403,6 +403,23 @@ export const EVENT_SCHEMA_REGISTRY = [
     schema: runtimeTransitionPayloadV1Schema
   })),
   ...[
+    "billing.subscription_changed",
+    "billing.payment_failed",
+    "billing.invoice_changed",
+    "billing.budget_policy_changed",
+    "billing.budget_threshold_crossed",
+    "usage.reservation_renewed",
+    "usage.recorded",
+    "usage.debt_recorded",
+    "usage.debt_reconciled",
+    "usage.adjusted"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "billing-platform",
+    schema: runtimeTransitionPayloadV1Schema
+  })),
+  ...[
     "approval.requested",
     "approval.delegated",
     "approval.abstained",

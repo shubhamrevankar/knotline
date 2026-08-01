@@ -1549,3 +1549,61 @@ export const transitionConnection = async (
   ).data;
 export const deleteConnection = async (id: string) =>
   (await mutate<ApiEnvelope<Record<string, unknown>>>(`/v1/connections/${id}`, "DELETE", {})).data;
+
+export interface BillingSummary {
+  readonly subscription: null | {
+    readonly planName: string;
+    readonly state: string;
+    readonly periodEnd: string;
+    readonly cancelAtPeriodEnd: boolean;
+  };
+  readonly invoices: readonly {
+    readonly id: string;
+    readonly total: string;
+    readonly currency: string;
+    readonly state: string;
+    readonly hostedUrl?: string;
+  }[];
+  readonly paymentDataStored: boolean;
+  readonly providerState: string;
+}
+export interface UsageSummary {
+  readonly dimensions: readonly {
+    readonly meter: string;
+    readonly quantity: string;
+    readonly unit: string;
+    readonly amount: string;
+    readonly currency: string;
+  }[];
+  readonly freshThrough: string | null;
+  readonly partial: boolean;
+  readonly adjustmentsIncluded: boolean;
+}
+export interface BudgetSummary {
+  readonly id: string;
+  readonly name: string;
+  readonly currency: string;
+  readonly amount: string;
+  readonly mode: "soft" | "hard";
+  readonly period: string;
+  readonly scope: Readonly<Record<string, unknown>>;
+  readonly state: string;
+  readonly revision: number;
+}
+export const fetchBillingSummary = async () =>
+  (await request<ApiEnvelope<BillingSummary>>(`/v1/workspaces/${workspaceId}/subscription`)).data;
+export const fetchUsageSummary = async () =>
+  (await request<ApiEnvelope<UsageSummary>>(`/v1/workspaces/${workspaceId}/usage`)).data;
+export const fetchBudgets = async () =>
+  (await request<ApiEnvelope<BudgetSummary[]>>(`/v1/workspaces/${workspaceId}/budgets`)).data;
+export const createBudget = async (input: Readonly<Record<string, unknown>>) =>
+  (await mutate<ApiEnvelope<BudgetSummary>>(`/v1/workspaces/${workspaceId}/budgets`, "POST", input))
+    .data;
+export const setSpendStop = async (enabled: boolean, reason: string) =>
+  (
+    await mutate<ApiEnvelope<Record<string, unknown>>>(
+      `/v1/workspaces/${workspaceId}/${enabled ? "spend-stops" : "spend-resumptions"}`,
+      "POST",
+      { reason }
+    )
+  ).data;

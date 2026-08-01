@@ -1,0 +1,30 @@
+.billing-shell {
+  display: grid;
+  gap: var(--space-6);
+  max-width: 76rem;
+  margin: auto;
+}
+.billing-shell header {
+  max-width: 48rem;
+}
+.billing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: var(--space-4);
+}
+.billing-grid dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0.65rem 0;
+}
+.billing-shell h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.billing-shell section {
+  display: grid;
+  gap: var(--space-3);
+}

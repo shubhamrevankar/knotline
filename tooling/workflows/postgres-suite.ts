@@ -30,6 +30,7 @@ import {
   PostgresTriggerRepository,
   PostgresNotificationRepository,
   PostgresAnalyticsRepository,
+  PostgresBillingRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -225,6 +226,7 @@ async function runSuite(pool: DatabasePool) {
   const triggerRepository = new PostgresTriggerRepository(pool);
   const notificationRepository = new PostgresNotificationRepository(pool);
   const analyticsRepository = new PostgresAnalyticsRepository(pool);
+  const billingRepository = new PostgresBillingRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -1617,6 +1619,31 @@ async function runSuite(pool: DatabasePool) {
     "Stale report schedule update was accepted"
   );
   await analyticsRepository.deleteSchedule(contextA, String(reportSchedule.id));
+  const planVersionId = randomUUID();
+  await withTenantTransaction(pool, contextA, (client) =>
+    client.query(
+      `INSERT INTO billing_plan_versions(workspace_id,id,plan_key,version,name,currency,monthly_amount,features,quotas,effective_at)VALUES($1,$2,'team',1,'Team','USD',49,'{"agents":true}','{"runs":1000}',clock_timestamp()) ON CONFLICT(workspace_id,plan_key,version) DO NOTHING`,
+      [contextA.workspaceId, planVersionId]
+    )
+  );
+  assert((await billingRepository.plans(contextA)).length === 1, "Billing plan was unavailable");
+  assert((await billingRepository.plans(contextB)).length === 0, "Billing plan crossed tenant RLS");
+  const budget = await billingRepository.createBudget(contextA, {
+    name: "Workspace monthly limit",
+    currency: "USD",
+    amount: "500.00",
+    mode: "hard",
+    period: "monthly",
+    scope: {}
+  });
+  const threshold = await billingRepository.addThreshold(contextA, String(budget.id), {
+    percent: 90,
+    action: "stop",
+    channels: ["in_app"]
+  });
+  assert(Boolean(threshold.id), "Budget threshold was not persisted");
+  const usage = await billingRepository.usage(contextA);
+  assert(usage.partial === true, "Empty usage was not labelled partial");
 
   const immutable = await Promise.allSettled([
     withTenantTransaction(pool, contextA, (client) =>
@@ -2085,6 +2112,7 @@ async function runSuite(pool: DatabasePool) {
     triggers: triggerRepository,
     notifications: notificationRepository,
     analytics: analyticsRepository,
+    billing: billingRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),

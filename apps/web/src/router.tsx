@@ -162,6 +162,8 @@ const AnalyticsPage = lazy(async () => ({
 const ReportDetailPage = lazy(async () => ({
   default: (await import("./M28Pages.js")).ReportDetailPage
 }));
+const BillingPage = lazy(async () => ({ default: (await import("./M29Pages.js")).BillingPage }));
+const UsagePage = lazy(async () => ({ default: (await import("./M29Pages.js")).UsagePage }));
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -724,6 +726,14 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label={msg("analytics.loading")} />}>
           <ReportDetailPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.settings.billing" || route.id === "route.app.settings.usage")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("billing.loading")} />}>
+          {route.id === "route.app.settings.billing" ? <BillingPage /> : <UsagePage />}
         </Suspense>
       </AuthGate>
     );

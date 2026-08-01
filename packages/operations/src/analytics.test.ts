@@ -112,4 +112,28 @@ describe("authorized operational analytics", () => {
       ).value
     ).toBe(3);
   });
+  it("applies authorized deletions and count defaults", () => {
+    expect(
+      aggregateMetric(
+        {
+          key: "count",
+          sourceTypes: ["done"],
+          aggregation: "count",
+          lateArrivalHours: 1,
+          version: 1
+        },
+        [
+          { id: "default", type: "done", occurredAt: "2026-01-01T00:00:00Z" },
+          { id: "gone", type: "done", occurredAt: "2026-01-01T00:00:00Z", deleted: true },
+          {
+            id: "correction",
+            correctionOf: "missing",
+            type: "done",
+            occurredAt: "2026-01-01T00:00:00Z"
+          }
+        ],
+        () => true
+      ).contributingIds
+    ).toEqual(["default", "correction"]);
+  });
 });
