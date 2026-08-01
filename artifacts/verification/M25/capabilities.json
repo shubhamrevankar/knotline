@@ -1,0 +1,90 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M25/test-results/data-unit.json",
+      "verifiedAt": "2026-08-04T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-008"
+    ],
+    "id": "connectors.microsoft-365",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/data-and-productivity-connectors.md",
+    "status": "DEMO",
+    "summary": "Microsoft files, mail, calendar, shared ACL, delta, action, and reconciliation contracts pass recorded fixtures."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M25/test-results/data-unit.json",
+      "verifiedAt": "2026-08-04T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-007"
+    ],
+    "id": "connectors.google-mail-calendar",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/data-and-productivity-connectors.md",
+    "status": "DEMO",
+    "summary": "Gmail history/thread and Calendar token/time-zone/recurrence/action contracts pass recorded fixtures."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M25/test-results/data-unit.json",
+      "verifiedAt": "2026-08-04T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-013"
+    ],
+    "id": "connectors.crm",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/data-and-productivity-connectors.md",
+    "status": "DEMO",
+    "summary": "Salesforce and HubSpot schema, field security, event, action, and reconciliation contracts pass recorded fixtures."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M25/test-results/data-unit.json",
+      "verifiedAt": "2026-08-04T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-025"
+    ],
+    "id": "connectors.s3",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/data-and-productivity-connectors.md",
+    "status": "DEMO",
+    "summary": "S3 endpoint, prefix, version, encryption, event, and deletion contracts pass recorded fixtures."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M25/test-results/data-unit.json",
+      "verifiedAt": "2026-08-04T18:00:00.000Z"
+    },
+    "externalGates": [],
+    "id": "connectors.csv-rest-webhook",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/data-and-productivity-connectors.md",
+    "status": "DEMO",
+    "summary": "CSV resume/rollback, allowlisted REST, and rotated webhook/DLQ contracts pass local fixtures."
+  }
+]

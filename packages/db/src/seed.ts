@@ -4,9 +4,13 @@ import {
   PROVIDER_CAPABILITY_STATUS,
   COLLABORATION_PROVIDER_MANIFESTS,
   COLLABORATION_EXTERNAL_GATES,
+  DATA_PROVIDER_MANIFESTS,
+  DATA_PROVIDER_EXTERNAL_GATES,
+  certifyDataProvider,
   certifyCollaborationProvider,
   certifyKnowledgeProvider,
   type CollaborationProvider,
+  type DataProvider,
   type KnowledgeProvider
 } from "@knotline/connector-sdk";
 
@@ -222,6 +226,64 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
             certification,
             JSON.stringify([
               "Recorded fixtures are certified; provider sandbox certification is required before LIVE."
+            ])
+          ]
+        );
+      }
+    }
+    const dataProviders = [
+      "microsoft-365",
+      "google-mail-calendar",
+      "salesforce",
+      "hubspot",
+      "s3-compatible",
+      "csv-import",
+      "generic-rest",
+      "signed-webhook"
+    ] as const;
+    const dataProviderIds = Object.fromEntries(
+      dataProviders.map((provider, index) => [
+        provider,
+        `27000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`
+      ])
+    ) as Record<DataProvider, string>;
+    const dataCertificationIds = Object.fromEntries(
+      dataProviders.map((provider, index) => [
+        provider,
+        `28000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`
+      ])
+    ) as Record<DataProvider, string>;
+    for (const provider of dataProviders) {
+      const manifest = DATA_PROVIDER_MANIFESTS[provider],
+        certification = certifyDataProvider(provider);
+      for (const [workspaceId, userId] of [
+        [SEED.workspaceA, SEED.userA],
+        [SEED.workspaceB, SEED.userB]
+      ] as const) {
+        await client.query(
+          `INSERT INTO connector_manifest_versions(workspace_id,id,connector_key,semantic_version,manifest,content_hash,state,rollout_percent,created_by) VALUES($1,$2,$3,$4,$5,$6,'active',100,$7) ON CONFLICT(workspace_id,id) DO NOTHING`,
+          [
+            workspaceId,
+            dataProviderIds[provider],
+            manifest.key,
+            manifest.version,
+            manifest,
+            contentHash(manifest),
+            userId
+          ]
+        );
+        await client.query(
+          `INSERT INTO provider_connector_certifications(workspace_id,id,connector_key,manifest_version,engineering_status,live_status,external_gate,fixture_digest,capabilities,limitations,certified_at) VALUES($1,$2,$3,$4,'RECORDED','BLOCKED_EXTERNAL',$5,$6,$7,$8,'2026-08-01T00:00:00Z') ON CONFLICT(workspace_id,id) DO NOTHING`,
+          [
+            workspaceId,
+            dataCertificationIds[provider],
+            manifest.key,
+            manifest.version,
+            DATA_PROVIDER_EXTERNAL_GATES[provider],
+            contentHash(certification),
+            certification,
+            JSON.stringify([
+              "Recorded fixture certification only; production activation remains blocked."
             ])
           ]
         );

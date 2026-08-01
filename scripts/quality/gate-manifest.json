@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "milestone": "M24",
+  "milestone": "M25",
   "rows": [
     {
       "name": "format:check",
@@ -143,6 +143,7 @@
       "requiredTestFiles": [
         "packages/connector-sdk/src/knowledge-providers.test.ts",
         "packages/connector-sdk/src/collaboration-providers.test.ts",
+        "packages/connector-sdk/src/data-providers.test.ts",
         "tests/e2e/connections.spec.ts"
       ]
     },

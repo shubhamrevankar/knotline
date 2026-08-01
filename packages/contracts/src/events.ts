@@ -535,7 +535,12 @@ export const EVENT_SCHEMA_REGISTRY = [
     "provider.metadata_refreshed",
     "provider.identity_bound",
     "provider.webhook_quarantined",
-    "provider.capability_changed"
+    "provider.capability_changed",
+    "connector.delta_reset",
+    "connector.import_completed",
+    "connector.import_rolled_back",
+    "webhook.delivery_dead_lettered",
+    "connector.resource_access_revoked"
   ].map((eventType) => ({
     eventType,
     eventVersion: 1,

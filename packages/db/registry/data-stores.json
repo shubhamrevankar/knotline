@@ -1423,6 +1423,55 @@
       "retentionDays": 90,
       "exportHandler": "connector-export",
       "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "connector_resource_grants",
+      "class": "connector.resource_grant",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "connector-delete"
+    },
+    {
+      "name": "connector_delta_cursors",
+      "class": "connector.delta_cursor",
+      "retentionDays": 90,
+      "exportHandler": "connector-export",
+      "deleteHandler": "connector-delete"
+    },
+    {
+      "name": "connector_import_batches",
+      "class": "connector.import_batch",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "connector-delete"
+    },
+    {
+      "name": "connector_import_row_receipts",
+      "class": "connector.import_receipt",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "generic_rest_spec_versions",
+      "class": "connector.rest_spec",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "webhook_schema_versions",
+      "class": "connector.webhook_schema",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "webhook_delivery_receipts",
+      "class": "connector.webhook_delivery",
+      "retentionDays": 90,
+      "exportHandler": "connector-export",
+      "deleteHandler": "retention-delete"
     }
   ],
   "indexes": [
@@ -1773,7 +1822,22 @@
     "collaboration_action_policy_snapshots_pkey",
     "collaboration_action_policy_snapshots_workspace_id_connection_id_action_key_manifest_version_key",
     "provider_webhook_quarantine_pkey",
-    "provider_webhook_quarantine_workspace_id_provider_installation_id_delivery_id_key"
+    "provider_webhook_quarantine_workspace_id_provider_installation_id_delivery_id_key",
+    "connector_resource_grants_pkey",
+    "connector_resource_grants_workspace_id_connection_id_external_resource_id_principal_id_key",
+    "connector_resource_grants_acl_idx",
+    "connector_delta_cursors_pkey",
+    "connector_import_batches_pkey",
+    "connector_import_batches_state_idx",
+    "connector_import_row_receipts_pkey",
+    "connector_import_row_receipts_workspace_id_batch_id_row_number_key",
+    "generic_rest_spec_versions_pkey",
+    "generic_rest_spec_versions_workspace_id_connection_id_version_key",
+    "webhook_schema_versions_pkey",
+    "webhook_schema_versions_workspace_id_connection_id_direction_schema_key_version_key",
+    "webhook_delivery_receipts_pkey",
+    "webhook_delivery_receipts_workspace_id_connection_id_direction_delivery_id_key",
+    "webhook_delivery_retry_idx"
   ],
   "caches": []
 }

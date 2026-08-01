@@ -1135,6 +1135,24 @@ async function runSuite(pool: DatabasePool) {
       `Recorded collaboration certification was not explicit for ${connectorKey}`
     );
   }
+  for (const connectorKey of [
+    "microsoft-365",
+    "google-mail-calendar",
+    "salesforce-crm",
+    "hubspot-crm",
+    "s3-compatible",
+    "csv-import",
+    "generic-rest",
+    "signed-webhook"
+  ]) {
+    const dataCatalog = await connectorRepository.catalog(contextA, connectorKey);
+    assert(
+      dataCatalog.length === 1 &&
+        (dataCatalog[0]?.certification as { liveStatus?: string } | undefined)?.liveStatus ===
+          "BLOCKED_EXTERNAL",
+      `Recorded data connector certification was not explicit for ${connectorKey}`
+    );
+  }
   const providerConnection = await connectorRepository.create(contextA, {
     connectorKey: "google-workspace-knowledge",
     manifestVersion: "1.0.0",
@@ -2006,7 +2024,7 @@ async function runSuite(pool: DatabasePool) {
       data: { items: unknown[]; catalog: unknown[] };
     }>().data;
     assert(
-      connectionsResponse.statusCode === 200 && connectionSurface.catalog.length === 10,
+      connectionsResponse.statusCode === 200 && connectionSurface.catalog.length === 18,
       "Connection catalog and health API failed"
     );
     const sourcesResponse = await app.inject({
