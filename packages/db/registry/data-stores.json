@@ -1759,6 +1759,48 @@
       "retentionDays": 7,
       "exportHandler": "developer-metadata-export",
       "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "governance_exports",
+      "class": "governance.export",
+      "retentionDays": 30,
+      "exportHandler": "governance-export",
+      "deleteHandler": "expiry-delete"
+    },
+    {
+      "name": "retention_policies",
+      "class": "governance.retention",
+      "retentionDays": 2555,
+      "exportHandler": "governance-export",
+      "deleteHandler": "tenant-delete"
+    },
+    {
+      "name": "legal_holds",
+      "class": "governance.legal_hold",
+      "retentionDays": 2555,
+      "exportHandler": "governance-export",
+      "deleteHandler": "hold-governed-delete"
+    },
+    {
+      "name": "data_deletion_jobs",
+      "class": "governance.deletion",
+      "retentionDays": 2555,
+      "exportHandler": "deletion-proof-export",
+      "deleteHandler": "immutable-proof-retention"
+    },
+    {
+      "name": "workspace_data_policies",
+      "class": "governance.policy",
+      "retentionDays": 2555,
+      "exportHandler": "governance-export",
+      "deleteHandler": "tenant-delete"
+    },
+    {
+      "name": "support_access_grants",
+      "class": "governance.support_access",
+      "retentionDays": 2555,
+      "exportHandler": "governance-export",
+      "deleteHandler": "grant-revoke-delete"
     }
   ],
   "indexes": [
@@ -2196,7 +2238,15 @@
     "outgoing_webhook_deliveries_workspace_id_idempotency_key_key",
     "outgoing_webhook_delivery_idx",
     "public_api_idempotency_pkey",
-    "public_api_rate_buckets_pkey"
+    "public_api_rate_buckets_pkey",
+    "audit_events_workspace_id_sequence_key",
+    "audit_events_search_idx",
+    "governance_exports_pkey",
+    "retention_policies_pkey",
+    "legal_holds_pkey",
+    "data_deletion_jobs_pkey",
+    "workspace_data_policies_pkey",
+    "support_access_grants_pkey"
   ],
   "caches": []
 }

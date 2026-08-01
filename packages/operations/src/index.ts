@@ -7,6 +7,7 @@ export * from "./notifications.js";
 export * from "./analytics.js";
 export * from "./billing.js";
 export * from "./developer-platform.js";
+export * from "./governance.js";
 export * from "./ownership.js";
 export * from "./promotion.js";
 export * from "./reservations.js";

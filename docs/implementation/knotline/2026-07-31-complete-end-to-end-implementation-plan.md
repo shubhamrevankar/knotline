@@ -7785,7 +7785,7 @@ documented, secure API and event platform.
 
 ### M31 — Governance, immutable audit, privacy, retention, export, and deletion
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M21, M27, M29, M30\
 **Required commit:** `feat: deliver audit privacy export and deletion governance`
 
@@ -9274,7 +9274,7 @@ must appear in that milestone's boundary cell.
 | M28 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver global search saved views and operational analytics` |
 | M29 | `COMMITTED` | `NOT_DEPLOYED` | EXT-005, EXT-020 | `feat: add Stripe billing usage and enforced entitlements` |
 | M30 | `COMMITTED` | `NOT_DEPLOYED` | EXT-001, EXT-021 | `feat: deliver the Knotline developer platform` |
-| M31 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-016, EXT-022 | `feat: deliver audit privacy export and deletion governance` |
+| M31 | `COMMITTED` | `NOT_DEPLOYED` | EXT-016, EXT-022 | `feat: deliver audit privacy export and deletion governance` |
 | M32 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-015, EXT-022 | `feat: add enterprise identity provisioning and data policy` |
 | M33 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-001, EXT-006, EXT-016, EXT-019, EXT-020, EXT-021, EXT-023 | `feat: deliver the installable accessible global Knotline experience` |
 | M34 | `NOT_STARTED` | `NOT_DEPLOYED` | Base staging: EXT-002, EXT-003, EXT-019, EXT-021, EXT-022, EXT-024; per-capability branches retain EXT-004, EXT-005, EXT-006, EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, EXT-015, EXT-025 individually | `feat: operationalize Knotline with SLOs and kill switches` |

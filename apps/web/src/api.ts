@@ -1666,3 +1666,89 @@ export const createDeveloperWebhook = async (input: Readonly<Record<string, unkn
       input
     )
   ).data;
+export interface AuditEvent {
+  readonly id: string;
+  readonly sequence: number;
+  readonly action: string;
+  readonly resourceType: string;
+  readonly result: string;
+  readonly eventHash: string;
+  readonly occurredAt: string;
+}
+export interface RetentionPolicy {
+  readonly dataClass: string;
+  readonly durationDays: number;
+  readonly action: string;
+  readonly version: number;
+}
+export interface LegalHold {
+  readonly id: string;
+  readonly caseReference: string;
+  readonly reason: string;
+  readonly state: string;
+}
+export interface SupportAccessGrant {
+  readonly id: string;
+  readonly operatorReference: string;
+  readonly reason: string;
+  readonly ticket: string;
+  readonly accessMode: string;
+  readonly state: string;
+  readonly expiresAt: string;
+}
+export const fetchAuditEvents = async () =>
+  (await request<ApiEnvelope<AuditEvent[]>>(`/v1/workspaces/${workspaceId}/audit-events`)).data;
+export const createAuditExport = async () =>
+  (
+    await mutate<ApiEnvelope<Record<string, unknown>>>(
+      `/v1/workspaces/${workspaceId}/audit-exports`,
+      "POST",
+      { query: {} }
+    )
+  ).data;
+export const fetchRetentionPolicies = async () =>
+  (
+    await request<ApiEnvelope<RetentionPolicy[]>>(
+      `/v1/workspaces/${workspaceId}/retention-policies`
+    )
+  ).data;
+export const putRetentionPolicies = async (input: readonly Readonly<Record<string, unknown>>[]) =>
+  (
+    await mutate<ApiEnvelope<RetentionPolicy[]>>(
+      `/v1/workspaces/${workspaceId}/retention-policies`,
+      "PUT",
+      input
+    )
+  ).data;
+export const fetchLegalHolds = async () =>
+  (await request<ApiEnvelope<LegalHold[]>>(`/v1/workspaces/${workspaceId}/legal-holds`)).data;
+export const createLegalHold = async (input: Readonly<Record<string, unknown>>) =>
+  (await mutate<ApiEnvelope<LegalHold>>(`/v1/workspaces/${workspaceId}/legal-holds`, "POST", input))
+    .data;
+export const requestWorkspaceExport = async () =>
+  (
+    await mutate<ApiEnvelope<Record<string, unknown>>>(
+      `/v1/workspaces/${workspaceId}/data-exports`,
+      "POST",
+      { query: {} }
+    )
+  ).data;
+export const requestWorkspaceDeletion = async () =>
+  (
+    await mutate<ApiEnvelope<Record<string, unknown>>>(
+      `/v1/workspaces/${workspaceId}/deletion-requests`,
+      "POST",
+      {}
+    )
+  ).data;
+export const fetchSupportAccess = async () =>
+  (await request<ApiEnvelope<SupportAccessGrant[]>>(`/v1/workspaces/${workspaceId}/support-access`))
+    .data;
+export const createSupportAccess = async (input: Readonly<Record<string, unknown>>) =>
+  (
+    await mutate<ApiEnvelope<SupportAccessGrant>>(
+      `/v1/workspaces/${workspaceId}/support-access`,
+      "POST",
+      input
+    )
+  ).data;

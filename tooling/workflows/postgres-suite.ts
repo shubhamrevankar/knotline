@@ -32,6 +32,7 @@ import {
   PostgresAnalyticsRepository,
   PostgresBillingRepository,
   PostgresDeveloperRepository,
+  PostgresGovernanceRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -229,6 +230,7 @@ async function runSuite(pool: DatabasePool) {
   const analyticsRepository = new PostgresAnalyticsRepository(pool);
   const billingRepository = new PostgresBillingRepository(pool);
   const developerRepository = new PostgresDeveloperRepository(pool);
+  const governanceRepository = new PostgresGovernanceRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -1674,20 +1676,46 @@ async function runSuite(pool: DatabasePool) {
     eventTypes: ["run.succeeded"]
   });
   assert(webhook.displayedOnce === true, "Webhook signing secret was not one-time");
-  const oauthClient = await developerRepository.createOauthClient(contextA, {
+  const oauthClient = (await developerRepository.createOauthClient(contextA, {
     name: "Local integration",
     redirectUris: ["https://example.test/callback"],
     scopes: ["runs:read"]
-  });
+  })) as Record<string, unknown>;
   assert(oauthClient.displayedOnce === true, "OAuth client secret was not one-time");
-  const rotatedOauthClient = await developerRepository.rotateOauthClient(
+  const rotatedOauthClient = (await developerRepository.rotateOauthClient(
     contextA,
     String(oauthClient.id)
-  );
+  )) as Record<string, unknown>;
   assert(
     Number(rotatedOauthClient.secretVersion) === 2,
     "OAuth client secret revision did not advance"
   );
+  const auditEntry = await governanceRepository.appendAudit(contextA, {
+    action: "retention.policy.changed",
+    resourceType: "workspace",
+    resourceId: contextA.workspaceId,
+    metadata: { dataClass: "run_content" }
+  });
+  assert(Number(auditEntry.sequence) > 0, "Governance audit was not sequenced");
+  assert(
+    !(await governanceRepository.auditEvents(contextB)).some(
+      (event) => event.action === "retention.policy.changed"
+    ),
+    "Audit crossed tenant RLS"
+  );
+  const policies = await governanceRepository.putRetention(contextA, [
+    { dataClass: "run_content", durationDays: 365, action: "delete" }
+  ]);
+  assert(policies.length === 1, "Retention policy was not persisted");
+  await governanceRepository.createHold(contextA, {
+    caseReference: "CASE-1",
+    scope: { workspace: true },
+    reason: "Authorized review"
+  });
+  const governanceDeletion = await governanceRepository.createDeletion(contextA, {
+    scope: "workspace"
+  });
+  assert(governanceDeletion.state === "blocked_hold", "Legal hold did not block deletion");
 
   const immutable = await Promise.allSettled([
     withTenantTransaction(pool, contextA, (client) =>
@@ -2158,6 +2186,7 @@ async function runSuite(pool: DatabasePool) {
     analytics: analyticsRepository,
     billing: billingRepository,
     developer: developerRepository,
+    governance: governanceRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),

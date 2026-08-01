@@ -435,6 +435,21 @@ export const EVENT_SCHEMA_REGISTRY = [
     schema: runtimeTransitionPayloadV1Schema
   })),
   ...[
+    "governance.audit_appended",
+    "governance.audit_export_requested",
+    "governance.retention_changed",
+    "governance.legal_hold_changed",
+    "governance.export_requested",
+    "governance.deletion_requested",
+    "governance.deletion_completed",
+    "governance.support_access_changed"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "governance-platform",
+    schema: runtimeTransitionPayloadV1Schema
+  })),
+  ...[
     "approval.requested",
     "approval.delegated",
     "approval.abstained",

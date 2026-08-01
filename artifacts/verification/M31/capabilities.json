@@ -1,0 +1,21 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M31/test-results/m31-governance-browser.json",
+      "verifiedAt": "2026-08-10T12:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-016",
+      "EXT-022"
+    ],
+    "id": "governance.audit-privacy-export-and-deletion",
+    "owner": {
+      "contact": "shurevan",
+      "team": "governance-platform"
+    },
+    "runbook": "docs/operations/knotline/governance.md",
+    "status": "DEMO",
+    "summary": "Tamper-evident audit, bounded retention, legal holds, portable exports, deletion jobs and scoped support access are verified with tenant-isolated fixtures."
+  }
+]

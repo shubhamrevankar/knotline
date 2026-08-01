@@ -46,6 +46,7 @@ import type {
   AnalyticsRepository,
   BillingRepository,
   DeveloperRepository,
+  GovernanceRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -106,6 +107,7 @@ export interface BuildAppOptions {
   readonly analytics?: AnalyticsRepository;
   readonly billing?: BillingRepository;
   readonly developer?: DeveloperRepository;
+  readonly governance?: GovernanceRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -3295,6 +3297,184 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       }
     })
   );
+  const governanceRepository = () => {
+    if (!options.governance) throw new Error("Governance is not configured");
+    return options.governance;
+  };
+  const exportParams = z.object({ exportId: z.string().uuid() }).strict(),
+    deletionParams = z.object({ requestId: z.string().uuid() }).strict(),
+    holdParams = z.object({ holdId: z.string().uuid() }).strict(),
+    supportParams = z.object({ grantId: z.string().uuid() }).strict();
+  const workspaceAccess = async (request: FastifyRequest, mutation = false) => {
+    const authenticated = mutation ? await protectMutation(request) : await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return agentAccess(request, mutation);
+  };
+  app.get("/v1/workspaces/:workspaceId/audit-events", async (request) => ({
+    data: await governanceRepository().auditEvents(await workspaceAccess(request))
+  }));
+  app.post("/v1/workspaces/:workspaceId/audit-exports", async (request, reply) =>
+    reply.code(202).send({
+      data: await governanceRepository().createExport(
+        await workspaceAccess(request, true),
+        "audit",
+        z
+          .object({ query: z.record(z.string(), z.unknown()).default({}) })
+          .strict()
+          .parse(request.body)
+      )
+    })
+  );
+  app.get("/v1/audit-exports/:exportId", async (request) => ({
+    data: await governanceRepository().export(
+      await agentAccess(request),
+      exportParams.parse(request.params).exportId
+    )
+  }));
+  app.post("/v1/workspaces/:workspaceId/data-exports", async (request, reply) =>
+    reply.code(202).send({
+      data: await governanceRepository().createExport(
+        await workspaceAccess(request, true),
+        "workspace",
+        z
+          .object({ query: z.record(z.string(), z.unknown()).default({}) })
+          .strict()
+          .parse(request.body)
+      )
+    })
+  );
+  app.get("/v1/data-exports/:exportId", async (request) => ({
+    data: await governanceRepository().export(
+      await agentAccess(request),
+      exportParams.parse(request.params).exportId
+    )
+  }));
+  app.post("/v1/me/data-exports", async (request, reply) =>
+    reply.code(202).send({
+      data: await governanceRepository().createExport(await agentAccess(request, true), "user", {
+        subjectUserId: (await authenticate(request)).identity.user.id,
+        query: {}
+      })
+    })
+  );
+  app.post("/v1/me/deletion-requests", async (request, reply) =>
+    reply.code(202).send({
+      data: await governanceRepository().createDeletion(await agentAccess(request, true), {
+        subjectUserId: (await authenticate(request)).identity.user.id,
+        scope: "user"
+      })
+    })
+  );
+  app.post("/v1/workspaces/:workspaceId/deletion-requests", async (request, reply) =>
+    reply.code(202).send({
+      data: await governanceRepository().createDeletion(await workspaceAccess(request, true), {
+        scope: "workspace"
+      })
+    })
+  );
+  app.get("/v1/deletion-requests/:requestId", async (request) => ({
+    data: await governanceRepository().deletion(
+      await agentAccess(request),
+      deletionParams.parse(request.params).requestId
+    )
+  }));
+  const retentionSchema = z
+    .array(
+      z
+        .object({
+          dataClass: z.string().min(1).max(80),
+          durationDays: z.number().int().min(1).max(3650),
+          action: z.enum(["delete", "anonymize", "archive"])
+        })
+        .strict()
+    )
+    .min(1);
+  app.get("/v1/workspaces/:workspaceId/retention-policies", async (request) => ({
+    data: await governanceRepository().retention(await workspaceAccess(request))
+  }));
+  app.put("/v1/workspaces/:workspaceId/retention-policies", async (request) => ({
+    data: await governanceRepository().putRetention(
+      await workspaceAccess(request, true),
+      retentionSchema.parse(request.body)
+    )
+  }));
+  app.get("/v1/workspaces/:workspaceId/legal-holds", async (request) => ({
+    data: await governanceRepository().holds(await workspaceAccess(request))
+  }));
+  app.post("/v1/workspaces/:workspaceId/legal-holds", async (request, reply) =>
+    reply.code(201).send({
+      data: await governanceRepository().createHold(
+        await workspaceAccess(request, true),
+        z
+          .object({
+            caseReference: z.string().min(1).max(120),
+            scope: z.record(z.string(), z.unknown()),
+            reason: z.string().min(3).max(500),
+            approvedBy: z.string().uuid().optional()
+          })
+          .strict()
+          .parse(request.body)
+      )
+    })
+  );
+  app.post("/v1/legal-holds/:holdId/releases", async (request, reply) =>
+    reply.code(202).send({
+      data: await governanceRepository().releaseHold(
+        await agentAccess(request, true),
+        holdParams.parse(request.params).holdId
+      )
+    })
+  );
+  const dataPolicySchema = z
+    .object({
+      telemetry: z.enum(["none", "minimal", "standard"]),
+      modelProviders: z.array(z.string()),
+      connectorPolicy: z.record(z.string(), z.unknown()),
+      filePolicy: z.record(z.string(), z.unknown()),
+      memoryPolicy: z.record(z.string(), z.unknown()),
+      publicSharing: z.boolean(),
+      supportAccess: z.boolean(),
+      allowedRegion: z.enum(["us", "eu"])
+    })
+    .strict();
+  app.get("/v1/workspaces/:workspaceId/data-policies", async (request) => ({
+    data: (await governanceRepository().dataPolicy(await workspaceAccess(request))) ?? null
+  }));
+  app.put("/v1/workspaces/:workspaceId/data-policies", async (request) => ({
+    data: await governanceRepository().putDataPolicy(
+      await workspaceAccess(request, true),
+      dataPolicySchema.parse(request.body)
+    )
+  }));
+  app.get("/v1/workspaces/:workspaceId/support-access", async (request) => ({
+    data: await governanceRepository().supportAccess(await workspaceAccess(request))
+  }));
+  app.post("/v1/workspaces/:workspaceId/support-access", async (request, reply) =>
+    reply.code(201).send({
+      data: await governanceRepository().createSupportAccess(
+        await workspaceAccess(request, true),
+        z
+          .object({
+            operatorReference: z.string().min(1).max(200),
+            scope: z.record(z.string(), z.unknown()),
+            reason: z.string().min(3).max(500),
+            ticket: z.string().min(1).max(120),
+            accessMode: z.enum(["read", "write"]),
+            expiresAt: z.iso.datetime()
+          })
+          .strict()
+          .parse(request.body)
+      )
+    })
+  );
+  app.delete("/v1/support-access/:grantId", async (request, reply) => {
+    await governanceRepository().revokeSupportAccess(
+      await agentAccess(request, true),
+      supportParams.parse(request.params).grantId
+    );
+    return reply.code(204).send();
+  });
   const connectionParams = z.object({ connectionId: z.string().uuid() }).strict();
   app.get("/v1/workspaces/:workspaceId/connections", async (request) => {
     const authenticated = await authenticate(request);

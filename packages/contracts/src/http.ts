@@ -2724,6 +2724,107 @@ const PUBLIC_DEVELOPER_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
     responses: { 200: apiEnvelope(genericDataSchema), 429: apiErrorSchema, 500: apiErrorSchema }
   }
 ];
+const GOVERNANCE_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/audit-events",
+    "listAuditEvents",
+    "Search immutable audit events"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/audit-exports",
+    "createAuditExport",
+    "Create a signed audit export"
+  ],
+  ["GET", "/v1/audit-exports/{exportId}", "getAuditExport", "Get an audit export"],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/data-exports",
+    "createWorkspaceDataExport",
+    "Create a workspace data export"
+  ],
+  ["GET", "/v1/data-exports/{exportId}", "getDataExport", "Get a data export"],
+  ["POST", "/v1/me/data-exports", "createUserDataExport", "Create a user privacy export"],
+  [
+    "POST",
+    "/v1/me/deletion-requests",
+    "createUserDeletionRequest",
+    "Create a user deletion request"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/deletion-requests",
+    "createWorkspaceDeletionRequest",
+    "Create a workspace deletion request"
+  ],
+  [
+    "GET",
+    "/v1/deletion-requests/{requestId}",
+    "getDeletionRequest",
+    "Get deletion propagation status"
+  ],
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/retention-policies",
+    "listRetentionPolicies",
+    "List retention policies"
+  ],
+  [
+    "PUT",
+    "/v1/workspaces/{workspaceId}/retention-policies",
+    "putRetentionPolicies",
+    "Replace retention policies"
+  ],
+  ["GET", "/v1/workspaces/{workspaceId}/legal-holds", "listLegalHolds", "List legal holds"],
+  ["POST", "/v1/workspaces/{workspaceId}/legal-holds", "createLegalHold", "Create a legal hold"],
+  ["POST", "/v1/legal-holds/{holdId}/releases", "releaseLegalHold", "Release a legal hold"],
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/data-policies",
+    "getDataPolicy",
+    "Get the effective data policy"
+  ],
+  [
+    "PUT",
+    "/v1/workspaces/{workspaceId}/data-policies",
+    "putDataPolicy",
+    "Update the effective data policy"
+  ],
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/support-access",
+    "listSupportAccess",
+    "List support access grants"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/support-access",
+    "createSupportAccess",
+    "Create bounded support access"
+  ],
+  ["DELETE", "/v1/support-access/{grantId}", "revokeSupportAccess", "Revoke support access"]
+].map(([method, path, operationId, summary]) => ({
+  method: method as HttpRouteContract["method"],
+  path: path!,
+  operationId: operationId!,
+  summary: summary!,
+  tags: ["Governance"],
+  exposure: "browser_internal" as const,
+  ...(["POST", "PUT", "PATCH"].includes(method!) ? { requestBody: genericDataSchema } : {}),
+  responses: {
+    200: apiEnvelope(genericDataSchema),
+    201: apiEnvelope(genericDataSchema),
+    202: apiEnvelope(genericDataSchema),
+    204: z.undefined(),
+    400: apiErrorSchema,
+    401: apiErrorSchema,
+    403: apiErrorSchema,
+    404: apiErrorSchema,
+    409: apiErrorSchema,
+    500: apiErrorSchema
+  }
+}));
 
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
@@ -2745,6 +2846,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...BILLING_ROUTE_CONTRACTS,
   ...DEVELOPER_ROUTE_CONTRACTS,
   ...PUBLIC_DEVELOPER_ROUTE_CONTRACTS,
+  ...GOVERNANCE_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",
