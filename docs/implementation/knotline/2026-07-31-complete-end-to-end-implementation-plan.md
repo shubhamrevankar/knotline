@@ -8399,7 +8399,7 @@ review and formal assurance.
 
 ### M36 — Performance, scale, chaos, backup, resilience, and disaster recovery
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M18, M21, M26, M28, M29, M34, M35\
 **Required commit:** `perf: prove Knotline capacity resilience and recovery`
 
@@ -9281,7 +9281,7 @@ must appear in that milestone's boundary cell.
 | M33 | `COMMITTED` | `NOT_DEPLOYED` | EXT-001, EXT-006, EXT-016, EXT-019, EXT-020, EXT-021, EXT-023 | `feat: deliver the installable accessible global Knotline experience` |
 | M34 | `COMMITTED` | `NOT_DEPLOYED` | Base staging: EXT-002, EXT-003, EXT-019, EXT-021, EXT-022, EXT-024; per-capability branches retain EXT-004, EXT-005, EXT-006, EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, EXT-015, EXT-025 individually | `feat: operationalize Knotline with SLOs and kill switches` |
 | M35 | `COMMITTED` | `NOT_DEPLOYED` | EXT-016, EXT-017, EXT-018, EXT-019, EXT-022, EXT-024 | `security: complete product and supply-chain assurance` |
-| M36 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-002, EXT-003, EXT-004, EXT-019, EXT-022 | `perf: prove Knotline capacity resilience and recovery` |
+| M36 | `COMMITTED` | `NOT_DEPLOYED` | EXT-002, EXT-003, EXT-004, EXT-019, EXT-022 | `perf: prove Knotline capacity resilience and recovery` |
 | M37 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-002, EXT-003, EXT-006, EXT-021, EXT-022 | `infra: deliver reproducible AWS production environments` |
 | M38 | `NOT_STARTED` | `NOT_DEPLOYED` | Default required rows: EXT-001, EXT-002, EXT-003, EXT-004, EXT-005, EXT-006, EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, EXT-015, EXT-016, EXT-017, EXT-019, EXT-020, EXT-021, EXT-022, EXT-023, EXT-024, EXT-025; EXT-018 only when a certification claim is approved | `release: certify Knotline for general availability` |
 

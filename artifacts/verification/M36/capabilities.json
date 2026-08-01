@@ -1,0 +1,24 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M36/test-results/m36-resilience-model.json",
+      "verifiedAt": "2026-08-15T12:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-002",
+      "EXT-003",
+      "EXT-004",
+      "EXT-019",
+      "EXT-022"
+    ],
+    "id": "resilience.capacity-chaos-backup-and-recovery",
+    "owner": {
+      "contact": "shurevan",
+      "team": "reliability-platform"
+    },
+    "runbook": "docs/operations/knotline/resilience.md",
+    "status": "DEMO",
+    "summary": "Versioned workload profiles, exact percentile evaluation, fair dispatch, deterministic recovery manifests and fail-closed topology decisions are verified at reduced local scale."
+  }
+]

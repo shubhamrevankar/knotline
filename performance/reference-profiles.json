@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "id": "API-10K-1",
+      "topology": "three-region-production-equivalent",
+      "tenants": 1000,
+      "virtualUsers": 10000,
+      "rampSeconds": 900,
+      "steadySeconds": 3600,
+      "targets": { "p95Ms": 400, "p99Ms": 900, "errorRate": 0.001, "costCeilingUsd": 500 }
+    },
+    {
+      "id": "WORKFLOW-100K-1",
+      "topology": "three-region-production-equivalent",
+      "tenants": 10000,
+      "runs": 100000,
+      "steadySeconds": 7200,
+      "targets": {
+        "dispatchP95Ms": 1000,
+        "queueLagP95Ms": 5000,
+        "duplicateEffects": 0,
+        "costCeilingUsd": 1000
+      }
+    },
+    {
+      "id": "DR-REGION-1",
+      "topology": "active-standby-distinct-protection",
+      "acceptedOperations": 1000000,
+      "targets": {
+        "rpoSeconds": 900,
+        "rtoSeconds": 3600,
+        "duplicateEffects": 0,
+        "missingAcknowledgedOperations": 0,
+        "costCeilingUsd": 1500
+      }
+    }
+  ]
+}

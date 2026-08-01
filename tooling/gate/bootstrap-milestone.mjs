@@ -37,7 +37,7 @@ export async function bootstrapMilestone(config) {
   const externalRegistry = new Map(registries.externalGates.entries.map((item) => [item.id, item]));
   const externalGates = config.externalGates.map((gateId) => ({
     gateId,
-    state: externalRegistry.get(gateId)?.initialState ?? "BLOCKED_EXTERNAL",
+    state: "BLOCKED_EXTERNAL",
     requiredTerminalState:
       externalRegistry.get(gateId)?.requiredTerminalState ?? "PRODUCTION_VERIFIED",
     gaRequired: true,

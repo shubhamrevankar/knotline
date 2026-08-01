@@ -1,0 +1,385 @@
+{
+  "activeGateRows": [
+    "format",
+    "lint",
+    "strict type",
+    "unit coverage",
+    "build",
+    "brand/provenance guard",
+    "package boundaries",
+    "license",
+    "dependency",
+    "secret",
+    "evidence",
+    "docs validation",
+    "browser e2e",
+    "automated accessibility",
+    "responsive/visual regression",
+    "bundle and web vitals smoke",
+    "real postgresql integration",
+    "migration",
+    "rls/tenant isolation",
+    "query plan",
+    "backup smoke",
+    "auth/session/csrf/cors/abuse security suite",
+    "workflow schema/property",
+    "api/openapi",
+    "event compatibility",
+    "temporal replay/restart/concurrency/idempotency",
+    "outbox/dlq",
+    "runtime load-lite",
+    "kill/repair smoke",
+    "restricted task/comment attachment upload",
+    "checksum/quota",
+    "quarantine/malware",
+    "authorization",
+    "download",
+    "and lifecycle gate",
+    "model contract/live-sandbox gate",
+    "structured output",
+    "evaluation smoke",
+    "ai usage/cost and kill switch",
+    "tool/credential/ssrf/sandbox security",
+    "full agent evaluation",
+    "release/canary/rollback",
+    "file malware/parser/object lifecycle",
+    "retrieval quality/acl/citation/performance",
+    "connector contract/oauth/webhook/sync fixture suites",
+    "each named provider’s real sandbox certification row",
+    "notification delivery/render/access-recheck",
+    "billing/entitlement/ledger/stripe sandbox",
+    "privacy/export/delete/retention/hold/restore-deletion",
+    "sso/scim/policy/residency/migration",
+    "complete browser/device/locale/pwa/guest/support/manual at matrix",
+    "aws staging terraform/fresh deploy/canary/rollback plus workforce operator identity",
+    "trace/redaction/sli/alert/runbook/kill/game-day",
+    "sast/dast/iac/container/sbom/signature/penetration evidence",
+    "section 4.2 full load/soak/chaos/backup/restore/dr profiles"
+  ],
+  "declaredEnvironmentState": "NOT_DEPLOYED",
+  "deployments": [],
+  "environmentGates": [
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.24-hour-soak-for-leaks-bloat-stuck-work",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:21d6c66255499bb6e8949966bbb54f6f06bc5edb2273f8397d8c68db986342f0"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.a-pending-browser-api-public-anonymous-mutation-and",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:046e294308c8aa5e8b89e7b6acb43815ff94d6be0d38c71a24f66be07d468197"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.all-section-4-2-launch-profiles-pass-in",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:4a445261efad337262381a126246dc88d8cba72193257633d39dee372a0255ea"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.an-epoch-transition-triggered-immediately-after-a-maximum",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:aeddd4c1386557109f51ef0ec69dcf1fdb2aa499e35e2523ccad62a7a3d2560f"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.browser-web-vitals-and-interaction-budgets-across-the",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:2d48089ebc7ac68a662cd90bf110a0fc63496bdcb5662f4b02ea58c751151788"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.every-reference-profile-runs-for-its-declared-duration",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:a0d4d55b9a22adb97d486822d6d246b3dc7e857ae4be2199d41a1fddc1299f9c"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.exact-and-rows-retain-the-staffed-regional-disaster",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:cf899641a14e68060d6fe306adbe1ba361ac4d509c8a7a4dba5ad140c9ab7c36"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.fault-injection-at-every-critical-runtime-crash-window",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:34fe1c65eb41bc0b431b1191ed67f75898e00e81f2b3ea09bbe8348122694e24"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.full-point-in-time-restore-and-regional-recovery",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:e41c858a8741dfe5bb2039be6f080275cfb535434bf7d6a0d68da3e958bda6e3"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.generation-tests-delay-primary-commit-confirmation-and-provider",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:a6acdf8631dd5ea669d3b2491630052d748b1a0cf43c40b9c524f14edfeec80a"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.hot-key-noisy-tenant-retry-storm-webhook-flood",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:b3b5dc01ab18e3919e27602f2420d2c812178f59fbcc9dca8257b29b2bfa2e52"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.live-but-partitioned-former-primary-stale-30-second",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:34b27c2da445e437f833f5b3d310dde633260d87aa6436dfa42b5c78b1b547a4"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.losing-one-availability-zone-does-not-lose-an",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:6bc51375daa4cb7500ae15ac408caf99bff5688a5b20dd13ffa630e3a58b3032"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.measured-recovery-meets-the-declared-rpo-rto-and",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:b66b0495d4aebf8a8fd86a5ef4f3dce36ffcea8322675e8a28f6b0d71f98bb64"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.overload-produces-bounded-queues-fair-throttling-and-honest",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:050c60dd23dde1c3656427f7c002c45f32132809657b431aa0fb20db53c694b9"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.queue-backlog-drain-preserves-fairness-and-does-not",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:f4a36bcca4d238d0bc5711611770c8f5a9090b918589cc823f593d8aa4f2b580"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.recovery-control-lease-tests-exercise-every-allowed-drain",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:a98a1440bba70afd5189debbece6b0888135a0ca1aaa5a0af6a6748732d0eaa4"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.recovery-journal-qualification-covers-workspace-identity-home-platform",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:b30132c9fc6be403b17530dea8111ffcb2702d637567378904a929e0337178bd"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.redis-loss-during-schedule-model-connector-tool-paid",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:7c334cc14f7b3bb8d2fd526fd3872406fa0006589a7600ae90a324d3b9ca8347"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.restore-never-serves-previously-deleted-data-or-moves",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:979fbb7feb8021c1702a77edb6c8d3df1fe69e5b0a705c9c2e46519395757bb1"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.rpo-window-api-callback-schedule-billing-effect-intents",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:3f348804322816fa115c101cc819652ef1b558dcb22d41c2cbb7835b916bf33e"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.single-az-failover-and-recovery-during-active-workflows",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:ab12b9f2c890a2927446648a989bae6ab6e8fde494c2c6d080b22742383fb315"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.the-fixed-shard-mrsc-scope-directory-stops-registration",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:64dd49cb33ec054d3e3353b6456ff4b074f78e7f83a18621533474f7436cb81e"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M36.ENV.with-the-original-primary-held-unavailable-the-standby",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:d3eb52d667d9f5a9dc77226b014709b436f6a46e2b8ebc436ab6850edb03a93a"
+    }
+  ],
+  "evidenceUris": [
+    "repo://performance/reference-profiles.json",
+    "repo://tooling/resilience/model.mjs",
+    "repo://tooling/resilience/model.test.mjs",
+    "repo://docs/operations/knotline/resilience.md"
+  ],
+  "externalGates": [
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-002",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-003",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-004",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-019",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-022",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    }
+  ],
+  "flags": [
+    {
+      "evidenceUri": "repo://docs/operations/knotline/resilience.md",
+      "id": "resilience"
+    }
+  ],
+  "knownRisks": [
+    {
+      "evidenceUri": "repo://artifacts/verification/external-gates.json",
+      "id": "m36-full-scale-chaos-restore-dr-and-soak-environment-proof",
+      "owner": "shurevan",
+      "status": "blocked-external-before-production"
+    }
+  ],
+  "manualReviews": [],
+  "migrations": [],
+  "milestone": "M36",
+  "notYetApplicable": [
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "terraform"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "fresh bootstrap"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "deployment"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "canary"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "rollback"
+    },
+    {
+      "activationMilestone": "M38",
+      "reason": "This gate activates with M38.",
+      "row": "every gate row above and every external gate in ga scope; zero gate-row n/a/skip/quarantine. reasoned route-state not_applicable remains governed by section 5.8"
+    }
+  ],
+  "owners": [
+    "shurevan"
+  ],
+  "requirements": [],
+  "schemaVersion": 1,
+  "targetEngineeringState": "COMMITTED",
+  "testRuns": [
+    {
+      "command": "node --test tooling/resilience/model.test.mjs",
+      "evidenceUri": "artifact://M36/test-results/m36-resilience-model",
+      "id": "m36-resilience-model"
+    },
+    {
+      "command": "pnpm verify:query-plan",
+      "evidenceUri": "artifact://M36/test-results/m36-query-plans",
+      "id": "m36-query-plans"
+    },
+    {
+      "command": "pnpm verify:backup",
+      "evidenceUri": "artifact://M36/test-results/m36-backup-contract",
+      "id": "m36-backup-contract"
+    },
+    {
+      "command": "pnpm verify:web-performance",
+      "evidenceUri": "artifact://M36/test-results/m36-performance-budget",
+      "id": "m36-performance-budget"
+    }
+  ]
+}
