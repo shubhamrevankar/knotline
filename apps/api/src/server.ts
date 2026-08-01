@@ -19,6 +19,7 @@ import {
   PostgresRetrievalRepository,
   PostgresKnowledgeGraphRepository,
   PostgresConnectorRepository,
+  PostgresTriggerRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -111,6 +112,7 @@ const connectorStateKey = process.env.CONNECTOR_STATE_SIGNING_KEY
   ? Buffer.from(process.env.CONNECTOR_STATE_SIGNING_KEY, "base64")
   : createHash("sha256").update("knotline-local-connector-state").digest();
 const connectors = new PostgresConnectorRepository(pool, connectorStateKey);
+const triggers = new PostgresTriggerRepository(pool);
 const temporalConnection = await Connection.connect({
   address: process.env.TEMPORAL_ADDRESS ?? "127.0.0.1:7233"
 });
@@ -250,6 +252,7 @@ const app = await buildApp({
   retrieval,
   knowledgeGraph,
   connectors,
+  triggers,
   runStarter,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),

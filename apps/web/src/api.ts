@@ -170,6 +170,82 @@ export interface SessionSummary {
   readonly revocationReason?: string;
 }
 
+export interface WorkflowTriggerSummary {
+  readonly id: string;
+  readonly triggerKey: string;
+  readonly kind: string;
+  readonly state: "enabled" | "disabled";
+  readonly version: number;
+  readonly environment: "test" | "production";
+  readonly schemaVersion: string;
+  readonly cron?: string;
+  readonly timeZone?: string;
+  readonly nextFireAt?: string;
+  readonly lastReceivedAt?: string;
+  readonly lastStartedAt?: string;
+  readonly filteredCount?: number;
+  readonly duplicateCount?: number;
+  readonly errorCount?: number;
+  readonly lagSeconds?: number;
+  readonly backlogCount?: number;
+  readonly disabledReason?: string;
+}
+
+export interface TriggerDelivery {
+  readonly id: string;
+  readonly provider: string;
+  readonly sourceId: string;
+  readonly eventId?: string;
+  readonly receivedAt: string;
+  readonly state: string;
+  readonly queueState?: string;
+  readonly runId?: string;
+}
+
+export const fetchWorkflowTriggers = async (workflowId: string) =>
+  (
+    await request<{ readonly data: readonly WorkflowTriggerSummary[] }>(
+      `/v1/workflows/${encodeURIComponent(workflowId)}/triggers`
+    )
+  ).data;
+export const createWorkflowTrigger = async (workflowId: string, body: unknown) =>
+  (
+    await mutate<{ readonly data: WorkflowTriggerSummary }>(
+      `/v1/workflows/${encodeURIComponent(workflowId)}/triggers`,
+      "POST",
+      body
+    )
+  ).data;
+export const transitionWorkflowTrigger = async (triggerId: string, enabled: boolean) =>
+  (
+    await mutate<{ readonly data: WorkflowTriggerSummary }>(
+      `/v1/workflow-triggers/${encodeURIComponent(triggerId)}/${enabled ? "enables" : "disables"}`,
+      "POST"
+    )
+  ).data;
+export const fetchTriggerDeliveries = async (triggerId: string) =>
+  (
+    await request<{ readonly data: readonly TriggerDelivery[] }>(
+      `/v1/workflow-triggers/${encodeURIComponent(triggerId)}/deliveries`
+    )
+  ).data;
+export const sendTriggerTestEvent = async (triggerId: string) =>
+  (
+    await mutate<{ readonly data: { readonly id: string; readonly state: string } }>(
+      `/v1/workflow-triggers/${encodeURIComponent(triggerId)}/test-events`,
+      "POST",
+      {
+        provider: "fixture",
+        sourceId: "operator-simulator",
+        eventId: crypto.randomUUID(),
+        occurredAt: new Date().toISOString(),
+        schemaVersion: "1.0",
+        payloadHash: crypto.randomUUID().replaceAll("-", ""),
+        encryptedPayloadReference: `encrypted://test/${crypto.randomUUID()}`
+      }
+    )
+  ).data;
+
 export interface ApprovalSummary {
   readonly id: string;
   readonly state: string;

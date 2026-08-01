@@ -144,6 +144,9 @@ const ConnectionSetupPage = lazy(async () => ({
 const ConnectionDetailPage = lazy(async () => ({
   default: (await import("./M22Pages.js")).ConnectionDetailPage
 }));
+const WorkflowTriggersPage = lazy(async () => ({
+  default: (await import("./M26Pages.js")).WorkflowTriggersPage
+}));
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -658,6 +661,14 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label={msg("connections.loading")} />}>
           <ConnectionDetailPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.workflows.detail.triggers")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("triggers.loading")} />}>
+          <WorkflowTriggersPage />
         </Suspense>
       </AuthGate>
     );

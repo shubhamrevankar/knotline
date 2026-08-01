@@ -167,6 +167,15 @@
       "tenantIsolated": true,
       "api": true
     },
+    "triggers": {
+      "versioned": true,
+      "scheduleConfigured": true,
+      "testModeIsolated": true,
+      "receiptDeduplicated": true,
+      "deliveryLineage": true,
+      "tenantIsolated": true,
+      "api": true
+    },
     "knowledgeProviders": {
       "googleRecorded": true,
       "notionRecorded": true,

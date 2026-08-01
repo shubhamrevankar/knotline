@@ -41,6 +41,7 @@ import type {
   RetrievalRepository,
   KnowledgeGraphRepository,
   ConnectorRepository,
+  TriggerRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -96,6 +97,7 @@ export interface BuildAppOptions {
   readonly retrieval?: RetrievalRepository;
   readonly knowledgeGraph?: KnowledgeGraphRepository;
   readonly connectors?: ConnectorRepository;
+  readonly triggers?: TriggerRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -2506,6 +2508,139 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     if (!options.connectors) throw new Error("Connectors are not configured");
     return options.connectors;
   };
+  const triggerRepository = () => {
+    if (!options.triggers) throw new Error("Triggers are not configured");
+    return options.triggers;
+  };
+  const triggerInputSchema = z
+    .object({
+      type: z.enum([
+        "manual",
+        "api",
+        "signed_webhook",
+        "schedule",
+        "connector_event",
+        "record_created",
+        "record_updated",
+        "email",
+        "message",
+        "calendar",
+        "file",
+        "parent_workflow"
+      ]),
+      environment: z.enum(["test", "production"]),
+      connectionId: z.string().uuid().optional(),
+      schemaVersion: z.string().min(1).max(80),
+      filter: z.array(z.record(z.string(), z.unknown())).optional(),
+      mappings: z.record(z.string(), z.string()).optional(),
+      deduplication: z.enum(["event_id", "source_sequence", "content_window", "none_explicit"]),
+      concurrency: z.number().int().min(1).max(100),
+      ratePerMinute: z.number().int().min(1).max(100000),
+      configuration: z.record(z.string(), z.unknown()).optional(),
+      schedule: z
+        .object({
+          cron: z.string().min(5).max(120),
+          timeZone: z.string().min(1).max(120),
+          dstPolicy: z.enum(["skip_gap", "next_valid", "both_folds", "first_fold"]),
+          missedPolicy: z.enum(["skip", "latest", "catch_up"]),
+          jitterSeconds: z.number().int().min(0).max(3600),
+          exclusions: z.array(z.string()).max(366).optional(),
+          startAt: z.iso.datetime().optional(),
+          endAt: z.iso.datetime().optional()
+        })
+        .optional()
+    })
+    .strict();
+  app.get("/v1/workflows/:workflowId/triggers", async (request) => {
+    const { workflowId } = workflowParamsSchema.parse(request.params);
+    return { data: await triggerRepository().list(await agentAccess(request), workflowId) };
+  });
+  app.post("/v1/workflows/:workflowId/triggers", async (request, reply) => {
+    const { workflowId } = workflowParamsSchema.parse(request.params);
+    const data = await triggerRepository().create(
+      await agentAccess(request, true),
+      workflowId,
+      triggerInputSchema.parse(request.body)
+    );
+    return reply.code(201).send({ data });
+  });
+  const triggerParams = z.object({ triggerId: z.string().uuid() }).strict();
+  app.patch("/v1/workflow-triggers/:triggerId", async (request) => {
+    const { triggerId } = triggerParams.parse(request.params);
+    return {
+      data: await triggerRepository().patch(
+        await agentAccess(request, true),
+        triggerId,
+        triggerInputSchema.partial().parse(request.body)
+      )
+    };
+  });
+  app.post("/v1/workflow-triggers/:triggerId/enables", async (request, reply) => {
+    const { triggerId } = triggerParams.parse(request.params);
+    return reply.code(202).send({
+      data: await triggerRepository().transition(
+        await agentAccess(request, true),
+        triggerId,
+        "enabled"
+      )
+    });
+  });
+  app.post("/v1/workflow-triggers/:triggerId/disables", async (request, reply) => {
+    const { triggerId } = triggerParams.parse(request.params);
+    return reply.code(202).send({
+      data: await triggerRepository().transition(
+        await agentAccess(request, true),
+        triggerId,
+        "disabled"
+      )
+    });
+  });
+  app.post("/v1/workflow-triggers/:triggerId/secret-rotations", async (request, reply) => {
+    const { triggerId } = triggerParams.parse(request.params);
+    return reply.code(201).send({
+      data: await triggerRepository().rotateSecret(await agentAccess(request, true), triggerId)
+    });
+  });
+  app.get("/v1/workflow-triggers/:triggerId/deliveries", async (request) => {
+    const { triggerId } = triggerParams.parse(request.params);
+    return { data: await triggerRepository().deliveries(await agentAccess(request), triggerId) };
+  });
+  app.post("/v1/workflow-triggers/:triggerId/test-events", async (request, reply) => {
+    const { triggerId } = triggerParams.parse(request.params);
+    const body = z
+      .object({
+        provider: z.string(),
+        sourceId: z.string(),
+        eventId: z.string().optional(),
+        sequence: z.number().int().optional(),
+        occurredAt: z.iso.datetime(),
+        schemaVersion: z.string(),
+        payloadHash: z.string().min(16),
+        encryptedPayloadReference: z.string().startsWith("encrypted://")
+      })
+      .strict()
+      .parse(request.body);
+    return reply.code(202).send({
+      data: await triggerRepository().ingest(await agentAccess(request, true), triggerId, {
+        ...body,
+        testOnly: true
+      })
+    });
+  });
+  app.delete("/v1/workflow-triggers/:triggerId", async (request, reply) => {
+    const { triggerId } = triggerParams.parse(request.params);
+    await triggerRepository().remove(await agentAccess(request, true), triggerId);
+    return reply.code(202).send({ data: { id: triggerId, state: "disabled" } });
+  });
+  app.post("/callbacks/v1/workflow-triggers/:endpointKey", async (_request, reply) =>
+    reply.code(503).send({
+      error: {
+        code: "WEBHOOK_TRIGGER_NOT_CONFIGURED",
+        message: "No signed webhook endpoint is configured for this deployment.",
+        requestId: _request.id
+      }
+    })
+  );
   const connectionParams = z.object({ connectionId: z.string().uuid() }).strict();
   app.get("/v1/workspaces/:workspaceId/connections", async (request) => {
     const authenticated = await authenticate(request);

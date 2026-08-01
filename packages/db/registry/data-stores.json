@@ -1472,6 +1472,62 @@
       "retentionDays": 90,
       "exportHandler": "connector-export",
       "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "trigger_definition_versions",
+      "class": "trigger.definition_version",
+      "retentionDays": 2555,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "trigger_schedules",
+      "class": "trigger.schedule",
+      "retentionDays": 2555,
+      "exportHandler": "workflow-export",
+      "deleteHandler": "workflow-delete"
+    },
+    {
+      "name": "inbound_event_receipts",
+      "class": "trigger.inbound_receipt",
+      "retentionDays": 90,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "trigger_source_checkpoints",
+      "class": "trigger.checkpoint",
+      "retentionDays": 90,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "runtime-delete"
+    },
+    {
+      "name": "trigger_dispatch_queue",
+      "class": "trigger.dispatch",
+      "retentionDays": 30,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "trigger_health_snapshots",
+      "class": "trigger.health",
+      "retentionDays": 90,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "captured_trigger_events",
+      "class": "trigger.capture",
+      "retentionDays": 7,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "outbound_sync_lineage",
+      "class": "trigger.outbound_lineage",
+      "retentionDays": 2555,
+      "exportHandler": "runtime-export",
+      "deleteHandler": "governed-delete"
     }
   ],
   "indexes": [
@@ -1837,7 +1893,20 @@
     "webhook_schema_versions_workspace_id_connection_id_direction_schema_key_version_key",
     "webhook_delivery_receipts_pkey",
     "webhook_delivery_receipts_workspace_id_connection_id_direction_delivery_id_key",
-    "webhook_delivery_retry_idx"
+    "webhook_delivery_retry_idx",
+    "trigger_definition_versions_pkey",
+    "trigger_definition_versions_workspace_id_trigger_id_version_key",
+    "trigger_schedules_pkey",
+    "inbound_event_receipts_pkey",
+    "inbound_event_provider_dedupe_idx",
+    "trigger_source_checkpoints_pkey",
+    "trigger_dispatch_queue_pkey",
+    "trigger_dispatch_queue_workspace_id_receipt_id_key",
+    "trigger_dispatch_fair_queue_idx",
+    "trigger_health_snapshots_pkey",
+    "captured_trigger_events_pkey",
+    "outbound_sync_lineage_pkey",
+    "outbound_sync_lineage_workspace_id_provider_operation_id_key"
   ],
   "caches": []
 }

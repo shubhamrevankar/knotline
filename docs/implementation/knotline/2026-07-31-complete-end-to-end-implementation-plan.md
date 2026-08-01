@@ -7386,7 +7386,7 @@ storage, and arbitrary authorized APIs through production-certified connectors.
 
 ### M26 — Production triggers, schedules, inbound events, and outbound sync
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M10, M13, M22\
 **Required commit:** `feat: add production triggers and reconciled outbound sync`
 
@@ -9267,7 +9267,7 @@ must appear in that milestone's boundary cell.
 | M23 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic recorded suites `RECORDED`; EXT-007 and EXT-009 remain independently `BLOCKED_EXTERNAL`; no provider is labelled `LIVE` | `feat: connect Google Notion and Confluence knowledge` |
 | M24 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic recorded suites `RECORDED`; EXT-008, EXT-010, EXT-011, EXT-012, and EXT-014 remain independently `BLOCKED_EXTERNAL`; no provider is labelled `LIVE` | `feat: connect Linear Jira GitHub and collaboration systems` |
 | M25 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic recorded suites `RECORDED`; EXT-007, EXT-008, EXT-013, and EXT-025 remain independently `BLOCKED_EXTERNAL`; generic builders remain local-certification only | `feat: add Microsoft CRM and generic data connectors` |
-| M26 | `NOT_STARTED` | `NOT_DEPLOYED` | Each provider branch retains EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, or EXT-025 individually | `feat: add production triggers and reconciled outbound sync` |
+| M26 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic trigger, schedule, receipt, fairness, and reconciliation fixtures verified locally; each provider branch retains EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, or EXT-025 individually | `feat: add production triggers and reconciled outbound sync` |
 | M27 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006, EXT-008, EXT-012 | `feat: deliver multichannel notifications and escalation delivery` |
 | M28 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver global search saved views and operational analytics` |
 | M29 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-005, EXT-020 | `feat: add Stripe billing usage and enforced entitlements` |

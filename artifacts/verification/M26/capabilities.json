@@ -1,0 +1,28 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M26/test-results/trigger-unit.json",
+      "verifiedAt": "2026-08-05T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-007",
+      "EXT-008",
+      "EXT-009",
+      "EXT-010",
+      "EXT-011",
+      "EXT-012",
+      "EXT-013",
+      "EXT-014",
+      "EXT-025"
+    ],
+    "id": "triggers.production-and-outbound-sync",
+    "owner": {
+      "contact": "shurevan",
+      "team": "trigger-platform"
+    },
+    "runbook": "docs/operations/knotline/production-triggers.md",
+    "status": "DEMO",
+    "summary": "Versioned schedules and inbound events enforce schema, deduplication, ordering, fairness, test isolation, durable lineage, and reconciled writes against deterministic fixtures."
+  }
+]

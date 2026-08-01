@@ -1,0 +1,108 @@
+.trigger-shell {
+  max-width: 1260px;
+  margin: auto;
+}
+.trigger-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+.trigger-list,
+.trigger-layout > aside {
+  display: grid;
+  gap: 1rem;
+}
+.trigger-select {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: inherit;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+}
+.trigger-select > span,
+.trigger-actions,
+.trigger-layout h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.trigger-list dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+.trigger-list dl div {
+  display: grid;
+  gap: 0.2rem;
+}
+.trigger-list dt {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+.trigger-list dd {
+  margin: 0;
+}
+.trigger-actions {
+  margin-block: 0.9rem;
+}
+.trigger-layout form {
+  display: grid;
+  gap: 0.85rem;
+}
+.trigger-layout label {
+  display: grid;
+  gap: 0.35rem;
+}
+.trigger-layout input,
+.trigger-layout select {
+  min-height: 2.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.6rem;
+  background: var(--color-surface);
+  color: inherit;
+  padding: 0.6rem;
+}
+.trigger-status {
+  padding: 0.65rem 1rem;
+  border-radius: 0.7rem;
+  background: var(--color-surface-accent);
+}
+.delivery-list {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+.delivery-list li {
+  display: grid;
+  gap: 0.18rem;
+  border-block-start: 1px solid var(--color-border);
+  padding-block-start: 0.7rem;
+}
+.delivery-list span,
+.delivery-list time {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+@media (max-width: 800px) {
+  .trigger-layout {
+    grid-template-columns: 1fr;
+  }
+  .trigger-list dl {
+    grid-template-columns: 1fr;
+  }
+  .trigger-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .trigger-actions button {
+    width: 100%;
+  }
+}

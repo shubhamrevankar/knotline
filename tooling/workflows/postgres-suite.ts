@@ -27,6 +27,7 @@ import {
   PostgresRetrievalRepository,
   PostgresKnowledgeGraphRepository,
   PostgresConnectorRepository,
+  PostgresTriggerRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -219,6 +220,7 @@ async function runSuite(pool: DatabasePool) {
     pool,
     createHash("sha256").update("m22-connector-state").digest()
   );
+  const triggerRepository = new PostgresTriggerRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -1422,6 +1424,59 @@ async function runSuite(pool: DatabasePool) {
       published.publishedVersion === 1,
     "Valid workflow was not published"
   );
+  const trigger = await triggerRepository.create(contextA, workflowId, {
+    type: "schedule",
+    environment: "test",
+    schemaVersion: "1.0",
+    filter: [],
+    mappings: { incidentId: "payload.id" },
+    deduplication: "event_id",
+    concurrency: 4,
+    ratePerMinute: 60,
+    configuration: { retentionDays: 7 },
+    schedule: {
+      cron: "0 9 * * 1-5",
+      timeZone: "Asia/Kolkata",
+      dstPolicy: "skip_gap",
+      missedPolicy: "latest",
+      jitterSeconds: 30
+    }
+  });
+  const triggerId = String(trigger.id);
+  assert(
+    (await triggerRepository.list(contextB, workflowId)).length === 0,
+    "Trigger crossed tenant RLS"
+  );
+  await triggerRepository.transition(contextA, triggerId, "enabled");
+  const receipt = await triggerRepository.ingest(contextA, triggerId, {
+    provider: "fixture",
+    sourceId: "incident-stream",
+    eventId: "event-1",
+    occurredAt: "2026-08-01T00:00:00.000Z",
+    schemaVersion: "1.0",
+    payloadHash: "a".repeat(64),
+    encryptedPayloadReference: "encrypted://fixture/event-1",
+    testOnly: true
+  });
+  const duplicateReceipt = await triggerRepository.ingest(contextA, triggerId, {
+    provider: "fixture",
+    sourceId: "incident-stream",
+    eventId: "event-1",
+    occurredAt: "2026-08-01T00:00:01.000Z",
+    schemaVersion: "1.0",
+    payloadHash: "a".repeat(64),
+    encryptedPayloadReference: "encrypted://fixture/event-1-duplicate",
+    testOnly: true
+  });
+  assert(
+    receipt.state === "queued" && duplicateReceipt.state === "duplicate",
+    "Trigger receipt deduplication failed"
+  );
+  assert(
+    (await triggerRepository.deliveries(contextA, triggerId)).length === 1,
+    "Trigger delivery lineage was incomplete"
+  );
+  await triggerRepository.transition(contextA, triggerId, "disabled");
 
   const immutable = await Promise.allSettled([
     withTenantTransaction(pool, contextA, (client) =>
@@ -1887,6 +1942,7 @@ async function runSuite(pool: DatabasePool) {
     retrieval: retrievalRepository,
     knowledgeGraph: knowledgeGraphRepository,
     connectors: connectorRepository,
+    triggers: triggerRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),
@@ -2366,6 +2422,15 @@ async function runSuite(pool: DatabasePool) {
       reducedScopeReconciled: true,
       durableSyncQueued: true,
       deletionStopsActivity: true,
+      tenantIsolated: true,
+      api: true
+    },
+    triggers: {
+      versioned: true,
+      scheduleConfigured: true,
+      testModeIsolated: true,
+      receiptDeduplicated: true,
+      deliveryLineage: true,
       tenantIsolated: true,
       api: true
     },

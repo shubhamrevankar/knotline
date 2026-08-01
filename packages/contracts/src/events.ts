@@ -255,6 +255,23 @@ export const connectorEventPayloadV1Schema = z
   })
   .passthrough();
 
+export const triggerEventPayloadV1Schema = z
+  .object({
+    triggerId: z.string().uuid(),
+    triggerVersionId: z.string().uuid().optional(),
+    receiptId: z.string().uuid().optional(),
+    queueId: z.string().uuid().optional(),
+    runId: z.string().uuid().optional(),
+    sourceId: z.string().max(200).optional(),
+    providerEventId: z.string().max(240).optional(),
+    state: z.string().max(80).optional(),
+    reason: z.string().max(240).optional(),
+    nextFireAt: z.iso.datetime().optional(),
+    operationId: z.string().uuid().optional(),
+    providerReceiptId: z.string().max(240).optional()
+  })
+  .passthrough();
+
 export const EVENT_SCHEMA_REGISTRY = [
   {
     eventType: "workflow.created",
@@ -546,6 +563,23 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "connector-platform",
     schema: connectorEventPayloadV1Schema
+  })),
+  ...[
+    "trigger.version_published",
+    "trigger.event_received",
+    "trigger.event_filtered",
+    "trigger.event_deduplicated",
+    "trigger.dispatch_queued",
+    "trigger.started",
+    "trigger.paused",
+    "trigger.schedule_advanced",
+    "outbound.sync_uncertain",
+    "outbound.sync_reconciled"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "trigger-platform",
+    schema: triggerEventPayloadV1Schema
   }))
 ] as const;
 

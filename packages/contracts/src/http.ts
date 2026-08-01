@@ -2279,6 +2279,98 @@ const CONNECTOR_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }
 }));
 
+const TRIGGER_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  [
+    "GET",
+    "/v1/workflows/{workflowId}/triggers",
+    "listWorkflowTriggers",
+    "List workflow triggers",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/workflows/{workflowId}/triggers",
+    "createWorkflowTrigger",
+    "Create a versioned workflow trigger",
+    "browser_internal"
+  ],
+  [
+    "PATCH",
+    "/v1/workflow-triggers/{triggerId}",
+    "updateWorkflowTrigger",
+    "Publish a new trigger configuration version",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/workflow-triggers/{triggerId}/enables",
+    "enableWorkflowTrigger",
+    "Enable a workflow trigger",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/workflow-triggers/{triggerId}/disables",
+    "disableWorkflowTrigger",
+    "Pause a workflow trigger",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/workflow-triggers/{triggerId}/secret-rotations",
+    "rotateWorkflowTriggerSecret",
+    "Rotate a signed webhook secret",
+    "browser_internal"
+  ],
+  [
+    "GET",
+    "/v1/workflow-triggers/{triggerId}/deliveries",
+    "listWorkflowTriggerDeliveries",
+    "List trigger receipts and dispatch state",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/workflow-triggers/{triggerId}/test-events",
+    "sendWorkflowTriggerTestEvent",
+    "Capture and enqueue a redacted test event",
+    "browser_internal"
+  ],
+  [
+    "DELETE",
+    "/v1/workflow-triggers/{triggerId}",
+    "deleteWorkflowTrigger",
+    "Disable and retire a workflow trigger",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/callbacks/v1/workflow-triggers/{endpointKey}",
+    "receiveWorkflowTriggerWebhook",
+    "Authenticate and normalize a signed trigger event",
+    "provider_callback"
+  ]
+].map(([method, path, operationId, summary, exposure]) => ({
+  method: method as HttpRouteContract["method"],
+  path: path!,
+  operationId: operationId!,
+  summary: summary!,
+  tags: ["Workflow triggers"],
+  exposure: exposure as HttpRouteContract["exposure"],
+  responses: {
+    200: apiEnvelope(genericDataSchema),
+    201: apiEnvelope(genericDataSchema),
+    202: apiEnvelope(genericDataSchema),
+    400: apiErrorSchema,
+    401: apiErrorSchema,
+    403: apiErrorSchema,
+    404: apiErrorSchema,
+    409: apiErrorSchema,
+    500: apiErrorSchema,
+    503: apiErrorSchema
+  }
+}));
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
@@ -2293,6 +2385,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...AGENT_EVALUATION_ROUTE_CONTRACTS,
   ...FILE_ROUTE_CONTRACTS,
   ...CONNECTOR_ROUTE_CONTRACTS,
+  ...TRIGGER_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",
