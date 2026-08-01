@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "claimsPolicy": "Evidence permits exact claims only; no certification is claimed before independent issuance.",
+  "controls": [
+    {
+      "id": "SEC-01",
+      "title": "Tenant isolation",
+      "owner": "security-platform",
+      "evidence": ["tooling/db/postgres-suite.ts", "packages/db/src/context.ts"],
+      "status": "implemented"
+    },
+    {
+      "id": "SEC-02",
+      "title": "Secure identity and session lifecycle",
+      "owner": "identity-platform",
+      "evidence": [
+        "tooling/auth/postgres-suite.ts",
+        "docs/operations/knotline/authentication-security.md"
+      ],
+      "status": "implemented"
+    },
+    {
+      "id": "SEC-03",
+      "title": "Secrets and supply chain",
+      "owner": "security-platform",
+      "evidence": [
+        "tooling/scans/secrets.sh",
+        "tooling/scans/sbom.mjs",
+        "scripts/quality/verify-reproducible-build.ts"
+      ],
+      "status": "implemented"
+    },
+    {
+      "id": "SEC-04",
+      "title": "Independent penetration test",
+      "owner": "security-platform",
+      "evidence": [],
+      "status": "blocked_external",
+      "externalGate": "EXT-017"
+    },
+    {
+      "id": "SEC-05",
+      "title": "Legal and privacy approval",
+      "owner": "governance-platform",
+      "evidence": [],
+      "status": "blocked_external",
+      "externalGate": "EXT-016"
+    }
+  ]
+}

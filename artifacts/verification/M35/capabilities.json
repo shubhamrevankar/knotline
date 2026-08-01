@@ -1,0 +1,25 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M35/test-results/m35-security-browser.json",
+      "verifiedAt": "2026-08-14T12:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-016",
+      "EXT-017",
+      "EXT-018",
+      "EXT-019",
+      "EXT-022",
+      "EXT-024"
+    ],
+    "id": "security.product-supply-chain-and-assurance",
+    "owner": {
+      "contact": "shurevan",
+      "team": "security-platform"
+    },
+    "runbook": "docs/operations/knotline/security-assurance.md",
+    "status": "DEMO",
+    "summary": "Threat and control models, CI security lanes, artifact assurance, honest trust claims and operator evidence UX are verified locally."
+  }
+]

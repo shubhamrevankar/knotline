@@ -1,7 +1,7 @@
 {
   "milestone": "M21",
-  "planDigest": "sha256:960acfb9a0f085d95f1568b6946694771f7c76dacd4a7f70e5bbc419d41c25fe",
-  "routeRegistryDigest": "sha256:c5f26dd1010a01325359db621315c99e5e44f465f1204052653b7a5bbce2c13b",
+  "planDigest": "sha256:859779987ebb125ed10cdd92ba4f1e7dfc265e2666cace814d2c946feec3f0bc",
+  "routeRegistryDigest": "sha256:cdcc60854fea06fbbb6c3fd6186568c9cad557e6cf420da0c7a84695a20bc12a",
   "routes": [
     {
       "routeId": "route.public.home",

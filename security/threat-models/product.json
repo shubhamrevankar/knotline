@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "reviewCadenceDays": 90,
+  "owner": "security-platform",
+  "assets": [
+    "tenant data",
+    "credentials",
+    "workflow state",
+    "agent/tool authority",
+    "billing integrity",
+    "audit evidence",
+    "release artifacts"
+  ],
+  "boundaries": [
+    "browser-api",
+    "tenant-database",
+    "worker-provider",
+    "file-parser",
+    "connector-oauth",
+    "public-webhook",
+    "operator-origin",
+    "build-deploy"
+  ],
+  "threats": [
+    {
+      "id": "TM-001",
+      "name": "Cross-tenant object access",
+      "mitigations": [
+        "tenant transaction context",
+        "forced RLS",
+        "authorization matrix",
+        "opaque identifiers"
+      ],
+      "tests": ["pnpm test:rls", "pnpm test:api"],
+      "residualRisk": "low"
+    },
+    {
+      "id": "TM-002",
+      "name": "Prompt or tool exfiltration",
+      "mitigations": [
+        "untrusted-data delimiters",
+        "typed tool broker",
+        "policy decision",
+        "egress allowlist",
+        "human approval"
+      ],
+      "tests": ["pnpm test:unit", "pnpm test:runtime"],
+      "residualRisk": "medium"
+    },
+    {
+      "id": "TM-003",
+      "name": "Credential replay or webhook forgery",
+      "mitigations": [
+        "hashed secrets",
+        "bounded rotation",
+        "HMAC timestamp",
+        "idempotency receipts",
+        "replay window"
+      ],
+      "tests": ["pnpm test:connectors"],
+      "residualRisk": "low"
+    },
+    {
+      "id": "TM-004",
+      "name": "Malicious file or parser escape",
+      "mitigations": [
+        "quarantine",
+        "type detection",
+        "scanner attestation",
+        "sandbox limits",
+        "derived-output authorization"
+      ],
+      "tests": ["pnpm test:files"],
+      "residualRisk": "medium"
+    },
+    {
+      "id": "TM-005",
+      "name": "Operator or support misuse",
+      "mitigations": [
+        "isolated origin",
+        "workforce identity",
+        "duty scopes",
+        "step-up",
+        "dual-control break glass",
+        "enhanced audit"
+      ],
+      "tests": ["pnpm --filter @knotline/operations test"],
+      "residualRisk": "medium"
+    },
+    {
+      "id": "TM-006",
+      "name": "Supply-chain artifact substitution",
+      "mitigations": [
+        "pinned lockfile",
+        "SBOM",
+        "provenance",
+        "signed digest",
+        "admission verification"
+      ],
+      "tests": [
+        "pnpm verify:reproducible-build",
+        "pnpm verify:licenses",
+        "pnpm verify:dependencies"
+      ],
+      "residualRisk": "low"
+    }
+  ]
+}

@@ -1,0 +1,231 @@
+{
+  "activeGateRows": [
+    "format",
+    "lint",
+    "strict type",
+    "unit coverage",
+    "build",
+    "brand/provenance guard",
+    "package boundaries",
+    "license",
+    "dependency",
+    "secret",
+    "evidence",
+    "docs validation",
+    "browser e2e",
+    "automated accessibility",
+    "responsive/visual regression",
+    "bundle and web vitals smoke",
+    "real postgresql integration",
+    "migration",
+    "rls/tenant isolation",
+    "query plan",
+    "backup smoke",
+    "auth/session/csrf/cors/abuse security suite",
+    "workflow schema/property",
+    "api/openapi",
+    "event compatibility",
+    "temporal replay/restart/concurrency/idempotency",
+    "outbox/dlq",
+    "runtime load-lite",
+    "kill/repair smoke",
+    "restricted task/comment attachment upload",
+    "checksum/quota",
+    "quarantine/malware",
+    "authorization",
+    "download",
+    "and lifecycle gate",
+    "model contract/live-sandbox gate",
+    "structured output",
+    "evaluation smoke",
+    "ai usage/cost and kill switch",
+    "tool/credential/ssrf/sandbox security",
+    "full agent evaluation",
+    "release/canary/rollback",
+    "file malware/parser/object lifecycle",
+    "retrieval quality/acl/citation/performance",
+    "connector contract/oauth/webhook/sync fixture suites",
+    "each named provider’s real sandbox certification row",
+    "notification delivery/render/access-recheck",
+    "billing/entitlement/ledger/stripe sandbox",
+    "privacy/export/delete/retention/hold/restore-deletion",
+    "sso/scim/policy/residency/migration",
+    "complete browser/device/locale/pwa/guest/support/manual at matrix",
+    "aws staging terraform/fresh deploy/canary/rollback plus workforce operator identity",
+    "trace/redaction/sli/alert/runbook/kill/game-day",
+    "sast/dast/iac/container/sbom/signature/penetration evidence"
+  ],
+  "declaredEnvironmentState": "NOT_DEPLOYED",
+  "deployments": [],
+  "environmentGates": [
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M35.ENV.key-secret-certificate-rotation-and-emergency-revocation-exercises",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:288c311b637a1b57ae1d4b43ef832d2831a96d5f806d2a6fb115c10afa597df9"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M35.ENV.named-security-and-system-owners-complete-the-initial",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:33287a70f78ee8c1d5f7cc1c83203e34aa1fc3549001271c12395b02c89d0b1a"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M35.ENV.under-exact-and-rows-break-glass-access-and",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:64eaade656a69cf4d5bf4dd4d1f7f5cc991bd9823cf66511f1afa37755abdd74"
+    }
+  ],
+  "evidenceUris": [
+    "repo://security/threat-models/product.json",
+    "repo://security/control-matrix.json",
+    "repo://tooling/quality/security-assurance.test.mjs",
+    "repo://tests/e2e/security-assurance.spec.ts",
+    "repo://docs/operations/knotline/security-assurance.md"
+  ],
+  "externalGates": [
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-016",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-017",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-018",
+      "requiredTerminalState": "NOT_APPLICABLE",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-019",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-022",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-024",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    }
+  ],
+  "flags": [
+    {
+      "evidenceUri": "repo://docs/operations/knotline/security-assurance.md",
+      "id": "security-assurance"
+    }
+  ],
+  "knownRisks": [
+    {
+      "evidenceUri": "repo://artifacts/verification/external-gates.json",
+      "id": "m35-independent-penetration-legal-access-review-and-tabletop",
+      "owner": "shurevan",
+      "status": "blocked-external-before-production"
+    }
+  ],
+  "manualReviews": [],
+  "migrations": [],
+  "milestone": "M35",
+  "notYetApplicable": [
+    {
+      "activationMilestone": "M36",
+      "reason": "This gate activates with M36.",
+      "row": "section 4.2 full load/soak/chaos/backup/restore/dr profiles"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "terraform"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "fresh bootstrap"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "deployment"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "canary"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "rollback"
+    },
+    {
+      "activationMilestone": "M38",
+      "reason": "This gate activates with M38.",
+      "row": "every gate row above and every external gate in ga scope; zero gate-row n/a/skip/quarantine. reasoned route-state not_applicable remains governed by section 5.8"
+    }
+  ],
+  "owners": [
+    "shurevan"
+  ],
+  "requirements": [],
+  "schemaVersion": 1,
+  "targetEngineeringState": "COMMITTED",
+  "testRuns": [
+    {
+      "command": "pnpm exec playwright test tests/e2e/security-assurance.spec.ts",
+      "evidenceUri": "artifact://M35/test-results/m35-security-browser",
+      "id": "m35-security-browser"
+    },
+    {
+      "command": "node --test tooling/quality/security-assurance.test.mjs",
+      "evidenceUri": "artifact://M35/test-results/m35-security-contract",
+      "id": "m35-security-contract"
+    },
+    {
+      "command": "pnpm verify:secrets && pnpm verify:dependencies && pnpm verify:licenses",
+      "evidenceUri": "artifact://M35/test-results/m35-security-scanners",
+      "id": "m35-security-scanners"
+    },
+    {
+      "command": "pnpm verify:reproducible-build",
+      "evidenceUri": "artifact://M35/test-results/m35-security-build",
+      "id": "m35-security-build"
+    }
+  ]
+}
