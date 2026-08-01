@@ -1809,3 +1809,18 @@ export const putEnterprisePolicy = async (input: Readonly<Record<string, unknown
       input
     )
   ).data;
+export interface SupportTicket {
+  readonly id: string;
+  readonly category: string;
+  readonly severity: string;
+  readonly subject: string;
+  readonly status: string;
+  readonly createdAt: string;
+}
+export const fetchSupportTickets = async () =>
+  (await request<ApiEnvelope<SupportTicket[]>>("/v1/support-tickets")).data;
+export const createSupportTicket = async (input: Readonly<Record<string, unknown>>) =>
+  (await mutate<ApiEnvelope<SupportTicket>>("/v1/support-tickets", "POST", input)).data;
+export const submitContactRequest = async (input: Readonly<Record<string, unknown>>) =>
+  (await mutate<ApiEnvelope<Record<string, unknown>>>("/edge/v1/contact-requests", "POST", input))
+    .data;

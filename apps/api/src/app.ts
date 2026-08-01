@@ -48,6 +48,7 @@ import type {
   DeveloperRepository,
   GovernanceRepository,
   EnterpriseRepository,
+  SupportRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -110,6 +111,7 @@ export interface BuildAppOptions {
   readonly developer?: DeveloperRepository;
   readonly governance?: GovernanceRepository;
   readonly enterprise?: EnterpriseRepository;
+  readonly support?: SupportRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -3655,6 +3657,81 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       regionParams.parse(request.params).migrationId
     )
   }));
+  const supportRepository = () => {
+    if (!options.support) throw new Error("Support is not configured");
+    return options.support;
+  };
+  const ticketParams = z.object({ ticketId: z.string().uuid() }).strict(),
+    bundleParams = z.object({ bundleId: z.string().uuid() }).strict();
+  app.get("/v1/support-tickets", async (request) => ({
+    data: await supportRepository().tickets(await agentAccess(request))
+  }));
+  app.post("/v1/support-tickets", async (request, reply) =>
+    reply.code(201).send({
+      data: await supportRepository().createTicket(
+        await agentAccess(request, true),
+        z
+          .object({
+            category: z.enum(["product", "billing", "security", "privacy", "other"]),
+            severity: z.enum(["low", "normal", "high", "urgent"]),
+            subject: z.string().min(3).max(200),
+            diagnosticConsent: z.boolean().default(false)
+          })
+          .strict()
+          .parse(request.body)
+      )
+    })
+  );
+  app.get("/v1/support-tickets/:ticketId", async (request) => ({
+    data: await supportRepository().ticket(
+      await agentAccess(request),
+      ticketParams.parse(request.params).ticketId
+    )
+  }));
+  app.post("/v1/support-tickets/:ticketId/messages", async (request, reply) =>
+    reply.code(201).send({
+      data: await supportRepository().addMessage(
+        await agentAccess(request, true),
+        ticketParams.parse(request.params).ticketId,
+        z
+          .object({ body: z.string().min(1).max(10000) })
+          .strict()
+          .parse(request.body)
+      )
+    })
+  );
+  app.post("/v1/support-tickets/:ticketId/diagnostic-bundles", async (request, reply) =>
+    reply.code(201).send({
+      data: await supportRepository().createDiagnostic(
+        await agentAccess(request, true),
+        ticketParams.parse(request.params).ticketId
+      )
+    })
+  );
+  app.post("/v1/diagnostic-bundles/:bundleId/consents", async (request, reply) =>
+    reply.code(202).send({
+      data: await supportRepository().consentDiagnostic(
+        await agentAccess(request, true),
+        bundleParams.parse(request.params).bundleId
+      )
+    })
+  );
+  app.post("/edge/v1/contact-requests", async (request, reply) => {
+    const result = await supportRepository().contact(
+      z
+        .object({
+          email: z.email(),
+          company: z.string().max(200).optional(),
+          purpose: z.enum(["sales", "support", "security", "privacy", "other"]),
+          message: z.string().min(10).max(5000),
+          consentVersion: z.string().min(1).max(50),
+          honeypot: z.string().max(0).optional()
+        })
+        .strict()
+        .parse(request.body)
+    );
+    return reply.code(result.accepted ? 202 : 400).send({ data: result });
+  });
   const connectionParams = z.object({ connectionId: z.string().uuid() }).strict();
   app.get("/v1/workspaces/:workspaceId/connections", async (request) => {
     const authenticated = await authenticate(request);

@@ -26,6 +26,7 @@ import {
   PostgresDeveloperRepository,
   PostgresGovernanceRepository,
   PostgresEnterpriseRepository,
+  PostgresSupportRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -78,6 +79,7 @@ const workflowGeneration = new WorkflowGenerationService(
 );
 const governance = new PostgresGovernanceRepository(pool);
 const enterprise = new PostgresEnterpriseRepository(pool);
+const support = new PostgresSupportRepository(pool);
 const collaboration = new PostgresCollaborationRepository(pool);
 const runtime = new PostgresRuntimeRepository(pool);
 const humanTasks = new PostgresHumanTaskRepository(pool);
@@ -271,6 +273,7 @@ const app = await buildApp({
   developer,
   governance,
   enterprise,
+  support,
   runStarter,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),

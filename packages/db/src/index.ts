@@ -23,6 +23,7 @@ export * from "./billing-repository.js";
 export * from "./developer-repository.js";
 export * from "./governance-repository.js";
 export * from "./enterprise-repository.js";
+export * from "./support-repository.js";
 export * from "./agent-execution-repository.js";
 export * from "./registry.js";
 export * from "./repository.js";

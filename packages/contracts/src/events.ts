@@ -465,6 +465,21 @@ export const EVENT_SCHEMA_REGISTRY = [
     schema: runtimeTransitionPayloadV1Schema
   })),
   ...[
+    "support.ticket_created",
+    "support.message_created",
+    "support.diagnostic_consented",
+    "support.ticket_resolved",
+    "contact.request_received",
+    "contact.request_routed",
+    "guest.invitation_changed",
+    "offline.device_changed"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "experience-platform",
+    schema: runtimeTransitionPayloadV1Schema
+  })),
+  ...[
     "approval.requested",
     "approval.delegated",
     "approval.abstained",

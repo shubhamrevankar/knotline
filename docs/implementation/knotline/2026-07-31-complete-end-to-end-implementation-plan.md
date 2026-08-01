@@ -7968,7 +7968,7 @@ access policy, control verified domains, and keep data in a supported region.
 
 ### M33 — Installable PWA, guest collaboration, localization, help, and support
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M02, M12, M27, M31, M32\
 **Required commit:** `feat: deliver the installable accessible global Knotline experience`
 
@@ -9278,7 +9278,7 @@ must appear in that milestone's boundary cell.
 | M30 | `COMMITTED` | `NOT_DEPLOYED` | EXT-001, EXT-021 | `feat: deliver the Knotline developer platform` |
 | M31 | `COMMITTED` | `NOT_DEPLOYED` | EXT-016, EXT-022 | `feat: deliver audit privacy export and deletion governance` |
 | M32 | `COMMITTED` | `NOT_DEPLOYED` | EXT-015, EXT-022 | `feat: add enterprise identity provisioning and data policy` |
-| M33 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-001, EXT-006, EXT-016, EXT-019, EXT-020, EXT-021, EXT-023 | `feat: deliver the installable accessible global Knotline experience` |
+| M33 | `COMMITTED` | `NOT_DEPLOYED` | EXT-001, EXT-006, EXT-016, EXT-019, EXT-020, EXT-021, EXT-023 | `feat: deliver the installable accessible global Knotline experience` |
 | M34 | `NOT_STARTED` | `NOT_DEPLOYED` | Base staging: EXT-002, EXT-003, EXT-019, EXT-021, EXT-022, EXT-024; per-capability branches retain EXT-004, EXT-005, EXT-006, EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, EXT-015, EXT-025 individually | `feat: operationalize Knotline with SLOs and kill switches` |
 | M35 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-016, EXT-017, EXT-018, EXT-019, EXT-022, EXT-024 | `security: complete product and supply-chain assurance` |
 | M36 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-002, EXT-003, EXT-004, EXT-019, EXT-022 | `perf: prove Knotline capacity resilience and recovery` |

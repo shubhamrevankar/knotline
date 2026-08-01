@@ -34,6 +34,7 @@ import {
   PostgresDeveloperRepository,
   PostgresGovernanceRepository,
   PostgresEnterpriseRepository,
+  PostgresSupportRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -233,6 +234,7 @@ async function runSuite(pool: DatabasePool) {
   const developerRepository = new PostgresDeveloperRepository(pool);
   const governanceRepository = new PostgresGovernanceRepository(pool);
   const enterpriseRepository = new PostgresEnterpriseRepository(pool);
+  const supportRepository = new PostgresSupportRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -1744,6 +1746,22 @@ async function runSuite(pool: DatabasePool) {
     exceptions: []
   });
   assert(enterprisePolicy.mode === "dry_run", "Enterprise policy skipped dry-run");
+  const supportTicket = await supportRepository.createTicket(contextA, {
+    category: "product",
+    severity: "normal",
+    subject: "Help with a workflow run",
+    diagnosticConsent: false
+  });
+  assert(supportTicket.status === "open", "Support ticket was not durable");
+  await supportRepository.addMessage(contextA, String(supportTicket.id), {
+    body: "Reproduction steps without secrets"
+  });
+  const diagnostic = await supportRepository.createDiagnostic(contextA, String(supportTicket.id));
+  assert(diagnostic.state === "awaiting_consent", "Diagnostic bundle skipped consent");
+  assert(
+    (await supportRepository.tickets(contextB)).length === 0,
+    "Support ticket crossed tenant RLS"
+  );
 
   const immutable = await Promise.allSettled([
     withTenantTransaction(pool, contextA, (client) =>
@@ -2216,6 +2234,7 @@ async function runSuite(pool: DatabasePool) {
     developer: developerRepository,
     governance: governanceRepository,
     enterprise: enterpriseRepository,
+    support: supportRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),

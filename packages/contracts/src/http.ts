@@ -2944,6 +2944,76 @@ const ENTERPRISE_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }
 }));
 
+const SUPPORT_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  [
+    "GET",
+    "/v1/support-tickets",
+    "listSupportTickets",
+    "List customer support tickets",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/support-tickets",
+    "createSupportTicket",
+    "Create a customer support ticket",
+    "browser_internal"
+  ],
+  [
+    "GET",
+    "/v1/support-tickets/{ticketId}",
+    "getSupportTicket",
+    "Get a support ticket",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/support-tickets/{ticketId}/messages",
+    "createSupportTicketMessage",
+    "Add a support ticket message",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/support-tickets/{ticketId}/diagnostic-bundles",
+    "createDiagnosticBundle",
+    "Preview a redacted diagnostic bundle",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/diagnostic-bundles/{bundleId}/consents",
+    "consentDiagnosticBundle",
+    "Consent to diagnostic bundle creation",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/edge/v1/contact-requests",
+    "createContactRequest",
+    "Submit a consented contact request",
+    "public_anonymous"
+  ]
+].map(([method, path, operationId, summary, exposure]) => ({
+  method: method as HttpRouteContract["method"],
+  path: path!,
+  operationId: operationId!,
+  summary: summary!,
+  tags: ["Support"],
+  exposure: exposure as HttpRouteContract["exposure"],
+  ...(method === "POST" ? { requestBody: genericDataSchema } : {}),
+  responses: {
+    200: apiEnvelope(genericDataSchema),
+    201: apiEnvelope(genericDataSchema),
+    202: apiEnvelope(genericDataSchema),
+    400: apiErrorSchema,
+    401: apiErrorSchema,
+    403: apiErrorSchema,
+    404: apiErrorSchema,
+    500: apiErrorSchema
+  }
+}));
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
@@ -2966,6 +3036,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...PUBLIC_DEVELOPER_ROUTE_CONTRACTS,
   ...GOVERNANCE_ROUTE_CONTRACTS,
   ...ENTERPRISE_ROUTE_CONTRACTS,
+  ...SUPPORT_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

@@ -1,0 +1,311 @@
+{
+  "activeGateRows": [
+    "format",
+    "lint",
+    "strict type",
+    "unit coverage",
+    "build",
+    "brand/provenance guard",
+    "package boundaries",
+    "license",
+    "dependency",
+    "secret",
+    "evidence",
+    "docs validation",
+    "browser e2e",
+    "automated accessibility",
+    "responsive/visual regression",
+    "bundle and web vitals smoke",
+    "real postgresql integration",
+    "migration",
+    "rls/tenant isolation",
+    "query plan",
+    "backup smoke",
+    "auth/session/csrf/cors/abuse security suite",
+    "workflow schema/property",
+    "api/openapi",
+    "event compatibility",
+    "temporal replay/restart/concurrency/idempotency",
+    "outbox/dlq",
+    "runtime load-lite",
+    "kill/repair smoke",
+    "restricted task/comment attachment upload",
+    "checksum/quota",
+    "quarantine/malware",
+    "authorization",
+    "download",
+    "and lifecycle gate",
+    "model contract/live-sandbox gate",
+    "structured output",
+    "evaluation smoke",
+    "ai usage/cost and kill switch",
+    "tool/credential/ssrf/sandbox security",
+    "full agent evaluation",
+    "release/canary/rollback",
+    "file malware/parser/object lifecycle",
+    "retrieval quality/acl/citation/performance",
+    "connector contract/oauth/webhook/sync fixture suites",
+    "each named provider’s real sandbox certification row",
+    "notification delivery/render/access-recheck",
+    "billing/entitlement/ledger/stripe sandbox",
+    "privacy/export/delete/retention/hold/restore-deletion",
+    "sso/scim/policy/residency/migration",
+    "complete browser/device/locale/pwa/guest/support/manual at matrix"
+  ],
+  "declaredEnvironmentState": "NOT_DEPLOYED",
+  "deployments": [],
+  "environmentGates": [
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M33.ENV.knotline-installs-and-completes-the-supported-mobile-task",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:96abc165ac657857e71a53be09abf047b1d14d486525a9f046e0b9075a3cb136"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M33.ENV.manual-keyboard-focus-zoom-reflow-contrast-voice-control",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:dd3b41a2dd98001fd15530d6a3aa7064872d8a4c41e7c3373dbeff63b5d7b311"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M33.ENV.physical-ios-android-install-launch-push-offline-draft",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:a0612a11d3a8d04bd1d8bcfdce5a453e259d4dee0ac1ad07a529c025e9e0e88b"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M33.ENV.representative-participants-and-accessibility-specialists-execute-the-complete",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:4880f405e4a80c3db6024536dd9ec539c9415f8d2580a21ea14368a0ae32243a"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M33.ENV.the-complete-section-20-9-study-runs-against",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:392a34fc01f81f022478d59d631b8c9172079f35fc0029f9fb3cb4bfa4ae60ca"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M33.ENV.under-every-launch-locale-completes-every-applicable-canonical",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:d51a7ec4ce6110efa1eeb0b331e797c332224b1c4ef37f3e5f1b4458a20481dc"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M33.ENV.under-every-section-20-9-cohort-seq-sus",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:b3babf56d253aa296d71a7260d1c73f99c280eb0ca4375ebf3c4f88c176477c6"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M33.ENV.under-exact-and-rows-a-customer-can-find",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:e528b693c163e170561f348c436be53353f7e748ab5302c66989e8619704bd4b"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M33.ENV.under-named-professional-human-linguistic-review-for-all",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:0e7e84c5988b9ea44d00c842c6f37e7216c385e41e73067f0190a03fddd8bcb4"
+    }
+  ],
+  "evidenceUris": [
+    "repo://apps/web/public/manifest.webmanifest",
+    "repo://apps/web/public/sw.js",
+    "repo://packages/operations/src/global-experience.ts",
+    "repo://packages/db/src/support-repository.ts",
+    "repo://tests/e2e/global-experience.spec.ts",
+    "repo://docs/operations/knotline/global-experience.md"
+  ],
+  "externalGates": [
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-001",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-006",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-016",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-019",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-020",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-021",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-023",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    }
+  ],
+  "flags": [
+    {
+      "evidenceUri": "repo://docs/operations/knotline/global-experience.md",
+      "id": "global-experience"
+    }
+  ],
+  "knownRisks": [
+    {
+      "evidenceUri": "repo://artifacts/verification/external-gates.json",
+      "id": "m33-human-device-linguistic-accessibility-and-legal-certification",
+      "owner": "shurevan",
+      "status": "blocked-external-before-production"
+    }
+  ],
+  "manualReviews": [],
+  "migrations": [
+    {
+      "evidenceUri": "repo://packages/db/migrations/0030_global_experience.sql",
+      "id": "0030-global-experience"
+    }
+  ],
+  "milestone": "M33",
+  "notYetApplicable": [
+    {
+      "activationMilestone": "M34",
+      "reason": "This gate activates with M34.",
+      "row": "aws staging terraform/fresh deploy/canary/rollback plus workforce operator identity"
+    },
+    {
+      "activationMilestone": "M34",
+      "reason": "This gate activates with M34.",
+      "row": "trace/redaction/sli/alert/runbook/kill/game-day"
+    },
+    {
+      "activationMilestone": "M35",
+      "reason": "This gate activates with M35.",
+      "row": "sast/dast/iac/container/sbom/signature/penetration evidence"
+    },
+    {
+      "activationMilestone": "M36",
+      "reason": "This gate activates with M36.",
+      "row": "section 4.2 full load/soak/chaos/backup/restore/dr profiles"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "terraform"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "fresh bootstrap"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "deployment"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "canary"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "rollback"
+    },
+    {
+      "activationMilestone": "M38",
+      "reason": "This gate activates with M38.",
+      "row": "every gate row above and every external gate in ga scope; zero gate-row n/a/skip/quarantine. reasoned route-state not_applicable remains governed by section 5.8"
+    }
+  ],
+  "owners": [
+    "shurevan"
+  ],
+  "requirements": [],
+  "schemaVersion": 1,
+  "targetEngineeringState": "COMMITTED",
+  "testRuns": [
+    {
+      "command": "pnpm exec playwright test tests/e2e/global-experience.spec.ts",
+      "evidenceUri": "artifact://M33/test-results/m33-global-browser",
+      "id": "m33-global-browser"
+    },
+    {
+      "command": "pnpm --filter @knotline/operations test",
+      "evidenceUri": "artifact://M33/test-results/m33-global-unit",
+      "id": "m33-global-unit"
+    },
+    {
+      "command": "pnpm test:api",
+      "evidenceUri": "artifact://M33/test-results/m33-global-api",
+      "id": "m33-global-api"
+    },
+    {
+      "command": "pnpm verify:localization",
+      "evidenceUri": "artifact://M33/test-results/m33-global-localization",
+      "id": "m33-global-localization"
+    },
+    {
+      "command": "pnpm test:a11y",
+      "evidenceUri": "artifact://M33/test-results/m33-global-accessibility",
+      "id": "m33-global-accessibility"
+    }
+  ]
+}

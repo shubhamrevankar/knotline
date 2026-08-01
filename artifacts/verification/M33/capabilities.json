@@ -1,0 +1,26 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M33/test-results/m33-global-browser.json",
+      "verifiedAt": "2026-08-12T12:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-001",
+      "EXT-006",
+      "EXT-016",
+      "EXT-019",
+      "EXT-020",
+      "EXT-021",
+      "EXT-023"
+    ],
+    "id": "experience.installable-global-guest-help-and-support",
+    "owner": {
+      "contact": "shurevan",
+      "team": "experience-platform"
+    },
+    "runbook": "docs/operations/knotline/global-experience.md",
+    "status": "DEMO",
+    "summary": "A safe installable shell, scoped guest boundary, durable support/contact flows and versioned help, status, trust, accessibility and legal surfaces are verified locally."
+  }
+]

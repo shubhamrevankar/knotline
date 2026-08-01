@@ -173,6 +173,12 @@ const GovernancePage = lazy(async () => ({
 const EnterpriseIdentityPage = lazy(async () => ({
   default: (await import("./M32Pages.js")).EnterpriseIdentityPage
 }));
+const SupportPage = lazy(async () => ({ default: (await import("./M33Pages.js")).SupportPage }));
+const InformationPage = lazy(async () => ({
+  default: (await import("./M33Pages.js")).InformationPage
+}));
+const ContactPage = lazy(async () => ({ default: (await import("./M33Pages.js")).ContactPage }));
+const GuestPage = lazy(async () => ({ default: (await import("./M33Pages.js")).GuestPage }));
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -354,6 +360,41 @@ function NotFound({ publicPage = true }: { publicPage?: boolean }) {
 function PublicRoute({ route }: { route: WebRouteManifestEntry }) {
   const params = useParams();
   if (route.id === "route.public.home") return <PublicHome />;
+  if (route.id === "route.contact")
+    return (
+      <PublicLayout>
+        <Suspense fallback={<Skeleton label="Loading contact" />}>
+          <ContactPage />
+        </Suspense>
+      </PublicLayout>
+    );
+  if (route.id === "route.guest")
+    return (
+      <Suspense fallback={<Skeleton label="Loading guest access" />}>
+        <GuestPage />
+      </Suspense>
+    );
+  if (
+    [
+      "route.help",
+      "route.help.wildcard",
+      "route.status",
+      "route.trust",
+      "route.accessibility",
+      "route.legal.acceptable-use",
+      "route.legal.dpa",
+      "route.legal.privacy",
+      "route.legal.subprocessors",
+      "route.legal.terms"
+    ].includes(route.id)
+  )
+    return (
+      <PublicLayout>
+        <Suspense fallback={<Skeleton label="Loading information" />}>
+          <InformationPage routeId={route.id === "route.help.wildcard" ? "route.help" : route.id} />
+        </Suspense>
+      </PublicLayout>
+    );
   if (route.id === "route.docs.wildcard" && params["*"] === "components") {
     return (
       <PublicLayout>
@@ -788,6 +829,14 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label="Loading enterprise controls" />}>
           <EnterpriseIdentityPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (["route.app.support", "route.app.support.detail", "route.app.feedback"].includes(route.id))
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading support" />}>
+          <SupportPage />
         </Suspense>
       </AuthGate>
     );

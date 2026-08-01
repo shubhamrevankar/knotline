@@ -5,6 +5,9 @@ import { BrowserRouter } from "react-router-dom";
 import "@xyflow/react/dist/style.css";
 import "@knotline/ui/styles.css";
 import "./styles.css";
+
+if ("serviceWorker" in navigator && import.meta.env.PROD)
+  window.addEventListener("load", () => void navigator.serviceWorker.register("/sw.js"));
 import { AppRouter } from "./router.js";
 import { AppErrorBoundary } from "./AppErrorBoundary.js";
 import { mayRetry } from "./query/errors.js";

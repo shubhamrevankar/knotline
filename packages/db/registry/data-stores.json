@@ -1843,6 +1843,62 @@
       "retentionDays": 2555,
       "exportHandler": "migration-proof-export",
       "deleteHandler": "immutable-proof-retention"
+    },
+    {
+      "name": "support_tickets",
+      "class": "experience.support",
+      "retentionDays": 730,
+      "exportHandler": "support-export",
+      "deleteHandler": "support-delete"
+    },
+    {
+      "name": "support_ticket_messages",
+      "class": "experience.support_message",
+      "retentionDays": 730,
+      "exportHandler": "support-export",
+      "deleteHandler": "support-delete"
+    },
+    {
+      "name": "diagnostic_bundles",
+      "class": "experience.diagnostic",
+      "retentionDays": 1,
+      "exportHandler": "diagnostic-export",
+      "deleteHandler": "expiry-delete"
+    },
+    {
+      "name": "contact_requests",
+      "class": "experience.contact",
+      "retentionDays": 730,
+      "exportHandler": "contact-export",
+      "deleteHandler": "contact-delete"
+    },
+    {
+      "name": "offline_devices",
+      "class": "experience.offline_device",
+      "retentionDays": 365,
+      "exportHandler": "device-export",
+      "deleteHandler": "device-key-destroy-delete"
+    },
+    {
+      "name": "push_subscriptions",
+      "class": "experience.push",
+      "retentionDays": 365,
+      "exportHandler": "push-metadata-export",
+      "deleteHandler": "endpoint-revoke-delete"
+    },
+    {
+      "name": "guest_invitations",
+      "class": "experience.guest_invitation",
+      "retentionDays": 365,
+      "exportHandler": "guest-export",
+      "deleteHandler": "invitation-revoke-delete"
+    },
+    {
+      "name": "guest_sessions",
+      "class": "experience.guest_session",
+      "retentionDays": 90,
+      "exportHandler": "guest-export",
+      "deleteHandler": "session-revoke-delete"
     }
   ],
   "indexes": [
@@ -2298,7 +2354,17 @@
     "enterprise_policies_workspace_id_policy_key_key",
     "scim_resources_pkey",
     "scim_resources_workspace_id_resource_type_external_id_key",
-    "region_migrations_pkey"
+    "region_migrations_pkey",
+    "support_tickets_pkey",
+    "support_ticket_messages_pkey",
+    "diagnostic_bundles_pkey",
+    "contact_requests_pkey",
+    "offline_devices_pkey",
+    "offline_devices_workspace_id_user_id_installation_id_key",
+    "push_subscriptions_pkey",
+    "push_subscriptions_endpoint_hash_key",
+    "guest_invitations_pkey",
+    "guest_sessions_pkey"
   ],
   "caches": []
 }
