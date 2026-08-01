@@ -125,6 +125,23 @@ export const modelGatewayEventPayloadV1Schema = z
   })
   .passthrough();
 
+export const toolBrokerEventPayloadV1Schema = z
+  .object({
+    operationId: z.string().min(8),
+    toolName: z.string().min(1),
+    toolVersion: z.string().min(1),
+    policyReasonCode: z.string().min(1),
+    sideEffectState: z
+      .enum(["prepared", "sent", "confirmed", "failed", "uncertain", "reconciled"])
+      .optional(),
+    connectionId: z.uuid().optional(),
+    approvalId: z.uuid().optional(),
+    providerRequestId: z.string().optional(),
+    errorCode: z.string().optional(),
+    fence: z.number().int().positive()
+  })
+  .passthrough();
+
 export const EVENT_SCHEMA_REGISTRY = [
   {
     eventType: "workflow.created",
@@ -266,6 +283,19 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "model-platform",
     schema: modelGatewayEventPayloadV1Schema
+  })),
+  ...[
+    "tool.execution_prepared",
+    "tool.execution_confirmed",
+    "tool.execution_failed",
+    "tool.execution_uncertain",
+    "tool.execution_reconciled",
+    "tool.kill_switch_changed"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "tool-platform",
+    schema: toolBrokerEventPayloadV1Schema
   }))
 ] as const;
 

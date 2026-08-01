@@ -18,6 +18,7 @@ import {
   PostgresApprovalRepository,
   PostgresAgentRepository,
   PostgresModelRepository,
+  PostgresToolRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -181,9 +182,64 @@ async function runSuite(pool: DatabasePool) {
   const approvalRepository = new PostgresApprovalRepository(pool);
   const agentRepository = new PostgresAgentRepository(pool);
   const modelRepository = new PostgresModelRepository(pool);
+  const toolRepository = new PostgresToolRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
+  const toolDefinition = {
+    name: "records.create",
+    version: "1.0.0",
+    owner: "platform",
+    description: "Create a governed record",
+    inputSchema: { type: "object", additionalProperties: false },
+    outputSchema: { type: "object", additionalProperties: false },
+    risk: "high" as const,
+    idempotency: "provider" as const,
+    sideEffect: "reversible" as const,
+    requiredConnectionScopes: ["records.write"],
+    allowedDestinations: ["api.example.test"],
+    timeoutMs: 10_000,
+    maxInputBytes: 10_000,
+    maxOutputBytes: 10_000,
+    deprecated: false
+  };
+  const createdTool = await toolRepository.createTool(contextA, {
+    stableName: toolDefinition.name,
+    definition: toolDefinition
+  });
+  assert(createdTool.version === 1, "Tool version one was not created");
+  assert((await toolRepository.listTools(contextB)).length === 0, "Tool crossed tenant RLS");
+  await toolRepository.addVersion(contextA, createdTool.id, {
+    expectedRevision: 1,
+    definition: { ...toolDefinition, version: "1.1.0", description: "Create a bounded record" }
+  });
+  const immutableTool = await Promise.allSettled([
+    withTenantTransaction(pool, contextA, (client) =>
+      client.query(
+        `UPDATE tool_versions SET definition='{}'::jsonb WHERE workspace_id=$1 AND tool_id=$2 AND version=1`,
+        [contextA.workspaceId, createdTool.id]
+      )
+    )
+  ]);
+  assert(immutableTool[0]?.status === "rejected", "Published tool version was mutable");
+  const createdCredential = await toolRepository.createCredential(contextA, {
+    provider: "recorded",
+    accountLabel: "Recorded broker account",
+    scopes: ["records.write"],
+    ownerId: SEED.userA,
+    secretReference: "local-only/recorded-broker-account",
+    rotationState: "current"
+  });
+  const credentialMetadata = await toolRepository.listCredentials(contextA);
+  assert(
+    credentialMetadata.length === 1 && !("secret_reference" in (credentialMetadata[0] ?? {})),
+    "Credential metadata exposed its opaque secret reference"
+  );
+  assert(
+    (await toolRepository.listCredentials(contextB)).length === 0,
+    "Credential metadata crossed tenant RLS"
+  );
+  await toolRepository.revokeCredential(contextA, createdCredential.id);
   const agent = await agentRepository.create(contextA, { definition: agentFixture() });
   const agentRecord = await agentRepository.get(contextA, agent.id);
   assert(agentRecord?.revision === "1", "Agent draft was not created at revision one");
@@ -843,6 +899,7 @@ async function runSuite(pool: DatabasePool) {
     approvals: approvalRepository,
     agents: agentRepository,
     models: modelRepository,
+    tools: toolRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),
@@ -898,6 +955,15 @@ async function runSuite(pool: DatabasePool) {
       modelListResponse.statusCode === 200 &&
         modelListResponse.json<{ data: unknown[] }>().data.length === 1,
       "Model registry API did not return the approved mapping"
+    );
+    const toolListResponse = await app.inject({
+      method: "GET",
+      url: `/v1/workspaces/${SEED.workspaceA}/tools`
+    });
+    assert(
+      toolListResponse.statusCode === 200 &&
+        toolListResponse.json<{ data: unknown[] }>().data.length === 1,
+      "Tool registry API did not return the governed tool"
     );
     const draftResponse = await app.inject({
       method: "GET",
@@ -1115,6 +1181,12 @@ async function runSuite(pool: DatabasePool) {
       immutablePolicies: true,
       optimisticPolicyRevision: true,
       providerNeutralRoles: true,
+      tenantIsolated: true,
+      api: true
+    },
+    tools: {
+      immutableVersions: true,
+      scopedCredentials: true,
       tenantIsolated: true,
       api: true
     },

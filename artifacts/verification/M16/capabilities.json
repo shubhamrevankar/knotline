@@ -1,0 +1,38 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M16/test-results/broker-unit.json",
+      "verifiedAt": "2026-08-01T14:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-004"
+    ],
+    "id": "tools.governed-broker",
+    "owner": {
+      "contact": "shurevan",
+      "team": "tool-platform"
+    },
+    "runbook": "docs/operations/knotline/tool-broker-and-sandbox.md",
+    "status": "DEMO",
+    "summary": "Versioned tools, multidimensional policy, approval, credential proxying, effect fencing, receipts, SSRF defense, and kill switches are locally verified."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M16/test-results/sandbox-unit.json",
+      "verifiedAt": "2026-08-01T14:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-002"
+    ],
+    "id": "sandbox.isolated-execution",
+    "owner": {
+      "contact": "shurevan",
+      "team": "tool-platform"
+    },
+    "runbook": "docs/operations/knotline/tool-broker-and-sandbox.md",
+    "status": "DEMO",
+    "summary": "A resource-bounded, non-root, read-only, capability-dropped, internal-network sandbox with pinned runtime and disabled package installation is locally verified."
+  }
+]

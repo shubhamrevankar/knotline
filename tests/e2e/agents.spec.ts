@@ -170,6 +170,13 @@ test("@a11y builder creates, configures, safely previews, publishes, and forks a
   await page.getByRole("link", { name: "Open builder" }).click();
   await page.getByLabel("Purpose").fill("Fixture purpose updated by the builder.");
   await expect(page.getByText("Unsaved changes")).toBeVisible();
+  await page.getByRole("button", { name: "Capabilities" }).click();
+  await page.getByRole("button", { name: "Add governed record tool" }).click();
+  await expect(page.getByRole("button", { name: "Remove governed record tool" })).toHaveAttribute(
+    "aria-pressed",
+    "true"
+  );
+  await expect(page.getByText(/secret values never enter the agent context/u)).toBeVisible();
   await page.getByRole("button", { name: "Save draft" }).click();
   await expect(page.getByText(/Draft revision 2 saved/u)).toBeVisible();
   await page.getByRole("button", { name: "Test console" }).click();

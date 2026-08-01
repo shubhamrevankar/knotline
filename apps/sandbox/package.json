@@ -1,0 +1,25 @@
+{
+  "name": "@knotline/sandbox-service",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --root ../.. apps/sandbox/src",
+    "test:unit": "vitest run --root ../.. apps/sandbox/src",
+    "lint": "eslint src --max-warnings 0",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@knotline/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

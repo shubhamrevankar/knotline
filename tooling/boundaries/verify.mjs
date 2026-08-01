@@ -99,6 +99,14 @@ export async function verifyBoundaries(root) {
           `${relative(root, file)}: only the model gateway service may read the OpenAI credential`
         );
       }
+      if (
+        source.includes("process.env.TOOL_BROKER_RECORDED_CREDENTIAL") &&
+        workspace.name !== "@knotline/tool-broker-service"
+      ) {
+        errors.push(
+          `${relative(root, file)}: only the tool broker service may read provider credentials`
+        );
+      }
       for (const specifier of imports(source)) {
         if (specifier.startsWith("@knotline/") && !workspace.declared.has(specifier)) {
           errors.push(`${relative(root, file)}: undeclared workspace import ${specifier}`);

@@ -89,6 +89,12 @@
       "tenantIsolated": true,
       "api": true
     },
+    "tools": {
+      "immutableVersions": true,
+      "scopedCredentials": true,
+      "tenantIsolated": true,
+      "api": true
+    },
     "auditEvents": 7
   }
 }

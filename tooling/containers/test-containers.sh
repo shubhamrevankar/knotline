@@ -13,7 +13,7 @@ done
 
 docker compose --file infra/docker-compose.yml config --quiet
 
-for dockerfile in apps/api/Dockerfile apps/web/Dockerfile; do
+for dockerfile in apps/api/Dockerfile apps/web/Dockerfile apps/model-gateway/Dockerfile apps/sandbox/Dockerfile apps/tool-broker/Dockerfile; do
   grep --quiet '^USER ' "${dockerfile}"
   grep --quiet '^HEALTHCHECK ' "${dockerfile}"
   if grep -Eiq '^FROM[[:space:]]+[^[:space:]]+:(latest|main|master)(@|[[:space:]]|$)' "${dockerfile}"; then

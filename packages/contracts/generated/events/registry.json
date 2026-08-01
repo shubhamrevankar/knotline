@@ -2822,6 +2822,414 @@
         },
         "additionalProperties": {}
       }
+    },
+    {
+      "eventType": "tool.execution_prepared",
+      "eventVersion": 1,
+      "owner": "tool-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "operationId": {
+            "type": "string",
+            "minLength": 8
+          },
+          "toolName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "toolVersion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "policyReasonCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sideEffectState": {
+            "type": "string",
+            "enum": [
+              "prepared",
+              "sent",
+              "confirmed",
+              "failed",
+              "uncertain",
+              "reconciled"
+            ]
+          },
+          "connectionId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "approvalId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "providerRequestId": {
+            "type": "string"
+          },
+          "errorCode": {
+            "type": "string"
+          },
+          "fence": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "operationId",
+          "toolName",
+          "toolVersion",
+          "policyReasonCode",
+          "fence"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "tool.execution_confirmed",
+      "eventVersion": 1,
+      "owner": "tool-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "operationId": {
+            "type": "string",
+            "minLength": 8
+          },
+          "toolName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "toolVersion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "policyReasonCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sideEffectState": {
+            "type": "string",
+            "enum": [
+              "prepared",
+              "sent",
+              "confirmed",
+              "failed",
+              "uncertain",
+              "reconciled"
+            ]
+          },
+          "connectionId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "approvalId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "providerRequestId": {
+            "type": "string"
+          },
+          "errorCode": {
+            "type": "string"
+          },
+          "fence": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "operationId",
+          "toolName",
+          "toolVersion",
+          "policyReasonCode",
+          "fence"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "tool.execution_failed",
+      "eventVersion": 1,
+      "owner": "tool-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "operationId": {
+            "type": "string",
+            "minLength": 8
+          },
+          "toolName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "toolVersion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "policyReasonCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sideEffectState": {
+            "type": "string",
+            "enum": [
+              "prepared",
+              "sent",
+              "confirmed",
+              "failed",
+              "uncertain",
+              "reconciled"
+            ]
+          },
+          "connectionId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "approvalId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "providerRequestId": {
+            "type": "string"
+          },
+          "errorCode": {
+            "type": "string"
+          },
+          "fence": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "operationId",
+          "toolName",
+          "toolVersion",
+          "policyReasonCode",
+          "fence"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "tool.execution_uncertain",
+      "eventVersion": 1,
+      "owner": "tool-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "operationId": {
+            "type": "string",
+            "minLength": 8
+          },
+          "toolName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "toolVersion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "policyReasonCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sideEffectState": {
+            "type": "string",
+            "enum": [
+              "prepared",
+              "sent",
+              "confirmed",
+              "failed",
+              "uncertain",
+              "reconciled"
+            ]
+          },
+          "connectionId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "approvalId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "providerRequestId": {
+            "type": "string"
+          },
+          "errorCode": {
+            "type": "string"
+          },
+          "fence": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "operationId",
+          "toolName",
+          "toolVersion",
+          "policyReasonCode",
+          "fence"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "tool.execution_reconciled",
+      "eventVersion": 1,
+      "owner": "tool-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "operationId": {
+            "type": "string",
+            "minLength": 8
+          },
+          "toolName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "toolVersion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "policyReasonCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sideEffectState": {
+            "type": "string",
+            "enum": [
+              "prepared",
+              "sent",
+              "confirmed",
+              "failed",
+              "uncertain",
+              "reconciled"
+            ]
+          },
+          "connectionId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "approvalId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "providerRequestId": {
+            "type": "string"
+          },
+          "errorCode": {
+            "type": "string"
+          },
+          "fence": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "operationId",
+          "toolName",
+          "toolVersion",
+          "policyReasonCode",
+          "fence"
+        ],
+        "additionalProperties": {}
+      }
+    },
+    {
+      "eventType": "tool.kill_switch_changed",
+      "eventVersion": 1,
+      "owner": "tool-platform",
+      "compatibility": "BACKWARD",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "operationId": {
+            "type": "string",
+            "minLength": 8
+          },
+          "toolName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "toolVersion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "policyReasonCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sideEffectState": {
+            "type": "string",
+            "enum": [
+              "prepared",
+              "sent",
+              "confirmed",
+              "failed",
+              "uncertain",
+              "reconciled"
+            ]
+          },
+          "connectionId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "approvalId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "providerRequestId": {
+            "type": "string"
+          },
+          "errorCode": {
+            "type": "string"
+          },
+          "fence": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "operationId",
+          "toolName",
+          "toolVersion",
+          "policyReasonCode",
+          "fence"
+        ],
+        "additionalProperties": {}
+      }
     }
   ]
 }

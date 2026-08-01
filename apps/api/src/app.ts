@@ -35,6 +35,7 @@ import type {
   AgentRepository,
   HumanTaskRepository,
   ModelRepository,
+  ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
   TenantContext,
@@ -82,6 +83,7 @@ export interface BuildAppOptions {
   readonly approvals?: ApprovalRepository;
   readonly agents?: AgentRepository;
   readonly models?: ModelRepository;
+  readonly tools?: ToolRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -2398,6 +2400,59 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     const { workspaceId } = workspaceParamsSchema.parse(request.params);
     requireActiveWorkspace(authenticated, workspaceId);
     return { data: await modelRepository().listModels(await agentAccess(request)) };
+  });
+
+  const toolRepository = () => {
+    if (!options.tools) throw new Error("Tools are not configured");
+    return options.tools;
+  };
+  const toolParams = z.object({ toolId: z.string().uuid() }).strict();
+  app.get("/v1/workspaces/:workspaceId/tools", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await toolRepository().listTools(await agentAccess(request)) };
+  });
+  app.post("/v1/workspaces/:workspaceId/tools", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await toolRepository().createTool(await agentAccess(request, true), request.body)
+    });
+  });
+  app.get("/v1/tools/:toolId", async (request, reply) => {
+    const { toolId } = toolParams.parse(request.params);
+    const result = await toolRepository().getTool(await agentAccess(request), toolId);
+    if (!result)
+      return reply.code(404).send({
+        error: {
+          code: "TOOL_NOT_FOUND",
+          message: "The tool does not exist.",
+          requestId: request.id
+        }
+      });
+    return { data: result };
+  });
+  app.post("/v1/tools/:toolId/versions", async (request, reply) => {
+    const { toolId } = toolParams.parse(request.params);
+    return reply.code(201).send({
+      data: await toolRepository().addVersion(
+        await agentAccess(request, true),
+        toolId,
+        request.body
+      )
+    });
+  });
+  app.post("/v1/tools/:toolId/disables", async (request, reply) => {
+    const { toolId } = toolParams.parse(request.params);
+    await toolRepository().setToolState(await agentAccess(request, true), toolId, false);
+    return reply.code(204).send();
+  });
+  app.post("/v1/tools/:toolId/enables", async (request, reply) => {
+    const { toolId } = toolParams.parse(request.params);
+    await toolRepository().setToolState(await agentAccess(request, true), toolId, true);
+    return reply.code(204).send();
   });
 
   app.setErrorHandler((error, request, reply) => {

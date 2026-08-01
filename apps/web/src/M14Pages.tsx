@@ -274,6 +274,12 @@ function definitionWith(agent: AgentDefinition, path: string, value: unknown): A
     return { ...agent, prompts: { ...agent.prompts, [path.split(".")[1]!]: String(value) } };
   if (path === "modelPolicy.role")
     return { ...agent, modelPolicy: { ...agent.modelPolicy, role: String(value) } };
+  if (path === "tools") return { ...agent, tools: value as AgentDefinition["tools"] };
+  if (path === "limits.maxToolCalls")
+    return {
+      ...agent,
+      limits: { ...agent.limits, maxToolCalls: Number(value) }
+    };
   return agent;
 }
 
@@ -555,6 +561,44 @@ export function AgentBuilderPage() {
                     ? `${draft.tools.length} scoped tools selected`
                     : "No tools selected. This agent cannot cause external effects."}
                 </p>
+                <button
+                  type="button"
+                  className="secondary-button"
+                  aria-pressed={draft.tools.some(({ toolKey }) => toolKey === "records.create")}
+                  onClick={() => {
+                    const selected = draft.tools.some(
+                      ({ toolKey }) => toolKey === "records.create"
+                    );
+                    const tools = selected
+                      ? draft.tools.filter(({ toolKey }) => toolKey !== "records.create")
+                      : [
+                          ...draft.tools,
+                          {
+                            toolKey: "records.create",
+                            version: 1,
+                            scopes: ["records.write"],
+                            risk: "high" as const,
+                            environment: "sandbox" as const,
+                            approvalRequired: true
+                          }
+                        ];
+                    setDraft(
+                      definitionWith(
+                        definitionWith(draft, "tools", tools),
+                        "limits.maxToolCalls",
+                        selected ? 0 : 1
+                      )
+                    );
+                  }}
+                >
+                  {draft.tools.some(({ toolKey }) => toolKey === "records.create")
+                    ? "Remove governed record tool"
+                    : "Add governed record tool"}
+                </button>
+                <small>
+                  High-risk effects require approval. Connections expose account and scopes; secret
+                  values never enter the agent context.
+                </small>
               </Card>
               <Card>
                 <h3>Knowledge</h3>

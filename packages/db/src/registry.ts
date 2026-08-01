@@ -127,7 +127,16 @@ export const REQUIRED_STORES = [
   "prompt_versions",
   "model_invocations",
   "model_usage_charges",
-  "provider_circuit_states"
+  "provider_circuit_states",
+  "tool_definitions",
+  "tool_versions",
+  "tool_grants",
+  "credential_records",
+  "oauth_refresh_leases",
+  "tool_operation_bindings",
+  "tool_execution_receipts",
+  "sandbox_executions",
+  "tool_control_switches"
 ] as const;
 
 export async function validateDataStoreRegistry(): Promise<Registry> {

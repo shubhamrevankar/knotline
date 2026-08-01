@@ -11,6 +11,7 @@ import {
   PostgresApprovalRepository,
   PostgresAgentRepository,
   PostgresModelRepository,
+  PostgresToolRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -68,6 +69,7 @@ const taskAdministration = new PostgresTaskAdministrationRepository(pool);
 const approvals = new PostgresApprovalRepository(pool);
 const agents = new PostgresAgentRepository(pool);
 const models = new PostgresModelRepository(pool);
+const tools = new PostgresToolRepository(pool);
 const temporalConnection = await Connection.connect({
   address: process.env.TEMPORAL_ADDRESS ?? "127.0.0.1:7233"
 });
@@ -200,6 +202,7 @@ const app = await buildApp({
   approvals,
   agents,
   models,
+  tools,
   runStarter,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),

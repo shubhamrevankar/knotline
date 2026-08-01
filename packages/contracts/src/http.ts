@@ -1353,6 +1353,72 @@ const MODEL_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }
 ];
 
+const TOOL_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  {
+    method: "GET",
+    path: "/v1/workspaces/{workspaceId}/tools",
+    operationId: "listWorkspaceTools",
+    summary: "List governed workspace tools",
+    tags: ["Tool broker"],
+    exposure: "browser_internal",
+    responses: { 200: apiEnvelope(genericDataSchema), 401: apiErrorSchema, 403: apiErrorSchema }
+  },
+  {
+    method: "POST",
+    path: "/v1/workspaces/{workspaceId}/tools",
+    operationId: "createWorkspaceTool",
+    summary: "Create a governed tool definition",
+    tags: ["Tool broker"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/tools/{toolId}",
+    operationId: "getTool",
+    summary: "Read a governed tool",
+    tags: ["Tool broker"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/tools/{toolId}/versions",
+    operationId: "createToolVersion",
+    summary: "Publish an immutable tool version",
+    tags: ["Tool broker"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  },
+  ...(["disables", "enables"] as const).map((action): HttpRouteContract => ({
+    method: "POST",
+    path: `/v1/tools/{toolId}/${action}`,
+    operationId: action === "disables" ? "disableTool" : "enableTool",
+    summary: action === "disables" ? "Disable a governed tool" : "Enable a governed tool",
+    tags: ["Tool broker"],
+    exposure: "browser_internal",
+    responses: { 204: z.undefined(), 401: apiErrorSchema, 403: apiErrorSchema, 404: apiErrorSchema }
+  }))
+];
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
@@ -1362,6 +1428,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...APPROVAL_ROUTE_CONTRACTS,
   ...AGENT_ROUTE_CONTRACTS,
   ...MODEL_ROUTE_CONTRACTS,
+  ...TOOL_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

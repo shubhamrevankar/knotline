@@ -6498,7 +6498,7 @@ observable, policy-controlled gateway with structured results and honest usage.
 
 ### M16 — Tool broker, credential vault, policy, and isolated sandbox
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M14, M15\
 **Required commit:** `feat: secure agent tools with isolated execution`
 
@@ -9235,7 +9235,7 @@ must appear in that milestone's boundary cell.
 | M13 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: add durable approvals and escalation policies` |
 | M14 | `COMMITTED` | `NOT_DEPLOYED` | `SIMULATED` for test console | `feat: deliver the Knotline agent foundry` |
 | M15 | `COMMITTED` | `NOT_DEPLOYED` | Recorded-contract path verified; EXT-004 `BLOCKED_EXTERNAL` for live provider activation | `feat: integrate the governed OpenAI model gateway` |
-| M16 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-002 for deployed sandbox/vault; EXT-004 for live model-requested tool smoke | `feat: secure agent tools with isolated execution` |
+| M16 | `COMMITTED` | `NOT_DEPLOYED` | Local isolated broker/sandbox verified; EXT-002 and EXT-004 `BLOCKED_EXTERNAL` for deployed vault/sandbox and live model-requested tool evidence | `feat: secure agent tools with isolated execution` |
 | M17 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-003, EXT-004 | `feat: execute governed agents with full provenance` |
 | M18 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-004 | `feat: add agent evaluations and controlled releases` |
 | M19 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-002 | `feat: add secure file ingestion and document processing` |

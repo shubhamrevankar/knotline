@@ -142,6 +142,67 @@ services:
       start_period: 5s
     restart: unless-stopped
 
+  sandbox:
+    build:
+      context: ..
+      dockerfile: apps/sandbox/Dockerfile
+    environment:
+      SANDBOX_HOST: 0.0.0.0
+      SANDBOX_PORT: "4300"
+      SANDBOX_INTERNAL_TOKEN: local-only-sandbox-token
+      SANDBOX_IMAGE_DIGEST: local-compose-pinned-build
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=16m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 32
+    mem_limit: 128m
+    cpus: 0.5
+    networks:
+      - sandbox-private
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:4300/healthz').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+
+  tool-broker:
+    build:
+      context: ..
+      dockerfile: apps/tool-broker/Dockerfile
+    environment:
+      TOOL_BROKER_HOST: 0.0.0.0
+      TOOL_BROKER_PORT: "4400"
+      TOOL_BROKER_INTERNAL_TOKEN: local-only-tool-broker-token
+      TOOL_BROKER_LOCAL_KEY: local-only-tool-broker-encryption-key
+      TOOL_BROKER_RECORDED_CREDENTIAL: local-only-recorded-credential
+    ports:
+      - "127.0.0.1:4400:4400"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:4400/healthz').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+
   api:
     build:
       context: ..
@@ -156,6 +217,10 @@ services:
       temporal:
         condition: service_healthy
       model-gateway:
+        condition: service_healthy
+      sandbox:
+        condition: service_healthy
+      tool-broker:
         condition: service_healthy
     environment:
       KNOTLINE_ENV: local
@@ -174,6 +239,13 @@ services:
       LOG_LEVEL: info
       MODEL_GATEWAY_URL: http://model-gateway:4200
       MODEL_GATEWAY_INTERNAL_TOKEN: local-only-model-gateway-token
+      SANDBOX_URL: http://sandbox:4300
+      SANDBOX_INTERNAL_TOKEN: local-only-sandbox-token
+      TOOL_BROKER_URL: http://tool-broker:4400
+      TOOL_BROKER_INTERNAL_TOKEN: local-only-tool-broker-token
+    networks:
+      - default
+      - sandbox-private
     ports:
       - "127.0.0.1:4100:4100"
     healthcheck:
@@ -231,3 +303,8 @@ volumes:
   knotline-redis:
   knotline-minio:
   knotline-mailpit:
+
+networks:
+  default:
+  sandbox-private:
+    internal: true

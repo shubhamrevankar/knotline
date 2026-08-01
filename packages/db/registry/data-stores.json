@@ -786,6 +786,69 @@
       "retentionDays": 90,
       "exportHandler": "model-export",
       "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "tool_definitions",
+      "class": "tool.definition",
+      "retentionDays": 2555,
+      "exportHandler": "tool-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "tool_versions",
+      "class": "tool.version",
+      "retentionDays": 2555,
+      "exportHandler": "tool-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "tool_grants",
+      "class": "tool.grant",
+      "retentionDays": 2555,
+      "exportHandler": "tool-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "credential_records",
+      "class": "credential.metadata",
+      "retentionDays": 2555,
+      "exportHandler": "credential-export",
+      "deleteHandler": "credential-revoke-delete"
+    },
+    {
+      "name": "oauth_refresh_leases",
+      "class": "credential.refresh_lease",
+      "retentionDays": 7,
+      "exportHandler": "credential-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "tool_operation_bindings",
+      "class": "tool.operation_binding",
+      "retentionDays": 2555,
+      "exportHandler": "tool-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "tool_execution_receipts",
+      "class": "tool.execution_receipt",
+      "retentionDays": 2555,
+      "exportHandler": "tool-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "sandbox_executions",
+      "class": "sandbox.execution",
+      "retentionDays": 90,
+      "exportHandler": "sandbox-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "tool_control_switches",
+      "class": "tool.control_switch",
+      "retentionDays": 2555,
+      "exportHandler": "tool-export",
+      "deleteHandler": "governed-delete"
     }
   ],
   "indexes": [
@@ -975,7 +1038,24 @@
     "model_invocations_workspace_id_operation_id_key",
     "model_invocations_status_idx",
     "model_usage_charges_pkey",
-    "provider_circuit_states_pkey"
+    "provider_circuit_states_pkey",
+    "tool_definitions_pkey",
+    "tool_definitions_workspace_id_stable_name_key",
+    "tool_versions_pkey",
+    "tool_versions_workspace_id_tool_id_semantic_version_key",
+    "tool_versions_workspace_id_tool_id_content_hash_key",
+    "tool_grants_pkey",
+    "tool_grants_agent_idx",
+    "credential_records_pkey",
+    "credential_records_workspace_id_provider_account_label_key",
+    "credential_records_rotation_idx",
+    "oauth_refresh_leases_pkey",
+    "tool_operation_bindings_pkey",
+    "tool_execution_receipts_pkey",
+    "sandbox_executions_pkey",
+    "sandbox_executions_workspace_id_operation_id_key",
+    "sandbox_executions_state_idx",
+    "tool_control_switches_pkey"
   ],
   "caches": []
 }
