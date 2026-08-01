@@ -26,12 +26,12 @@ import { WorkflowCanvas } from "./WorkflowCanvas";
 import { GuidedWorkflowCreate } from "./GuidedWorkflowCreate.js";
 
 const nav = [
-  { label: msg("customer.nav.pulse"), icon: Gauge },
-  { label: msg("customer.nav.workflows"), icon: Blocks, active: true },
-  { label: msg("customer.nav.runs"), icon: Activity, badge: "21" },
-  { label: msg("customer.nav.agents"), icon: Bot },
-  { label: msg("customer.nav.people"), icon: UsersRound },
-  { label: msg("customer.nav.connections"), icon: Cable }
+  { label: msg("customer.nav.pulse"), icon: Gauge, to: "/app" },
+  { label: msg("customer.nav.workflows"), icon: Blocks, to: "/app/workflows", active: true },
+  { label: msg("customer.nav.runs"), icon: Activity, to: "/app/runs", badge: "21" },
+  { label: msg("customer.nav.agents"), icon: Bot, to: "/app/agents" },
+  { label: msg("customer.nav.people"), icon: UsersRound, to: "/app/settings/members" },
+  { label: msg("customer.nav.connections"), icon: Cable, to: "/app/connections" }
 ];
 
 function StatusPill({ status }: { status: WorkflowSummary["status"] }) {
@@ -144,7 +144,7 @@ export function App() {
           </button>
         </div>
 
-        <button className="workspace-switcher" type="button">
+        <Link className="workspace-switcher" to="/app/settings/workspace">
           <span aria-hidden="true" className="workspace-avatar">
             N
           </span>
@@ -152,45 +152,46 @@ export function App() {
             <strong>{msg("customer.workspace.name")}</strong>
           </span>
           <ChevronDown aria-hidden="true" size={15} />
-        </button>
+        </Link>
 
         <nav className="nav-list" aria-label={msg("customer.nav.main")}>
-          {nav.map(({ label, icon: Icon, active, badge }) => (
-            <button
+          {nav.map(({ label, icon: Icon, to, active, badge }) => (
+            <Link
               aria-current={active ? "page" : undefined}
               className={active ? "nav-item nav-item--active" : "nav-item"}
               key={label}
-              type="button"
+              onClick={closeSidebar}
+              to={to}
             >
               <Icon aria-hidden="true" size={17} />
               <span>{label}</span>
               {badge && <b>{badge}</b>}
-            </button>
+            </Link>
           ))}
         </nav>
 
         <div className="sidebar-section">
           <span className="eyebrow">{msg("customer.saved.heading")}</span>
-          <button className="nav-item" type="button">
+          <Link className="nav-item" to="/app/inbox">
             <span aria-hidden="true" className="view-dot view-dot--lime" />
             {msg("customer.saved.attention")}
             <b>4</b>
-          </button>
-          <button className="nav-item" type="button">
+          </Link>
+          <Link className="nav-item" to="/app/runs?status=running">
             <span aria-hidden="true" className="view-dot view-dot--blue" />
             {msg("customer.saved.running")}
-          </button>
+          </Link>
         </div>
 
         <div className="sidebar-footer">
-          <button className="nav-item" type="button">
+          <Link className="nav-item" to="/help">
             <CircleHelp aria-hidden="true" size={17} />
             {msg("customer.help")}
-          </button>
-          <button className="nav-item" type="button">
+          </Link>
+          <Link className="nav-item" to="/app/settings/workspace">
             <Settings2 aria-hidden="true" size={17} />
             {msg("customer.settings")}
-          </button>
+          </Link>
           <Link className="profile" to="/app/profile/sessions">
             <span aria-hidden="true" className="profile-avatar">
               {msg("customer.user.initials")}
@@ -217,13 +218,13 @@ export function App() {
           >
             <Menu aria-hidden="true" size={19} />
           </button>
-          <button aria-label={msg("customer.search")} className="command-search" type="button">
+          <Link aria-label={msg("customer.search")} className="command-search" to="/app/search">
             <Search aria-hidden="true" size={16} />
             <span>{msg("customer.search")}</span>
             <kbd>
               <Command aria-hidden="true" size={12} /> K
             </kbd>
-          </button>
+          </Link>
           <div className="top-actions">
             <span
               aria-live="polite"
@@ -233,19 +234,28 @@ export function App() {
               <i aria-hidden="true" />
               {connected ? msg("customer.connection.api") : msg("customer.connection.fallback")}
             </span>
-            <button
+            <Link
               aria-label={msg("customer.notifications")}
               className="icon-button"
-              type="button"
+              to="/app/notifications"
             >
               <Bell aria-hidden="true" size={18} />
-            </button>
+            </Link>
             <button className="primary-button" onClick={() => setCreating(true)} type="button">
               <Plus aria-hidden="true" size={16} />
               {msg("customer.workflow.new")}
             </button>
           </div>
         </header>
+
+        <div className="demo-banner" role="status">
+          <strong>{msg("customer.demo.label")}</strong>
+          <span>{msg("customer.demo.body")}</span>
+          <Link to="/app/runs/run-1042">{msg("run.list.heading")}</Link>
+          <Link to="/app/inbox">{msg("customer.saved.attention")}</Link>
+          <Link to="/app/agents">{msg("customer.nav.agents")}</Link>
+          <Link to="/app/connections">{msg("customer.nav.connections")}</Link>
+        </div>
 
         <section aria-labelledby="workflows-heading" className="page">
           {creating ? (
@@ -291,10 +301,10 @@ export function App() {
               <h1 id="workflows-heading">{msg("customer.workflow.heading")}</h1>
               <p>{msg("customer.workflow.tagline")}</p>
             </div>
-            <button className="secondary-button" type="button">
+            <Link className="secondary-button" to="/app/templates">
               <Library aria-hidden="true" size={16} />
               {msg("customer.workflow.patterns")}
-            </button>
+            </Link>
           </div>
 
           <div aria-label={msg("customer.metrics.label")} className="metric-strip" role="group">
@@ -329,13 +339,13 @@ export function App() {
                     {msg("customer.library.count", { count: workflows.length })}
                   </strong>
                 </div>
-                <button
+                <Link
                   aria-label={msg("customer.library.settings")}
                   className="icon-button"
-                  type="button"
+                  to="/app/templates"
                 >
                   <Settings2 aria-hidden="true" size={16} />
-                </button>
+                </Link>
               </div>
               <div
                 aria-label={msg("customer.library.group")}
@@ -387,10 +397,10 @@ export function App() {
                       <Link className="secondary-button" to={`/app/workflows/${workflow.id}`}>
                         {msg("customer.map.edit")}
                       </Link>
-                      <button className="run-button" type="button">
+                      <Link className="run-button" to="/app/runs/run-1042">
                         <span aria-hidden="true" />
                         {msg("customer.map.run")}
-                      </button>
+                      </Link>
                     </div>
                   </div>
                   <WorkflowCanvas workflow={workflow} />
@@ -419,18 +429,18 @@ export function App() {
         </section>
       </main>
       <nav className="mobile-bottom-nav" aria-label={msg("customer.nav.mobile")}>
-        <button type="button" aria-current="page">
+        <Link to="/app/workflows" aria-current="page">
           <Blocks aria-hidden="true" size={18} />
           {msg("customer.nav.workflows")}
-        </button>
-        <button type="button">
+        </Link>
+        <Link to="/app/runs">
           <Activity aria-hidden="true" size={18} />
           {msg("customer.nav.runs")}
-        </button>
-        <button type="button">
+        </Link>
+        <Link to="/app/workflows/new">
           <Plus aria-hidden="true" size={18} />
           {msg("customer.workflow.new")}
-        </button>
+        </Link>
       </nav>
     </div>
   );

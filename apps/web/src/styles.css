@@ -661,7 +661,9 @@ button:focus-visible,
   border: 1px solid var(--line);
   border-radius: 11px;
   background: #171a1d;
+  color: var(--text);
   text-align: left;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -730,6 +732,7 @@ button:focus-visible,
   font-size: 12px;
   text-align: left;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .nav-item:hover {
@@ -851,6 +854,7 @@ button:focus-visible,
   color: #cbd2d1;
   background: rgba(240, 173, 85, 0.07);
   font-size: 10px;
+  overflow-x: auto;
 }
 
 .demo-banner strong {
@@ -861,6 +865,25 @@ button:focus-visible,
   font-family: "DM Mono", monospace;
   font-size: 8px;
   letter-spacing: 0.08em;
+}
+
+.demo-banner span {
+  min-width: 0;
+  flex: 1;
+}
+
+.demo-banner a {
+  padding: 3px 7px;
+  border: 1px solid rgba(240, 173, 85, 0.25);
+  border-radius: 999px;
+  color: #ffd59d;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.demo-banner a:hover {
+  border-color: rgba(240, 173, 85, 0.6);
+  background: rgba(240, 173, 85, 0.1);
 }
 
 .command-search {
@@ -876,6 +899,7 @@ button:focus-visible,
   background: rgba(255, 255, 255, 0.025);
   font-size: 11px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .command-search span {
@@ -936,6 +960,12 @@ kbd {
   gap: 7px;
   border-radius: 8px;
   cursor: pointer;
+}
+
+a.icon-button,
+a.secondary-button,
+a.run-button {
+  text-decoration: none;
 }
 
 .icon-button {
@@ -1436,7 +1466,7 @@ kbd {
     background: color-mix(in srgb, var(--ink) 96%, transparent);
   }
 
-  .mobile-bottom-nav button {
+  .mobile-bottom-nav a {
     display: grid;
     gap: 0.2rem;
     justify-items: center;
@@ -1445,9 +1475,10 @@ kbd {
     background: transparent;
     color: var(--muted);
     font-size: 0.72rem;
+    text-decoration: none;
   }
 
-  .mobile-bottom-nav button[aria-current="page"] {
+  .mobile-bottom-nav a[aria-current="page"] {
     color: var(--lime);
   }
 
