@@ -19,6 +19,10 @@ Open `http://localhost:5173`. The API readiness endpoint is
 `http://localhost:4100/health/ready`, Mailpit is `http://localhost:8025`, and
 the Temporal UI is `http://localhost:8233`.
 
+Browser API requests use Vite's same-origin proxy and are forwarded to the API
+on port `4100`. This keeps protected authentication cookies on one browser
+origin and avoids cross-port CORS differences between browsers.
+
 Use `localhost`, not `127.0.0.1`, for the Vite web application because the
 development server may bind to the IPv6 loopback address.
 

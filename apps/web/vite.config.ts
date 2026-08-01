@@ -33,6 +33,12 @@ export default defineConfig({
   },
   plugins: [react()],
   server: {
-    port: 5173
+    port: 5173,
+    proxy: {
+      "/callbacks": "http://localhost:4100",
+      "/edge": "http://localhost:4100",
+      "/health": "http://localhost:4100",
+      "/v1": "http://localhost:4100"
+    }
   }
 });
