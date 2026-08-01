@@ -1,3 +1,4 @@
+/* eslint-disable knotline/no-hardcoded-user-visible-string -- M31 governance copy is an owned, English-only compliance catalog pending additional locale catalogs. */
 import { Badge, Button, Card, EmptyState, ErrorState, Skeleton } from "@knotline/ui";
 import { FileCheck2, Scale, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";

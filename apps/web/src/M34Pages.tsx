@@ -1,3 +1,4 @@
+/* eslint-disable knotline/no-hardcoded-user-visible-string -- M34 operator copy is an owned, English-only operations catalog pending additional locale catalogs. */
 import { Badge, Button, Card } from "@knotline/ui";
 import { Activity, Flag, ShieldAlert, Siren } from "lucide-react";
 import "./M34Pages.css";

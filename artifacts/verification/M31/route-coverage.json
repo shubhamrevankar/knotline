@@ -1,7 +1,7 @@
 {
   "milestone": "M31",
-  "planDigest": "sha256:2f7828dff5fded3dba0d0b5b01748777a29f264666a3717787376c1661095b2f",
-  "routeRegistryDigest": "sha256:b36cee9f3ffc38a9bab6f2d8a6973feb82b6833e2a7653f8d55516169e94b2bd",
+  "planDigest": "sha256:ea5b90c5d2b098be5276117a596eeac6f9077c6b354645961f07966df3ca73c1",
+  "routeRegistryDigest": "sha256:600c0830e7f1c527961583719284692f84369e1b227004534a091ed496a928f1",
   "routes": [
     {
       "routeId": "route.public.home",

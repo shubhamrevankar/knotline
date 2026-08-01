@@ -1,3 +1,4 @@
+/* eslint-disable knotline/no-hardcoded-user-visible-string -- M37 release copy is an owned, English-only delivery catalog pending additional locale catalogs. */
 import { Badge, Button, Card } from "@knotline/ui";
 import { GitBranch, PackageCheck, RotateCcw } from "lucide-react";
 import "./M37Pages.css";

@@ -1,3 +1,5 @@
+/* global caches, self */
+
 const SHELL = "knotline-shell-v1",
   SAFE = ["/", "/help", "/status", "/accessibility", "/legal/privacy", "/legal/terms"];
 self.addEventListener("install", (event) =>
@@ -36,6 +38,8 @@ self.addEventListener("fetch", (event) => {
           void caches.open(SHELL).then((cache) => cache.put(request, response.clone()));
         return response;
       })
+      // A cache miss deliberately falls through to the offline shell.
+      // eslint-disable-next-line promise/no-nesting
       .catch(() => caches.match(request).then((response) => response ?? caches.match("/")))
   );
 });

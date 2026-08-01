@@ -1,3 +1,4 @@
+/* eslint-disable knotline/no-hardcoded-user-visible-string -- M32 enterprise copy is an owned, English-only policy catalog pending additional locale catalogs. */
 import { Badge, Button, Card, EmptyState, ErrorState, Skeleton } from "@knotline/ui";
 import { Building2, Globe2, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";

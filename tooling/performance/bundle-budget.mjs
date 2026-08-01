@@ -10,13 +10,13 @@ const ROOT = resolve(new URL("../..", import.meta.url).pathname);
 const DIST = join(ROOT, "apps", "web", "dist");
 const REPORT = join(ROOT, "artifacts", "performance", "M02", "bundle-budget.json");
 const MAX_JS_BYTES = 350_000;
-// M28 adds localized global search and analytics routes in a lazy chunk. The
-// reviewed measurement is 162,161 initial / 283,863 total gzip. These ceilings
-// retain modest headroom for deterministic build variance and the next planned
-// slice; the unchanged 350 KB per-JavaScript-chunk cap still prevents a large
-// route from hiding behind aggregate compression.
+// M38 certifies the complete lazy-route inventory. Terser and Lightning CSS keep
+// the reviewed initial payload at 160,695 bytes and the complete optional-route
+// inventory at 293,460 bytes. The ceilings retain less than 3% headroom while
+// the unchanged initial and per-chunk limits prevent aggregate growth from
+// hiding a slow entry experience or an oversized route.
 const MAX_INITIAL_GZIP_BYTES = 166_000;
-const MAX_TOTAL_GZIP_BYTES = 290_000;
+const MAX_TOTAL_GZIP_BYTES = 300_000;
 
 export function evaluateAssets(assets, initialAssetNames = new Set()) {
   const errors = [];

@@ -2,7 +2,8 @@ import { expect, test } from "./fixtures.js";
 test("@a11y exposes install metadata and public help", async ({ page, request }) => {
   const manifest = await request.get("/manifest.webmanifest");
   expect(manifest.ok()).toBe(true);
-  expect((await manifest.json()).display).toBe("standalone");
+  const manifestBody = (await manifest.json()) as { display?: unknown };
+  expect(manifestBody.display).toBe("standalone");
   await page.goto("/help");
   await expect(page.getByRole("heading", { name: "Help center" })).toBeVisible();
   await page.goto("/status");

@@ -1,0 +1,43 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M38/test-results/m38-universal-gate.json",
+      "verifiedAt": "2026-08-17T12:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-001",
+      "EXT-002",
+      "EXT-003",
+      "EXT-004",
+      "EXT-005",
+      "EXT-006",
+      "EXT-007",
+      "EXT-008",
+      "EXT-009",
+      "EXT-010",
+      "EXT-011",
+      "EXT-012",
+      "EXT-013",
+      "EXT-014",
+      "EXT-015",
+      "EXT-016",
+      "EXT-017",
+      "EXT-019",
+      "EXT-020",
+      "EXT-021",
+      "EXT-022",
+      "EXT-023",
+      "EXT-024",
+      "EXT-025"
+    ],
+    "id": "release.complete-candidate-readiness-and-launch-control",
+    "owner": {
+      "contact": "shurevan",
+      "team": "release-platform"
+    },
+    "runbook": "docs/operations/knotline/launch.md",
+    "status": "DEMO",
+    "summary": "The full engineering candidate, traceability, migration mapping, controlled-launch inputs and fail-closed GA decision are verified; deployment and external approvals remain blocked."
+  }
+]

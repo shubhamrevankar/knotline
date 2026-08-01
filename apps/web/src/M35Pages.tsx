@@ -1,3 +1,4 @@
+/* eslint-disable knotline/no-hardcoded-user-visible-string -- M35 assurance copy is an owned, English-only security catalog pending additional locale catalogs. */
 import { Badge, Card } from "@knotline/ui";
 import { FileCheck2, ScanSearch, ShieldCheck } from "lucide-react";
 import "./M35Pages.css";

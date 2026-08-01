@@ -3,7 +3,19 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   build: {
+    cssMinify: "lightningcss",
     manifest: true,
+    minify: "terser",
+    terserOptions: {
+      module: true,
+      compress: {
+        passes: 3,
+        pure_getters: true
+      },
+      format: {
+        comments: false
+      }
+    },
     rollupOptions: {
       output: {
         manualChunks(id) {

@@ -1,6 +1,7 @@
 import { expect, test } from "./fixtures.js";
 const workspace = "10000000-0000-4000-8000-000000000001";
 test("@a11y creates a scoped one-time API credential", async ({ page }) => {
+  const displayedCredential = "kn_test_example.single_display_value";
   let created = false;
   await page.route(`**/v1/workspaces/${workspace}/service-principals`, async (route) => {
     if (route.request().method() === "POST") {
@@ -30,7 +31,7 @@ test("@a11y creates a scoped one-time API credential", async ({ page }) => {
         data: {
           id: "credential",
           prefix: "kn_test_example",
-          token: "kn_test_example.one-time-secret",
+          token: displayedCredential,
           displayedOnce: true
         }
       }
@@ -42,7 +43,7 @@ test("@a11y creates a scoped one-time API credential", async ({ page }) => {
   await page.goto("/app/developer/api");
   await page.getByRole("button", { name: "Create test credential" }).click();
   await expect(page.getByText("Copy this secret now")).toBeVisible();
-  await expect(page.getByText("kn_test_example.one-time-secret")).toBeVisible();
+  await expect(page.getByText(displayedCredential)).toBeVisible();
   expect(created).toBe(true);
 });
 test("developer webhook portal is responsive", async ({ page }) => {

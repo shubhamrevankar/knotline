@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "proposedVersion": "1.0.0-rc.1",
+  "candidateIndexDigest": "sha256:ea5b90c5d2b098be5276117a596eeac6f9077c6b354645961f07966df3ca73c1",
+  "artifactDigests": [],
+  "sbom": "repo://artifacts/scans/knotline.cdx.json",
+  "provenance": "generated-after-build",
+  "migrations": { "first": "0001_tenant_foundation.sql", "last": "0030_global_experience.sql" },
+  "configuration": "repo://packages/config",
+  "evidenceIndex": "repo://artifacts/verification",
+  "expectedApprovals": [
+    "all required environment criteria",
+    "EXT-001 through EXT-017 except conditional EXT-018",
+    "EXT-019 through EXT-025"
+  ],
+  "promotionPlan": [
+    "staging",
+    "internal",
+    "design-partner",
+    "limited-beta",
+    "release-candidate",
+    "production-canary",
+    "general-availability"
+  ],
+  "rollbackTarget": "previous signed compatible digest",
+  "claims": { "commit": null, "tag": null, "deployment": null, "generalAvailability": false }
+}

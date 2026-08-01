@@ -22,7 +22,7 @@ export function verifySsoBinding(
   );
 }
 export function scimEtag(version: number) {
-  return `W/\"${version}\"`;
+  return `W/"${version}"`;
 }
 export function domainChallenge(domain: string, nonce: string) {
   return `knotline-verification=${createHash("sha256").update(`${domain}.${nonce}`).digest("hex")}`;

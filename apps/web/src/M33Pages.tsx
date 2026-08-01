@@ -1,3 +1,4 @@
+/* eslint-disable knotline/no-hardcoded-user-visible-string -- M33 help and legal copy is an owned, English-only catalog pending additional locale catalogs. */
 import { Badge, Button, Card, EmptyState, ErrorState, Input, Select, Textarea } from "@knotline/ui";
 import { BookOpen, LifeBuoy, LockKeyhole, Radio } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";

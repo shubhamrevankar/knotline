@@ -891,15 +891,21 @@ function OperatorRoute({ route }: { route: WebRouteManifestEntry }) {
   useMetadata(msg("operator.surface"), true);
   if (route.id === "route.ops.releases")
     return (
-      <Suspense fallback={<Skeleton label="Loading releases" />}>
-        <ReleasesPage />
-      </Suspense>
+      <div className="operator-shell">
+        <span className="sr-only">{msg("operator.plane")}</span>
+        <Suspense fallback={<Skeleton label="Loading releases" />}>
+          <ReleasesPage />
+        </Suspense>
+      </div>
     );
   if (route.id === "route.ops.security")
     return (
-      <Suspense fallback={<Skeleton label="Loading security assurance" />}>
-        <SecurityAssurancePage />
-      </Suspense>
+      <div className="operator-shell">
+        <span className="sr-only">{msg("operator.plane")}</span>
+        <Suspense fallback={<Skeleton label="Loading security assurance" />}>
+          <SecurityAssurancePage />
+        </Suspense>
+      </div>
     );
   if (
     [
@@ -912,9 +918,12 @@ function OperatorRoute({ route }: { route: WebRouteManifestEntry }) {
     ].includes(route.id)
   )
     return (
-      <Suspense fallback={<Skeleton label="Loading operator controls" />}>
-        <OperatorConsole />
-      </Suspense>
+      <div className="operator-shell">
+        <span className="sr-only">{msg("operator.plane")}</span>
+        <Suspense fallback={<Skeleton label="Loading operator controls" />}>
+          <OperatorConsole />
+        </Suspense>
+      </div>
     );
   return (
     <div className="operator-shell">

@@ -52,7 +52,7 @@ export function DeveloperPlatformPage() {
       environment: "test",
       expiresAt: new Date(Date.now() + 86400000 * 90).toISOString()
     });
-    setSecret(String(credential.token ?? ""));
+    setSecret(typeof credential.token === "string" ? credential.token : "");
   };
   const addHook = async () =>
     setHooks([

@@ -74,7 +74,8 @@ describe("canonical web router", () => {
     expect(render("/pricing")).toContain("planned");
     expect(render("/templates/incident-response")).toContain("Available preview");
     expect(render("/templates/not-real")).toContain("Page not found");
-    expect(render("/help/topic")).toContain("Planned product surface");
+    expect(render("/help/topic")).toContain("Loading information");
+    expect(render("/help/topic")).not.toContain("Planned product surface");
     expect(render("/app/runs?state=unknown")).toContain("Checking secure session");
     for (const path of [
       "/app/runs/run-1042",

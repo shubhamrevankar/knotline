@@ -123,7 +123,7 @@ export class PostgresSupportRepository implements SupportRepository {
     const risk = contactRisk({
       email: String(i.email),
       message: String(i.message),
-      honeypot: String(i.honeypot ?? "")
+      honeypot: typeof i.honeypot === "string" ? i.honeypot : ""
     });
     if (!risk.accepted)
       return { id: randomUUID(), accepted: false, state: "rejected", reason: risk.reason };
