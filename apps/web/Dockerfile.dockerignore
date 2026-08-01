@@ -13,6 +13,10 @@
 !packages/contracts/tsconfig.json
 !packages/contracts/tsconfig.build.json
 !packages/contracts/src/**
+!packages/ui/package.json
+!packages/ui/tsconfig.json
+!packages/ui/tsconfig.build.json
+!packages/ui/src/**
 **/dist
 **/coverage
 **/node_modules

@@ -76,6 +76,8 @@
     "generate:openapi": "tsx tooling/contracts/openapi.ts generate",
     "pregenerate:openapi": "pnpm --filter @knotline/contracts build",
     "local:up": "docker compose -f infra/docker-compose.yml up --build",
+    "local:infra:up": "docker compose -f infra/docker-compose.yml up -d postgres redis minio mailpit temporal temporal-ui",
+    "local:preview": "pnpm local:infra:up && set -a && . ./.env.example && set +a && pnpm dev",
     "local:down": "docker compose -f infra/docker-compose.yml down"
   },
   "devDependencies": {

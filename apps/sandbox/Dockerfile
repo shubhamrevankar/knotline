@@ -6,7 +6,7 @@ RUN corepack enable && corepack prepare pnpm@11.9.0 --activate
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 COPY apps/sandbox/package.json apps/sandbox/package.json
 COPY packages/contracts/package.json packages/contracts/package.json
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --filter @knotline/sandbox-service...
 COPY apps/sandbox apps/sandbox
 COPY packages/contracts packages/contracts
 RUN pnpm --filter @knotline/contracts build \

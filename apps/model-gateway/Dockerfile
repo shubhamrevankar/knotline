@@ -7,7 +7,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 COPY apps/model-gateway/package.json apps/model-gateway/package.json
 COPY packages/model-gateway/package.json packages/model-gateway/package.json
 COPY packages/contracts/package.json packages/contracts/package.json
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --filter @knotline/model-gateway-service...
 COPY apps/model-gateway apps/model-gateway
 COPY packages/model-gateway packages/model-gateway
 COPY packages/contracts packages/contracts

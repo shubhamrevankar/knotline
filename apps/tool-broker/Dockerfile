@@ -7,7 +7,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 COPY apps/tool-broker/package.json apps/tool-broker/package.json
 COPY packages/tool-broker/package.json packages/tool-broker/package.json
 COPY packages/contracts/package.json packages/contracts/package.json
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --filter @knotline/tool-broker-service...
 COPY apps/tool-broker apps/tool-broker
 COPY packages/tool-broker packages/tool-broker
 COPY packages/contracts packages/contracts

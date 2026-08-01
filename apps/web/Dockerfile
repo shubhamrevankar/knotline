@@ -7,7 +7,8 @@ RUN corepack enable && corepack prepare pnpm@11.9.0 --activate
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/web/package.json apps/web/package.json
 COPY packages/contracts/package.json packages/contracts/package.json
-RUN pnpm install --frozen-lockfile
+COPY packages/ui/package.json packages/ui/package.json
+RUN pnpm install --frozen-lockfile --filter @knotline/web...
 
 FROM dependencies AS build
 ARG VITE_API_URL=http://localhost:4100
@@ -15,7 +16,9 @@ ENV VITE_API_URL=${VITE_API_URL}
 COPY tsconfig.base.json ./
 COPY apps/web apps/web
 COPY packages/contracts packages/contracts
+COPY packages/ui packages/ui
 RUN pnpm --filter @knotline/contracts build \
+  && pnpm --filter @knotline/ui build \
   && pnpm --filter @knotline/web build
 
 FROM ${NGINX_IMAGE} AS runtime
