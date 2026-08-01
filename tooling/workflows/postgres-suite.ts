@@ -1119,6 +1119,22 @@ async function runSuite(pool: DatabasePool) {
         "BLOCKED_EXTERNAL",
     "Recorded knowledge provider certification was not explicit"
   );
+  for (const connectorKey of [
+    "linear-work",
+    "jira-cloud-work",
+    "github-app",
+    "slack-collaboration",
+    "microsoft-teams-collaboration",
+    "x-publishing"
+  ]) {
+    const collaborationCatalog = await connectorRepository.catalog(contextA, connectorKey);
+    assert(
+      collaborationCatalog.length === 1 &&
+        (collaborationCatalog[0]?.certification as { liveStatus?: string } | undefined)
+          ?.liveStatus === "BLOCKED_EXTERNAL",
+      `Recorded collaboration certification was not explicit for ${connectorKey}`
+    );
+  }
   const providerConnection = await connectorRepository.create(contextA, {
     connectorKey: "google-workspace-knowledge",
     manifestVersion: "1.0.0",
@@ -1990,7 +2006,7 @@ async function runSuite(pool: DatabasePool) {
       data: { items: unknown[]; catalog: unknown[] };
     }>().data;
     assert(
-      connectionsResponse.statusCode === 200 && connectionSurface.catalog.length === 4,
+      connectionsResponse.statusCode === 200 && connectionSurface.catalog.length === 10,
       "Connection catalog and health API failed"
     );
     const sourcesResponse = await app.inject({

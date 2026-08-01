@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "milestone": "M23",
+  "milestone": "M24",
   "rows": [
     {
       "name": "format:check",
@@ -142,6 +142,7 @@
       "declarationRow": "each named provider’s real sandbox certification row",
       "requiredTestFiles": [
         "packages/connector-sdk/src/knowledge-providers.test.ts",
+        "packages/connector-sdk/src/collaboration-providers.test.ts",
         "tests/e2e/connections.spec.ts"
       ]
     },

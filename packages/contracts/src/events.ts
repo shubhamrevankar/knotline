@@ -531,7 +531,11 @@ export const EVENT_SCHEMA_REGISTRY = [
     "connection.source_selection_changed",
     "source_object.permission_changed",
     "provider.action_completed",
-    "provider.action_reconciled"
+    "provider.action_reconciled",
+    "provider.metadata_refreshed",
+    "provider.identity_bound",
+    "provider.webhook_quarantined",
+    "provider.capability_changed"
   ].map((eventType) => ({
     eventType,
     eventVersion: 1,

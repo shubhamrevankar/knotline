@@ -1,0 +1,92 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M24/test-results/provider-unit.json",
+      "verifiedAt": "2026-08-03T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-010"
+    ],
+    "id": "connectors.linear-jira",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/work-collaboration-connectors.md",
+    "status": "DEMO",
+    "summary": "Linear and Jira Cloud recorded object, metadata, webhook, ACL, action, receipt, and reconciliation contracts pass."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M24/test-results/provider-unit.json",
+      "verifiedAt": "2026-08-03T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-011"
+    ],
+    "id": "connectors.github-app",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/work-collaboration-connectors.md",
+    "status": "DEMO",
+    "summary": "GitHub App repository scoping, historical installation routing, replay quarantine, action, and receipt contracts pass recorded fixtures."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M24/test-results/provider-unit.json",
+      "verifiedAt": "2026-08-03T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-012"
+    ],
+    "id": "connectors.slack",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/work-collaboration-connectors.md",
+    "status": "DEMO",
+    "summary": "Slack channel ACL, safe message, interaction, action, and receipt contracts pass recorded fixtures."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M24/test-results/provider-unit.json",
+      "verifiedAt": "2026-08-03T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-008"
+    ],
+    "id": "connectors.microsoft-teams",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/work-collaboration-connectors.md",
+    "status": "DEMO",
+    "summary": "Microsoft Teams tenant consent, channel ACL, message action, and receipt contracts pass recorded fixtures."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M24/test-results/provider-unit.json",
+      "verifiedAt": "2026-08-03T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-014"
+    ],
+    "id": "connectors.x",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/work-collaboration-connectors.md",
+    "status": "DEMO",
+    "summary": "X tier-gated identity/read/publish/delete and receipt contracts pass recorded fixtures without exposing unsupported actions."
+  }
+]

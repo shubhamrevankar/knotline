@@ -1381,6 +1381,48 @@
       "retentionDays": 2555,
       "exportHandler": "connector-export",
       "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "collaboration_provider_accounts",
+      "class": "connector.provider_account",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "connector-delete"
+    },
+    {
+      "name": "provider_metadata_snapshots",
+      "class": "connector.metadata_snapshot",
+      "retentionDays": 90,
+      "exportHandler": "connector-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "provider_identity_bindings",
+      "class": "connector.identity_binding",
+      "retentionDays": 2555,
+      "exportHandler": "identity-export",
+      "deleteHandler": "connector-delete"
+    },
+    {
+      "name": "github_installation_binding_versions",
+      "class": "connector.installation_binding",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "collaboration_action_policy_snapshots",
+      "class": "connector.action_policy",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "provider_webhook_quarantine",
+      "class": "connector.webhook_quarantine",
+      "retentionDays": 90,
+      "exportHandler": "connector-export",
+      "deleteHandler": "retention-delete"
     }
   ],
   "indexes": [
@@ -1717,7 +1759,21 @@
     "provider_action_operations_state_idx",
     "provider_action_receipts_pkey",
     "provider_connector_certifications_pkey",
-    "provider_connector_certifications_workspace_id_connector_key_manifest_version_key"
+    "provider_connector_certifications_workspace_id_connector_key_manifest_version_key",
+    "collaboration_provider_accounts_pkey",
+    "collaboration_provider_accounts_workspace_id_provider_external_account_id_key",
+    "provider_metadata_snapshots_pkey",
+    "provider_metadata_snapshots_workspace_id_connection_id_object_kind_provider_revision_key",
+    "provider_metadata_expiry_idx",
+    "provider_identity_bindings_pkey",
+    "provider_identity_bindings_workspace_id_connection_id_provider_user_id_key",
+    "github_installation_binding_versions_pkey",
+    "github_installation_binding_versions_application_id_environment_installation_id_binding_version_key",
+    "github_installation_event_route_idx",
+    "collaboration_action_policy_snapshots_pkey",
+    "collaboration_action_policy_snapshots_workspace_id_connection_id_action_key_manifest_version_key",
+    "provider_webhook_quarantine_pkey",
+    "provider_webhook_quarantine_workspace_id_provider_installation_id_delivery_id_key"
   ],
   "caches": []
 }

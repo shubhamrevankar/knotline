@@ -28,6 +28,29 @@
 .connection-actions {
   flex-wrap: wrap;
 }
+.connection-capabilities {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+.connection-capabilities div {
+  display: grid;
+  gap: 0.2rem;
+}
+.connection-capabilities dt {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.connection-capabilities dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.connection-limitation {
+  border-left: 3px solid #b7791f;
+  padding-left: 0.75rem;
+}
 .connection-health {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));

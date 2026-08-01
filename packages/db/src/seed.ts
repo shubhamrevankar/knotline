@@ -2,7 +2,11 @@ import type { Pool } from "pg";
 import {
   KNOWLEDGE_PROVIDER_MANIFESTS,
   PROVIDER_CAPABILITY_STATUS,
+  COLLABORATION_PROVIDER_MANIFESTS,
+  COLLABORATION_EXTERNAL_GATES,
+  certifyCollaborationProvider,
   certifyKnowledgeProvider,
+  type CollaborationProvider,
   type KnowledgeProvider
 } from "@knotline/connector-sdk";
 
@@ -158,6 +162,67 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
             contentHash(certification),
             certification,
             JSON.stringify(status.limitations)
+          ]
+        );
+      }
+    }
+    const collaborationProviderIds: Readonly<Record<CollaborationProvider, string>> = {
+      linear: "25000000-0000-4000-8000-000000000001",
+      "jira-cloud": "25000000-0000-4000-8000-000000000002",
+      github: "25000000-0000-4000-8000-000000000003",
+      slack: "25000000-0000-4000-8000-000000000004",
+      "microsoft-teams": "25000000-0000-4000-8000-000000000005",
+      x: "25000000-0000-4000-8000-000000000006"
+    };
+    const collaborationCertificationIds: Readonly<Record<CollaborationProvider, string>> = {
+      linear: "26000000-0000-4000-8000-000000000001",
+      "jira-cloud": "26000000-0000-4000-8000-000000000002",
+      github: "26000000-0000-4000-8000-000000000003",
+      slack: "26000000-0000-4000-8000-000000000004",
+      "microsoft-teams": "26000000-0000-4000-8000-000000000005",
+      x: "26000000-0000-4000-8000-000000000006"
+    };
+    for (const provider of [
+      "linear",
+      "jira-cloud",
+      "github",
+      "slack",
+      "microsoft-teams",
+      "x"
+    ] as const) {
+      const manifest = COLLABORATION_PROVIDER_MANIFESTS[provider];
+      const certification = certifyCollaborationProvider(provider);
+      for (const [workspaceId, userId] of [
+        [SEED.workspaceA, SEED.userA],
+        [SEED.workspaceB, SEED.userB]
+      ] as const) {
+        await client.query(
+          `INSERT INTO connector_manifest_versions(workspace_id,id,connector_key,semantic_version,manifest,content_hash,state,rollout_percent,created_by)
+           VALUES($1,$2,$3,$4,$5,$6,'active',100,$7) ON CONFLICT(workspace_id,id) DO NOTHING`,
+          [
+            workspaceId,
+            collaborationProviderIds[provider],
+            manifest.key,
+            manifest.version,
+            manifest,
+            contentHash(manifest),
+            userId
+          ]
+        );
+        await client.query(
+          `INSERT INTO provider_connector_certifications(workspace_id,id,connector_key,manifest_version,engineering_status,live_status,external_gate,fixture_digest,capabilities,limitations,certified_at)
+           VALUES($1,$2,$3,$4,'RECORDED','BLOCKED_EXTERNAL',$5,$6,$7,$8,'2026-08-01T00:00:00Z') ON CONFLICT(workspace_id,id) DO NOTHING`,
+          [
+            workspaceId,
+            collaborationCertificationIds[provider],
+            manifest.key,
+            manifest.version,
+            COLLABORATION_EXTERNAL_GATES[provider],
+            contentHash(certification),
+            certification,
+            JSON.stringify([
+              "Recorded fixtures are certified; provider sandbox certification is required before LIVE."
+            ])
           ]
         );
       }

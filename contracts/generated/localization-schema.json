@@ -699,7 +699,7 @@
       "key": "connections.account.pending",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:368",
+        "apps/web/src/M22Pages.tsx:399",
         "apps/web/src/M22Pages.tsx:67"
       ]
     },
@@ -707,7 +707,14 @@
       "key": "connections.authorize",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:178"
+        "apps/web/src/M22Pages.tsx:208"
+      ]
+    },
+    {
+      "key": "connections.authorize.blocked",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M22Pages.tsx:207"
       ]
     },
     {
@@ -722,6 +729,41 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/M22Pages.tsx:52"
+      ]
+    },
+    {
+      "key": "connections.capabilities.actions",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M22Pages.tsx:184"
+      ]
+    },
+    {
+      "key": "connections.capabilities.fixture",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M22Pages.tsx:193"
+      ]
+    },
+    {
+      "key": "connections.capabilities.gate",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M22Pages.tsx:191"
+      ]
+    },
+    {
+      "key": "connections.capabilities.none",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M22Pages.tsx:187"
+      ]
+    },
+    {
+      "key": "connections.capabilities.objects",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M22Pages.tsx:180"
       ]
     },
     {
@@ -742,21 +784,21 @@
       "key": "connections.delete",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:407"
+        "apps/web/src/M22Pages.tsx:438"
       ]
     },
     {
       "key": "connections.delete.queued",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:404"
+        "apps/web/src/M22Pages.tsx:435"
       ]
     },
     {
       "key": "connections.disable",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:400"
+        "apps/web/src/M22Pages.tsx:431"
       ]
     },
     {
@@ -777,7 +819,7 @@
       "key": "connections.enable",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:400"
+        "apps/web/src/M22Pages.tsx:431"
       ]
     },
     {
@@ -787,11 +829,11 @@
         "apps/web/src/M22Pages.tsx:120",
         "apps/web/src/M22Pages.tsx:141",
         "apps/web/src/M22Pages.tsx:147",
-        "apps/web/src/M22Pages.tsx:335",
-        "apps/web/src/M22Pages.tsx:348",
-        "apps/web/src/M22Pages.tsx:360",
-        "apps/web/src/M22Pages.tsx:411",
+        "apps/web/src/M22Pages.tsx:366",
+        "apps/web/src/M22Pages.tsx:379",
+        "apps/web/src/M22Pages.tsx:391",
         "apps/web/src/M22Pages.tsx:43",
+        "apps/web/src/M22Pages.tsx:442",
         "apps/web/src/M22Pages.tsx:55"
       ]
     },
@@ -799,14 +841,14 @@
       "key": "connections.errors",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:430"
+        "apps/web/src/M22Pages.tsx:461"
       ]
     },
     {
       "key": "connections.freshness",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:422"
+        "apps/web/src/M22Pages.tsx:453"
       ]
     },
     {
@@ -820,14 +862,14 @@
       "key": "connections.health",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:415"
+        "apps/web/src/M22Pages.tsx:446"
       ]
     },
     {
       "key": "connections.last.success",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:418"
+        "apps/web/src/M22Pages.tsx:449"
       ]
     },
     {
@@ -835,7 +877,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/M22Pages.tsx:153",
-        "apps/web/src/M22Pages.tsx:354",
+        "apps/web/src/M22Pages.tsx:385",
         "apps/web/src/M22Pages.tsx:54",
         "apps/web/src/router.tsx:643",
         "apps/web/src/router.tsx:651",
@@ -848,7 +890,7 @@
         "count"
       ],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:286",
+        "apps/web/src/M22Pages.tsx:317",
         "apps/web/src/M22Pages.tsx:68"
       ]
     },
@@ -856,7 +898,7 @@
       "key": "connections.objects.label",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:426"
+        "apps/web/src/M22Pages.tsx:457"
       ]
     },
     {
@@ -866,7 +908,7 @@
       ],
       "usedBy": [
         "apps/web/src/M22Pages.tsx:176",
-        "apps/web/src/M22Pages.tsx:437"
+        "apps/web/src/M22Pages.tsx:468"
       ]
     },
     {
@@ -880,7 +922,7 @@
       "key": "connections.provider.recorded",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:233",
+        "apps/web/src/M22Pages.tsx:264",
         "apps/web/src/M22Pages.tsx:94"
       ]
     },
@@ -888,14 +930,14 @@
       "key": "connections.reconcile",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:388"
+        "apps/web/src/M22Pages.tsx:419"
       ]
     },
     {
       "key": "connections.reconcile.queued",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:383"
+        "apps/web/src/M22Pages.tsx:414"
       ]
     },
     {
@@ -903,7 +945,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/M22Pages.tsx:166",
-        "apps/web/src/M22Pages.tsx:436"
+        "apps/web/src/M22Pages.tsx:467"
       ]
     },
     {
@@ -947,14 +989,14 @@
       "key": "connections.sources.all",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:255"
+        "apps/web/src/M22Pages.tsx:286"
       ]
     },
     {
       "key": "connections.sources.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:235"
+        "apps/web/src/M22Pages.tsx:266"
       ]
     },
     {
@@ -964,51 +1006,51 @@
         "status"
       ],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:238"
+        "apps/web/src/M22Pages.tsx:269"
       ]
     },
     {
       "key": "connections.sources.error",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:203",
-        "apps/web/src/M22Pages.tsx:206",
-        "apps/web/src/M22Pages.tsx:227"
+        "apps/web/src/M22Pages.tsx:234",
+        "apps/web/src/M22Pages.tsx:237",
+        "apps/web/src/M22Pages.tsx:258"
       ]
     },
     {
       "key": "connections.sources.exclude",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:303"
+        "apps/web/src/M22Pages.tsx:334"
       ]
     },
     {
       "key": "connections.sources.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:234"
+        "apps/web/src/M22Pages.tsx:265"
       ]
     },
     {
       "key": "connections.sources.include",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:295"
+        "apps/web/src/M22Pages.tsx:326"
       ]
     },
     {
       "key": "connections.sources.loading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:207"
+        "apps/web/src/M22Pages.tsx:238"
       ]
     },
     {
       "key": "connections.sources.save",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:311"
+        "apps/web/src/M22Pages.tsx:342"
       ]
     },
     {
@@ -1017,49 +1059,49 @@
         "count"
       ],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:225"
+        "apps/web/src/M22Pages.tsx:256"
       ]
     },
     {
       "key": "connections.sources.scope",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:247"
+        "apps/web/src/M22Pages.tsx:278"
       ]
     },
     {
       "key": "connections.sources.selected",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:264"
+        "apps/web/src/M22Pages.tsx:295"
       ]
     },
     {
       "key": "connections.state.changed",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:396"
+        "apps/web/src/M22Pages.tsx:427"
       ]
     },
     {
       "key": "connections.sync",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:376"
+        "apps/web/src/M22Pages.tsx:407"
       ]
     },
     {
       "key": "connections.sync.empty",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:459"
+        "apps/web/src/M22Pages.tsx:490"
       ]
     },
     {
       "key": "connections.sync.history",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:449"
+        "apps/web/src/M22Pages.tsx:480"
       ]
     },
     {
@@ -1068,14 +1110,14 @@
         "count"
       ],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:455"
+        "apps/web/src/M22Pages.tsx:486"
       ]
     },
     {
       "key": "connections.sync.queued",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M22Pages.tsx:372"
+        "apps/web/src/M22Pages.tsx:403"
       ]
     },
     {

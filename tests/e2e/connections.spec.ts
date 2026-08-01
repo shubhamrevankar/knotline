@@ -140,6 +140,55 @@ test("authorization creates only a clean one-time redirect", async ({ page }) =>
   ).resolves.toEqual([]);
 });
 
+test("collaboration provider setup shows targets, actions, limits, and its independent gate", async ({
+  page
+}) => {
+  await page.route("**/v1/workspaces/*/connections", (route) =>
+    route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        data: {
+          items: [],
+          catalog: [
+            {
+              id: "m24-github",
+              key: "github-app",
+              version: "1.0.0",
+              state: "active",
+              manifest: {
+                displayName: "GitHub",
+                provider: "github",
+                requiredScopes: ["metadata:read", "contents:read"],
+                optionalScopes: ["issues:write"],
+                permissionFidelity: "exact",
+                regions: ["us"],
+                objectTypes: ["repository", "issue", "pull-request", "review"],
+                actions: ["issue.create", "comment.create", "pull-request.create"]
+              },
+              certification: {
+                engineeringStatus: "RECORDED",
+                liveStatus: "BLOCKED_EXTERNAL",
+                externalGate: "EXT-011",
+                limitations: ["Provider sandbox certification is required before LIVE."]
+              }
+            }
+          ]
+        }
+      })
+    })
+  );
+  await page.setViewportSize({ width: 320, height: 720 });
+  await page.goto("/app/connections/new/github-app");
+  await expect(page.getByRole("heading", { name: "Connect GitHub" })).toBeVisible();
+  await expect(page.getByText("repository, issue, pull-request, review")).toBeVisible();
+  await expect(page.getByText("issue.create, comment.create, pull-request.create")).toBeVisible();
+  await expect(page.getByText("EXT-011")).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Live provider setup requires certification" })
+  ).toBeDisabled();
+  await expect(page.locator("body")).not.toHaveCSS("overflow-x", "scroll");
+});
+
 test("knowledge provider source selection exposes fidelity, limitations, and revision-safe scope", async ({
   page
 }) => {

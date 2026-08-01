@@ -175,7 +175,38 @@ export function ConnectionSetupPage() {
         <p>
           {msg("connections.permission", { fidelity: String(catalog.manifest.permissionFidelity) })}
         </p>
-        <Button onClick={() => void connect()}>{msg("connections.authorize")}</Button>
+        <dl className="connection-capabilities">
+          <div>
+            <dt>{msg("connections.capabilities.objects")}</dt>
+            <dd>{(catalog.manifest.objectTypes as string[] | undefined)?.join(", ")}</dd>
+          </div>
+          <div>
+            <dt>{msg("connections.capabilities.actions")}</dt>
+            <dd>
+              {(catalog.manifest.actions as string[] | undefined)?.join(", ") ||
+                msg("connections.capabilities.none")}
+            </dd>
+          </div>
+          <div>
+            <dt>{msg("connections.capabilities.gate")}</dt>
+            <dd>
+              {catalog.certification?.externalGate ?? msg("connections.capabilities.fixture")}
+            </dd>
+          </div>
+        </dl>
+        {catalog.certification?.limitations.map((limitation) => (
+          <p className="connection-limitation" key={limitation}>
+            {limitation}
+          </p>
+        ))}
+        <Button
+          disabled={catalog.certification?.liveStatus === "BLOCKED_EXTERNAL"}
+          onClick={() => void connect()}
+        >
+          {catalog.certification?.liveStatus === "BLOCKED_EXTERNAL"
+            ? msg("connections.authorize.blocked")
+            : msg("connections.authorize")}
+        </Button>
         {status ? <p role="status">{status}</p> : null}
       </Card>
     </main>

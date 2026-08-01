@@ -7219,7 +7219,7 @@ Confluence content searchable and available to agents with source fidelity.
 
 ### M24 — Work tracking, source control, collaboration, and X connectors
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M22\
 **Required commit:** `feat: connect Linear Jira GitHub and collaboration systems`
 
@@ -9265,7 +9265,7 @@ must appear in that milestone's boundary cell.
 | M21 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic entity resolution, ACL-intersected provenance, bounded graph traversal, merge/split, conflicts, export, and knowledge administration verified locally | `feat: add the provenance-backed knowledge graph` |
 | M22 | `COMMITTED` | `NOT_DEPLOYED` | Base fixture framework `SIMULATED` and locally certified; optional provider branches retain EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, EXT-015, EXT-025 individually | `feat: establish the secure connector platform` |
 | M23 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic recorded suites `RECORDED`; EXT-007 and EXT-009 remain independently `BLOCKED_EXTERNAL`; no provider is labelled `LIVE` | `feat: connect Google Notion and Confluence knowledge` |
-| M24 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-008, EXT-010, EXT-011, EXT-012, EXT-014 | `feat: connect Linear Jira GitHub and collaboration systems` |
+| M24 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic recorded suites `RECORDED`; EXT-008, EXT-010, EXT-011, EXT-012, and EXT-014 remain independently `BLOCKED_EXTERNAL`; no provider is labelled `LIVE` | `feat: connect Linear Jira GitHub and collaboration systems` |
 | M25 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-007, EXT-008, EXT-013, EXT-025 | `feat: add Microsoft CRM and generic data connectors` |
 | M26 | `NOT_STARTED` | `NOT_DEPLOYED` | Each provider branch retains EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, or EXT-025 individually | `feat: add production triggers and reconciled outbound sync` |
 | M27 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-006, EXT-008, EXT-012 | `feat: deliver multichannel notifications and escalation delivery` |
