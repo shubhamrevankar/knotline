@@ -10,12 +10,12 @@ const ROOT = resolve(new URL("../..", import.meta.url).pathname);
 const DIST = join(ROOT, "apps", "web", "dist");
 const REPORT = join(ROOT, "artifacts", "performance", "M02", "bundle-budget.json");
 const MAX_JS_BYTES = 350_000;
-// M19 adds shared authenticated file lifecycle clients and a lazy document
-// surface. The measured review point is 153,405 initial / 257,480 total gzip;
-// these ceilings retain roughly 3.5 KB initial and 5.5 KB total headroom so
+// M20 adds shared authorization-proof/search clients and a lazy retrieval
+// debugger. The measured review point is 154,752 initial / 260,719 total gzip;
+// these ceilings retain roughly 4 KB initial and 5 KB total headroom so
 // subsequent growth still requires an explicit performance review.
-const MAX_INITIAL_GZIP_BYTES = 157_000;
-const MAX_TOTAL_GZIP_BYTES = 263_000;
+const MAX_INITIAL_GZIP_BYTES = 159_000;
+const MAX_TOTAL_GZIP_BYTES = 266_000;
 
 export function evaluateAssets(assets, initialAssetNames = new Set()) {
   const errors = [];

@@ -72,6 +72,7 @@ const ACTIVATION_MILESTONES = {
   "full agent evaluation": "M18",
   "release/canary/rollback": "M18",
   "file malware/parser/object lifecycle": "M19",
+  "retrieval quality/acl/citation/performance": "M20",
   typecheck: "M01",
   "verify:boundaries": "M01",
   "verify:backup": "M03",

@@ -1,7 +1,7 @@
 {
   "milestone": "M10",
-  "planDigest": "sha256:d9f9bfb42eda3c884dbff2097f19032544d550c42a6e10100838c54874304ff5",
-  "routeRegistryDigest": "sha256:3398e85df48edb6736f65ebc7417000c9b7f1fe1597052b5bcba69114ec9d21e",
+  "planDigest": "sha256:f8304c7ecc729a1eba2503e75a16d150c68400c6008a46bbc6466139fee876b9",
+  "routeRegistryDigest": "sha256:48b574e32f0e1f3a21be895e3c7aa0b4662dc2b897a3610ca2c270ac15740bdb",
   "routes": [
     {
       "routeId": "route.public.home",

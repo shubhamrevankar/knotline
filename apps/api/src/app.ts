@@ -38,6 +38,7 @@ import type {
   MemoryRepository,
   EvaluationRepository,
   FileRepository,
+  RetrievalRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -90,6 +91,7 @@ export interface BuildAppOptions {
   readonly memory?: MemoryRepository;
   readonly evaluations?: EvaluationRepository;
   readonly files?: FileRepository;
+  readonly retrieval?: RetrievalRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -2488,6 +2490,10 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     if (!options.files) throw new Error("Files are not configured");
     return options.files;
   };
+  const retrievalRepository = () => {
+    if (!options.retrieval) throw new Error("Retrieval is not configured");
+    return options.retrieval;
+  };
   const fileParams = z.object({ fileId: z.string().uuid() }).strict();
   const fileUploadParams = z.object({ uploadId: z.string().uuid() }).strict();
   app.get("/v1/workspaces/:workspaceId/files", async (request) => {
@@ -2587,6 +2593,20 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       .object({ documentId: z.string().uuid() })
       .strict()
       .parse(request.params);
+    const query = z
+      .object({ manifestId: z.string().uuid().optional(), chunkId: z.string().uuid().optional() })
+      .strict()
+      .parse(request.query);
+    const proof = request.headers["x-knotline-authorization-proof"];
+    if (query.manifestId && query.chunkId && typeof proof === "string" && options.retrieval)
+      return {
+        data: await retrievalRepository().openCitation(
+          await agentAccess(request),
+          query.manifestId,
+          query.chunkId,
+          proof
+        )
+      };
     const result = await fileRepository().get(await agentAccess(request), documentId);
     return result
       ? { data: result.processing_jobs ?? [] }
@@ -2607,17 +2627,79 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       data: await fileRepository().retryProcessing(await agentAccess(request, true), documentId)
     });
   });
+  app.post("/v1/documents/:documentId/indexings", async (request, reply) => {
+    const { documentId } = z
+      .object({ documentId: z.string().uuid() })
+      .strict()
+      .parse(request.params);
+    return reply.code(202).send({
+      data: await retrievalRepository().indexDocument(
+        await agentAccess(request, true),
+        documentId,
+        request.body
+      )
+    });
+  });
+  app.post("/v1/workspaces/:workspaceId/authorization-proofs", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await retrievalRepository().mintAuthorizationProof(
+        await agentAccess(request, true),
+        request.body
+      )
+    });
+  });
+  app.post("/v1/workspaces/:workspaceId/search", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await retrievalRepository().search(await agentAccess(request), request.body) };
+  });
+  app.post("/v1/workspaces/:workspaceId/retrieval-debug", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return {
+      data: await retrievalRepository().search(await agentAccess(request), request.body, true)
+    };
+  });
+  app.post("/v1/knowledge-sources/:sourceId/acl-projections", async (request, reply) => {
+    const { sourceId } = z.object({ sourceId: z.string().uuid() }).strict().parse(request.params);
+    return reply.code(201).send({
+      data: await retrievalRepository().advanceAcl(
+        await agentAccess(request, true),
+        sourceId,
+        request.body
+      )
+    });
+  });
+  app.post("/v1/workspaces/:workspaceId/knowledge-reindexes", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(202).send({
+      data: await retrievalRepository().reindex(await agentAccess(request, true), request.body)
+    });
+  });
   app.delete("/v1/documents/:documentId", async (request) => {
     const { documentId } = z
       .object({ documentId: z.string().uuid() })
       .strict()
       .parse(request.params);
+    const retrieval = options.retrieval
+      ? await retrievalRepository().deleteDocument(await agentAccess(request, true), documentId)
+      : undefined;
     return {
-      data: await fileRepository().delete(
-        await agentAccess(request, true),
-        documentId,
-        "document_deleted"
-      )
+      data: {
+        ...(await fileRepository().delete(
+          await agentAccess(request, true),
+          documentId,
+          "document_deleted"
+        )),
+        retrieval
+      }
     };
   });
   app.get("/v1/files/:fileId/preview", async (request) => {

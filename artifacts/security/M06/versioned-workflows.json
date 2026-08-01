@@ -136,6 +136,18 @@
       "tenantIsolated": true,
       "api": true
     },
+    "retrieval": {
+      "deterministicChunking": true,
+      "hybridRanking": true,
+      "exactCitations": true,
+      "aclProofs": true,
+      "immediateLocalRevocation": true,
+      "staleProofFailClosed": true,
+      "promptInjectionUntrusted": true,
+      "dualGenerationFence": true,
+      "tenantIsolated": true,
+      "api": true
+    },
     "auditEvents": 7
   }
 }

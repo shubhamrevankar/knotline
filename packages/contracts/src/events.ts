@@ -212,6 +212,21 @@ export const fileLifecycleEventPayloadV1Schema = z
   })
   .passthrough();
 
+export const knowledgeRetrievalEventPayloadV1Schema = z
+  .object({
+    workspaceId: z.uuid(),
+    sourceId: z.uuid().optional(),
+    documentId: z.uuid().optional(),
+    generationId: z.uuid().optional(),
+    manifestId: z.uuid().optional(),
+    aclEpoch: z.number().int().nonnegative().optional(),
+    queryHash: z.string().optional(),
+    resultCount: z.number().int().nonnegative().optional(),
+    latencyMs: z.number().int().nonnegative().optional(),
+    reason: z.string().optional()
+  })
+  .passthrough();
+
 export const EVENT_SCHEMA_REGISTRY = [
   {
     eventType: "workflow.created",
@@ -437,6 +452,24 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "file-platform",
     schema: fileLifecycleEventPayloadV1Schema
+  })),
+  ...[
+    "knowledge.index_started",
+    "knowledge.index_completed",
+    "knowledge.reindex_started",
+    "knowledge.reindex_completed",
+    "knowledge.generation_promoted",
+    "knowledge.acl_projection_advanced",
+    "knowledge.permission_invalidated",
+    "knowledge.authorization_proof_minted",
+    "knowledge.retrieval_completed",
+    "knowledge.citation_opened",
+    "knowledge.source_deleted"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "knowledge-platform",
+    schema: knowledgeRetrievalEventPayloadV1Schema
   }))
 ] as const;
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "milestone": "M19",
+  "milestone": "M20",
   "rows": [
     {
       "name": "format:check",
@@ -305,6 +305,17 @@
         "packages/document-processing/src/processing.test.ts",
         "tests/e2e/files.spec.ts",
         "tooling/workflows/postgres-suite.ts"
+      ]
+    },
+    {
+      "name": "retrieval quality/acl/citation/performance",
+      "status": "ACTIVE",
+      "script": "test:retrieval",
+      "declarationRow": "retrieval quality/acl/citation/performance",
+      "requiredTestFiles": [
+        "packages/retrieval/src/retrieval.test.ts",
+        "tooling/workflows/postgres-suite.ts",
+        "tests/e2e/retrieval.spec.ts"
       ]
     },
     {

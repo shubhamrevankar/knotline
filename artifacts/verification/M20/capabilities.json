@@ -1,0 +1,20 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M20/test-results/retrieval-unit.json",
+      "verifiedAt": "2026-08-01T22:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-004"
+    ],
+    "id": "knowledge.permission-aware-retrieval",
+    "owner": {
+      "contact": "shurevan",
+      "team": "knowledge-platform"
+    },
+    "runbook": "docs/operations/knotline/permission-aware-retrieval.md",
+    "status": "DEMO",
+    "summary": "Deterministic chunking, hybrid retrieval, exact citations, signed short-lived proofs, atomic local ACL revocation, prompt-injection boundaries, and generation fencing are locally verified."
+  }
+]

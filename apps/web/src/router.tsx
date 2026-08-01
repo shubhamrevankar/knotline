@@ -119,6 +119,10 @@ const KnowledgeDocumentPage = lazy(async () => {
   const module = await import("./M19Pages.js");
   return { default: module.KnowledgeDocumentPage };
 });
+const KnowledgeSearchPage = lazy(async () => {
+  const module = await import("./M20Pages.js");
+  return { default: module.KnowledgeSearchPage };
+});
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -577,6 +581,14 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label={msg("files.loading")} />}>
           <KnowledgeDocumentPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.knowledge.search")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("retrieval.loading")} />}>
+          <KnowledgeSearchPage />
         </Suspense>
       </AuthGate>
     );

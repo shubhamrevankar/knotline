@@ -2617,9 +2617,13 @@ GET    /v1/documents/:documentId
 GET    /v1/documents/:documentId/versions
 GET    /v1/documents/:documentId/citations
 POST   /v1/documents/:documentId/reprocessings
+POST   /v1/documents/:documentId/indexings
 DELETE /v1/documents/:documentId
+POST   /v1/workspaces/:workspaceId/authorization-proofs
 POST   /v1/workspaces/:workspaceId/search
 POST   /v1/workspaces/:workspaceId/retrieval-debug
+POST   /v1/knowledge-sources/:sourceId/acl-projections
+POST   /v1/workspaces/:workspaceId/knowledge-reindexes
 
 GET    /v1/workspaces/:workspaceId/entities
 GET    /v1/entities/:entityId
@@ -6821,7 +6825,7 @@ download model.
 
 ### M20 — Permission-aware hybrid retrieval, citations, and reindexing
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M15, M17, M19\
 **Required commit:** `feat: deliver permission-aware hybrid retrieval`
 
@@ -9248,7 +9252,7 @@ must appear in that milestone's boundary cell.
 | M17 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic durable loop and local worker integration verified; EXT-003 and EXT-004 `BLOCKED_EXTERNAL` for deployed Temporal and live provider evidence | `feat: execute governed agents with full provenance` |
 | M18 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic evaluation, encrypted fixtures, release gates, canary, and rollback verified locally; EXT-004 `BLOCKED_EXTERNAL` for live provider suites | `feat: add agent evaluations and controlled releases` |
 | M19 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic upload, scanner-attested quarantine, processing, preview, download, replacement, and deletion verified locally; EXT-002 `BLOCKED_EXTERNAL` for deployed object storage and scanner | `feat: add secure file ingestion and document processing` |
-| M20 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-004 | `feat: deliver permission-aware hybrid retrieval` |
+| M20 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic hybrid retrieval, exact citations, signed five-minute ACL proofs, local revocation, and generation fencing verified; EXT-004 `BLOCKED_EXTERNAL` for live embedding provider evidence | `feat: deliver permission-aware hybrid retrieval` |
 | M21 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: add the provenance-backed knowledge graph` |
 | M22 | `NOT_STARTED` | `NOT_DEPLOYED` | Base framework `SIMULATED`; optional provider branches retain EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, EXT-015, EXT-025 individually | `feat: establish the secure connector platform` |
 | M23 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-007, EXT-009 | `feat: connect Google Notion and Confluence knowledge` |

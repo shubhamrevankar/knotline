@@ -1066,6 +1066,97 @@
       "retentionDays": 2555,
       "exportHandler": "evaluation-export",
       "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "knowledge_index_generations",
+      "class": "knowledge.index_generation",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "knowledge_sources",
+      "class": "knowledge.source",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "knowledge-delete"
+    },
+    {
+      "name": "knowledge_document_sections",
+      "class": "knowledge.section",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "knowledge-delete"
+    },
+    {
+      "name": "knowledge_chunks",
+      "class": "knowledge.chunk",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "knowledge-delete"
+    },
+    {
+      "name": "knowledge_acl_projections",
+      "class": "knowledge.acl_projection",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-acl-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "knowledge_acl_members",
+      "class": "knowledge.acl_member",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-acl-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "knowledge_authorization_proofs",
+      "class": "knowledge.authorization_proof",
+      "retentionDays": 7,
+      "exportHandler": "security-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "knowledge_retrieval_manifests",
+      "class": "knowledge.retrieval_manifest",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "knowledge_embedding_cache",
+      "class": "knowledge.embedding_cache",
+      "retentionDays": 365,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "knowledge-delete"
+    },
+    {
+      "name": "knowledge_embedding_usage",
+      "class": "knowledge.embedding_usage",
+      "retentionDays": 2555,
+      "exportHandler": "usage-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "knowledge_reindex_jobs",
+      "class": "knowledge.reindex_job",
+      "retentionDays": 365,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "knowledge_permission_invalidations",
+      "class": "knowledge.permission_invalidation",
+      "retentionDays": 2555,
+      "exportHandler": "security-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "knowledge_citation_accesses",
+      "class": "knowledge.citation_access",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "retention-delete"
     }
   ],
   "indexes": [
@@ -1323,7 +1414,30 @@
     "file_list_idx",
     "file_processing_jobs_idx",
     "file_download_expiry_idx",
-    "file_usage_resource_idx"
+    "file_usage_resource_idx",
+    "knowledge_index_generations_pkey",
+    "knowledge_active_generation_idx",
+    "knowledge_sources_pkey",
+    "knowledge_sources_workspace_id_document_id_document_version_generation_id_key",
+    "knowledge_document_sections_pkey",
+    "knowledge_document_sections_workspace_id_source_id_ordinal_key",
+    "knowledge_chunks_pkey",
+    "knowledge_chunks_workspace_id_source_id_generation_id_ordinal_key",
+    "knowledge_chunks_lexical_idx",
+    "knowledge_chunks_vector_idx",
+    "knowledge_chunks_serving_idx",
+    "knowledge_acl_projections_pkey",
+    "knowledge_acl_authoritative_idx",
+    "knowledge_acl_members_pkey",
+    "knowledge_acl_subject_idx",
+    "knowledge_authorization_proofs_pkey",
+    "knowledge_proof_expiry_idx",
+    "knowledge_retrieval_manifests_pkey",
+    "knowledge_embedding_cache_pkey",
+    "knowledge_embedding_usage_pkey",
+    "knowledge_reindex_jobs_pkey",
+    "knowledge_permission_invalidations_pkey",
+    "knowledge_citation_accesses_pkey"
   ],
   "caches": []
 }

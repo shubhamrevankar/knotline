@@ -1081,3 +1081,66 @@ export const deleteFile = async (fileId: string) =>
       reason: "user_deleted"
     })
   ).data;
+
+export type KnowledgeSearchResult = Readonly<{
+  sourceObjectId: string;
+  documentId: string;
+  documentVersion: number;
+  chunkId: string;
+  title: string;
+  snippet: string;
+  coordinate: Readonly<Record<string, unknown>>;
+  score: number;
+  scoreBreakdown: Readonly<Record<string, number>>;
+  contentHash: string;
+  permissionEvidenceHash: string;
+  classification: string;
+  freshness: string;
+  previewUrl: string;
+}>;
+
+export type KnowledgeSearchResponse = Readonly<{
+  manifestId: string;
+  corpusGeneration: string;
+  normalizedQueryHash: string;
+  results: readonly KnowledgeSearchResult[];
+  exclusions: Readonly<Record<string, number>>;
+  latencyMs: number;
+  debug?: Readonly<Record<string, unknown>>;
+}>;
+
+export const mintKnowledgeProof = async () =>
+  (
+    await mutate<ApiEnvelope<{ proof: string; expiresAt: string }>>(
+      `/v1/workspaces/${workspaceId}/authorization-proofs`,
+      "POST",
+      { resourceId: workspaceId, groupIds: [] }
+    )
+  ).data;
+
+export const searchKnowledge = async (input: Readonly<Record<string, unknown>>, debug = false) =>
+  (
+    await mutate<ApiEnvelope<KnowledgeSearchResponse>>(
+      `/v1/workspaces/${workspaceId}/${debug ? "retrieval-debug" : "search"}`,
+      "POST",
+      input
+    )
+  ).data;
+
+export const openKnowledgeCitation = async (
+  documentId: string,
+  manifestId: string,
+  chunkId: string,
+  proof: string
+) => {
+  const response = await fetch(
+    `${apiUrl}/v1/documents/${documentId}/citations?manifestId=${encodeURIComponent(manifestId)}&chunkId=${encodeURIComponent(chunkId)}`,
+    {
+      credentials: "include",
+      headers: { accept: "application/json", "x-knotline-authorization-proof": proof }
+    }
+  );
+  if (!response.ok)
+    throw new RequestFailure("Citation is no longer authorized", classifyStatus(response.status));
+  return (await response.json()) as ApiEnvelope<Record<string, unknown>>;
+};

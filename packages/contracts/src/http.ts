@@ -1863,6 +1863,99 @@ const FILE_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
       409: apiErrorSchema,
       500: apiErrorSchema
     }
+  },
+  {
+    method: "POST",
+    path: "/v1/documents/{documentId}/indexings",
+    operationId: "indexKnowledgeDocument",
+    summary: "Build chunks, embeddings, and an authorized serving source",
+    tags: ["Knowledge retrieval"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      202: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/workspaces/{workspaceId}/authorization-proofs",
+    operationId: "mintKnowledgeAuthorizationProof",
+    summary: "Mint a signed five-minute authorization proof",
+    tags: ["Knowledge retrieval"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/workspaces/{workspaceId}/search",
+    operationId: "searchWorkspaceKnowledge",
+    summary: "Search authorized knowledge with hybrid ranking",
+    tags: ["Knowledge retrieval"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/workspaces/{workspaceId}/retrieval-debug",
+    operationId: "debugWorkspaceRetrieval",
+    summary: "Inspect authorized retrieval scoring and exclusions",
+    tags: ["Knowledge retrieval"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/knowledge-sources/{sourceId}/acl-projections",
+    operationId: "advanceKnowledgeAclProjection",
+    summary: "Atomically advance a source ACL and revoke stale proofs",
+    tags: ["Knowledge retrieval"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/workspaces/{workspaceId}/knowledge-reindexes",
+    operationId: "createKnowledgeReindex",
+    summary: "Create a fenced knowledge reindex generation",
+    tags: ["Knowledge retrieval"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      202: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
   }
 ];
 

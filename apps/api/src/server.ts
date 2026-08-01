@@ -16,6 +16,7 @@ import {
   PostgresMemoryRepository,
   PostgresEvaluationRepository,
   PostgresFileRepository,
+  PostgresRetrievalRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -91,6 +92,12 @@ const scannerAttestationKey = process.env.FILE_SCANNER_ATTESTATION_KEY
   ? Buffer.from(process.env.FILE_SCANNER_ATTESTATION_KEY, "base64")
   : createHash("sha256").update("knotline-local-file-scanner-attestation").digest();
 const files = new PostgresFileRepository(pool, scannerAttestationKey);
+if (environment.environment !== "local" && !process.env.AUTHORIZATION_PROOF_SIGNING_KEY)
+  throw new Error("AUTHORIZATION_PROOF_SIGNING_KEY is required outside local mode");
+const authorizationProofKey = process.env.AUTHORIZATION_PROOF_SIGNING_KEY
+  ? Buffer.from(process.env.AUTHORIZATION_PROOF_SIGNING_KEY, "base64")
+  : createHash("sha256").update("knotline-local-authorization-proofs").digest();
+const retrieval = new PostgresRetrievalRepository(pool, authorizationProofKey);
 const temporalConnection = await Connection.connect({
   address: process.env.TEMPORAL_ADDRESS ?? "127.0.0.1:7233"
 });
@@ -227,6 +234,7 @@ const app = await buildApp({
   memory,
   evaluations,
   files,
+  retrieval,
   runStarter,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),

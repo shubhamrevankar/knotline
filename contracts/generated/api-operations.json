@@ -1066,6 +1066,13 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "post-v1-documents-by-document-id-indexings",
+      "method": "POST",
+      "path": "/v1/documents/:documentId/indexings",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "post-v1-documents-by-document-id-reprocessings",
       "method": "POST",
       "path": "/v1/documents/:documentId/reprocessings",
@@ -1336,6 +1343,13 @@
       "method": "POST",
       "path": "/v1/invitations/:invitationId/resends",
       "sourceSection": "10.4"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-knowledge-sources-by-source-id-acl-projections",
+      "method": "POST",
+      "path": "/v1/knowledge-sources/:sourceId/acl-projections",
+      "sourceSection": "10.8"
     },
     {
       "exposure": "browser_internal",
@@ -2641,6 +2655,13 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-authorization-proofs",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/authorization-proofs",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "post-v1-workspaces-by-workspace-id-billing-portal-sessions",
       "method": "POST",
       "path": "/v1/workspaces/:workspaceId/billing-portal-sessions",
@@ -2813,6 +2834,13 @@
       "method": "GET",
       "path": "/v1/workspaces/:workspaceId/invoices",
       "sourceSection": "10.9"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-knowledge-reindexes",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/knowledge-reindexes",
+      "sourceSection": "10.8"
     },
     {
       "exposure": "browser_internal",
@@ -3243,6 +3271,6 @@
     }
   ],
   "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
-  "planDigest": "sha256:d9f9bfb42eda3c884dbff2097f19032544d550c42a6e10100838c54874304ff5",
+  "planDigest": "sha256:f8304c7ecc729a1eba2503e75a16d150c68400c6008a46bbc6466139fee876b9",
   "schemaVersion": 1
 }
