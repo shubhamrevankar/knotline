@@ -4,12 +4,15 @@ import { useCallback, useEffect, useState } from "react";
 import {
   deleteConnection,
   fetchConnection,
+  fetchConnectionSources,
   fetchConnections,
   fetchConnectorCatalog,
   requestConnectionSync,
   startConnectionAuthorization,
   transitionConnection,
+  updateConnectionSources,
   type ConnectionSummary,
+  type ConnectionSourceSurface,
   type ConnectorCatalogItem
 } from "./api.js";
 import { msg } from "./i18n.js";
@@ -84,6 +87,13 @@ export function ConnectionsPage() {
                 <p>
                   {manifestText(item.manifest.provider, item.key)} · v{item.version}
                 </p>
+                {item.certification ? (
+                  <Badge tone={item.certification.liveStatus === "LIVE" ? "success" : "warning"}>
+                    {item.certification.liveStatus === "LIVE"
+                      ? msg("connections.provider.live")
+                      : msg("connections.provider.recorded")}
+                  </Badge>
+                ) : null}
               </Card>
             </a>
           ))}
@@ -119,7 +129,7 @@ export function ConnectionSetupPage() {
         manifestVersion: catalog.version,
         displayName: manifestText(catalog.manifest.displayName, catalog.key),
         requestedScopes: scopes,
-        region: "local",
+        region: (catalog.manifest.regions as string[] | undefined)?.[0] ?? "local",
         authMethod: "oauth2",
         sessionId: crypto.randomUUID(),
         browserNonce: crypto.randomUUID(),
@@ -169,6 +179,144 @@ export function ConnectionSetupPage() {
         {status ? <p role="status">{status}</p> : null}
       </Card>
     </main>
+  );
+}
+
+function ProviderSourcesPanel({ connectionId }: { readonly connectionId: string }) {
+  const [surface, setSurface] = useState<ConnectionSourceSurface>();
+  const [mode, setMode] = useState<"all" | "selected">("all");
+  const [selected, setSelected] = useState<string[]>([]);
+  const [include, setInclude] = useState("");
+  const [exclude, setExclude] = useState("");
+  const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
+  useEffect(() => {
+    void fetchConnectionSources(connectionId)
+      .then((value) => {
+        setSurface(value);
+        setMode(value.selection.mode);
+        setSelected([...value.selection.sourceIds]);
+        setInclude(value.selection.include.join("\n"));
+        setExclude(value.selection.exclude.join("\n"));
+      })
+      .catch((cause: unknown) =>
+        setError(cause instanceof Error ? cause.message : msg("connections.sources.error"))
+      );
+  }, [connectionId]);
+  if (error) return <ErrorState title={msg("connections.sources.error")}>{error}</ErrorState>;
+  if (!surface) return <Skeleton label={msg("connections.sources.loading")} />;
+  if (!surface.sources.length) return null;
+  const save = async () => {
+    try {
+      const value = await updateConnectionSources(connectionId, {
+        mode,
+        sourceIds: mode === "all" ? [] : selected,
+        include: include
+          .split("\n")
+          .map((rule) => rule.trim())
+          .filter(Boolean),
+        exclude: exclude
+          .split("\n")
+          .map((rule) => rule.trim())
+          .filter(Boolean),
+        expectedRevision: surface.selection.revision
+      });
+      setSurface({ ...surface, selection: value });
+      setStatus(msg("connections.sources.saved", { count: value.estimatedObjects }));
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : msg("connections.sources.error"));
+    }
+  };
+  return (
+    <section aria-labelledby="provider-sources-heading" className="provider-sources">
+      <div>
+        <Badge tone="warning">{msg("connections.provider.recorded")}</Badge>
+        <h2 id="provider-sources-heading">{msg("connections.sources.heading")}</h2>
+        <p>{msg("connections.sources.body")}</p>
+        {surface.certification ? (
+          <p className="provider-certification">
+            {msg("connections.sources.certification", {
+              gate: surface.certification.externalGate,
+              status: surface.certification.liveStatus
+            })}
+          </p>
+        ) : null}
+      </div>
+      <Card>
+        <fieldset>
+          <legend>{msg("connections.sources.scope")}</legend>
+          <label>
+            <input
+              checked={mode === "all"}
+              name="source-mode"
+              onChange={() => setMode("all")}
+              type="radio"
+            />
+            {msg("connections.sources.all")}
+          </label>
+          <label>
+            <input
+              checked={mode === "selected"}
+              name="source-mode"
+              onChange={() => setMode("selected")}
+              type="radio"
+            />
+            {msg("connections.sources.selected")}
+          </label>
+        </fieldset>
+        <div className="source-picker">
+          {surface.sources.map((source) => (
+            <label className={!source.selectable ? "source-disabled" : ""} key={source.id}>
+              <input
+                aria-label={source.name}
+                checked={mode === "all" || selected.includes(source.id)}
+                disabled={mode === "all" || !source.selectable}
+                onChange={(event) =>
+                  setSelected((current) =>
+                    event.target.checked
+                      ? [...new Set([...current, source.id])]
+                      : current.filter((id) => id !== source.id)
+                  )
+                }
+                type="checkbox"
+              />
+              <span>
+                <strong>{source.name}</strong>
+                <small>
+                  {source.kind} · {msg("connections.objects", { count: source.estimatedObjects })}
+                  {source.limitation ? ` · ${source.limitation}` : ""}
+                </small>
+              </span>
+            </label>
+          ))}
+        </div>
+        <div className="source-rules">
+          <label>
+            {msg("connections.sources.include")}
+            <textarea
+              onChange={(event) => setInclude(event.target.value)}
+              rows={3}
+              value={include}
+            />
+          </label>
+          <label>
+            {msg("connections.sources.exclude")}
+            <textarea
+              onChange={(event) => setExclude(event.target.value)}
+              rows={3}
+              value={exclude}
+            />
+          </label>
+        </div>
+        <Button onClick={() => void save()}>{msg("connections.sources.save")}</Button>
+        {status ? <p role="status">{status}</p> : null}
+      </Card>
+      {surface.certification?.limitations.map((limitation) => (
+        <p className="provider-limitation" key={limitation}>
+          {limitation}
+        </p>
+      ))}
+    </section>
   );
 }
 
@@ -296,6 +444,7 @@ export function ConnectionDetailPage() {
           </ul>
         </Card>
       </section>
+      {item.connectorKey === "fixture-cloud" ? null : <ProviderSourcesPanel connectionId={id} />}
       <section>
         <h2>{msg("connections.sync.history")}</h2>
         {item.runs.length ? (

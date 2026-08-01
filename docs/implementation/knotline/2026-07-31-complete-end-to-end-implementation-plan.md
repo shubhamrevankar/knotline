@@ -2600,6 +2600,8 @@ GET    /v1/connection-authorizations/:authorizationId
 GET    /callbacks/v1/connections/oauth/:provider
 GET    /v1/connections/:connectionId
 PATCH  /v1/connections/:connectionId
+GET    /v1/connections/:connectionId/sources
+PUT    /v1/connections/:connectionId/sources
 POST   /v1/connections/:connectionId/syncs
 GET    /v1/connections/:connectionId/syncs
 GET    /v1/connections/:connectionId/syncs/:syncId
@@ -7119,7 +7121,7 @@ external systems instead of bespoke integrations with inconsistent security.
 
 ### M23 — Google, Notion, and Confluence knowledge connectors
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M22\
 **Required commit:** `feat: connect Google Notion and Confluence knowledge`
 
@@ -9262,7 +9264,7 @@ must appear in that milestone's boundary cell.
 | M20 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic hybrid retrieval, exact citations, signed five-minute ACL proofs, local revocation, and generation fencing verified; EXT-004 `BLOCKED_EXTERNAL` for live embedding provider evidence | `feat: deliver permission-aware hybrid retrieval` |
 | M21 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic entity resolution, ACL-intersected provenance, bounded graph traversal, merge/split, conflicts, export, and knowledge administration verified locally | `feat: add the provenance-backed knowledge graph` |
 | M22 | `COMMITTED` | `NOT_DEPLOYED` | Base fixture framework `SIMULATED` and locally certified; optional provider branches retain EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, EXT-015, EXT-025 individually | `feat: establish the secure connector platform` |
-| M23 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-007, EXT-009 | `feat: connect Google Notion and Confluence knowledge` |
+| M23 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic recorded suites `RECORDED`; EXT-007 and EXT-009 remain independently `BLOCKED_EXTERNAL`; no provider is labelled `LIVE` | `feat: connect Google Notion and Confluence knowledge` |
 | M24 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-008, EXT-010, EXT-011, EXT-012, EXT-014 | `feat: connect Linear Jira GitHub and collaboration systems` |
 | M25 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-007, EXT-008, EXT-013, EXT-025 | `feat: add Microsoft CRM and generic data connectors` |
 | M26 | `NOT_STARTED` | `NOT_DEPLOYED` | Each provider branch retains EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, or EXT-025 individually | `feat: add production triggers and reconciled outbound sync` |

@@ -1109,6 +1109,83 @@ async function runSuite(pool: DatabasePool) {
       connectorDeletion.retentionDeletionQueued === true,
     "Connection deletion did not stop activity and queue governed deletion"
   );
+  const knowledgeCatalog = await connectorRepository.catalog(
+    contextA,
+    "google-workspace-knowledge"
+  );
+  assert(
+    knowledgeCatalog.length === 1 &&
+      (knowledgeCatalog[0]?.certification as { liveStatus?: string } | undefined)?.liveStatus ===
+        "BLOCKED_EXTERNAL",
+    "Recorded knowledge provider certification was not explicit"
+  );
+  const providerConnection = await connectorRepository.create(contextA, {
+    connectorKey: "google-workspace-knowledge",
+    manifestVersion: "1.0.0",
+    displayName: "Northstar knowledge fixture",
+    requestedScopes: ["drive.metadata.readonly", "drive.readonly"],
+    region: "us",
+    authMethod: "oauth2"
+  });
+  const providerAuthorization = await connectorRepository.startAuthorization(
+    contextA,
+    String(providerConnection.id),
+    {
+      sessionId: "30000000-0000-4000-8000-000000000001",
+      browserNonce: "m23-browser-nonce-provider",
+      returnTarget: `/app/connections/${String(providerConnection.id)}`,
+      requestedScopes: ["drive.metadata.readonly", "drive.readonly"]
+    }
+  );
+  const providerState = new URL(String(providerAuthorization.authorizationUrl)).searchParams.get(
+    "state"
+  );
+  assert(providerState, "Provider authorization URL omitted state");
+  await connectorRepository.activate(contextA, String(providerConnection.id), {
+    state: providerState,
+    grantedScopes: ["drive.metadata.readonly", "drive.readonly"],
+    accountId: "recorded-google-account",
+    accountLabel: "Recorded Google sandbox",
+    credentialReference: `credential://connections/${String(providerConnection.id)}`
+  });
+  const sourceSurface = await connectorRepository.sourceSurface(
+    contextA,
+    String(providerConnection.id)
+  );
+  assert(
+    (sourceSurface.sources as unknown[]).length === 3 &&
+      (sourceSurface.certification as { engineeringStatus?: string }).engineeringStatus ===
+        "RECORDED",
+    "Provider source picker omitted inventory or certification fidelity"
+  );
+  const sourceSelection = await connectorRepository.updateSourceSelection(
+    contextA,
+    String(providerConnection.id),
+    {
+      mode: "selected",
+      sourceIds: ["drive-shared-product"],
+      include: ["Product/**"],
+      exclude: ["**/Draft*"],
+      expectedRevision: 0
+    }
+  );
+  assert(
+    sourceSelection.revision === "1" || sourceSelection.revision === 1,
+    "Provider source selection was not revisioned"
+  );
+  let sourceConflict = false;
+  try {
+    await connectorRepository.updateSourceSelection(contextA, String(providerConnection.id), {
+      mode: "all",
+      sourceIds: [],
+      include: [],
+      exclude: [],
+      expectedRevision: 0
+    });
+  } catch {
+    sourceConflict = true;
+  }
+  assert(sourceConflict, "Stale provider source selection overwrote a newer revision");
   const quarantineUpload = await fileRepository.createUpload(contextA, {
     filename: "active.svg",
     purpose: "knowledge_source",
@@ -1913,9 +1990,30 @@ async function runSuite(pool: DatabasePool) {
       data: { items: unknown[]; catalog: unknown[] };
     }>().data;
     assert(
-      connectionsResponse.statusCode === 200 && connectionSurface.catalog.length === 1,
+      connectionsResponse.statusCode === 200 && connectionSurface.catalog.length === 4,
       "Connection catalog and health API failed"
     );
+    const sourcesResponse = await app.inject({
+      method: "GET",
+      url: `/v1/connections/${String(providerConnection.id)}/sources`
+    });
+    assert(
+      sourcesResponse.statusCode === 200 &&
+        sourcesResponse.json<{ data: { sources: unknown[] } }>().data.sources.length === 3,
+      "Provider source API failed"
+    );
+    const updateSourcesResponse = await app.inject({
+      method: "PUT",
+      url: `/v1/connections/${String(providerConnection.id)}/sources`,
+      payload: {
+        mode: "selected",
+        sourceIds: ["drive-personal"],
+        include: ["**"],
+        exclude: [],
+        expectedRevision: 1
+      }
+    });
+    assert(updateSourcesResponse.statusCode === 200, "Provider source update API failed");
     const connectionAuthorizationResponse = await app.inject({
       method: "POST",
       url: `/v1/workspaces/${SEED.workspaceA}/connection-authorizations`,
@@ -2234,6 +2332,18 @@ async function runSuite(pool: DatabasePool) {
       reducedScopeReconciled: true,
       durableSyncQueued: true,
       deletionStopsActivity: true,
+      tenantIsolated: true,
+      api: true
+    },
+    knowledgeProviders: {
+      googleRecorded: true,
+      notionRecorded: true,
+      confluenceCloudRecorded: true,
+      liveCertificationBlockedExternal: true,
+      sourceSelectionRevisioned: true,
+      structuralCitations: true,
+      permissionPriority: true,
+      brokeredActionsReconciled: true,
       tenantIsolated: true,
       api: true
     },

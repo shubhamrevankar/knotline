@@ -846,5 +846,19 @@
   "connections.errors": "Errors",
   "connections.sync.history": "Sync history",
   "connections.sync.processed": "{count} objects processed",
-  "connections.sync.empty": "No sync runs yet"
+  "connections.sync.empty": "No sync runs yet",
+  "connections.provider.live": "Live certified",
+  "connections.provider.recorded": "Recorded fixture · live setup required",
+  "connections.sources.heading": "Provider sources",
+  "connections.sources.body": "Choose the exact drives, spaces, pages, or databases that may enter authorized search and agent context.",
+  "connections.sources.loading": "Loading provider sources",
+  "connections.sources.error": "Provider sources are unavailable",
+  "connections.sources.certification": "Provider status: {status} · external gate {gate}",
+  "connections.sources.scope": "Synchronization scope",
+  "connections.sources.all": "All selectable sources",
+  "connections.sources.selected": "Only selected sources",
+  "connections.sources.include": "Include rules (one glob per line)",
+  "connections.sources.exclude": "Exclude rules (one glob per line)",
+  "connections.sources.save": "Save source selection",
+  "connections.sources.saved": "Source selection saved for approximately {count} objects."
 }

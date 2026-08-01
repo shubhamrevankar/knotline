@@ -44,6 +44,7 @@ const ACTIVATION_MILESTONES = {
   "test:a11y": "M02",
   "test:api": "M06",
   "test:contract": "M22",
+  "test:provider-contracts": "M23",
   "test:contracts": "M01",
   "test:db": "M03",
   "test:e2e": "M02",

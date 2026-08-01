@@ -1346,6 +1346,41 @@
       "retentionDays": 30,
       "exportHandler": "connector-export",
       "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "connection_source_selections",
+      "class": "connector.source_selection",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "connector-delete"
+    },
+    {
+      "name": "provider_source_inventory",
+      "class": "connector.source_inventory",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "connector-delete"
+    },
+    {
+      "name": "provider_action_operations",
+      "class": "connector.action_operation",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "provider_action_receipts",
+      "class": "connector.action_receipt",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "provider_connector_certifications",
+      "class": "connector.certification",
+      "retentionDays": 2555,
+      "exportHandler": "connector-export",
+      "deleteHandler": "governed-delete"
     }
   ],
   "indexes": [
@@ -1673,7 +1708,16 @@
     "connector_webhook_receipts_workspace_id_endpoint_id_dedupe_hash_key",
     "connector_reconciliations_pkey",
     "connector_control_switches_pkey",
-    "connector_rate_buckets_pkey"
+    "connector_rate_buckets_pkey",
+    "connection_source_selections_pkey",
+    "provider_source_inventory_pkey",
+    "provider_source_inventory_picker_idx",
+    "provider_action_operations_pkey",
+    "provider_action_operations_workspace_id_connection_id_idempotency_key_key",
+    "provider_action_operations_state_idx",
+    "provider_action_receipts_pkey",
+    "provider_connector_certifications_pkey",
+    "provider_connector_certifications_workspace_id_connector_key_manifest_version_key"
   ],
   "caches": []
 }

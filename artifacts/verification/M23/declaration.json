@@ -1,0 +1,211 @@
+{
+  "activeGateRows": [
+    "format",
+    "lint",
+    "strict type",
+    "unit coverage",
+    "build",
+    "brand/provenance guard",
+    "package boundaries",
+    "license",
+    "dependency",
+    "secret",
+    "evidence",
+    "docs validation",
+    "browser e2e",
+    "automated accessibility",
+    "responsive/visual regression",
+    "bundle and web vitals smoke",
+    "real postgresql integration",
+    "migration",
+    "rls/tenant isolation",
+    "query plan",
+    "backup smoke",
+    "auth/session/csrf/cors/abuse security suite",
+    "workflow schema/property",
+    "api/openapi",
+    "event compatibility",
+    "temporal replay/restart/concurrency/idempotency",
+    "outbox/dlq",
+    "runtime load-lite",
+    "kill/repair smoke",
+    "restricted task/comment attachment upload",
+    "checksum/quota",
+    "quarantine/malware",
+    "authorization",
+    "download",
+    "and lifecycle gate",
+    "model contract/live-sandbox gate",
+    "structured output",
+    "evaluation smoke",
+    "ai usage/cost and kill switch",
+    "tool/credential/ssrf/sandbox security",
+    "full agent evaluation",
+    "release/canary/rollback",
+    "file malware/parser/object lifecycle",
+    "retrieval quality/acl/citation/performance",
+    "connector contract/oauth/webhook/sync fixture suites",
+    "each named provider’s real sandbox certification row"
+  ],
+  "declaredEnvironmentState": "NOT_DEPLOYED",
+  "deployments": [],
+  "environmentGates": [],
+  "evidenceUris": [
+    "repo://packages/connector-sdk/src/knowledge-providers.ts",
+    "repo://packages/db/src/connector-repository.ts",
+    "repo://apps/web/src/M22Pages.tsx",
+    "repo://docs/operations/knotline/knowledge-provider-connectors.md"
+  ],
+  "externalGates": [
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-007",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-009",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    }
+  ],
+  "flags": [
+    {
+      "evidenceUri": "repo://docs/operations/knotline/knowledge-provider-connectors.md",
+      "id": "knowledge-provider-connectors"
+    }
+  ],
+  "knownRisks": [
+    {
+      "evidenceUri": "repo://artifacts/verification/external-gates.json",
+      "id": "m23-live-provider-certification",
+      "owner": "shurevan",
+      "status": "blocked-external-before-production"
+    }
+  ],
+  "manualReviews": [],
+  "migrations": [
+    {
+      "evidenceUri": "repo://packages/db/migrations/0020_knowledge_provider_connectors.sql",
+      "id": "0020-knowledge-provider-connectors"
+    }
+  ],
+  "milestone": "M23",
+  "notYetApplicable": [
+    {
+      "activationMilestone": "M27",
+      "reason": "This gate activates with M27.",
+      "row": "notification delivery/render/access-recheck"
+    },
+    {
+      "activationMilestone": "M29",
+      "reason": "This gate activates with M29.",
+      "row": "billing/entitlement/ledger/stripe sandbox"
+    },
+    {
+      "activationMilestone": "M31",
+      "reason": "This gate activates with M31.",
+      "row": "privacy/export/delete/retention/hold/restore-deletion"
+    },
+    {
+      "activationMilestone": "M32",
+      "reason": "This gate activates with M32.",
+      "row": "sso/scim/policy/residency/migration"
+    },
+    {
+      "activationMilestone": "M33",
+      "reason": "This gate activates with M33.",
+      "row": "complete browser/device/locale/pwa/guest/support/manual at matrix"
+    },
+    {
+      "activationMilestone": "M34",
+      "reason": "This gate activates with M34.",
+      "row": "aws staging terraform/fresh deploy/canary/rollback plus workforce operator identity"
+    },
+    {
+      "activationMilestone": "M34",
+      "reason": "This gate activates with M34.",
+      "row": "trace/redaction/sli/alert/runbook/kill/game-day"
+    },
+    {
+      "activationMilestone": "M35",
+      "reason": "This gate activates with M35.",
+      "row": "sast/dast/iac/container/sbom/signature/penetration evidence"
+    },
+    {
+      "activationMilestone": "M36",
+      "reason": "This gate activates with M36.",
+      "row": "section 4.2 full load/soak/chaos/backup/restore/dr profiles"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "terraform"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "fresh bootstrap"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "deployment"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "canary"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "rollback"
+    },
+    {
+      "activationMilestone": "M38",
+      "reason": "This gate activates with M38.",
+      "row": "every gate row above and every external gate in ga scope; zero gate-row n/a/skip/quarantine. reasoned route-state not_applicable remains governed by section 5.8"
+    }
+  ],
+  "owners": [
+    "shurevan"
+  ],
+  "requirements": [],
+  "schemaVersion": 1,
+  "targetEngineeringState": "COMMITTED",
+  "testRuns": [
+    {
+      "command": "pnpm --filter @knotline/connector-sdk test",
+      "evidenceUri": "artifact://M23/test-results/provider-unit",
+      "id": "m23-provider-unit"
+    },
+    {
+      "command": "pnpm test:api",
+      "evidenceUri": "artifact://M23/test-results/provider-api",
+      "id": "m23-provider-api"
+    },
+    {
+      "command": "pnpm exec playwright test tests/e2e/connections.spec.ts",
+      "evidenceUri": "artifact://M23/test-results/provider-browser",
+      "id": "m23-provider-browser"
+    },
+    {
+      "command": "pnpm verify:migrations",
+      "evidenceUri": "artifact://M23/test-results/provider-migrations",
+      "id": "m23-provider-migrations"
+    },
+    {
+      "command": "pnpm verify:boundaries && pnpm verify:events && pnpm verify:secrets",
+      "evidenceUri": "artifact://M23/test-results/provider-security",
+      "id": "m23-provider-security"
+    }
+  ]
+}

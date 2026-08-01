@@ -139,3 +139,111 @@ test("authorization creates only a clean one-time redirect", async ({ page }) =>
     )
   ).resolves.toEqual([]);
 });
+
+test("knowledge provider source selection exposes fidelity, limitations, and revision-safe scope", async ({
+  page
+}) => {
+  const providerConnectionId = "b2300000-0000-4000-8000-000000000001";
+  let revision = 0;
+  let selected = ["drive-personal"];
+  await page.route(`**/v1/connections/${providerConnectionId}`, (route) =>
+    route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        data: {
+          id: providerConnectionId,
+          connectorKey: "google-workspace-knowledge",
+          displayName: "Workspace knowledge",
+          state: "active",
+          accountLabel: "Recorded Google sandbox",
+          grantedScopes: ["drive.metadata.readonly", "drive.readonly"],
+          requestedScopes: ["drive.metadata.readonly", "drive.readonly"],
+          permissionFidelity: "exact",
+          objectCount: 770,
+          errorCount: 0,
+          runs: []
+        }
+      })
+    })
+  );
+  await page.route(`**/v1/connections/${providerConnectionId}/sources`, async (route) => {
+    if (route.request().method() === "PUT") {
+      const payload = route.request().postDataJSON() as { sourceIds: string[] };
+      selected = payload.sourceIds;
+      revision += 1;
+      return route.fulfill({
+        contentType: "application/json",
+        body: JSON.stringify({
+          data: {
+            mode: "selected",
+            sourceIds: selected,
+            include: ["Product/**"],
+            exclude: ["**/Draft*"],
+            estimatedObjects: 642,
+            revision
+          }
+        })
+      });
+    }
+    return route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        data: {
+          connectorKey: "google-workspace-knowledge",
+          sources: [
+            {
+              id: "drive-personal",
+              kind: "drive",
+              name: "My Drive",
+              estimatedObjects: 128,
+              selectable: true,
+              providerVersion: "1.0.0"
+            },
+            {
+              id: "drive-shared-product",
+              kind: "drive",
+              name: "Product shared drive",
+              estimatedObjects: 642,
+              selectable: true,
+              providerVersion: "1.0.0"
+            },
+            {
+              id: "folder-archive",
+              kind: "folder",
+              name: "Unsupported exports",
+              estimatedObjects: 11,
+              selectable: false,
+              limitation: "Contains files that cannot be exported.",
+              providerVersion: "1.0.0"
+            }
+          ],
+          selection: {
+            mode: "selected",
+            sourceIds: selected,
+            include: ["Product/**"],
+            exclude: ["**/Draft*"],
+            estimatedObjects: 128,
+            revision
+          },
+          certification: {
+            engineeringStatus: "RECORDED",
+            liveStatus: "BLOCKED_EXTERNAL",
+            externalGate: "EXT-007",
+            limitations: ["Live OAuth application and sandbox certification are not configured."],
+            certifiedAt: "2026-07-31T00:00:00Z"
+          }
+        }
+      })
+    });
+  });
+  await page.setViewportSize({ width: 320, height: 720 });
+  await page.goto(`/app/connections/${providerConnectionId}`);
+  await expect(page.getByRole("heading", { name: "Provider sources" })).toBeVisible();
+  await expect(page.getByText(/BLOCKED_EXTERNAL/u)).toBeVisible();
+  await expect(page.getByText(/Contains files that cannot be exported/u)).toBeVisible();
+  await page.getByLabel(/Product shared drive/u).check();
+  await page.getByRole("button", { name: "Save source selection" }).click();
+  await expect(page.getByRole("status")).toContainText("642");
+  expect(selected).toContain("drive-shared-product");
+  await expect(page.locator("body")).not.toHaveCSS("overflow-x", "scroll");
+});

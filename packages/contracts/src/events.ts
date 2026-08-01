@@ -527,7 +527,11 @@ export const EVENT_SCHEMA_REGISTRY = [
     "connection.sync_failed",
     "connection.removed",
     "connection.webhook_received",
-    "source_object.changed"
+    "source_object.changed",
+    "connection.source_selection_changed",
+    "source_object.permission_changed",
+    "provider.action_completed",
+    "provider.action_reconciled"
   ].map((eventType) => ({
     eventType,
     eventVersion: 1,

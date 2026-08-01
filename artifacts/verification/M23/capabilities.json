@@ -1,0 +1,56 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M23/test-results/provider-unit.json",
+      "verifiedAt": "2026-08-02T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-007"
+    ],
+    "id": "connectors.google-knowledge",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/knowledge-provider-connectors.md",
+    "status": "DEMO",
+    "summary": "Drive, Docs, and Sheets recorded read/write/permission/citation contracts pass; live certification is blocked."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M23/test-results/provider-unit.json",
+      "verifiedAt": "2026-08-02T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-009"
+    ],
+    "id": "connectors.notion-knowledge",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/knowledge-provider-connectors.md",
+    "status": "DEMO",
+    "summary": "Notion page, database, block, property, comment, permission, and action contracts pass recorded fixtures; live certification is blocked."
+  },
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M23/test-results/provider-unit.json",
+      "verifiedAt": "2026-08-02T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-009"
+    ],
+    "id": "connectors.confluence-cloud-knowledge",
+    "owner": {
+      "contact": "shurevan",
+      "team": "connector-platform"
+    },
+    "runbook": "docs/operations/knotline/knowledge-provider-connectors.md",
+    "status": "DEMO",
+    "summary": "Confluence Cloud space/page/version/restriction/sanitization/action contracts pass recorded fixtures; Data Center is unsupported and live certification is blocked."
+  }
+]

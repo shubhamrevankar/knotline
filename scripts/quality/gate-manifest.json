@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "milestone": "M22",
+  "milestone": "M23",
   "rows": [
     {
       "name": "format:check",
@@ -132,6 +132,16 @@
       "declarationRow": "connector contract/oauth/webhook/sync fixture suites",
       "requiredTestFiles": [
         "packages/connector-sdk/src/**/*.test.ts",
+        "tests/e2e/connections.spec.ts"
+      ]
+    },
+    {
+      "name": "test:provider-contracts",
+      "status": "ACTIVE",
+      "script": "test:connectors",
+      "declarationRow": "each named provider’s real sandbox certification row",
+      "requiredTestFiles": [
+        "packages/connector-sdk/src/knowledge-providers.test.ts",
         "tests/e2e/connections.spec.ts"
       ]
     },

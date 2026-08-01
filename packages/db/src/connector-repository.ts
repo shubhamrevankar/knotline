@@ -4,7 +4,13 @@ import {
   connectorSyncRequestSchema,
   createConnectionSchema
 } from "@knotline/contracts";
-import { OAuthTransactionStore, reconcileScopes, validateManifest } from "@knotline/connector-sdk";
+import {
+  OAuthTransactionStore,
+  reconcileScopes,
+  validateManifest,
+  validateSourceSelection,
+  type ProviderSource
+} from "@knotline/connector-sdk";
 import type { Pool } from "pg";
 import { z } from "zod";
 import { withTenantTransaction, type TenantContext } from "./context.js";
@@ -13,6 +19,69 @@ import { createId } from "./values.js";
 
 const sha = (value: string) => createHash("sha256").update(value).digest("hex");
 const connectorId = z.string().uuid();
+
+const recordedSources = (connectorKey: string): readonly ProviderSource[] =>
+  connectorKey === "google-workspace-knowledge"
+    ? [
+        {
+          id: "drive-personal",
+          kind: "drive",
+          name: "My Drive",
+          estimatedObjects: 128,
+          selectable: true
+        },
+        {
+          id: "drive-shared-product",
+          kind: "drive",
+          name: "Product shared drive",
+          estimatedObjects: 642,
+          selectable: true
+        },
+        {
+          id: "folder-archive",
+          kind: "folder",
+          name: "Unsupported exports",
+          estimatedObjects: 11,
+          selectable: false,
+          limitation: "Contains files that cannot be exported through the recorded contract."
+        }
+      ]
+    : connectorKey === "notion-knowledge"
+      ? [
+          {
+            id: "notion-page-product",
+            kind: "page",
+            name: "Product home",
+            estimatedObjects: 86,
+            selectable: true
+          },
+          {
+            id: "notion-db-roadmap",
+            kind: "database",
+            name: "Roadmap",
+            estimatedObjects: 214,
+            selectable: true
+          }
+        ]
+      : connectorKey === "confluence-cloud-knowledge"
+        ? [
+            {
+              id: "confluence-space-ops",
+              kind: "space",
+              name: "Operations",
+              estimatedObjects: 330,
+              selectable: true
+            },
+            {
+              id: "confluence-page-restricted",
+              kind: "page",
+              name: "Restricted root",
+              estimatedObjects: 17,
+              selectable: false,
+              limitation: "The recorded account cannot prove child-page visibility."
+            }
+          ]
+        : [];
 
 export interface ConnectorRepository {
   catalog(
@@ -57,6 +126,12 @@ export interface ConnectorRepository {
     action: string
   ): Promise<Record<string, unknown>>;
   remove(context: TenantContext, connectionId: string): Promise<Record<string, unknown>>;
+  sourceSurface(context: TenantContext, connectionId: string): Promise<Record<string, unknown>>;
+  updateSourceSelection(
+    context: TenantContext,
+    connectionId: string,
+    input: unknown
+  ): Promise<Record<string, unknown>>;
 }
 
 export class PostgresConnectorRepository implements ConnectorRepository {
@@ -75,7 +150,12 @@ export class PostgresConnectorRepository implements ConnectorRepository {
       async (client) =>
         (
           await client.query<Record<string, unknown>>(
-            `SELECT id,connector_key "key",semantic_version "version",manifest,state,rollout_percent "rolloutPercent" FROM connector_manifest_versions WHERE workspace_id=$1 AND state IN ('staged','active') AND ($2::text IS NULL OR connector_key=$2) ORDER BY connector_key,semantic_version DESC`,
+            `SELECT manifest.id,manifest.connector_key "key",manifest.semantic_version "version",manifest.manifest,manifest.state,manifest.rollout_percent "rolloutPercent",
+                    CASE WHEN certification.id IS NULL THEN NULL ELSE jsonb_build_object('engineeringStatus',certification.engineering_status,'liveStatus',certification.live_status,'externalGate',certification.external_gate,'limitations',certification.limitations,'certifiedAt',certification.certified_at) END certification
+             FROM connector_manifest_versions manifest
+             LEFT JOIN provider_connector_certifications certification ON certification.workspace_id=manifest.workspace_id AND certification.connector_key=manifest.connector_key AND certification.manifest_version=manifest.semantic_version
+             WHERE manifest.workspace_id=$1 AND manifest.state IN ('staged','active') AND ($2::text IS NULL OR manifest.connector_key=$2)
+             ORDER BY manifest.connector_key,manifest.semantic_version DESC`,
             [context.workspaceId, connectorKey ?? null]
           )
         ).rows
@@ -272,11 +352,8 @@ export class PostgresConnectorRepository implements ConnectorRepository {
         )
       ).rows[0];
       if (!row) throw new HumanTaskAuthorizationError("CONNECTION_NOT_AUTHORIZING");
-      const scopes = reconcileScopes(
-        validateManifest(row.manifest),
-        row.requested_scopes,
-        value.grantedScopes
-      );
+      const manifest = validateManifest(row.manifest);
+      const scopes = reconcileScopes(manifest, row.requested_scopes, value.grantedScopes);
       const nextState = scopes.reauthorizationRequired ? "reauthorization_required" : "active";
       await client.query(
         `UPDATE connections SET state=$3,granted_scopes=$4,external_account_id=$5,external_account_label=$6,credential_reference=$7,current_operation=NULL,updated_at=clock_timestamp() WHERE workspace_id=$1 AND id=$2`,
@@ -301,6 +378,25 @@ export class PostgresConnectorRepository implements ConnectorRepository {
           scopes.missingRequired
         ]
       );
+      for (const source of recordedSources(manifest.key))
+        await client.query(
+          `INSERT INTO provider_source_inventory(workspace_id,connection_id,external_source_id,source_kind,display_name,parent_external_id,estimated_objects,selectable,limitation,provider_version,permission_hash)
+           VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+           ON CONFLICT(workspace_id,connection_id,external_source_id) DO UPDATE SET display_name=EXCLUDED.display_name,estimated_objects=EXCLUDED.estimated_objects,selectable=EXCLUDED.selectable,limitation=EXCLUDED.limitation,provider_version=EXCLUDED.provider_version,permission_hash=EXCLUDED.permission_hash,deleted_at=NULL,discovered_at=clock_timestamp()`,
+          [
+            context.workspaceId,
+            connectionId,
+            source.id,
+            source.kind,
+            source.name,
+            source.parentId ?? null,
+            source.estimatedObjects,
+            source.selectable,
+            source.limitation ?? null,
+            manifest.version,
+            sha(`${manifest.key}:${source.id}:recorded-permissions`)
+          ]
+        );
       return { connectionId, state: nextState, accountLabel: value.accountLabel, ...scopes };
     });
   }
@@ -381,6 +477,98 @@ export class PostgresConnectorRepository implements ConnectorRepository {
       ).rows[0];
       if (!row) throw new HumanTaskAuthorizationError("CONNECTION_NOT_FOUND");
       return { ...row, activityStopped: true, retentionDeletionQueued: true };
+    });
+  }
+
+  async sourceSurface(context: TenantContext, connectionId: string) {
+    connectorId.parse(connectionId);
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const connection = (
+        await client.query<{ connector_key: string }>(
+          `SELECT connector_key FROM connections WHERE workspace_id=$1 AND id=$2 AND state<>'deleted'`,
+          [context.workspaceId, connectionId]
+        )
+      ).rows[0];
+      if (!connection) throw new HumanTaskAuthorizationError("CONNECTION_NOT_FOUND");
+      const sources = (
+        await client.query<Record<string, unknown>>(
+          `SELECT external_source_id "id",source_kind "kind",display_name "name",parent_external_id "parentId",estimated_objects "estimatedObjects",selectable,limitation,provider_version "providerVersion" FROM provider_source_inventory WHERE workspace_id=$1 AND connection_id=$2 AND deleted_at IS NULL ORDER BY source_kind,display_name`,
+          [context.workspaceId, connectionId]
+        )
+      ).rows;
+      const selection = (
+        await client.query<Record<string, unknown>>(
+          `SELECT mode,source_ids "sourceIds",include_rules "include",exclude_rules "exclude",estimated_objects "estimatedObjects",revision,updated_at "updatedAt" FROM connection_source_selections WHERE workspace_id=$1 AND connection_id=$2`,
+          [context.workspaceId, connectionId]
+        )
+      ).rows[0] ?? {
+        mode: "all",
+        sourceIds: [],
+        include: [],
+        exclude: [],
+        estimatedObjects: sources.reduce(
+          (total, source) => total + Number(source.estimatedObjects ?? 0),
+          0
+        ),
+        revision: 0
+      };
+      const certification = (
+        await client.query<Record<string, unknown>>(
+          `SELECT engineering_status "engineeringStatus",live_status "liveStatus",external_gate "externalGate",capabilities,limitations,certified_at "certifiedAt" FROM provider_connector_certifications WHERE workspace_id=$1 AND connector_key=$2 ORDER BY certified_at DESC LIMIT 1`,
+          [context.workspaceId, connection.connector_key]
+        )
+      ).rows[0];
+      return { sources, selection, certification, connectorKey: connection.connector_key };
+    });
+  }
+
+  async updateSourceSelection(context: TenantContext, connectionId: string, input: unknown) {
+    const value = z
+      .object({
+        mode: z.enum(["all", "selected"]),
+        sourceIds: z.array(z.string().min(1)).max(500),
+        include: z.array(z.string().max(300)).max(100),
+        exclude: z.array(z.string().max(300)).max(100),
+        expectedRevision: z.number().int().nonnegative()
+      })
+      .strict()
+      .parse(input);
+    connectorId.parse(connectionId);
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const rows = (
+        await client.query<{
+          id: string;
+          kind: ProviderSource["kind"];
+          name: string;
+          estimatedObjects: number;
+          selectable: boolean;
+          limitation?: string;
+        }>(
+          `SELECT external_source_id id,source_kind kind,display_name name,estimated_objects "estimatedObjects",selectable,limitation FROM provider_source_inventory WHERE workspace_id=$1 AND connection_id=$2 AND deleted_at IS NULL`,
+          [context.workspaceId, connectionId]
+        )
+      ).rows;
+      const selection = validateSourceSelection(rows, value);
+      const result = await client.query<Record<string, unknown>>(
+        `INSERT INTO connection_source_selections(workspace_id,connection_id,mode,source_ids,include_rules,exclude_rules,estimated_objects,revision,updated_by)
+         VALUES($1,$2,$3,$4,$5,$6,$7,1,$8)
+         ON CONFLICT(workspace_id,connection_id) DO UPDATE SET mode=EXCLUDED.mode,source_ids=EXCLUDED.source_ids,include_rules=EXCLUDED.include_rules,exclude_rules=EXCLUDED.exclude_rules,estimated_objects=EXCLUDED.estimated_objects,revision=connection_source_selections.revision+1,updated_by=EXCLUDED.updated_by,updated_at=clock_timestamp()
+         WHERE connection_source_selections.revision=$9
+         RETURNING mode,source_ids "sourceIds",include_rules "include",exclude_rules "exclude",estimated_objects "estimatedObjects",revision,updated_at "updatedAt"`,
+        [
+          context.workspaceId,
+          connectionId,
+          selection.mode,
+          selection.sourceIds,
+          selection.include,
+          selection.exclude,
+          selection.estimatedObjects,
+          context.principalId,
+          value.expectedRevision
+        ]
+      );
+      if (!result.rows[0]) throw new HumanTaskConflictError("SOURCE_SELECTION_REVISION_CONFLICT");
+      return result.rows[0];
     });
   }
 }

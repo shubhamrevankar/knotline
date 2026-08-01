@@ -1,4 +1,10 @@
 import type { Pool } from "pg";
+import {
+  KNOWLEDGE_PROVIDER_MANIFESTS,
+  PROVIDER_CAPABILITY_STATUS,
+  certifyKnowledgeProvider,
+  type KnowledgeProvider
+} from "@knotline/connector-sdk";
 
 import { contentHash } from "./values.js";
 
@@ -105,6 +111,57 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
         SEED.userB
       ]
     );
+    const providerIds: Readonly<Record<KnowledgeProvider, string>> = {
+      "google-workspace": "23000000-0000-4000-8000-000000000001",
+      notion: "23000000-0000-4000-8000-000000000002",
+      "confluence-cloud": "23000000-0000-4000-8000-000000000003"
+    };
+    const certificationIds: Readonly<Record<KnowledgeProvider, string>> = {
+      "google-workspace": "24000000-0000-4000-8000-000000000001",
+      notion: "24000000-0000-4000-8000-000000000002",
+      "confluence-cloud": "24000000-0000-4000-8000-000000000003"
+    };
+    for (const provider of ["google-workspace", "notion", "confluence-cloud"] as const) {
+      const manifest = KNOWLEDGE_PROVIDER_MANIFESTS[provider];
+      const certification = certifyKnowledgeProvider(provider);
+      const status = PROVIDER_CAPABILITY_STATUS[provider];
+      for (const [workspaceId, userId] of [
+        [SEED.workspaceA, SEED.userA],
+        [SEED.workspaceB, SEED.userB]
+      ] as const) {
+        await client.query(
+          `INSERT INTO connector_manifest_versions(workspace_id,id,connector_key,semantic_version,manifest,content_hash,state,rollout_percent,created_by)
+           VALUES($1,$2,$3,$4,$5,$6,'active',100,$7)
+           ON CONFLICT(workspace_id,id) DO NOTHING`,
+          [
+            workspaceId,
+            providerIds[provider],
+            manifest.key,
+            manifest.version,
+            manifest,
+            contentHash(manifest),
+            userId
+          ]
+        );
+        await client.query(
+          `INSERT INTO provider_connector_certifications(workspace_id,id,connector_key,manifest_version,engineering_status,live_status,external_gate,fixture_digest,capabilities,limitations,certified_at)
+           VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'2026-07-31T00:00:00Z')
+           ON CONFLICT(workspace_id,id) DO NOTHING`,
+          [
+            workspaceId,
+            certificationIds[provider],
+            manifest.key,
+            manifest.version,
+            certification.engineeringStatus,
+            certification.liveStatus,
+            status.externalGate,
+            contentHash(certification),
+            certification,
+            JSON.stringify(status.limitations)
+          ]
+        );
+      }
+    }
     await client.query("COMMIT");
   } catch (error) {
     await client.query("ROLLBACK");

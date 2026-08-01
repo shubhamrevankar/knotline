@@ -2542,6 +2542,22 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       )
     };
   });
+  app.get("/v1/connections/:connectionId/sources", async (request) => {
+    const { connectionId } = connectionParams.parse(request.params);
+    return {
+      data: await connectorRepository().sourceSurface(await agentAccess(request), connectionId)
+    };
+  });
+  app.put("/v1/connections/:connectionId/sources", async (request) => {
+    const { connectionId } = connectionParams.parse(request.params);
+    return {
+      data: await connectorRepository().updateSourceSelection(
+        await agentAccess(request, true),
+        connectionId,
+        request.body
+      )
+    };
+  });
   app.post("/v1/workspaces/:workspaceId/connection-authorizations", async (request, reply) => {
     const authenticated = await protectMutation(request);
     const { workspaceId } = workspaceParamsSchema.parse(request.params);

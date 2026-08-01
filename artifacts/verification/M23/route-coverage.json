@@ -1,5 +1,5 @@
 {
-  "milestone": "M18",
+  "milestone": "M23",
   "planDigest": "sha256:8d4b483647566f20bcd3a705347961efa2daec3bb2973fc2cb30ec5191bf356b",
   "routeRegistryDigest": "sha256:4e8591778689070d2b7bb7b2044c9b87565e05e045270efb69a8157dc1deee1e",
   "routes": [
@@ -2941,122 +2941,242 @@
       "routeId": "route.app.connections",
       "states": [
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading-skeleton"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "first-use-empty"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "filtered-empty"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-page"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "refresh-stale"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error-retry"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "session-expired"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "404"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-dependency"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "bulk-pending-partial"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-scope"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-unless-saved-view-mutation"
         }
@@ -3066,114 +3186,226 @@
       "routeId": "route.app.connections.detail",
       "states": [
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale-refresh"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "session-expired"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing-deleted"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-degraded-dependency"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-suspended"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "async-action-pending-result"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "conflict-for-mutable-fields"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M23/test-results/provider-browser",
+            "authorizationPersona": "workspace owner with sanitized recorded provider accounts",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M23/test-results/provider-browser",
+            "expectedTelemetry": "provider/connection/source/action IDs, versions, counts, hashes, status, and normalized errors only",
+            "fixture": "recorded-google-notion-confluence-contracts",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320 CSS px and desktop Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "empty-only-when-the-resource-legitimately-has-no-children"
         }
@@ -3183,146 +3415,290 @@
       "routeId": "route.app.connections.new.detail",
       "states": [
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "draft-saving-saved"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "validation"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "pending"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "conflict"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing-deleted"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "destructive-confirm"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-degraded-dependency"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-suspended"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "step-up"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "policy-denial"
         },
         {
-          "activationMilestone": "M22",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M22; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M22/test-results/connector-browser",
+            "authorizationPersona": "workspace owner with synthetic loopback fixture account",
+            "browserTest": "tests/e2e/connections.spec.ts",
+            "evidenceUri": "artifact://M22/test-results/connector-browser",
+            "expectedTelemetry": "connection/sync/receipt IDs, states, counts, scope names, and sanitized error kinds only",
+            "fixture": "canonical-m22-fixture-connector",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "none-without-recorded-reason"
         }
@@ -4077,122 +4453,242 @@
       "routeId": "route.app.knowledge",
       "states": [
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading-skeleton"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "first-use-empty"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "filtered-empty"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-page"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "refresh-stale"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error-retry"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "session-expired"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "404"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-dependency"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "bulk-pending-partial"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-scope"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-unless-saved-view-mutation"
         }
@@ -4202,114 +4698,226 @@
       "routeId": "route.app.knowledge.documents.detail",
       "states": [
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale-refresh"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "session-expired"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing-deleted"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-degraded-dependency"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-suspended"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "async-action-pending-result"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "conflict-for-mutable-fields"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "empty-only-when-the-resource-legitimately-has-no-children"
         }
@@ -4319,122 +4927,242 @@
       "routeId": "route.app.knowledge.entities",
       "states": [
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading-skeleton"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "first-use-empty"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "filtered-empty"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-page"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "refresh-stale"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error-retry"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "session-expired"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "404"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-dependency"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "bulk-pending-partial"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-scope"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-unless-saved-view-mutation"
         }
@@ -4444,114 +5172,226 @@
       "routeId": "route.app.knowledge.entities.detail",
       "states": [
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "success"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "stale-refresh"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "session-expired"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "missing-deleted"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-degraded-dependency"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-suspended"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "async-action-pending-result"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "conflict-for-mutable-fields"
         },
         {
-          "activationMilestone": "M21",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M21; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M21/test-results/graph-browser",
+            "authorizationPersona": "knowledge steward with current proof plus inaccessible evidence fixture",
+            "browserTest": "tests/e2e/knowledge-graph.spec.ts",
+            "evidenceUri": "artifact://M21/test-results/graph-browser",
+            "expectedTelemetry": "entity/relation IDs, query limits, proof age, result count, and latency only",
+            "fixture": "canonical-m21-provenance-graph",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "empty-only-when-the-resource-legitimately-has-no-children"
         }
@@ -4561,122 +5401,242 @@
       "routeId": "route.app.knowledge.search",
       "states": [
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading-skeleton"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "first-use-empty"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "filtered-empty"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-page"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "refresh-stale"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error-retry"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "session-expired"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "404"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-dependency"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "bulk-pending-partial"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-scope"
         },
         {
-          "activationMilestone": "M20",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M20; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M20/test-results/retrieval-browser",
+            "authorizationPersona": "member with current source ACL proof plus revoked member",
+            "browserTest": "tests/e2e/retrieval.spec.ts",
+            "evidenceUri": "artifact://M20/test-results/retrieval-browser",
+            "expectedTelemetry": "query hash, manifest/chunk IDs, score version, exclusions, proof age, and latency only",
+            "fixture": "canonical-m20-authorized-retrieval",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-unless-saved-view-mutation"
         }
@@ -4686,122 +5646,242 @@
       "routeId": "route.app.knowledge.sources",
       "states": [
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "loading-skeleton"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "first-use-empty"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "filtered-empty"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "partial-page"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "refresh-stale"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "error-retry"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "unauthorized"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "session-expired"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "plan-limit"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "offline"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "404"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "degraded-dependency"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "bulk-pending-partial"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "archived-scope"
         },
         {
-          "activationMilestone": "M19",
-          "applicability": "NOT_YET_APPLICABLE",
-          "evidence": {},
-          "reason": "The complete route contract activates with M19; M02 renders a truthful planned shell only.",
+          "applicability": "REQUIRED",
+          "evidence": {
+            "accessibilityResult": "artifact://M19/test-results/file-browser",
+            "authorizationPersona": "member file owner and authorized workspace user",
+            "browserTest": "tests/e2e/files.spec.ts",
+            "evidenceUri": "artifact://M19/test-results/file-browser",
+            "expectedTelemetry": "content-free route ID, lifecycle state, reason code, and timing only",
+            "fixture": "canonical-m19-files",
+            "localeSet": "en,en-XA",
+            "viewportDevice": "320,480,768,1024,1440,1920 CSS px; pinned Chromium"
+          },
+          "reason": "",
           "reviewer": "shurevan",
           "stateId": "edit-conflict-unless-saved-view-mutation"
         }

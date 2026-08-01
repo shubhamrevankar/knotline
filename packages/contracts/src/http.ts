@@ -2183,6 +2183,20 @@ const CONNECTOR_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
     "browser_internal"
   ],
   [
+    "GET",
+    "/v1/connections/{connectionId}/sources",
+    "getConnectionSources",
+    "List selectable provider sources and certification fidelity",
+    "browser_internal"
+  ],
+  [
+    "PUT",
+    "/v1/connections/{connectionId}/sources",
+    "updateConnectionSources",
+    "Replace a connection source selection with optimistic concurrency",
+    "browser_internal"
+  ],
+  [
     "POST",
     "/v1/connections/{connectionId}/syncs",
     "startConnectionSync",

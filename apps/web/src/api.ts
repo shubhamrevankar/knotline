@@ -1234,6 +1234,38 @@ export interface ConnectorCatalogItem {
   readonly version: string;
   readonly manifest: Readonly<Record<string, unknown>>;
   readonly state: string;
+  readonly certification?: ProviderCertification;
+}
+export interface ProviderCertification {
+  readonly engineeringStatus: "RECORDED" | "LIVE";
+  readonly liveStatus: "LIVE" | "BLOCKED_EXTERNAL";
+  readonly externalGate: string;
+  readonly limitations: readonly string[];
+  readonly certifiedAt: string;
+}
+export interface ProviderSource {
+  readonly id: string;
+  readonly kind: "drive" | "folder" | "space" | "page" | "database";
+  readonly name: string;
+  readonly parentId?: string;
+  readonly estimatedObjects: number;
+  readonly selectable: boolean;
+  readonly limitation?: string;
+  readonly providerVersion: string;
+}
+export interface ConnectionSourceSurface {
+  readonly connectorKey: string;
+  readonly sources: readonly ProviderSource[];
+  readonly selection: {
+    readonly mode: "all" | "selected";
+    readonly sourceIds: readonly string[];
+    readonly include: readonly string[];
+    readonly exclude: readonly string[];
+    readonly estimatedObjects: number;
+    readonly revision: number;
+    readonly updatedAt?: string;
+  };
+  readonly certification?: ProviderCertification;
 }
 const fetchConnectionSurface = async () =>
   (
@@ -1248,6 +1280,29 @@ export const fetchConnection = async (id: string) =>
     await request<
       ApiEnvelope<ConnectionSummary & { runs: readonly Readonly<Record<string, unknown>>[] }>
     >(`/v1/connections/${id}`)
+  ).data;
+export const fetchConnectionSources = async (id: string) =>
+  (
+    await request<ApiEnvelope<ConnectionSourceSurface>>(
+      `/v1/connections/${encodeURIComponent(id)}/sources`
+    )
+  ).data;
+export const updateConnectionSources = async (
+  id: string,
+  input: {
+    readonly mode: "all" | "selected";
+    readonly sourceIds: readonly string[];
+    readonly include: readonly string[];
+    readonly exclude: readonly string[];
+    readonly expectedRevision: number;
+  }
+) =>
+  (
+    await mutate<ApiEnvelope<ConnectionSourceSurface["selection"]>>(
+      `/v1/connections/${encodeURIComponent(id)}/sources`,
+      "PUT",
+      input
+    )
   ).data;
 export const startConnectionAuthorization = async (input: Readonly<Record<string, unknown>>) =>
   (

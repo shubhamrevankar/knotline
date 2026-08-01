@@ -167,6 +167,18 @@
       "tenantIsolated": true,
       "api": true
     },
+    "knowledgeProviders": {
+      "googleRecorded": true,
+      "notionRecorded": true,
+      "confluenceCloudRecorded": true,
+      "liveCertificationBlockedExternal": true,
+      "sourceSelectionRevisioned": true,
+      "structuralCitations": true,
+      "permissionPriority": true,
+      "brokeredActionsReconciled": true,
+      "tenantIsolated": true,
+      "api": true
+    },
     "auditEvents": 7
   }
 }
