@@ -146,7 +146,21 @@ export const REQUIRED_STORES = [
   "memory_records",
   "memory_versions",
   "memory_uses",
-  "memory_tombstones"
+  "memory_tombstones",
+  "evaluation_datasets",
+  "evaluation_dataset_versions",
+  "evaluation_cases",
+  "evaluation_suites",
+  "evaluation_runs",
+  "evaluation_case_results",
+  "evaluation_grader_results",
+  "evaluation_comparisons",
+  "evaluation_human_reviews",
+  "agent_release_policies",
+  "agent_releases",
+  "agent_release_allocations",
+  "agent_online_metric_buckets",
+  "scheduled_evaluations"
 ] as const;
 
 export async function validateDataStoreRegistry(): Promise<Registry> {

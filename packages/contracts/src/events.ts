@@ -170,6 +170,35 @@ export const memoryLifecycleEventPayloadV1Schema = z
   })
   .passthrough();
 
+export const evaluationEventPayloadV1Schema = z
+  .object({
+    workspaceId: z.uuid(),
+    agentId: z.uuid(),
+    agentVersion: z.number().int().positive(),
+    evalRunId: z.uuid().optional(),
+    datasetVersionId: z.uuid().optional(),
+    comparisonId: z.uuid().optional(),
+    state: z.string().min(1),
+    sampleSize: z.number().int().min(0).optional(),
+    score: z.number().min(0).max(1).optional(),
+    reasonCode: z.string().optional()
+  })
+  .passthrough();
+
+export const agentReleaseEventPayloadV1Schema = z
+  .object({
+    workspaceId: z.uuid(),
+    agentId: z.uuid(),
+    agentVersion: z.number().int().positive(),
+    releaseId: z.uuid(),
+    environment: z.string(),
+    channel: z.string(),
+    canaryPercentage: z.number().int().min(0).max(100),
+    comparisonId: z.uuid(),
+    rollbackOf: z.uuid().optional()
+  })
+  .passthrough();
+
 export const EVENT_SCHEMA_REGISTRY = [
   {
     eventType: "workflow.created",
@@ -352,7 +381,33 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "agent-memory",
     schema: memoryLifecycleEventPayloadV1Schema
-  }))
+  })),
+  ...[
+    "evaluation.dataset_version_published",
+    "evaluation.run_queued",
+    "evaluation.run_started",
+    "evaluation.run_succeeded",
+    "evaluation.run_failed",
+    "evaluation.run_cancelled",
+    "evaluation.comparison_created",
+    "evaluation.gate_passed",
+    "evaluation.gate_blocked",
+    "evaluation.human_review_requested",
+    "evaluation.human_review_adjudicated"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "agent-evaluation",
+    schema: evaluationEventPayloadV1Schema
+  })),
+  ...["agent.release_promoted", "agent.release_canary_changed", "agent.release_rolled_back"].map(
+    (eventType) => ({
+      eventType,
+      eventVersion: 1,
+      owner: "agent-release",
+      schema: agentReleaseEventPayloadV1Schema
+    })
+  )
 ] as const;
 
 export type EventEnvelope = z.infer<typeof eventEnvelopeSchema>;

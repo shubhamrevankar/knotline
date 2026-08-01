@@ -317,6 +317,12 @@ export function AgentOverviewPage() {
           <Link className="foundry-primary" to={`/app/agents/${agent.id}/memory`}>
             Memory policy
           </Link>
+          <Link className="foundry-primary" to={`/app/agents/${agent.id}/evals`}>
+            Evaluations
+          </Link>
+          <Link className="foundry-primary" to={`/app/agents/${agent.id}/activity`}>
+            Release activity
+          </Link>
           {agent.current_version && (
             <Button
               onClick={() =>

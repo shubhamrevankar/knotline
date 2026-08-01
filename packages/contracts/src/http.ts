@@ -1496,6 +1496,139 @@ const AGENT_RUNTIME_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }
 ];
 
+const AGENT_EVALUATION_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  ...(["GET", "POST"] as const).map((method): HttpRouteContract => ({
+    method,
+    path: "/v1/workspaces/{workspaceId}/eval-datasets",
+    operationId: method === "GET" ? "listEvaluationDatasets" : "createEvaluationDataset",
+    summary: method === "GET" ? "List evaluation datasets" : "Create evaluation dataset",
+    tags: ["Agent evaluation"],
+    exposure: "browser_internal",
+    ...(method === "POST" ? { requestBody: genericDataSchema } : {}),
+    responses: {
+      [method === "POST" ? 201 : 200]: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema
+    }
+  })),
+  {
+    method: "GET",
+    path: "/v1/eval-datasets/{datasetId}",
+    operationId: "getEvaluationDataset",
+    summary: "Get immutable evaluation dataset versions",
+    tags: ["Agent evaluation"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema
+    }
+  },
+  ...(["versions", "cases"] as const).map((suffix): HttpRouteContract => ({
+    method: "POST",
+    path: `/v1/eval-datasets/{datasetId}/${suffix}`,
+    operationId:
+      suffix === "versions" ? "publishEvaluationDatasetVersion" : "authorEvaluationDatasetCases",
+    summary: suffix === "versions" ? "Publish immutable dataset version" : "Author dataset cases",
+    tags: ["Agent evaluation"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  })),
+  {
+    method: "POST",
+    path: "/v1/agents/{agentId}/versions/{version}/evaluation-runs",
+    operationId: "startAgentEvaluationRun",
+    summary: "Start reproducible agent evaluation",
+    tags: ["Agent evaluation"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      202: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  },
+  ...(["GET"] as const).map((method): HttpRouteContract => ({
+    method,
+    path: "/v1/eval-runs/{evalRunId}",
+    operationId: "getEvaluationRun",
+    summary: "Get evaluation run",
+    tags: ["Agent evaluation"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema
+    }
+  })),
+  {
+    method: "GET",
+    path: "/v1/eval-runs/{evalRunId}/results",
+    operationId: "getEvaluationRunResults",
+    summary: "Get case and grader results",
+    tags: ["Agent evaluation"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/eval-runs/{evalRunId}/cancellations",
+    operationId: "cancelEvaluationRun",
+    summary: "Cancel evaluation run",
+    tags: ["Agent evaluation"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      202: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/eval-comparisons",
+    operationId: "listEvaluationComparisons",
+    summary: "Compare agent evaluation runs",
+    tags: ["Agent evaluation"],
+    exposure: "browser_internal",
+    responses: { 200: apiEnvelope(genericDataSchema), 401: apiErrorSchema, 403: apiErrorSchema }
+  },
+  {
+    method: "POST",
+    path: "/v1/agents/{agentId}/versions/{version}/releases",
+    operationId: "promoteOrRollbackAgentRelease",
+    summary: "Promote, canary, or roll back an agent release",
+    tags: ["Agent releases"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  }
+];
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
@@ -1507,6 +1640,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...MODEL_ROUTE_CONTRACTS,
   ...TOOL_ROUTE_CONTRACTS,
   ...AGENT_RUNTIME_ROUTE_CONTRACTS,
+  ...AGENT_EVALUATION_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

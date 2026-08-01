@@ -36,6 +36,7 @@ import type {
   HumanTaskRepository,
   ModelRepository,
   MemoryRepository,
+  EvaluationRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -86,6 +87,7 @@ export interface BuildAppOptions {
   readonly models?: ModelRepository;
   readonly tools?: ToolRepository;
   readonly memory?: MemoryRepository;
+  readonly evaluations?: EvaluationRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -2353,6 +2355,131 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     const { agentId } = agentParams.parse(request.params);
     await agentRepository().archive(context, agentId);
     return reply.code(204).send();
+  });
+
+  const evaluationRepository = () => {
+    if (!options.evaluations) throw new Error("Evaluations are not configured");
+    return options.evaluations;
+  };
+  const datasetParams = z.object({ datasetId: z.string().uuid() }).strict();
+  const evalRunParams = z.object({ evalRunId: z.string().uuid() }).strict();
+  app.get("/v1/workspaces/:workspaceId/eval-datasets", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await evaluationRepository().listDatasets(await agentAccess(request)) };
+  });
+  app.post("/v1/workspaces/:workspaceId/eval-datasets", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await evaluationRepository().createDataset(
+        await agentAccess(request, true),
+        request.body
+      )
+    });
+  });
+  app.get("/v1/eval-datasets/:datasetId", async (request, reply) => {
+    const { datasetId } = datasetParams.parse(request.params);
+    const result = await evaluationRepository().getDataset(await agentAccess(request), datasetId);
+    return result
+      ? { data: result }
+      : reply.code(404).send({
+          error: {
+            code: "EVAL_DATASET_NOT_FOUND",
+            message: "The evaluation dataset does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  const publishDataset = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { datasetId } = datasetParams.parse(request.params);
+    return reply.code(201).send({
+      data: await evaluationRepository().publishDatasetVersion(
+        await agentAccess(request, true),
+        datasetId,
+        request.body
+      )
+    });
+  };
+  app.post("/v1/eval-datasets/:datasetId/versions", publishDataset);
+  app.post("/v1/eval-datasets/:datasetId/cases", publishDataset);
+  app.post("/v1/agents/:agentId/versions/:version/evaluation-runs", async (request, reply) => {
+    const { agentId, version } = agentVersionParams.parse(request.params);
+    return reply.code(202).send({
+      data: await evaluationRepository().createRun(
+        await agentAccess(request, true),
+        agentId,
+        version,
+        request.body
+      )
+    });
+  });
+  app.get("/v1/eval-runs/:evalRunId", async (request, reply) => {
+    const { evalRunId } = evalRunParams.parse(request.params);
+    const result = await evaluationRepository().getRun(await agentAccess(request), evalRunId);
+    return result
+      ? { data: result }
+      : reply.code(404).send({
+          error: {
+            code: "EVAL_RUN_NOT_FOUND",
+            message: "The evaluation run does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  app.get("/v1/eval-runs/:evalRunId/results", async (request, reply) => {
+    const { evalRunId } = evalRunParams.parse(request.params);
+    const result = await evaluationRepository().getRun(await agentAccess(request), evalRunId);
+    return result
+      ? { data: result.results ?? [] }
+      : reply.code(404).send({
+          error: {
+            code: "EVAL_RUN_NOT_FOUND",
+            message: "The evaluation run does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  app.post("/v1/eval-runs/:evalRunId/cancellations", async (request, reply) => {
+    const { evalRunId } = evalRunParams.parse(request.params);
+    const result = await evaluationRepository().cancelRun(
+      await agentAccess(request, true),
+      evalRunId
+    );
+    return result
+      ? reply.code(202).send({ data: result })
+      : reply.code(404).send({
+          error: {
+            code: "EVAL_RUN_NOT_FOUND",
+            message: "The evaluation run does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  app.get("/v1/eval-comparisons", async (request) => {
+    const query = z.object({ agentId: z.string().uuid().optional() }).parse(request.query);
+    return {
+      data: await evaluationRepository().listComparisons(await agentAccess(request), query.agentId)
+    };
+  });
+  app.post("/v1/agents/:agentId/versions/:version/releases", async (request, reply) => {
+    const { agentId, version } = agentVersionParams.parse(request.params);
+    const body = request.body as { rollbackReleaseId?: unknown };
+    const data =
+      typeof body?.rollbackReleaseId === "string"
+        ? await evaluationRepository().rollback(
+            await agentAccess(request, true),
+            body.rollbackReleaseId
+          )
+        : await evaluationRepository().promote(
+            await agentAccess(request, true),
+            agentId,
+            version,
+            request.body
+          );
+    return reply.code(201).send({ data });
   });
 
   const modelRepository = () => {

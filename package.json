@@ -28,6 +28,7 @@
     "test:browser": "pnpm test:e2e",
     "test:contracts": "node --test tooling/quality/*.test.mjs tooling/gate/*.test.mjs",
     "test:e2e": "playwright test",
+    "test:evals": "pnpm --filter @knotline/agent-evaluation test",
     "pretest:e2e": "pnpm build:packages",
     "test:integration": "bash tooling/containers/test-services.sh",
     "test:auth": "tsx tooling/auth/postgres-suite.ts",

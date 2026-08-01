@@ -111,6 +111,18 @@
       "dependencyInvalidation": true,
       "api": true
     },
+    "evaluations": {
+      "immutableDatasetVersions": true,
+      "encryptedSensitiveFixtures": true,
+      "reproducibilitySnapshot": true,
+      "scheduledIdempotency": true,
+      "comparison": true,
+      "releaseGate": true,
+      "canary": true,
+      "immutableRollback": true,
+      "tenantIsolated": true,
+      "api": true
+    },
     "auditEvents": 7
   }
 }

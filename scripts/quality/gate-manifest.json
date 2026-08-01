@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "milestone": "M11",
+  "milestone": "M18",
   "rows": [
     {
       "name": "format:check",
@@ -188,8 +188,113 @@
     },
     {
       "name": "test:evals",
-      "status": "NOT_YET_APPLICABLE",
-      "activationMilestone": "M15"
+      "status": "ACTIVE",
+      "script": "test:evals",
+      "declarationRow": "evaluation smoke",
+      "requiredTestFiles": [
+        "packages/agent-evaluation/src/**/*.test.ts",
+        "tests/e2e/evaluations.spec.ts"
+      ]
+    },
+    {
+      "name": "restricted task/comment attachment upload",
+      "status": "ACTIVE",
+      "script": "test:api",
+      "declarationRow": "restricted task/comment attachment upload",
+      "requiredTestFiles": ["tests/e2e/human-tasks.spec.ts"]
+    },
+    {
+      "name": "checksum/quota",
+      "status": "ACTIVE",
+      "script": "test:api",
+      "declarationRow": "checksum/quota",
+      "requiredTestFiles": ["tooling/workflows/postgres-suite.ts"]
+    },
+    {
+      "name": "quarantine/malware",
+      "status": "ACTIVE",
+      "script": "test:api",
+      "declarationRow": "quarantine/malware",
+      "requiredTestFiles": ["tooling/workflows/postgres-suite.ts"]
+    },
+    {
+      "name": "authorization",
+      "status": "ACTIVE",
+      "script": "test:auth",
+      "declarationRow": "authorization",
+      "requiredTestFiles": ["tooling/auth/postgres-suite.ts"]
+    },
+    {
+      "name": "download",
+      "status": "ACTIVE",
+      "script": "test:api",
+      "declarationRow": "download",
+      "requiredTestFiles": ["tooling/workflows/postgres-suite.ts"]
+    },
+    {
+      "name": "and lifecycle gate",
+      "status": "ACTIVE",
+      "script": "test:api",
+      "declarationRow": "and lifecycle gate",
+      "requiredTestFiles": ["tooling/workflows/postgres-suite.ts"]
+    },
+    {
+      "name": "model contract/live-sandbox gate",
+      "status": "ACTIVE",
+      "script": "test:runtime",
+      "declarationRow": "model contract/live-sandbox gate",
+      "requiredTestFiles": ["packages/model-gateway/src/gateway.test.ts"]
+    },
+    {
+      "name": "structured output",
+      "status": "ACTIVE",
+      "script": "test:runtime",
+      "declarationRow": "structured output",
+      "requiredTestFiles": ["packages/model-gateway/src/gateway.test.ts"]
+    },
+    {
+      "name": "evaluation smoke",
+      "status": "ACTIVE",
+      "script": "test:evals",
+      "declarationRow": "evaluation smoke",
+      "requiredTestFiles": ["packages/agent-evaluation/src/runner.test.ts"]
+    },
+    {
+      "name": "ai usage/cost and kill switch",
+      "status": "ACTIVE",
+      "script": "test:runtime",
+      "declarationRow": "ai usage/cost and kill switch",
+      "requiredTestFiles": ["packages/model-gateway/src/gateway.test.ts"]
+    },
+    {
+      "name": "tool/credential/ssrf/sandbox security",
+      "status": "ACTIVE",
+      "script": "test:auth",
+      "declarationRow": "tool/credential/ssrf/sandbox security",
+      "requiredTestFiles": [
+        "packages/tool-broker/src/broker.test.ts",
+        "apps/sandbox/src/executor.test.ts"
+      ]
+    },
+    {
+      "name": "full agent evaluation",
+      "status": "ACTIVE",
+      "script": "test:evals",
+      "declarationRow": "full agent evaluation",
+      "requiredTestFiles": [
+        "packages/agent-evaluation/src/runner.test.ts",
+        "tests/e2e/evaluations.spec.ts"
+      ]
+    },
+    {
+      "name": "release/canary/rollback",
+      "status": "ACTIVE",
+      "script": "test:evals",
+      "declarationRow": "release/canary/rollback",
+      "requiredTestFiles": [
+        "packages/agent-evaluation/src/runner.test.ts",
+        "tests/e2e/evaluations.spec.ts"
+      ]
     },
     {
       "name": "verify:migrations",

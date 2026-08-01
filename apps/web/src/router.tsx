@@ -103,6 +103,14 @@ const AgentMemoryPage = lazy(async () => {
   const module = await import("./M17Pages.js");
   return { default: module.AgentMemoryPage };
 });
+const AgentEvaluationsPage = lazy(async () => {
+  const module = await import("./M18Pages.js");
+  return { default: module.AgentEvaluationsPage };
+});
+const AgentActivityPage = lazy(async () => {
+  const module = await import("./M18Pages.js");
+  return { default: module.AgentActivityPage };
+});
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -529,6 +537,22 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label="Loading agent memory" />}>
           <AgentMemoryPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.agents.detail.evals")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("eval.loading")} />}>
+          <AgentEvaluationsPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.agents.detail.activity")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("activity.loading")} />}>
+          <AgentActivityPage />
         </Suspense>
       </AuthGate>
     );

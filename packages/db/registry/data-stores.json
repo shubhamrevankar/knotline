@@ -919,6 +919,104 @@
       "retentionDays": 2555,
       "exportHandler": "memory-export",
       "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "evaluation_datasets",
+      "class": "evaluation.dataset",
+      "retentionDays": 2555,
+      "exportHandler": "evaluation-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "evaluation_dataset_versions",
+      "class": "evaluation.dataset_version",
+      "retentionDays": 2555,
+      "exportHandler": "evaluation-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "evaluation_cases",
+      "class": "evaluation.case",
+      "retentionDays": 2555,
+      "exportHandler": "evaluation-export",
+      "deleteHandler": "evaluation-fixture-delete"
+    },
+    {
+      "name": "evaluation_suites",
+      "class": "evaluation.suite",
+      "retentionDays": 2555,
+      "exportHandler": "evaluation-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "evaluation_runs",
+      "class": "evaluation.run",
+      "retentionDays": 2555,
+      "exportHandler": "evaluation-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "evaluation_case_results",
+      "class": "evaluation.case_result",
+      "retentionDays": 2555,
+      "exportHandler": "evaluation-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "evaluation_grader_results",
+      "class": "evaluation.grader_result",
+      "retentionDays": 2555,
+      "exportHandler": "evaluation-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "evaluation_comparisons",
+      "class": "evaluation.comparison",
+      "retentionDays": 2555,
+      "exportHandler": "evaluation-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "evaluation_human_reviews",
+      "class": "evaluation.human_review",
+      "retentionDays": 2555,
+      "exportHandler": "evaluation-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "agent_release_policies",
+      "class": "agent.release_policy",
+      "retentionDays": 2555,
+      "exportHandler": "agent-release-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "agent_releases",
+      "class": "agent.release",
+      "retentionDays": 2555,
+      "exportHandler": "agent-release-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "agent_release_allocations",
+      "class": "agent.release_allocation",
+      "retentionDays": 365,
+      "exportHandler": "agent-release-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "agent_online_metric_buckets",
+      "class": "agent.online_metric",
+      "retentionDays": 730,
+      "exportHandler": "agent-metrics-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "scheduled_evaluations",
+      "class": "evaluation.schedule",
+      "retentionDays": 2555,
+      "exportHandler": "evaluation-export",
+      "deleteHandler": "governed-delete"
     }
   ],
   "indexes": [
@@ -1141,7 +1239,30 @@
     "memory_records_agent_idx",
     "memory_versions_pkey",
     "memory_uses_pkey",
-    "memory_tombstones_pkey"
+    "memory_tombstones_pkey",
+    "evaluation_datasets_pkey",
+    "evaluation_datasets_workspace_id_name_key",
+    "evaluation_dataset_versions_pkey",
+    "evaluation_dataset_versions_workspace_id_dataset_id_content_hash_key",
+    "evaluation_cases_pkey",
+    "evaluation_cases_workspace_id_dataset_id_dataset_version_stable_key_key",
+    "evaluation_cases_dataset_idx",
+    "evaluation_suites_pkey",
+    "evaluation_runs_pkey",
+    "evaluation_runs_workspace_id_idempotency_key_key",
+    "evaluation_runs_agent_idx",
+    "evaluation_case_results_pkey",
+    "evaluation_grader_results_pkey",
+    "evaluation_comparisons_pkey",
+    "evaluation_comparisons_workspace_id_baseline_run_id_candidate_run_id_key",
+    "evaluation_human_reviews_pkey",
+    "agent_release_policies_pkey",
+    "agent_releases_pkey",
+    "agent_releases_agent_idx",
+    "agent_release_allocations_pkey",
+    "agent_online_metric_buckets_pkey",
+    "agent_metrics_lookup_idx",
+    "scheduled_evaluations_pkey"
   ],
   "caches": []
 }

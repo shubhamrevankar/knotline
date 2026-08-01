@@ -926,6 +926,71 @@ export const fetchAgentMemoryPolicy = async (agentId: string) =>
     >(`/v1/agents/${agentId}/memory-policy`)
   ).data;
 
+export type EvaluationDatasetView = Readonly<{
+  id: string;
+  name: string;
+  description: string;
+  state: string;
+  current_version?: number;
+  case_count?: number;
+}>;
+
+export type EvaluationComparisonView = Readonly<{
+  id: string;
+  agent_id: string;
+  baseline_version: number;
+  candidate_version: number;
+  summary: Readonly<{
+    baselineScore: number;
+    candidateScore: number;
+    delta: number;
+    sampleSize: number;
+    confidence95: readonly [number, number];
+    lowSample: boolean;
+    regressions: readonly string[];
+  }>;
+  gate_decision?: Readonly<{ passed: boolean; reasons: readonly string[] }>;
+}>;
+
+export const fetchEvaluationDatasets = async () =>
+  (
+    await request<ApiEnvelope<EvaluationDatasetView[]>>(
+      `/v1/workspaces/${workspaceId}/eval-datasets`
+    )
+  ).data;
+
+export const createEvaluationDataset = async (input: {
+  readonly name: string;
+  readonly description: string;
+}) =>
+  (
+    await mutate<ApiEnvelope<{ id: string }>>(
+      `/v1/workspaces/${workspaceId}/eval-datasets`,
+      "POST",
+      input
+    )
+  ).data;
+
+export const fetchEvaluationComparisons = async (agentId: string) =>
+  (
+    await request<ApiEnvelope<EvaluationComparisonView[]>>(
+      `/v1/eval-comparisons?agentId=${encodeURIComponent(agentId)}`
+    )
+  ).data;
+
+export const createAgentRelease = async (
+  agentId: string,
+  version: number,
+  input: Readonly<Record<string, unknown>>
+) =>
+  (
+    await mutate<ApiEnvelope<{ id: string }>>(
+      `/v1/agents/${agentId}/versions/${version}/releases`,
+      "POST",
+      input
+    )
+  ).data;
+
 export const updateAgentMemoryPolicy = async (
   agentId: string,
   input: {

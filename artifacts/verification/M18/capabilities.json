@@ -1,0 +1,20 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M18/test-results/evaluation-unit.json",
+      "verifiedAt": "2026-08-01T18:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-004"
+    ],
+    "id": "agents.evaluation-release",
+    "owner": {
+      "contact": "shurevan",
+      "team": "agent-platform"
+    },
+    "runbook": "docs/operations/knotline/agent-evaluation-and-releases.md",
+    "status": "DEMO",
+    "summary": "Immutable encrypted datasets, reproducible grading, confidence-aware comparison, hard release gates, stable canary allocation, monitoring, and append-only rollback are locally verified."
+  }
+]

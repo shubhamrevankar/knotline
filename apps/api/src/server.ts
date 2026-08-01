@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { loadConfig } from "@knotline/config";
 import {
   PostgresAuthRepository,
@@ -13,6 +14,7 @@ import {
   PostgresModelRepository,
   PostgresToolRepository,
   PostgresMemoryRepository,
+  PostgresEvaluationRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -72,6 +74,16 @@ const agents = new PostgresAgentRepository(pool);
 const models = new PostgresModelRepository(pool);
 const tools = new PostgresToolRepository(pool);
 const memory = new PostgresMemoryRepository(pool);
+if (
+  environment.environment !== "local" &&
+  environment.environment !== "ci" &&
+  !process.env.EVALUATION_FIXTURE_KEY
+)
+  throw new Error("EVALUATION_FIXTURE_KEY is required outside local mode");
+const evaluationKey = process.env.EVALUATION_FIXTURE_KEY
+  ? Buffer.from(process.env.EVALUATION_FIXTURE_KEY, "base64")
+  : createHash("sha256").update("knotline-local-evaluation-fixtures").digest();
+const evaluations = new PostgresEvaluationRepository(pool, evaluationKey);
 const temporalConnection = await Connection.connect({
   address: process.env.TEMPORAL_ADDRESS ?? "127.0.0.1:7233"
 });
@@ -206,6 +218,7 @@ const app = await buildApp({
   models,
   tools,
   memory,
+  evaluations,
   runStarter,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),

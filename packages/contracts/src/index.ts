@@ -5,6 +5,7 @@ export * from "./human-task.js";
 export * from "./model-gateway.js";
 export * from "./tool-broker.js";
 export * from "./agent-execution.js";
+export * from "./agent-evaluation.js";
 export * from "./approval.js";
 export * from "./agent.js";
 export * from "./evidence.js";

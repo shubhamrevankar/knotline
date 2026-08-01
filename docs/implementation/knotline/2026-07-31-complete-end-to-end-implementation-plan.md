@@ -6668,7 +6668,7 @@ human gates, with every consequential result traceable.
 
 ### M18 — Agent evaluation, regression, release, and monitoring
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M17\
 **Required commit:** `feat: add agent evaluations and controlled releases`
 
@@ -9237,7 +9237,7 @@ must appear in that milestone's boundary cell.
 | M15 | `COMMITTED` | `NOT_DEPLOYED` | Recorded-contract path verified; EXT-004 `BLOCKED_EXTERNAL` for live provider activation | `feat: integrate the governed OpenAI model gateway` |
 | M16 | `COMMITTED` | `NOT_DEPLOYED` | Local isolated broker/sandbox verified; EXT-002 and EXT-004 `BLOCKED_EXTERNAL` for deployed vault/sandbox and live model-requested tool evidence | `feat: secure agent tools with isolated execution` |
 | M17 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic durable loop and local worker integration verified; EXT-003 and EXT-004 `BLOCKED_EXTERNAL` for deployed Temporal and live provider evidence | `feat: execute governed agents with full provenance` |
-| M18 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-004 | `feat: add agent evaluations and controlled releases` |
+| M18 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic evaluation, encrypted fixtures, release gates, canary, and rollback verified locally; EXT-004 `BLOCKED_EXTERNAL` for live provider suites | `feat: add agent evaluations and controlled releases` |
 | M19 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-002 | `feat: add secure file ingestion and document processing` |
 | M20 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-004 | `feat: deliver permission-aware hybrid retrieval` |
 | M21 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: add the provenance-backed knowledge graph` |

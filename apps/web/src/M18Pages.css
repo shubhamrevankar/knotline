@@ -1,0 +1,46 @@
+.evaluation-page {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0 80px;
+}
+.evaluation-page header,
+.evaluation-actions,
+.evaluation-grid,
+.metric-grid {
+  display: grid;
+  gap: 16px;
+}
+.evaluation-page header {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+.evaluation-actions {
+  grid-auto-flow: column;
+}
+.evaluation-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin: 24px 0;
+}
+.metric-grid {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+.metric-grid strong {
+  display: block;
+  font-size: 1.5rem;
+}
+.evaluation-regressions li {
+  padding: 8px 0;
+}
+.evaluation-form {
+  display: grid;
+  gap: 12px;
+  margin: 20px 0;
+}
+@media (max-width: 700px) {
+  .evaluation-page header {
+    grid-template-columns: 1fr;
+  }
+  .evaluation-actions {
+    grid-auto-flow: row;
+  }
+}
