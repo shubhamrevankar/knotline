@@ -585,6 +585,55 @@
       "deleteHandler": "object-delete"
     },
     {
+      "name": "file_upload_parts",
+      "class": "content.upload_part",
+      "retentionDays": 7,
+      "exportHandler": "file-export",
+      "deleteHandler": "object-delete"
+    },
+    {
+      "name": "file_derived_artifacts",
+      "class": "content.derived_artifact",
+      "retentionDays": 2555,
+      "exportHandler": "file-export",
+      "deleteHandler": "object-delete"
+    },
+    {
+      "name": "document_processing_jobs",
+      "class": "content.processing_job",
+      "retentionDays": 365,
+      "exportHandler": "file-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "file_download_tokens",
+      "class": "security.download_token",
+      "retentionDays": 30,
+      "exportHandler": "security-export",
+      "deleteHandler": "security-delete"
+    },
+    {
+      "name": "file_usage_references",
+      "class": "content.usage_reference",
+      "retentionDays": 2555,
+      "exportHandler": "file-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "file_deletion_tombstones",
+      "class": "content.deletion_tombstone",
+      "retentionDays": 2555,
+      "exportHandler": "file-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "workspace_storage_usage",
+      "class": "workspace.storage_usage",
+      "retentionDays": 2555,
+      "exportHandler": "workspace-export",
+      "deleteHandler": "workspace-delete"
+    },
+    {
       "name": "approval_policies",
       "class": "approval.policy",
       "retentionDays": 2555,
@@ -1262,7 +1311,19 @@
     "agent_release_allocations_pkey",
     "agent_online_metric_buckets_pkey",
     "agent_metrics_lookup_idx",
-    "scheduled_evaluations_pkey"
+    "scheduled_evaluations_pkey",
+    "file_upload_parts_pkey",
+    "file_derived_artifacts_pkey",
+    "document_processing_jobs_pkey",
+    "document_processing_jobs_identity_key",
+    "file_download_tokens_pkey",
+    "file_usage_references_pkey",
+    "file_deletion_tombstones_pkey",
+    "workspace_storage_usage_pkey",
+    "file_list_idx",
+    "file_processing_jobs_idx",
+    "file_download_expiry_idx",
+    "file_usage_resource_idx"
   ],
   "caches": []
 }

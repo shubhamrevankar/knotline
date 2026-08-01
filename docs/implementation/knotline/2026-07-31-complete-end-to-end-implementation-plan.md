@@ -2510,6 +2510,15 @@ POST   /v1/artifact-uploads/:uploadId/completions
 GET    /v1/artifacts/:artifactId/download
 DELETE /v1/artifacts/:artifactId
 
+GET    /v1/workspaces/:workspaceId/files
+POST   /v1/file-uploads/:uploadId/parts
+GET    /v1/files/:fileId
+GET    /v1/files/:fileId/preview
+POST   /v1/files/:fileId/processing-retries
+POST   /v1/files/:fileId/download-tokens
+GET    /v1/file-downloads/:token
+DELETE /v1/files/:fileId
+
 GET    /v1/approvals
 GET    /v1/approvals/:approvalId
 POST   /v1/approvals/:approvalId/decisions
@@ -6735,7 +6744,7 @@ fairly with another version, and detect quality regressions in production.
 
 ### M19 — Secure files, uploads, previews, and document processing
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M03, M12, M16\
 **Required commit:** `feat: add secure file ingestion and document processing`
 
@@ -9238,7 +9247,7 @@ must appear in that milestone's boundary cell.
 | M16 | `COMMITTED` | `NOT_DEPLOYED` | Local isolated broker/sandbox verified; EXT-002 and EXT-004 `BLOCKED_EXTERNAL` for deployed vault/sandbox and live model-requested tool evidence | `feat: secure agent tools with isolated execution` |
 | M17 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic durable loop and local worker integration verified; EXT-003 and EXT-004 `BLOCKED_EXTERNAL` for deployed Temporal and live provider evidence | `feat: execute governed agents with full provenance` |
 | M18 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic evaluation, encrypted fixtures, release gates, canary, and rollback verified locally; EXT-004 `BLOCKED_EXTERNAL` for live provider suites | `feat: add agent evaluations and controlled releases` |
-| M19 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-002 | `feat: add secure file ingestion and document processing` |
+| M19 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic upload, scanner-attested quarantine, processing, preview, download, replacement, and deletion verified locally; EXT-002 `BLOCKED_EXTERNAL` for deployed object storage and scanner | `feat: add secure file ingestion and document processing` |
 | M20 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-004 | `feat: deliver permission-aware hybrid retrieval` |
 | M21 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: add the provenance-backed knowledge graph` |
 | M22 | `NOT_STARTED` | `NOT_DEPLOYED` | Base framework `SIMULATED`; optional provider branches retain EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, EXT-015, EXT-025 individually | `feat: establish the secure connector platform` |

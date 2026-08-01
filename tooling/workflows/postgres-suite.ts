@@ -23,6 +23,7 @@ import {
   PostgresMemoryRepository,
   PostgresAgentExecutionRepository,
   PostgresEvaluationRepository,
+  PostgresFileRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -192,6 +193,10 @@ async function runSuite(pool: DatabasePool) {
   const evaluationRepository = new PostgresEvaluationRepository(
     pool,
     createHash("sha256").update("m18-evaluation-fixtures").digest()
+  );
+  const fileRepository = new PostgresFileRepository(
+    pool,
+    createHash("sha256").update("m19-scanner-attestation").digest()
   );
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
@@ -606,6 +611,237 @@ async function runSuite(pool: DatabasePool) {
     (await evaluationRepository.listDatasets(contextB)).length === 0,
     "Evaluation datasets crossed tenant RLS"
   );
+  const fileChecksum = `sha256:${"a".repeat(64)}`;
+  const partChecksum = `sha256:${"b".repeat(64)}`;
+  const fileUpload = await fileRepository.createUpload(contextA, {
+    filename: "incident-handbook.pdf",
+    purpose: "knowledge_source",
+    mediaType: "application/pdf",
+    sizeBytes: 12,
+    checksum: fileChecksum,
+    classification: "internal",
+    partCount: 1,
+    idempotencyKey: "m19-upload-idempotency-1"
+  });
+  const uploadId = String(fileUpload.upload_id);
+  await fileRepository.recordPart(contextA, uploadId, {
+    partNumber: 1,
+    sizeBytes: 12,
+    checksum: partChecksum,
+    etag: "part-etag-1"
+  });
+  const cleanCompletion = {
+    parts: [{ partNumber: 1, sizeBytes: 12, checksum: partChecksum, etag: "part-etag-1" }],
+    checksum: fileChecksum,
+    detectedMediaType: "application/pdf",
+    scan: {
+      result: "clean" as const,
+      engine: "recorded-scanner",
+      engineVersion: "1",
+      signatures: [],
+      archiveDepth: 0,
+      expandedBytes: 12,
+      passwordProtected: false,
+      activeContent: false
+    }
+  };
+  await fileRepository.completeUpload(contextA, uploadId, {
+    ...cleanCompletion,
+    scannerAttestation: fileRepository.attestCompletion(uploadId, cleanCompletion)
+  });
+  const processingJob = await withTenantTransaction(pool, contextA, (client) =>
+    client.query<{ id: string }>(
+      `SELECT id FROM document_processing_jobs WHERE workspace_id=$1 AND file_id=$2`,
+      [contextA.workspaceId, String(fileUpload.file_id)]
+    )
+  );
+  await fileRepository.completeProcessing(contextA, processingJob.rows[0]!.id, {
+    state: "partial",
+    language: "en",
+    sections: [{ textHash: `sha256:${"c".repeat(64)}`, coordinate: { kind: "page", index: 0 } }],
+    warnings: ["OCR_LOW_CONFIDENCE"],
+    derivedArtifact: {
+      kind: "preview_pdf",
+      objectKey: `derived/${String(fileUpload.file_id)}/1/preview.pdf`,
+      mediaType: "application/pdf",
+      checksum: `sha256:${"d".repeat(64)}`,
+      sanitized: true
+    }
+  });
+  const preview = await fileRepository.preview(contextA, String(fileUpload.file_id));
+  assert(Boolean(preview.artifact), "Safe derived preview was not available after processing");
+  const downloadToken = await fileRepository.createDownloadToken(
+    contextA,
+    String(fileUpload.file_id),
+    { grantRevision: 1 }
+  );
+  await fileRepository.consumeDownloadToken(contextA, downloadToken.token);
+  let reusedTokenDenied = false;
+  try {
+    await fileRepository.consumeDownloadToken(contextA, downloadToken.token);
+  } catch {
+    reusedTokenDenied = true;
+  }
+  assert(reusedTokenDenied, "One-time download token was reusable");
+  const replacement = await fileRepository.createUpload(contextA, {
+    filename: "incident-handbook-v2.pdf",
+    purpose: "knowledge_source",
+    mediaType: "application/pdf",
+    sizeBytes: 12,
+    checksum: fileChecksum,
+    classification: "confidential",
+    partCount: 1,
+    idempotencyKey: "m19-upload-idempotency-2",
+    replacementFileId: String(fileUpload.file_id)
+  });
+  assert(replacement.file_id === fileUpload.file_id, "Replacement changed the canonical file ID");
+  await fileRepository.recordPart(contextA, String(replacement.upload_id), {
+    partNumber: 1,
+    sizeBytes: 12,
+    checksum: partChecksum,
+    etag: "part-etag-replacement"
+  });
+  let conflictingPartDenied = false;
+  try {
+    await fileRepository.recordPart(contextA, String(replacement.upload_id), {
+      partNumber: 1,
+      sizeBytes: 12,
+      checksum: `sha256:${"e".repeat(64)}`,
+      etag: "part-etag-conflict"
+    });
+  } catch {
+    conflictingPartDenied = true;
+  }
+  assert(conflictingPartDenied, "Conflicting multipart replay was accepted");
+  const replacementCompletion = {
+    ...cleanCompletion,
+    parts: [{ partNumber: 1, sizeBytes: 12, checksum: partChecksum, etag: "part-etag-replacement" }]
+  };
+  let invalidAttestationDenied = false;
+  try {
+    await fileRepository.completeUpload(contextA, String(replacement.upload_id), {
+      ...replacementCompletion,
+      scannerAttestation: `hmac-sha256:${"0".repeat(64)}`
+    });
+  } catch {
+    invalidAttestationDenied = true;
+  }
+  assert(invalidAttestationDenied, "An invalid scanner attestation was accepted");
+  const replacementResult = await fileRepository.completeUpload(
+    contextA,
+    String(replacement.upload_id),
+    {
+      ...replacementCompletion,
+      scannerAttestation: fileRepository.attestCompletion(
+        String(replacement.upload_id),
+        replacementCompletion
+      )
+    }
+  );
+  const beforeReplacementPromotion = await fileRepository.get(contextA, String(fileUpload.file_id));
+  assert(
+    beforeReplacementPromotion?.current_version === 1,
+    "An unprocessed replacement displaced the serving version"
+  );
+  const replacementJob = await withTenantTransaction(pool, contextA, (client) =>
+    client.query<{ id: string }>(
+      `SELECT id FROM document_processing_jobs WHERE workspace_id=$1 AND file_id=$2 AND file_version=$3`,
+      [contextA.workspaceId, String(fileUpload.file_id), replacementResult.version]
+    )
+  );
+  await fileRepository.completeProcessing(contextA, replacementJob.rows[0]!.id, {
+    state: "ready",
+    language: "en",
+    sections: [{ textHash: `sha256:${"f".repeat(64)}`, coordinate: { kind: "page", index: 0 } }],
+    warnings: []
+  });
+  const afterReplacementPromotion = await fileRepository.get(contextA, String(fileUpload.file_id));
+  assert(
+    afterReplacementPromotion?.current_version === replacementResult.version &&
+      afterReplacementPromotion.filename === "incident-handbook-v2.pdf",
+    "A safe processed replacement was not promoted atomically"
+  );
+  let crossPrincipalTokenDenied = false;
+  const replacementToken = await fileRepository.createDownloadToken(
+    contextA,
+    String(fileUpload.file_id),
+    { grantRevision: 2, rangeStart: 0, rangeEnd: 5 }
+  );
+  try {
+    await fileRepository.consumeDownloadToken(contextB, replacementToken.token);
+  } catch {
+    crossPrincipalTokenDenied = true;
+  }
+  assert(crossPrincipalTokenDenied, "A download token crossed principal or tenant boundaries");
+  await withTenantTransaction(pool, contextA, (client) =>
+    client.query(`UPDATE files SET legal_hold=true WHERE workspace_id=$1 AND id=$2`, [
+      contextA.workspaceId,
+      String(fileUpload.file_id)
+    ])
+  );
+  let legalHoldDenied = false;
+  try {
+    await fileRepository.delete(contextA, String(fileUpload.file_id), "held_cleanup");
+  } catch {
+    legalHoldDenied = true;
+  }
+  assert(legalHoldDenied, "Legal hold did not block file deletion");
+  await withTenantTransaction(pool, contextA, (client) =>
+    client.query(`UPDATE files SET legal_hold=false WHERE workspace_id=$1 AND id=$2`, [
+      contextA.workspaceId,
+      String(fileUpload.file_id)
+    ])
+  );
+  const quarantineUpload = await fileRepository.createUpload(contextA, {
+    filename: "active.svg",
+    purpose: "knowledge_source",
+    mediaType: "image/svg+xml",
+    sizeBytes: 5,
+    checksum: fileChecksum,
+    classification: "restricted",
+    partCount: 1,
+    idempotencyKey: "m19-upload-quarantine-1"
+  });
+  await fileRepository.recordPart(contextA, String(quarantineUpload.upload_id), {
+    partNumber: 1,
+    sizeBytes: 5,
+    checksum: partChecksum,
+    etag: "part-etag-malicious"
+  });
+  const quarantineCompletion = {
+    parts: [{ partNumber: 1, sizeBytes: 5, checksum: partChecksum, etag: "part-etag-malicious" }],
+    checksum: fileChecksum,
+    detectedMediaType: "image/svg+xml",
+    scan: {
+      result: "suspicious" as const,
+      engine: "recorded-scanner",
+      engineVersion: "1",
+      signatures: ["ACTIVE_CONTENT"],
+      archiveDepth: 0,
+      expandedBytes: 5,
+      passwordProtected: false,
+      activeContent: true
+    }
+  };
+  const quarantinedFile = await fileRepository.completeUpload(
+    contextA,
+    String(quarantineUpload.upload_id),
+    {
+      ...quarantineCompletion,
+      scannerAttestation: fileRepository.attestCompletion(
+        String(quarantineUpload.upload_id),
+        quarantineCompletion
+      )
+    }
+  );
+  assert(quarantinedFile.state === "quarantined", "Active content did not remain quarantined");
+  assert((await fileRepository.list(contextB)).length === 0, "Files crossed tenant RLS");
+  const deletion = await fileRepository.delete(
+    contextA,
+    String(quarantineUpload.file_id),
+    "security_cleanup"
+  );
+  assert(Boolean(deletion.downstreamEventId), "File deletion did not enqueue downstream removal");
   const agentDiff = await agentRepository.diff(contextA, agent.id, 1, 2);
   assert(
     agentDiff.some(({ section }) => section === "prompts"),
@@ -1219,6 +1455,7 @@ async function runSuite(pool: DatabasePool) {
     tools: toolRepository,
     memory: memoryRepository,
     evaluations: evaluationRepository,
+    files: fileRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),
@@ -1326,6 +1563,15 @@ async function runSuite(pool: DatabasePool) {
       evaluationComparisonsResponse.statusCode === 200 &&
         evaluationComparisonsResponse.json<{ data: unknown[] }>().data.length === 1,
       "Evaluation comparison API failed"
+    );
+    const filesResponse = await app.inject({
+      method: "GET",
+      url: `/v1/workspaces/${SEED.workspaceA}/files`
+    });
+    assert(
+      filesResponse.statusCode === 200 &&
+        filesResponse.json<{ data: unknown[] }>().data.length >= 2,
+      "Workspace file API failed"
     );
     const draftResponse = await app.inject({
       method: "GET",
@@ -1577,6 +1823,19 @@ async function runSuite(pool: DatabasePool) {
       releaseGate: true,
       canary: true,
       immutableRollback: true,
+      tenantIsolated: true,
+      api: true
+    },
+    files: {
+      resumableMultipart: true,
+      quotaReserved: true,
+      scannerAttested: true,
+      quarantineFailClosed: true,
+      coordinateProcessing: true,
+      sanitizedPreview: true,
+      oneTimeDownload: true,
+      immutableReplacement: true,
+      lifecycleDeletion: true,
       tenantIsolated: true,
       api: true
     },

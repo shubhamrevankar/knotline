@@ -1012,3 +1012,72 @@ export const fetchWorkspaceMemory = async (agentId?: string) =>
       `/v1/workspaces/${workspaceId}/memory-records${agentId ? `?agentId=${agentId}` : ""}`
     )
   ).data;
+
+export type FileView = Readonly<{
+  id: string;
+  filename: string;
+  purpose: string;
+  state: string;
+  classification: string;
+  current_version: number;
+  media_type?: string;
+  size_bytes?: number;
+  checksum?: string;
+  processing_state?: string;
+  created_at: string;
+}>;
+
+export const fetchFiles = async () =>
+  (await request<ApiEnvelope<FileView[]>>(`/v1/workspaces/${workspaceId}/files`)).data;
+
+export const fetchFile = async (fileId: string) =>
+  (await request<ApiEnvelope<Record<string, unknown>>>(`/v1/files/${fileId}`)).data;
+
+export const createFileUpload = async (input: Readonly<Record<string, unknown>>) =>
+  (
+    await mutate<ApiEnvelope<Record<string, unknown>>>(
+      `/v1/workspaces/${workspaceId}/file-uploads`,
+      "POST",
+      input
+    )
+  ).data;
+
+export const recordFilePart = async (uploadId: string, input: Readonly<Record<string, unknown>>) =>
+  (
+    await mutate<ApiEnvelope<Record<string, unknown>>>(
+      `/v1/file-uploads/${uploadId}/parts`,
+      "POST",
+      input
+    )
+  ).data;
+
+export const completeFileUpload = async (
+  uploadId: string,
+  input: Readonly<Record<string, unknown>>
+) =>
+  (
+    await mutate<ApiEnvelope<Record<string, unknown>>>(
+      `/v1/file-uploads/${uploadId}/completions`,
+      "POST",
+      input
+    )
+  ).data;
+
+export const fetchFilePreview = async (fileId: string) =>
+  (await request<ApiEnvelope<Record<string, unknown>>>(`/v1/files/${fileId}/preview`)).data;
+
+export const createFileDownload = async (fileId: string) =>
+  (
+    await mutate<ApiEnvelope<{ token: string; expiresAt: string }>>(
+      `/v1/files/${fileId}/download-tokens`,
+      "POST",
+      { grantRevision: 1 }
+    )
+  ).data;
+
+export const deleteFile = async (fileId: string) =>
+  (
+    await mutate<ApiEnvelope<{ downstreamEventId: string }>>(`/v1/files/${fileId}`, "DELETE", {
+      reason: "user_deleted"
+    })
+  ).data;

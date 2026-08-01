@@ -111,6 +111,14 @@ const AgentActivityPage = lazy(async () => {
   const module = await import("./M18Pages.js");
   return { default: module.AgentActivityPage };
 });
+const KnowledgeSourcesPage = lazy(async () => {
+  const module = await import("./M19Pages.js");
+  return { default: module.KnowledgeSourcesPage };
+});
+const KnowledgeDocumentPage = lazy(async () => {
+  const module = await import("./M19Pages.js");
+  return { default: module.KnowledgeDocumentPage };
+});
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -553,6 +561,22 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label={msg("activity.loading")} />}>
           <AgentActivityPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.knowledge.sources")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("files.loading")} />}>
+          <KnowledgeSourcesPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.knowledge.documents.detail")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("files.loading")} />}>
+          <KnowledgeDocumentPage />
         </Suspense>
       </AuthGate>
     );

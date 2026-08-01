@@ -12,6 +12,7 @@ export * from "./model-repository.js";
 export * from "./tool-repository.js";
 export * from "./memory-repository.js";
 export * from "./evaluation-repository.js";
+export * from "./file-repository.js";
 export * from "./agent-execution-repository.js";
 export * from "./registry.js";
 export * from "./repository.js";

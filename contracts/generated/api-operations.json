@@ -1206,10 +1206,59 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "get-v1-file-downloads-by-token",
+      "method": "GET",
+      "path": "/v1/file-downloads/:token",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "post-v1-file-uploads-by-upload-id-completions",
       "method": "POST",
       "path": "/v1/file-uploads/:uploadId/completions",
       "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-file-uploads-by-upload-id-parts",
+      "method": "POST",
+      "path": "/v1/file-uploads/:uploadId/parts",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-files-by-file-id",
+      "method": "DELETE",
+      "path": "/v1/files/:fileId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-files-by-file-id",
+      "method": "GET",
+      "path": "/v1/files/:fileId",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-files-by-file-id-download-tokens",
+      "method": "POST",
+      "path": "/v1/files/:fileId/download-tokens",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-files-by-file-id-preview",
+      "method": "GET",
+      "path": "/v1/files/:fileId/preview",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-files-by-file-id-processing-retries",
+      "method": "POST",
+      "path": "/v1/files/:fileId/processing-retries",
+      "sourceSection": "10.6"
     },
     {
       "exposure": "browser_internal",
@@ -2711,6 +2760,13 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-files",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/files",
+      "sourceSection": "10.6"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "get-v1-workspaces-by-workspace-id-groups",
       "method": "GET",
       "path": "/v1/workspaces/:workspaceId/groups",
@@ -3187,6 +3243,6 @@
     }
   ],
   "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
-  "planDigest": "sha256:dcec3a978a1e7d447296b7aefd2539da68c185d612b775116b4c01d1861f1f0a",
+  "planDigest": "sha256:d9f9bfb42eda3c884dbff2097f19032544d550c42a6e10100838c54874304ff5",
   "schemaVersion": 1
 }

@@ -1,0 +1,20 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M19/test-results/file-unit.json",
+      "verifiedAt": "2026-08-01T20:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-002"
+    ],
+    "id": "knowledge.secure-files",
+    "owner": {
+      "contact": "shurevan",
+      "team": "knowledge-platform"
+    },
+    "runbook": "docs/operations/knotline/secure-files-and-document-processing.md",
+    "status": "DEMO",
+    "summary": "Canonical immutable files, quota-safe resumable upload, scanner-attested quarantine, coordinate processing, sanitized preview, one-time downloads, replacement, and deletion are locally verified."
+  }
+]

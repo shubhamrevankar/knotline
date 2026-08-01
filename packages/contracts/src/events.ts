@@ -199,6 +199,19 @@ export const agentReleaseEventPayloadV1Schema = z
   })
   .passthrough();
 
+export const fileLifecycleEventPayloadV1Schema = z
+  .object({
+    workspaceId: z.uuid(),
+    fileId: z.uuid(),
+    fileVersion: z.number().int().nonnegative(),
+    state: z.string().min(1),
+    checksum: z.string().optional(),
+    processingJobId: z.uuid().optional(),
+    reasonCodes: z.array(z.string()).default([]),
+    downstreamEventId: z.uuid().optional()
+  })
+  .passthrough();
+
 export const EVENT_SCHEMA_REGISTRY = [
   {
     eventType: "workflow.created",
@@ -407,7 +420,24 @@ export const EVENT_SCHEMA_REGISTRY = [
       owner: "agent-release",
       schema: agentReleaseEventPayloadV1Schema
     })
-  )
+  ),
+  ...[
+    "file.upload_initiated",
+    "file.upload_completed",
+    "file.scan_completed",
+    "file.quarantined",
+    "file.processing_started",
+    "file.processing_completed",
+    "file.version_replaced",
+    "file.downloaded",
+    "file.deleted",
+    "knowledge.file_deleted"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "file-platform",
+    schema: fileLifecycleEventPayloadV1Schema
+  }))
 ] as const;
 
 export type EventEnvelope = z.infer<typeof eventEnvelopeSchema>;

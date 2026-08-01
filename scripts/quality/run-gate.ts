@@ -71,6 +71,7 @@ const ACTIVATION_MILESTONES = {
   "tool/credential/ssrf/sandbox security": "M16",
   "full agent evaluation": "M18",
   "release/canary/rollback": "M18",
+  "file malware/parser/object lifecycle": "M19",
   typecheck: "M01",
   "verify:boundaries": "M01",
   "verify:backup": "M03",

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "milestone": "M18",
+  "milestone": "M19",
   "rows": [
     {
       "name": "format:check",
@@ -294,6 +294,17 @@
       "requiredTestFiles": [
         "packages/agent-evaluation/src/runner.test.ts",
         "tests/e2e/evaluations.spec.ts"
+      ]
+    },
+    {
+      "name": "file malware/parser/object lifecycle",
+      "status": "ACTIVE",
+      "script": "test:files",
+      "declarationRow": "file malware/parser/object lifecycle",
+      "requiredTestFiles": [
+        "packages/document-processing/src/processing.test.ts",
+        "tests/e2e/files.spec.ts",
+        "tooling/workflows/postgres-suite.ts"
       ]
     },
     {

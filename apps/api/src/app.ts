@@ -37,6 +37,7 @@ import type {
   ModelRepository,
   MemoryRepository,
   EvaluationRepository,
+  FileRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -88,6 +89,7 @@ export interface BuildAppOptions {
   readonly tools?: ToolRepository;
   readonly memory?: MemoryRepository;
   readonly evaluations?: EvaluationRepository;
+  readonly files?: FileRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -2480,6 +2482,180 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
             request.body
           );
     return reply.code(201).send({ data });
+  });
+
+  const fileRepository = () => {
+    if (!options.files) throw new Error("Files are not configured");
+    return options.files;
+  };
+  const fileParams = z.object({ fileId: z.string().uuid() }).strict();
+  const fileUploadParams = z.object({ uploadId: z.string().uuid() }).strict();
+  app.get("/v1/workspaces/:workspaceId/files", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const query = z
+      .object({ state: z.string().optional(), purpose: z.string().optional() })
+      .parse(request.query);
+    return { data: await fileRepository().list(await agentAccess(request), query) };
+  });
+  app.get("/v1/workspaces/:workspaceId/documents", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return {
+      data: await fileRepository().list(await agentAccess(request), {
+        purpose: "knowledge_source"
+      })
+    };
+  });
+  app.post("/v1/workspaces/:workspaceId/file-uploads", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await fileRepository().createUpload(await agentAccess(request, true), request.body)
+    });
+  });
+  app.post("/v1/file-uploads/:uploadId/parts", async (request, reply) => {
+    const { uploadId } = fileUploadParams.parse(request.params);
+    return reply.code(201).send({
+      data: await fileRepository().recordPart(
+        await agentAccess(request, true),
+        uploadId,
+        request.body
+      )
+    });
+  });
+  app.post("/v1/file-uploads/:uploadId/completions", async (request) => {
+    const { uploadId } = fileUploadParams.parse(request.params);
+    return {
+      data: await fileRepository().completeUpload(
+        await agentAccess(request, true),
+        uploadId,
+        request.body
+      )
+    };
+  });
+  app.get("/v1/files/:fileId", async (request, reply) => {
+    const { fileId } = fileParams.parse(request.params);
+    const result = await fileRepository().get(await agentAccess(request), fileId);
+    return result
+      ? { data: result }
+      : reply.code(404).send({
+          error: {
+            code: "FILE_NOT_FOUND",
+            message: "The file does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  app.get("/v1/documents/:documentId", async (request, reply) => {
+    const { documentId } = z
+      .object({ documentId: z.string().uuid() })
+      .strict()
+      .parse(request.params);
+    const result = await fileRepository().get(await agentAccess(request), documentId);
+    return result
+      ? { data: result }
+      : reply.code(404).send({
+          error: {
+            code: "DOCUMENT_NOT_FOUND",
+            message: "The document does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  app.get("/v1/documents/:documentId/versions", async (request, reply) => {
+    const { documentId } = z
+      .object({ documentId: z.string().uuid() })
+      .strict()
+      .parse(request.params);
+    const result = await fileRepository().get(await agentAccess(request), documentId);
+    return result
+      ? { data: result.versions ?? [] }
+      : reply.code(404).send({
+          error: {
+            code: "DOCUMENT_NOT_FOUND",
+            message: "The document does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  app.get("/v1/documents/:documentId/citations", async (request, reply) => {
+    const { documentId } = z
+      .object({ documentId: z.string().uuid() })
+      .strict()
+      .parse(request.params);
+    const result = await fileRepository().get(await agentAccess(request), documentId);
+    return result
+      ? { data: result.processing_jobs ?? [] }
+      : reply.code(404).send({
+          error: {
+            code: "DOCUMENT_NOT_FOUND",
+            message: "The document does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  app.post("/v1/documents/:documentId/reprocessings", async (request, reply) => {
+    const { documentId } = z
+      .object({ documentId: z.string().uuid() })
+      .strict()
+      .parse(request.params);
+    return reply.code(202).send({
+      data: await fileRepository().retryProcessing(await agentAccess(request, true), documentId)
+    });
+  });
+  app.delete("/v1/documents/:documentId", async (request) => {
+    const { documentId } = z
+      .object({ documentId: z.string().uuid() })
+      .strict()
+      .parse(request.params);
+    return {
+      data: await fileRepository().delete(
+        await agentAccess(request, true),
+        documentId,
+        "document_deleted"
+      )
+    };
+  });
+  app.get("/v1/files/:fileId/preview", async (request) => {
+    const { fileId } = fileParams.parse(request.params);
+    return { data: await fileRepository().preview(await agentAccess(request), fileId) };
+  });
+  app.post("/v1/files/:fileId/processing-retries", async (request, reply) => {
+    const { fileId } = fileParams.parse(request.params);
+    return reply.code(202).send({
+      data: await fileRepository().retryProcessing(await agentAccess(request, true), fileId)
+    });
+  });
+  app.post("/v1/files/:fileId/download-tokens", async (request, reply) => {
+    const { fileId } = fileParams.parse(request.params);
+    return reply.code(201).send({
+      data: await fileRepository().createDownloadToken(
+        await agentAccess(request, true),
+        fileId,
+        request.body
+      )
+    });
+  });
+  app.get("/v1/file-downloads/:token", async (request) => {
+    const { token } = z
+      .object({ token: z.string().min(20).max(200) })
+      .strict()
+      .parse(request.params);
+    return { data: await fileRepository().consumeDownloadToken(await agentAccess(request), token) };
+  });
+  app.delete("/v1/files/:fileId", async (request) => {
+    const { fileId } = fileParams.parse(request.params);
+    const body = z
+      .object({ reason: z.string().min(3).max(500) })
+      .strict()
+      .parse(request.body ?? { reason: "user_deleted" });
+    return {
+      data: await fileRepository().delete(await agentAccess(request, true), fileId, body.reason)
+    };
   });
 
   const modelRepository = () => {

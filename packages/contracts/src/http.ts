@@ -1629,6 +1629,243 @@ const AGENT_EVALUATION_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }
 ];
 
+const FILE_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  {
+    method: "GET",
+    path: "/v1/workspaces/{workspaceId}/documents",
+    operationId: "listKnowledgeDocuments",
+    summary: "List knowledge-source documents",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    responses: { 200: apiEnvelope(genericDataSchema), 401: apiErrorSchema, 403: apiErrorSchema }
+  },
+  {
+    method: "GET",
+    path: "/v1/workspaces/{workspaceId}/files",
+    operationId: "listFiles",
+    summary: "List authorized workspace files",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(z.array(z.record(z.string(), z.unknown()))),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/workspaces/{workspaceId}/file-uploads",
+    operationId: "createFileUpload",
+    summary: "Reserve quota and create a resumable multipart upload",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    requestBody: z.record(z.string(), z.unknown()),
+    responses: {
+      201: apiEnvelope(z.record(z.string(), z.unknown())),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/file-uploads/{uploadId}/parts",
+    operationId: "recordFileUploadPart",
+    summary: "Record one checksummed multipart upload part",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    requestBody: z.record(z.string(), z.unknown()),
+    responses: {
+      201: apiEnvelope(z.record(z.string(), z.unknown())),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/file-uploads/{uploadId}/completions",
+    operationId: "completeFileUpload",
+    summary: "Verify, scan, and enqueue a completed file",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    requestBody: z.record(z.string(), z.unknown()),
+    responses: {
+      200: apiEnvelope(z.record(z.string(), z.unknown())),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/files/{fileId}",
+    operationId: "getFile",
+    summary: "Read file versions and processing state",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(z.record(z.string(), z.unknown())),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/documents/{documentId}",
+    operationId: "getKnowledgeDocument",
+    summary: "Read a knowledge document and processing state",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/documents/{documentId}/versions",
+    operationId: "listKnowledgeDocumentVersions",
+    summary: "List immutable knowledge document versions",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/documents/{documentId}/citations",
+    operationId: "listKnowledgeDocumentCitations",
+    summary: "List coordinate-preserving document extraction records",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/documents/{documentId}/reprocessings",
+    operationId: "reprocessKnowledgeDocument",
+    summary: "Retry knowledge document processing",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    responses: {
+      202: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  },
+  {
+    method: "DELETE",
+    path: "/v1/documents/{documentId}",
+    operationId: "deleteKnowledgeDocument",
+    summary: "Delete a knowledge document and its derivatives",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/files/{fileId}/preview",
+    operationId: "getFilePreview",
+    summary: "Read an authorized sanitized preview descriptor",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(z.record(z.string(), z.unknown())),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/files/{fileId}/processing-retries",
+    operationId: "retryFileProcessing",
+    summary: "Retry safe document processing",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    responses: {
+      202: apiEnvelope(z.record(z.string(), z.unknown())),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/files/{fileId}/download-tokens",
+    operationId: "createFileDownloadToken",
+    summary: "Create a short-lived one-time authorized download token",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    requestBody: z.record(z.string(), z.unknown()),
+    responses: {
+      201: apiEnvelope(z.record(z.string(), z.unknown())),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/file-downloads/{token}",
+    operationId: "consumeFileDownloadToken",
+    summary: "Consume a one-time token after authorization recheck",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(z.record(z.string(), z.unknown())),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  },
+  {
+    method: "DELETE",
+    path: "/v1/files/{fileId}",
+    operationId: "deleteFile",
+    summary: "Tombstone a file and purge unprotected derivatives",
+    tags: ["Files"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(z.record(z.string(), z.unknown())),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema,
+      500: apiErrorSchema
+    }
+  }
+];
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
@@ -1641,6 +1878,7 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...TOOL_ROUTE_CONTRACTS,
   ...AGENT_RUNTIME_ROUTE_CONTRACTS,
   ...AGENT_EVALUATION_ROUTE_CONTRACTS,
+  ...FILE_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

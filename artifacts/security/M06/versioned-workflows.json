@@ -123,6 +123,19 @@
       "tenantIsolated": true,
       "api": true
     },
+    "files": {
+      "resumableMultipart": true,
+      "quotaReserved": true,
+      "scannerAttested": true,
+      "quarantineFailClosed": true,
+      "coordinateProcessing": true,
+      "sanitizedPreview": true,
+      "oneTimeDownload": true,
+      "immutableReplacement": true,
+      "lifecycleDeletion": true,
+      "tenantIsolated": true,
+      "api": true
+    },
     "auditEvents": 7
   }
 }

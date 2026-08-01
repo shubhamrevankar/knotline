@@ -15,6 +15,7 @@ import {
   PostgresToolRepository,
   PostgresMemoryRepository,
   PostgresEvaluationRepository,
+  PostgresFileRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -84,6 +85,12 @@ const evaluationKey = process.env.EVALUATION_FIXTURE_KEY
   ? Buffer.from(process.env.EVALUATION_FIXTURE_KEY, "base64")
   : createHash("sha256").update("knotline-local-evaluation-fixtures").digest();
 const evaluations = new PostgresEvaluationRepository(pool, evaluationKey);
+if (environment.environment !== "local" && !process.env.FILE_SCANNER_ATTESTATION_KEY)
+  throw new Error("FILE_SCANNER_ATTESTATION_KEY is required outside local mode");
+const scannerAttestationKey = process.env.FILE_SCANNER_ATTESTATION_KEY
+  ? Buffer.from(process.env.FILE_SCANNER_ATTESTATION_KEY, "base64")
+  : createHash("sha256").update("knotline-local-file-scanner-attestation").digest();
+const files = new PostgresFileRepository(pool, scannerAttestationKey);
 const temporalConnection = await Connection.connect({
   address: process.env.TEMPORAL_ADDRESS ?? "127.0.0.1:7233"
 });
@@ -219,6 +226,7 @@ const app = await buildApp({
   tools,
   memory,
   evaluations,
+  files,
   runStarter,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),

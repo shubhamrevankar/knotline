@@ -1,0 +1,219 @@
+{
+  "activeGateRows": [
+    "format",
+    "lint",
+    "strict type",
+    "unit coverage",
+    "build",
+    "brand/provenance guard",
+    "package boundaries",
+    "license",
+    "dependency",
+    "secret",
+    "evidence",
+    "docs validation",
+    "browser e2e",
+    "automated accessibility",
+    "responsive/visual regression",
+    "bundle and web vitals smoke",
+    "real postgresql integration",
+    "migration",
+    "rls/tenant isolation",
+    "query plan",
+    "backup smoke",
+    "auth/session/csrf/cors/abuse security suite",
+    "workflow schema/property",
+    "api/openapi",
+    "event compatibility",
+    "temporal replay/restart/concurrency/idempotency",
+    "outbox/dlq",
+    "runtime load-lite",
+    "kill/repair smoke",
+    "restricted task/comment attachment upload",
+    "checksum/quota",
+    "quarantine/malware",
+    "authorization",
+    "download",
+    "and lifecycle gate",
+    "model contract/live-sandbox gate",
+    "structured output",
+    "evaluation smoke",
+    "ai usage/cost and kill switch",
+    "tool/credential/ssrf/sandbox security",
+    "full agent evaluation",
+    "release/canary/rollback",
+    "file malware/parser/object lifecycle"
+  ],
+  "declaredEnvironmentState": "NOT_DEPLOYED",
+  "deployments": [],
+  "environmentGates": [],
+  "evidenceUris": [
+    "repo://packages/document-processing/src/processing.ts",
+    "repo://packages/db/src/file-repository.ts",
+    "repo://apps/web/src/M19Pages.tsx",
+    "repo://docs/operations/knotline/secure-files-and-document-processing.md"
+  ],
+  "externalGates": [
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-002",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    }
+  ],
+  "flags": [
+    {
+      "evidenceUri": "repo://docs/operations/knotline/secure-files-and-document-processing.md",
+      "id": "file-upload-preview-download-controls"
+    }
+  ],
+  "knownRisks": [
+    {
+      "evidenceUri": "repo://artifacts/verification/external-gates.json",
+      "id": "m19-deployed-object-storage-and-scanner-unprovisioned",
+      "owner": "shurevan",
+      "status": "blocked-external-before-staging"
+    }
+  ],
+  "manualReviews": [],
+  "migrations": [
+    {
+      "evidenceUri": "repo://packages/db/migrations/0016_secure_files_processing.sql",
+      "id": "0016-secure-files-processing"
+    }
+  ],
+  "milestone": "M19",
+  "notYetApplicable": [
+    {
+      "activationMilestone": "M20",
+      "reason": "This gate activates with M20.",
+      "row": "retrieval quality/acl/citation/performance"
+    },
+    {
+      "activationMilestone": "M22",
+      "reason": "This gate activates with M22.",
+      "row": "connector contract/oauth/webhook/sync fixture suites"
+    },
+    {
+      "activationMilestone": "M23",
+      "reason": "This gate activates with M23.",
+      "row": "each named provider’s real sandbox certification row"
+    },
+    {
+      "activationMilestone": "M27",
+      "reason": "This gate activates with M27.",
+      "row": "notification delivery/render/access-recheck"
+    },
+    {
+      "activationMilestone": "M29",
+      "reason": "This gate activates with M29.",
+      "row": "billing/entitlement/ledger/stripe sandbox"
+    },
+    {
+      "activationMilestone": "M31",
+      "reason": "This gate activates with M31.",
+      "row": "privacy/export/delete/retention/hold/restore-deletion"
+    },
+    {
+      "activationMilestone": "M32",
+      "reason": "This gate activates with M32.",
+      "row": "sso/scim/policy/residency/migration"
+    },
+    {
+      "activationMilestone": "M33",
+      "reason": "This gate activates with M33.",
+      "row": "complete browser/device/locale/pwa/guest/support/manual at matrix"
+    },
+    {
+      "activationMilestone": "M34",
+      "reason": "This gate activates with M34.",
+      "row": "aws staging terraform/fresh deploy/canary/rollback plus workforce operator identity"
+    },
+    {
+      "activationMilestone": "M34",
+      "reason": "This gate activates with M34.",
+      "row": "trace/redaction/sli/alert/runbook/kill/game-day"
+    },
+    {
+      "activationMilestone": "M35",
+      "reason": "This gate activates with M35.",
+      "row": "sast/dast/iac/container/sbom/signature/penetration evidence"
+    },
+    {
+      "activationMilestone": "M36",
+      "reason": "This gate activates with M36.",
+      "row": "section 4.2 full load/soak/chaos/backup/restore/dr profiles"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "terraform"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "fresh bootstrap"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "deployment"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "canary"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "rollback"
+    },
+    {
+      "activationMilestone": "M38",
+      "reason": "This gate activates with M38.",
+      "row": "every gate row above and every external gate in ga scope; zero gate-row n/a/skip/quarantine. reasoned route-state not_applicable remains governed by section 5.8"
+    }
+  ],
+  "owners": [
+    "shurevan"
+  ],
+  "requirements": [
+    "KN-001",
+    "KN-002",
+    "KN-003",
+    "KN-004"
+  ],
+  "schemaVersion": 1,
+  "targetEngineeringState": "COMMITTED",
+  "testRuns": [
+    {
+      "command": "pnpm test:files",
+      "evidenceUri": "artifact://M19/test-results/file-unit",
+      "id": "m19-file-unit"
+    },
+    {
+      "command": "pnpm test:api",
+      "evidenceUri": "artifact://M19/test-results/file-api",
+      "id": "m19-file-api"
+    },
+    {
+      "command": "pnpm verify:migrations",
+      "evidenceUri": "artifact://M19/test-results/file-migrations",
+      "id": "m19-file-migrations"
+    },
+    {
+      "command": "pnpm exec playwright test tests/e2e/files.spec.ts",
+      "evidenceUri": "artifact://M19/test-results/file-browser",
+      "id": "m19-file-browser"
+    },
+    {
+      "command": "pnpm verify:boundaries && pnpm verify:events && pnpm verify:secrets",
+      "evidenceUri": "artifact://M19/test-results/file-security",
+      "id": "m19-file-security"
+    }
+  ]
+}
