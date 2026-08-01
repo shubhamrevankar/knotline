@@ -1710,6 +1710,55 @@
       "retentionDays": 2555,
       "exportHandler": "billing-export",
       "deleteHandler": "billing-delete"
+    },
+    {
+      "name": "service_principals",
+      "class": "developer.identity",
+      "retentionDays": 2555,
+      "exportHandler": "developer-export",
+      "deleteHandler": "credential-revoke-delete"
+    },
+    {
+      "name": "api_credentials",
+      "class": "developer.credential",
+      "retentionDays": 2555,
+      "exportHandler": "developer-metadata-export",
+      "deleteHandler": "credential-revoke-delete"
+    },
+    {
+      "name": "oauth_clients",
+      "class": "developer.oauth_client",
+      "retentionDays": 2555,
+      "exportHandler": "developer-export",
+      "deleteHandler": "credential-revoke-delete"
+    },
+    {
+      "name": "outgoing_webhooks",
+      "class": "developer.webhook",
+      "retentionDays": 2555,
+      "exportHandler": "developer-export",
+      "deleteHandler": "webhook-delete"
+    },
+    {
+      "name": "outgoing_webhook_deliveries",
+      "class": "developer.delivery",
+      "retentionDays": 365,
+      "exportHandler": "developer-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "public_api_idempotency",
+      "class": "developer.idempotency",
+      "retentionDays": 7,
+      "exportHandler": "developer-metadata-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "public_api_rate_buckets",
+      "class": "developer.rate_limit",
+      "retentionDays": 7,
+      "exportHandler": "developer-metadata-export",
+      "deleteHandler": "retention-delete"
     }
   ],
   "indexes": [
@@ -2135,7 +2184,19 @@
     "usage_ledger_pkey",
     "usage_ledger_workspace_id_idempotency_key_key",
     "usage_ledger_meter_idx",
-    "billing_invoices_pkey"
+    "billing_invoices_pkey",
+    "service_principals_pkey",
+    "api_credentials_pkey",
+    "api_credentials_prefix_key",
+    "api_credentials_lookup_idx",
+    "oauth_clients_pkey",
+    "oauth_clients_client_identifier_key",
+    "outgoing_webhooks_pkey",
+    "outgoing_webhook_deliveries_pkey",
+    "outgoing_webhook_deliveries_workspace_id_idempotency_key_key",
+    "outgoing_webhook_delivery_idx",
+    "public_api_idempotency_pkey",
+    "public_api_rate_buckets_pkey"
   ],
   "caches": []
 }

@@ -1,7 +1,7 @@
 {
   "milestone": "M12",
-  "planDigest": "sha256:7514778eb445522376f7ebdfbb5b196069b98056a8c16f86b1191d287ac61381",
-  "routeRegistryDigest": "sha256:543e28d26e22a3f4d0859e53a06d8990e5cb7b86c116ca5a56c4639edfe2a97b",
+  "planDigest": "sha256:d8e7a472da08cc25e4a0893f42f00cc072cb662c9b8bf26438e66d092056956a",
+  "routeRegistryDigest": "sha256:de0774bd09c96bfe54658e68b7cfb5c803fa4aefe6829539611faf2601d63534",
   "routes": [
     {
       "routeId": "route.public.home",

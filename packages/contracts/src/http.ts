@@ -2586,6 +2586,145 @@ const BILLING_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   }
 }));
 
+const DEVELOPER_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/service-principals",
+    "listServicePrincipals",
+    "List service principals"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/service-principals",
+    "createServicePrincipal",
+    "Create a scoped service principal"
+  ],
+  [
+    "PATCH",
+    "/v1/service-principals/{principalId}",
+    "updateServicePrincipal",
+    "Update a service principal"
+  ],
+  [
+    "DELETE",
+    "/v1/service-principals/{principalId}",
+    "revokeServicePrincipal",
+    "Revoke a service principal"
+  ],
+  [
+    "GET",
+    "/v1/service-principals/{principalId}/credentials",
+    "listApiCredentials",
+    "List leak-safe credential metadata"
+  ],
+  [
+    "POST",
+    "/v1/service-principals/{principalId}/credentials",
+    "createApiCredential",
+    "Issue a one-time API secret"
+  ],
+  [
+    "POST",
+    "/v1/api-credentials/{credentialId}/rotations",
+    "rotateApiCredential",
+    "Rotate an API credential with overlap"
+  ],
+  [
+    "DELETE",
+    "/v1/api-credentials/{credentialId}",
+    "revokeApiCredential",
+    "Revoke an API credential"
+  ],
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/oauth-clients",
+    "listOauthClients",
+    "List delegated OAuth clients"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/oauth-clients",
+    "createOauthClient",
+    "Register a delegated OAuth client"
+  ],
+  ["GET", "/v1/oauth-clients/{clientId}", "getOauthClient", "Get a delegated OAuth client"],
+  ["PATCH", "/v1/oauth-clients/{clientId}", "updateOauthClient", "Update a delegated OAuth client"],
+  [
+    "POST",
+    "/v1/oauth-clients/{clientId}/rotations",
+    "rotateOauthClientSecret",
+    "Rotate a delegated OAuth client secret"
+  ],
+  [
+    "DELETE",
+    "/v1/oauth-clients/{clientId}",
+    "revokeOauthClient",
+    "Revoke a delegated OAuth client"
+  ],
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/outgoing-webhooks",
+    "listOutgoingWebhooks",
+    "List developer webhooks"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/outgoing-webhooks",
+    "createOutgoingWebhook",
+    "Create a signed developer webhook"
+  ],
+  [
+    "PATCH",
+    "/v1/outgoing-webhooks/{webhookId}",
+    "updateOutgoingWebhook",
+    "Update a revision-safe webhook"
+  ],
+  ["DELETE", "/v1/outgoing-webhooks/{webhookId}", "disableOutgoingWebhook", "Disable a webhook"],
+  [
+    "GET",
+    "/v1/outgoing-webhooks/{webhookId}/deliveries",
+    "listWebhookDeliveries",
+    "List webhook delivery attempts"
+  ],
+  [
+    "POST",
+    "/v1/webhook-deliveries/{deliveryId}/replays",
+    "replayWebhookDelivery",
+    "Queue an idempotent webhook replay"
+  ]
+].map(([method, path, operationId, summary]) => ({
+  method: method as HttpRouteContract["method"],
+  path: path!,
+  operationId: operationId!,
+  summary: summary!,
+  tags: ["Developer platform"],
+  exposure: "browser_internal" as const,
+  ...(["POST", "PATCH"].includes(method!) ? { requestBody: genericDataSchema } : {}),
+  responses: {
+    200: apiEnvelope(genericDataSchema),
+    201: apiEnvelope(genericDataSchema),
+    202: apiEnvelope(genericDataSchema),
+    204: z.undefined(),
+    400: apiErrorSchema,
+    401: apiErrorSchema,
+    403: apiErrorSchema,
+    404: apiErrorSchema,
+    409: apiErrorSchema,
+    500: apiErrorSchema
+  }
+}));
+const PUBLIC_DEVELOPER_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
+  {
+    method: "GET",
+    path: "/public/v1/health",
+    operationId: "getPublicApiHealth",
+    summary: "Read public API version and health",
+    tags: ["Public API"],
+    exposure: "public_customer",
+    responses: { 200: apiEnvelope(genericDataSchema), 429: apiErrorSchema, 500: apiErrorSchema }
+  }
+];
+
 export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...WORKSPACE_ACCESS_ROUTE_CONTRACTS,
   ...VERSIONED_WORKFLOW_ROUTE_CONTRACTS,
@@ -2604,6 +2743,8 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...NOTIFICATION_ROUTE_CONTRACTS,
   ...ANALYTICS_ROUTE_CONTRACTS,
   ...BILLING_ROUTE_CONTRACTS,
+  ...DEVELOPER_ROUTE_CONTRACTS,
+  ...PUBLIC_DEVELOPER_ROUTE_CONTRACTS,
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

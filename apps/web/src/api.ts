@@ -1607,3 +1607,62 @@ export const setSpendStop = async (enabled: boolean, reason: string) =>
       { reason }
     )
   ).data;
+export interface ServicePrincipal {
+  readonly id: string;
+  readonly name: string;
+  readonly purpose: string;
+  readonly role: string;
+  readonly scopes: readonly string[];
+  readonly environment: "test" | "live";
+  readonly state: string;
+  readonly revision: number;
+}
+export interface DeveloperWebhook {
+  readonly id: string;
+  readonly name: string;
+  readonly endpointUrl: string;
+  readonly eventTypes: readonly string[];
+  readonly state: string;
+  readonly revision: number;
+  readonly signingSecret?: string;
+  readonly displayedOnce?: boolean;
+}
+export const fetchServicePrincipals = async () =>
+  (
+    await request<ApiEnvelope<ServicePrincipal[]>>(
+      `/v1/workspaces/${workspaceId}/service-principals`
+    )
+  ).data;
+export const createServicePrincipal = async (input: Readonly<Record<string, unknown>>) =>
+  (
+    await mutate<ApiEnvelope<ServicePrincipal>>(
+      `/v1/workspaces/${workspaceId}/service-principals`,
+      "POST",
+      input
+    )
+  ).data;
+export const createApiCredential = async (
+  principalId: string,
+  input: Readonly<Record<string, unknown>>
+) =>
+  (
+    await mutate<ApiEnvelope<Record<string, unknown>>>(
+      `/v1/service-principals/${principalId}/credentials`,
+      "POST",
+      input
+    )
+  ).data;
+export const fetchDeveloperWebhooks = async () =>
+  (
+    await request<ApiEnvelope<DeveloperWebhook[]>>(
+      `/v1/workspaces/${workspaceId}/outgoing-webhooks`
+    )
+  ).data;
+export const createDeveloperWebhook = async (input: Readonly<Record<string, unknown>>) =>
+  (
+    await mutate<ApiEnvelope<DeveloperWebhook>>(
+      `/v1/workspaces/${workspaceId}/outgoing-webhooks`,
+      "POST",
+      input
+    )
+  ).data;

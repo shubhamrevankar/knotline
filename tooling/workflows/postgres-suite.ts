@@ -31,6 +31,7 @@ import {
   PostgresNotificationRepository,
   PostgresAnalyticsRepository,
   PostgresBillingRepository,
+  PostgresDeveloperRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -227,6 +228,7 @@ async function runSuite(pool: DatabasePool) {
   const notificationRepository = new PostgresNotificationRepository(pool);
   const analyticsRepository = new PostgresAnalyticsRepository(pool);
   const billingRepository = new PostgresBillingRepository(pool);
+  const developerRepository = new PostgresDeveloperRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -1644,6 +1646,48 @@ async function runSuite(pool: DatabasePool) {
   assert(Boolean(threshold.id), "Budget threshold was not persisted");
   const usage = await billingRepository.usage(contextA);
   assert(usage.partial === true, "Empty usage was not labelled partial");
+  const servicePrincipal = await developerRepository.createPrincipal(contextA, {
+    name: "Run automation",
+    purpose: "Start approved runs",
+    role: "automation",
+    scopes: ["runs:read", "runs:start"],
+    resourceRestrictions: {},
+    environment: "test",
+    expiresAt: "2026-12-01T00:00:00.000Z"
+  });
+  const apiCredential = await developerRepository.createCredential(
+    contextA,
+    String(servicePrincipal.id),
+    { environment: "test", expiresAt: "2026-12-01T00:00:00.000Z" }
+  );
+  assert(
+    String(apiCredential.token).startsWith("kn_test_"),
+    "One-time API credential was not issued"
+  );
+  assert(
+    (await developerRepository.principals(contextB)).length === 0,
+    "Service principal crossed tenant RLS"
+  );
+  const webhook = await developerRepository.createWebhook(contextA, {
+    name: "Terminal events",
+    endpointUrl: "https://example.test/events",
+    eventTypes: ["run.succeeded"]
+  });
+  assert(webhook.displayedOnce === true, "Webhook signing secret was not one-time");
+  const oauthClient = await developerRepository.createOauthClient(contextA, {
+    name: "Local integration",
+    redirectUris: ["https://example.test/callback"],
+    scopes: ["runs:read"]
+  });
+  assert(oauthClient.displayedOnce === true, "OAuth client secret was not one-time");
+  const rotatedOauthClient = await developerRepository.rotateOauthClient(
+    contextA,
+    String(oauthClient.id)
+  );
+  assert(
+    Number(rotatedOauthClient.secretVersion) === 2,
+    "OAuth client secret revision did not advance"
+  );
 
   const immutable = await Promise.allSettled([
     withTenantTransaction(pool, contextA, (client) =>
@@ -2113,6 +2157,7 @@ async function runSuite(pool: DatabasePool) {
     notifications: notificationRepository,
     analytics: analyticsRepository,
     billing: billingRepository,
+    developer: developerRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),

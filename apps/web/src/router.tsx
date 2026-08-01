@@ -164,6 +164,9 @@ const ReportDetailPage = lazy(async () => ({
 }));
 const BillingPage = lazy(async () => ({ default: (await import("./M29Pages.js")).BillingPage }));
 const UsagePage = lazy(async () => ({ default: (await import("./M29Pages.js")).UsagePage }));
+const DeveloperPlatformPage = lazy(async () => ({
+  default: (await import("./M30Pages.js")).DeveloperPlatformPage
+}));
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -734,6 +737,22 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label={msg("billing.loading")} />}>
           {route.id === "route.app.settings.billing" ? <BillingPage /> : <UsagePage />}
+        </Suspense>
+      </AuthGate>
+    );
+  if (
+    [
+      "route.app.developer.api",
+      "route.app.developer.apps",
+      "route.app.developer.webhooks",
+      "route.app.settings.developers",
+      "route.app.settings.webhooks"
+    ].includes(route.id)
+  )
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("developer.loading")} />}>
+          <DeveloperPlatformPage />
         </Suspense>
       </AuthGate>
     );

@@ -2745,6 +2745,7 @@ PATCH  /v1/outgoing-webhooks/:webhookId
 DELETE /v1/outgoing-webhooks/:webhookId
 GET    /v1/outgoing-webhooks/:webhookId/deliveries
 POST   /v1/webhook-deliveries/:deliveryId/replays
+GET    /public/v1/health
 ```
 
 ### 10.10 Platform operator API
@@ -7698,7 +7699,7 @@ usage and payments, and give customers transparent control of spend.
 
 ### M30 — Public API, service accounts, webhooks, SDKs, and developer portal
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M05, M10, M22, M26, M29\
 **Required commit:** `feat: deliver the Knotline developer platform`
 
@@ -9272,7 +9273,7 @@ must appear in that milestone's boundary cell.
 | M27 | `COMMITTED` | `NOT_DEPLOYED` | EXT-006, EXT-008, EXT-012 | `feat: deliver multichannel notifications and escalation delivery` |
 | M28 | `COMMITTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: deliver global search saved views and operational analytics` |
 | M29 | `COMMITTED` | `NOT_DEPLOYED` | EXT-005, EXT-020 | `feat: add Stripe billing usage and enforced entitlements` |
-| M30 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-001, EXT-021 | `feat: deliver the Knotline developer platform` |
+| M30 | `COMMITTED` | `NOT_DEPLOYED` | EXT-001, EXT-021 | `feat: deliver the Knotline developer platform` |
 | M31 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-016, EXT-022 | `feat: deliver audit privacy export and deletion governance` |
 | M32 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-015, EXT-022 | `feat: add enterprise identity provisioning and data policy` |
 | M33 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-001, EXT-006, EXT-016, EXT-019, EXT-020, EXT-021, EXT-023 | `feat: deliver the installable accessible global Knotline experience` |

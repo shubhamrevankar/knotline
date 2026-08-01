@@ -1,0 +1,29 @@
+.developer-shell {
+  display: grid;
+  gap: var(--space-6);
+  max-width: 76rem;
+  margin: auto;
+}
+.developer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: var(--space-4);
+}
+.developer-shell section {
+  display: grid;
+  gap: var(--space-3);
+}
+.developer-shell h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.developer-shell code {
+  overflow-wrap: anywhere;
+}
+.developer-shell pre {
+  overflow: auto;
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-strong);
+}

@@ -1,0 +1,21 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M30/test-results/developer-unit.json",
+      "verifiedAt": "2026-08-09T12:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-001",
+      "EXT-021"
+    ],
+    "id": "developer.public-api-oauth-and-webhooks",
+    "owner": {
+      "contact": "shurevan",
+      "team": "developer-platform"
+    },
+    "runbook": "docs/operations/knotline/developer-platform.md",
+    "status": "DEMO",
+    "summary": "Scoped service identities, one-time credentials, delegated clients, signed webhooks and a separately allowlisted public API boundary are verified locally."
+  }
+]

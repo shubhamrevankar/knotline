@@ -420,6 +420,21 @@ export const EVENT_SCHEMA_REGISTRY = [
     schema: runtimeTransitionPayloadV1Schema
   })),
   ...[
+    "developer.service_principal_changed",
+    "developer.credential_issued",
+    "developer.credential_rotated",
+    "developer.credential_revoked",
+    "developer.oauth_client_changed",
+    "developer.webhook_changed",
+    "developer.webhook_delivered",
+    "developer.webhook_failed"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "developer-platform",
+    schema: runtimeTransitionPayloadV1Schema
+  })),
+  ...[
     "approval.requested",
     "approval.delegated",
     "approval.abstained",

@@ -45,6 +45,7 @@ import type {
   NotificationRepository,
   AnalyticsRepository,
   BillingRepository,
+  DeveloperRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -104,6 +105,7 @@ export interface BuildAppOptions {
   readonly notifications?: NotificationRepository;
   readonly analytics?: AnalyticsRepository;
   readonly billing?: BillingRepository;
+  readonly developer?: DeveloperRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -2530,6 +2532,220 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     if (!options.billing) throw new Error("Billing is not configured");
     return options.billing;
   };
+  const developerRepository = () => {
+    if (!options.developer) throw new Error("Developer platform is not configured");
+    return options.developer;
+  };
+  const principalSchema = z
+    .object({
+      name: z.string().min(1).max(120),
+      purpose: z.string().min(3).max(500),
+      role: z.string().min(1).max(80),
+      scopes: z.array(z.string()).min(1).max(100),
+      resourceRestrictions: z.record(z.string(), z.unknown()).default({}),
+      environment: z.enum(["test", "live"]),
+      expiresAt: z.iso.datetime()
+    })
+    .strict();
+  const developerPrincipalParams = z.object({ principalId: z.string().uuid() }).strict(),
+    credentialParams = z.object({ credentialId: z.string().uuid() }).strict(),
+    oauthClientParams = z.object({ clientId: z.string().uuid() }).strict(),
+    webhookParams = z.object({ webhookId: z.string().uuid() }).strict(),
+    deliveryParams = z.object({ deliveryId: z.string().uuid() }).strict();
+  app.get("/v1/workspaces/:workspaceId/service-principals", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await developerRepository().principals(await agentAccess(request)) };
+  });
+  app.post("/v1/workspaces/:workspaceId/service-principals", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await developerRepository().createPrincipal(
+        await agentAccess(request, true),
+        principalSchema.parse(request.body)
+      )
+    });
+  });
+  app.patch("/v1/service-principals/:principalId", async (request) => {
+    const { principalId } = developerPrincipalParams.parse(request.params);
+    return {
+      data: await developerRepository().updatePrincipal(
+        await agentAccess(request, true),
+        principalId,
+        principalSchema
+          .partial()
+          .extend({ expectedRevision: z.number().int().positive() })
+          .parse(request.body)
+      )
+    };
+  });
+  app.delete("/v1/service-principals/:principalId", async (request, reply) => {
+    const { principalId } = developerPrincipalParams.parse(request.params);
+    await developerRepository().deletePrincipal(await agentAccess(request, true), principalId);
+    return reply.code(204).send();
+  });
+  app.get("/v1/service-principals/:principalId/credentials", async (request) => {
+    const { principalId } = developerPrincipalParams.parse(request.params);
+    return {
+      data: await developerRepository().credentials(await agentAccess(request), principalId)
+    };
+  });
+  app.post("/v1/service-principals/:principalId/credentials", async (request, reply) => {
+    const { principalId } = developerPrincipalParams.parse(request.params);
+    const body = z
+      .object({ environment: z.enum(["test", "live"]), expiresAt: z.iso.datetime() })
+      .strict()
+      .parse(request.body);
+    return reply.code(201).send({
+      data: await developerRepository().createCredential(
+        await agentAccess(request, true),
+        principalId,
+        body
+      )
+    });
+  });
+  app.post("/v1/api-credentials/:credentialId/rotations", async (request, reply) => {
+    const { credentialId } = credentialParams.parse(request.params);
+    return reply.code(201).send({
+      data: await developerRepository().rotateCredential(
+        await agentAccess(request, true),
+        credentialId
+      )
+    });
+  });
+  app.delete("/v1/api-credentials/:credentialId", async (request, reply) => {
+    const { credentialId } = credentialParams.parse(request.params);
+    await developerRepository().deleteCredential(await agentAccess(request, true), credentialId);
+    return reply.code(204).send();
+  });
+  app.get("/v1/workspaces/:workspaceId/oauth-clients", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await developerRepository().oauthClients(await agentAccess(request)) };
+  });
+  app.post("/v1/workspaces/:workspaceId/oauth-clients", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const body = z
+      .object({
+        name: z.string().min(1).max(120),
+        redirectUris: z.array(z.url().refine((value) => value.startsWith("https://"))).min(1),
+        scopes: z.array(z.string()).min(1)
+      })
+      .strict()
+      .parse(request.body);
+    return reply.code(201).send({
+      data: await developerRepository().createOauthClient(await agentAccess(request, true), body)
+    });
+  });
+  const oauthClientSchema = z
+    .object({
+      name: z.string().min(1).max(120),
+      redirectUris: z.array(z.url().refine((value) => value.startsWith("https://"))).min(1),
+      scopes: z.array(z.string()).min(1),
+      state: z.enum(["active", "revoked"]).optional()
+    })
+    .strict();
+  app.get("/v1/oauth-clients/:clientId", async (request) => {
+    const { clientId } = oauthClientParams.parse(request.params);
+    return { data: await developerRepository().oauthClient(await agentAccess(request), clientId) };
+  });
+  app.patch("/v1/oauth-clients/:clientId", async (request) => {
+    const { clientId } = oauthClientParams.parse(request.params);
+    return {
+      data: await developerRepository().updateOauthClient(
+        await agentAccess(request, true),
+        clientId,
+        oauthClientSchema
+          .partial()
+          .extend({ expectedRevision: z.number().int().positive() })
+          .parse(request.body)
+      )
+    };
+  });
+  app.post("/v1/oauth-clients/:clientId/rotations", async (request, reply) => {
+    const { clientId } = oauthClientParams.parse(request.params);
+    return reply.code(201).send({
+      data: await developerRepository().rotateOauthClient(
+        await agentAccess(request, true),
+        clientId
+      )
+    });
+  });
+  app.delete("/v1/oauth-clients/:clientId", async (request, reply) => {
+    const { clientId } = oauthClientParams.parse(request.params);
+    await developerRepository().deleteOauthClient(await agentAccess(request, true), clientId);
+    return reply.code(204).send();
+  });
+  const webhookSchema = z
+    .object({
+      name: z.string().min(1).max(120),
+      endpointUrl: z.url().refine((value) => value.startsWith("https://")),
+      eventTypes: z.array(z.string()).min(1).max(100)
+    })
+    .strict();
+  app.get("/v1/workspaces/:workspaceId/outgoing-webhooks", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await developerRepository().webhooks(await agentAccess(request)) };
+  });
+  app.post("/v1/workspaces/:workspaceId/outgoing-webhooks", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await developerRepository().createWebhook(
+        await agentAccess(request, true),
+        webhookSchema.parse(request.body)
+      )
+    });
+  });
+  app.patch("/v1/outgoing-webhooks/:webhookId", async (request) => {
+    const { webhookId } = webhookParams.parse(request.params);
+    return {
+      data: await developerRepository().updateWebhook(
+        await agentAccess(request, true),
+        webhookId,
+        webhookSchema
+          .partial()
+          .extend({
+            state: z.enum(["active", "disabled"]).optional(),
+            expectedRevision: z.number().int().positive()
+          })
+          .parse(request.body)
+      )
+    };
+  });
+  app.delete("/v1/outgoing-webhooks/:webhookId", async (request, reply) => {
+    const { webhookId } = webhookParams.parse(request.params);
+    await developerRepository().deleteWebhook(await agentAccess(request, true), webhookId);
+    return reply.code(204).send();
+  });
+  app.get("/v1/outgoing-webhooks/:webhookId/deliveries", async (request) => {
+    const { webhookId } = webhookParams.parse(request.params);
+    return { data: await developerRepository().deliveries(await agentAccess(request), webhookId) };
+  });
+  app.post("/v1/webhook-deliveries/:deliveryId/replays", async (request, reply) => {
+    const { deliveryId } = deliveryParams.parse(request.params);
+    return reply.code(202).send({
+      data: await developerRepository().replay(await agentAccess(request, true), deliveryId)
+    });
+  });
+  app.get("/public/v1/health", async (_request, reply) =>
+    reply
+      .headers({
+        "ratelimit-limit": "60",
+        "ratelimit-remaining": "59",
+        "ratelimit-reset": String(Math.ceil(Date.now() / 1000) + 60)
+      })
+      .send({ data: { status: "ok", apiVersion: "2026-08-01" } })
+  );
   const budgetSchema = z
     .object({
       name: z.string().min(1).max(120),
