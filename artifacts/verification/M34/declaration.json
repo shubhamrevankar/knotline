@@ -1,0 +1,424 @@
+{
+  "activeGateRows": [
+    "format",
+    "lint",
+    "strict type",
+    "unit coverage",
+    "build",
+    "brand/provenance guard",
+    "package boundaries",
+    "license",
+    "dependency",
+    "secret",
+    "evidence",
+    "docs validation",
+    "browser e2e",
+    "automated accessibility",
+    "responsive/visual regression",
+    "bundle and web vitals smoke",
+    "real postgresql integration",
+    "migration",
+    "rls/tenant isolation",
+    "query plan",
+    "backup smoke",
+    "auth/session/csrf/cors/abuse security suite",
+    "workflow schema/property",
+    "api/openapi",
+    "event compatibility",
+    "temporal replay/restart/concurrency/idempotency",
+    "outbox/dlq",
+    "runtime load-lite",
+    "kill/repair smoke",
+    "restricted task/comment attachment upload",
+    "checksum/quota",
+    "quarantine/malware",
+    "authorization",
+    "download",
+    "and lifecycle gate",
+    "model contract/live-sandbox gate",
+    "structured output",
+    "evaluation smoke",
+    "ai usage/cost and kill switch",
+    "tool/credential/ssrf/sandbox security",
+    "full agent evaluation",
+    "release/canary/rollback",
+    "file malware/parser/object lifecycle",
+    "retrieval quality/acl/citation/performance",
+    "connector contract/oauth/webhook/sync fixture suites",
+    "each named provider’s real sandbox certification row",
+    "notification delivery/render/access-recheck",
+    "billing/entitlement/ledger/stripe sandbox",
+    "privacy/export/delete/retention/hold/restore-deletion",
+    "sso/scim/policy/residency/migration",
+    "complete browser/device/locale/pwa/guest/support/manual at matrix",
+    "aws staging terraform/fresh deploy/canary/rollback plus workforce operator identity",
+    "trace/redaction/sli/alert/runbook/kill/game-day"
+  ],
+  "declaredEnvironmentState": "NOT_DEPLOYED",
+  "deployments": [],
+  "environmentGates": [
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M34.ENV.a-clean-production-equivalent-staging-environment-is-recreated",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:41788e2b2875c00f577e60e4e10a47a3ea98d9589df886b5cbc6ba4185de5d77"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M34.ENV.a-kill-switch-stops-the-targeted-new-work",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:b6bcf0635a81c6bf3d66708d74f7925dc8e9139f8948e26e9ad2b1af467ddec1"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M34.ENV.a-staffed-break-glass-exercise-proves-dual-control",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:7f65bbfaa84d7ab06f747fc1813217dcee1a7eb08ef07a353f6fc152bcbe9800"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M34.ENV.every-kill-switch-is-exercised-in-staging-including",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:ebb84461189ce84c3df217887ded1553607108a4c6539e664df7a95af921f162"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M34.ENV.fresh-staging-bootstrap-signed-artifact-admission-migration-canary",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:8bb066a8a60a629c5cdfc31e4ea67546446a354fe9335f5b199790de86a28ef0"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M34.ENV.in-named-staging-the-approved-workforce-application-directory",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:89704b6905883821dde620bf8aa37deb2c667dc8fcdd58dee55a1d85c08d5678"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M34.ENV.production-equivalent-staging-smoke-for-every-core-path",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:332207f2f99a6cbce6cf5087c3d21298f5791762146db97eccc9879657bb57c9"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M34.ENV.separate-criterion-rows-for-each-applicable-and-real",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:09853f72091242bf43e7878eadedacd3159e9d5ab070dc54e9b37f0119749560"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M34.ENV.under-a-newly-provisioned-operator-can-perform-only",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:f7fa720387f9f8a2220e2f38fdeb9766b983d8c1d4de0b18063b45a3db22651c"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M34.ENV.under-a-staffed-on-call-game-day-covers",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:cacd028cff59c12f4af6ef10a544c799008de9ceb4925196e4b4ccc9de3a885e"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M34.ENV.under-an-on-call-operator-detects-and-contains",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:2ddf45181011dcbee538d9a91c5b8af12097b9738975cff48a9a2a26f7c45723"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M34.ENV.under-every-page-has-a-named-owner-deputy",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:9af9fce0e9faf8fedfaadad8c2d5ea7d2210eef35de49ba9605948f9901e9e7b"
+    }
+  ],
+  "evidenceUris": [
+    "repo://infra/terraform/modules/platform/main.tf",
+    "repo://packages/operations/src/operability.ts",
+    "repo://tests/e2e/operability.spec.ts",
+    "repo://tooling/quality/terraform-contract.test.mjs",
+    "repo://docs/operations/knotline/operability.md"
+  ],
+  "externalGates": [
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-002",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-003",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-004",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-005",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-006",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-007",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-008",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-009",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-010",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-011",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-012",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-013",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-014",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-015",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-019",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-021",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-022",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-024",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-025",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    }
+  ],
+  "flags": [
+    {
+      "evidenceUri": "repo://docs/operations/knotline/operability.md",
+      "id": "operability"
+    }
+  ],
+  "knownRisks": [
+    {
+      "evidenceUri": "repo://artifacts/verification/external-gates.json",
+      "id": "m34-staging-workforce-oncall-and-provider-certification",
+      "owner": "shurevan",
+      "status": "blocked-external-before-production"
+    }
+  ],
+  "manualReviews": [],
+  "migrations": [],
+  "milestone": "M34",
+  "notYetApplicable": [
+    {
+      "activationMilestone": "M35",
+      "reason": "This gate activates with M35.",
+      "row": "sast/dast/iac/container/sbom/signature/penetration evidence"
+    },
+    {
+      "activationMilestone": "M36",
+      "reason": "This gate activates with M36.",
+      "row": "section 4.2 full load/soak/chaos/backup/restore/dr profiles"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "terraform"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "fresh bootstrap"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "deployment"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "canary"
+    },
+    {
+      "activationMilestone": "M37",
+      "reason": "This gate activates with M37.",
+      "row": "rollback"
+    },
+    {
+      "activationMilestone": "M38",
+      "reason": "This gate activates with M38.",
+      "row": "every gate row above and every external gate in ga scope; zero gate-row n/a/skip/quarantine. reasoned route-state not_applicable remains governed by section 5.8"
+    }
+  ],
+  "owners": [
+    "shurevan"
+  ],
+  "requirements": [],
+  "schemaVersion": 1,
+  "targetEngineeringState": "COMMITTED",
+  "testRuns": [
+    {
+      "command": "pnpm exec playwright test tests/e2e/operability.spec.ts",
+      "evidenceUri": "artifact://M34/test-results/m34-operability-browser",
+      "id": "m34-operability-browser"
+    },
+    {
+      "command": "pnpm --filter @knotline/operations test",
+      "evidenceUri": "artifact://M34/test-results/m34-operability-unit",
+      "id": "m34-operability-unit"
+    },
+    {
+      "command": "node --test tooling/quality/terraform-contract.test.mjs",
+      "evidenceUri": "artifact://M34/test-results/m34-terraform-contract",
+      "id": "m34-terraform-contract"
+    },
+    {
+      "command": "pnpm verify:secrets",
+      "evidenceUri": "artifact://M34/test-results/m34-observability-security",
+      "id": "m34-observability-security"
+    }
+  ]
+}

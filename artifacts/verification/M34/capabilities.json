@@ -1,0 +1,38 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M34/test-results/m34-operability-browser.json",
+      "verifiedAt": "2026-08-13T12:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-002",
+      "EXT-003",
+      "EXT-004",
+      "EXT-005",
+      "EXT-006",
+      "EXT-007",
+      "EXT-008",
+      "EXT-009",
+      "EXT-010",
+      "EXT-011",
+      "EXT-012",
+      "EXT-013",
+      "EXT-014",
+      "EXT-015",
+      "EXT-019",
+      "EXT-021",
+      "EXT-022",
+      "EXT-024",
+      "EXT-025"
+    ],
+    "id": "operations.slos-kill-switches-repair-and-staging-foundation",
+    "owner": {
+      "contact": "shurevan",
+      "team": "reliability-platform"
+    },
+    "runbook": "docs/operations/knotline/operability.md",
+    "status": "DEMO",
+    "summary": "SLO burn logic, scoped kill switches, gated repairs, dual-control break glass, operator UX and pinned staging infrastructure contracts are verified locally."
+  }
+]

@@ -10,6 +10,7 @@ export * from "./developer-platform.js";
 export * from "./governance.js";
 export * from "./enterprise-identity.js";
 export * from "./global-experience.js";
+export * from "./operability.js";
 export * from "./ownership.js";
 export * from "./promotion.js";
 export * from "./reservations.js";

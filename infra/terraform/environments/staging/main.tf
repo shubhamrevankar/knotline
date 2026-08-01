@@ -1,0 +1,1 @@
+module "platform" { source="../../modules/platform" environment="staging" active_region="us-east-1" standby_region="us-west-2" protection_region="eu-west-1" artifact_digest="sha256:0000000000000000000000000000000000000000000000000000000000000000" }

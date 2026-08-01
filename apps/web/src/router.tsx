@@ -179,6 +179,12 @@ const InformationPage = lazy(async () => ({
 }));
 const ContactPage = lazy(async () => ({ default: (await import("./M33Pages.js")).ContactPage }));
 const GuestPage = lazy(async () => ({ default: (await import("./M33Pages.js")).GuestPage }));
+const OperatorConsole = lazy(async () => ({
+  default: (await import("./M34Pages.js")).OperatorConsole
+}));
+const FeatureAccessPage = lazy(async () => ({
+  default: (await import("./M34Pages.js")).FeatureAccessPage
+}));
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -840,6 +846,14 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
         </Suspense>
       </AuthGate>
     );
+  if (route.id === "route.app.settings.feature-access")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading feature access" />}>
+          <FeatureAccessPage />
+        </Suspense>
+      </AuthGate>
+    );
   return (
     <AuthGate>
       <div className="registered-shell">
@@ -871,6 +885,21 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
 
 function OperatorRoute({ route }: { route: WebRouteManifestEntry }) {
   useMetadata(msg("operator.surface"), true);
+  if (
+    [
+      "route.ops",
+      "route.ops.incidents",
+      "route.ops.providers",
+      "route.ops.runtime",
+      "route.ops.support",
+      "route.ops.workspaces.detail"
+    ].includes(route.id)
+  )
+    return (
+      <Suspense fallback={<Skeleton label="Loading operator controls" />}>
+        <OperatorConsole />
+      </Suspense>
+    );
   return (
     <div className="operator-shell">
       <header>
