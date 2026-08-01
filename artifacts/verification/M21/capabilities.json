@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M21/test-results/graph-unit.json",
+      "verifiedAt": "2026-08-01T23:00:00.000Z"
+    },
+    "externalGates": [],
+    "id": "knowledge.provenance-graph",
+    "owner": {
+      "contact": "shurevan",
+      "team": "knowledge-platform"
+    },
+    "runbook": "docs/operations/knotline/provenance-knowledge-graph.md",
+    "status": "DEMO",
+    "summary": "Versioned entity and relation facts, deterministic provider identity, conflict visibility, ACL-intersected provenance, bounded traversal, merge/split, export, and knowledge administration are locally verified."
+  }
+]

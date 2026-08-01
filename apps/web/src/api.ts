@@ -1144,3 +1144,69 @@ export const openKnowledgeCitation = async (
     throw new RequestFailure("Citation is no longer authorized", classifyStatus(response.status));
   return (await response.json()) as ApiEnvelope<Record<string, unknown>>;
 };
+
+export interface KnowledgeEntitySummary {
+  readonly id: string;
+  readonly type: string;
+  readonly canonicalName: string;
+  readonly revision: number;
+  readonly updatedAt: string;
+}
+export interface KnowledgeEntityProfile extends KnowledgeEntitySummary {
+  readonly aliases: readonly Readonly<Record<string, unknown>>[];
+  readonly facts: readonly Readonly<Record<string, unknown>>[];
+  readonly conflicts: readonly Readonly<Record<string, unknown>>[];
+  readonly history: readonly Readonly<Record<string, unknown>>[];
+}
+export const fetchKnowledgeEntities = async () =>
+  (
+    await request<ApiEnvelope<{ items: KnowledgeEntitySummary[]; nextCursor?: string }>>(
+      `/v1/workspaces/${workspaceId}/entities`
+    )
+  ).data;
+export const fetchKnowledgeEntity = async (entityId: string) =>
+  (await request<ApiEnvelope<KnowledgeEntityProfile>>(`/v1/entities/${entityId}`)).data;
+export const createKnowledgeEntity = async (input: Readonly<Record<string, unknown>>) =>
+  (
+    await mutate<ApiEnvelope<KnowledgeEntityProfile>>(
+      `/v1/workspaces/${workspaceId}/entities`,
+      "POST",
+      input
+    )
+  ).data;
+export const traverseKnowledgeEntity = async (entityId: string, proof: string) =>
+  (
+    await request<
+      ApiEnvelope<{ items: KnowledgeEntitySummary[]; truncated: boolean; elapsedMs: number }>
+    >(
+      `/v1/entities/${entityId}/relations?depth=2&limit=50&authorizationProof=${encodeURIComponent(proof)}`
+    )
+  ).data;
+export const exportKnowledgeEntity = async (entityId: string, proof: string) =>
+  (
+    await mutate<ApiEnvelope<Record<string, unknown>>>(`/v1/entities/${entityId}/exports`, "POST", {
+      authorizationProof: proof
+    })
+  ).data;
+export const fetchKnowledgeAdministration = async () =>
+  (
+    await request<
+      ApiEnvelope<{
+        sources: readonly Readonly<Record<string, unknown>>[];
+        conflicts: readonly Readonly<Record<string, unknown>>[];
+      }>
+    >(`/v1/workspaces/${workspaceId}/knowledge-admin`)
+  ).data;
+export const requestKnowledgeReindex = async () =>
+  (
+    await mutate<ApiEnvelope<Record<string, unknown>>>(
+      `/v1/workspaces/${workspaceId}/knowledge-reindexes`,
+      "POST",
+      {
+        mode: "full",
+        parserVersion: "safe-document-v1",
+        chunkerVersion: "deterministic-v1",
+        embedderVersion: "fixture-embedding-v1"
+      }
+    )
+  ).data;

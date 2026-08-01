@@ -1122,6 +1122,13 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "post-v1-entities-by-entity-id-exports",
+      "method": "POST",
+      "path": "/v1/entities/:entityId/exports",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "post-v1-entities-by-entity-id-merges",
       "method": "POST",
       "path": "/v1/entities/:entityId/merges",
@@ -1131,6 +1138,13 @@
       "exposure": "browser_internal",
       "id": "get-v1-entities-by-entity-id-relations",
       "method": "GET",
+      "path": "/v1/entities/:entityId/relations",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-entities-by-entity-id-relations",
+      "method": "POST",
       "path": "/v1/entities/:entityId/relations",
       "sourceSection": "10.8"
     },
@@ -1349,6 +1363,13 @@
       "id": "post-v1-knowledge-sources-by-source-id-acl-projections",
       "method": "POST",
       "path": "/v1/knowledge-sources/:sourceId/acl-projections",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "delete-v1-knowledge-types-by-type-id",
+      "method": "DELETE",
+      "path": "/v1/knowledge-types/:typeId",
       "sourceSection": "10.8"
     },
     {
@@ -2760,6 +2781,13 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-entities",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/entities",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "get-v1-workspaces-by-workspace-id-eval-datasets",
       "method": "GET",
       "path": "/v1/workspaces/:workspaceId/eval-datasets",
@@ -2837,9 +2865,30 @@
     },
     {
       "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-knowledge-admin",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/knowledge-admin",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
       "id": "post-v1-workspaces-by-workspace-id-knowledge-reindexes",
       "method": "POST",
       "path": "/v1/workspaces/:workspaceId/knowledge-reindexes",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "get-v1-workspaces-by-workspace-id-knowledge-types",
+      "method": "GET",
+      "path": "/v1/workspaces/:workspaceId/knowledge-types",
+      "sourceSection": "10.8"
+    },
+    {
+      "exposure": "browser_internal",
+      "id": "post-v1-workspaces-by-workspace-id-knowledge-types",
+      "method": "POST",
+      "path": "/v1/workspaces/:workspaceId/knowledge-types",
       "sourceSection": "10.8"
     },
     {
@@ -3271,6 +3320,6 @@
     }
   ],
   "generatedFrom": "docs/implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md",
-  "planDigest": "sha256:f8304c7ecc729a1eba2503e75a16d150c68400c6008a46bbc6466139fee876b9",
+  "planDigest": "sha256:9d10915ebb7cd752c33e6643d21c615f1265ced56f7bf15d4d02d6289ddbdff4",
   "schemaVersion": 1
 }

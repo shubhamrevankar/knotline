@@ -123,6 +123,18 @@ const KnowledgeSearchPage = lazy(async () => {
   const module = await import("./M20Pages.js");
   return { default: module.KnowledgeSearchPage };
 });
+const KnowledgeOverviewPage = lazy(async () => {
+  const module = await import("./M21Pages.js");
+  return { default: module.KnowledgeOverviewPage };
+});
+const KnowledgeEntitiesPage = lazy(async () => {
+  const module = await import("./M21Pages.js");
+  return { default: module.KnowledgeEntitiesPage };
+});
+const KnowledgeEntityPage = lazy(async () => {
+  const module = await import("./M21Pages.js");
+  return { default: module.KnowledgeEntityPage };
+});
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -589,6 +601,30 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
       <AuthGate>
         <Suspense fallback={<Skeleton label={msg("retrieval.loading")} />}>
           <KnowledgeSearchPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.knowledge")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("graph.loading")} />}>
+          <KnowledgeOverviewPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.knowledge.entities")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("graph.loading")} />}>
+          <KnowledgeEntitiesPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.knowledge.entities.detail")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label={msg("graph.loading")} />}>
+          <KnowledgeEntityPage />
         </Suspense>
       </AuthGate>
     );

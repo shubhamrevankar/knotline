@@ -1157,6 +1157,97 @@
       "retentionDays": 2555,
       "exportHandler": "knowledge-export",
       "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "knowledge_type_versions",
+      "class": "knowledge.type_version",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "knowledge_entities",
+      "class": "knowledge.entity",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "knowledge-delete"
+    },
+    {
+      "name": "knowledge_entity_aliases",
+      "class": "knowledge.entity_alias",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "knowledge-delete"
+    },
+    {
+      "name": "knowledge_entity_facts",
+      "class": "knowledge.entity_fact",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "knowledge-delete"
+    },
+    {
+      "name": "knowledge_fact_evidence",
+      "class": "knowledge.fact_evidence",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "knowledge-delete"
+    },
+    {
+      "name": "knowledge_relations",
+      "class": "knowledge.relation",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "knowledge-delete"
+    },
+    {
+      "name": "knowledge_relation_evidence",
+      "class": "knowledge.relation_evidence",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "knowledge-delete"
+    },
+    {
+      "name": "knowledge_entity_merge_candidates",
+      "class": "knowledge.merge_candidate",
+      "retentionDays": 730,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "knowledge_entity_fact_conflicts",
+      "class": "knowledge.fact_conflict",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "knowledge-delete"
+    },
+    {
+      "name": "knowledge_entity_changes",
+      "class": "knowledge.entity_change",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "governed-delete"
+    },
+    {
+      "name": "knowledge_provenance_packets",
+      "class": "knowledge.provenance_packet",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "knowledge_graph_query_receipts",
+      "class": "knowledge.graph_query",
+      "retentionDays": 365,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "retention-delete"
+    },
+    {
+      "name": "knowledge_admin_actions",
+      "class": "knowledge.admin_action",
+      "retentionDays": 2555,
+      "exportHandler": "knowledge-export",
+      "deleteHandler": "governed-delete"
     }
   ],
   "indexes": [
@@ -1437,7 +1528,31 @@
     "knowledge_embedding_usage_pkey",
     "knowledge_reindex_jobs_pkey",
     "knowledge_permission_invalidations_pkey",
-    "knowledge_citation_accesses_pkey"
+    "knowledge_citation_accesses_pkey",
+    "knowledge_type_versions_pkey",
+    "knowledge_type_versions_workspace_id_type_key_kind_version_key",
+    "knowledge_type_versions_active_idx",
+    "knowledge_entities_pkey",
+    "knowledge_entities_list_idx",
+    "knowledge_entity_aliases_pkey",
+    "knowledge_entity_aliases_provider_idx",
+    "knowledge_entity_aliases_lookup_idx",
+    "knowledge_entity_facts_pkey",
+    "knowledge_entity_facts_profile_idx",
+    "knowledge_fact_evidence_pkey",
+    "knowledge_fact_evidence_fact_idx",
+    "knowledge_relations_pkey",
+    "knowledge_relations_traverse_source_idx",
+    "knowledge_relations_traverse_target_idx",
+    "knowledge_relation_evidence_pkey",
+    "knowledge_entity_merge_candidates_pkey",
+    "knowledge_entity_merge_candidates_workspace_id_left_entity_id_right_entity_id_resolver_version_key",
+    "knowledge_entity_fact_conflicts_pkey",
+    "knowledge_entity_changes_pkey",
+    "knowledge_entity_changes_workspace_id_entity_id_revision_key",
+    "knowledge_provenance_packets_pkey",
+    "knowledge_graph_query_receipts_pkey",
+    "knowledge_admin_actions_pkey"
   ],
   "caches": []
 }

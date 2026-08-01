@@ -8,6 +8,7 @@ export * from "./agent-execution.js";
 export * from "./agent-evaluation.js";
 export * from "./file.js";
 export * from "./retrieval.js";
+export * from "./knowledge-graph.js";
 export * from "./approval.js";
 export * from "./agent.js";
 export * from "./evidence.js";

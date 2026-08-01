@@ -2626,11 +2626,18 @@ POST   /v1/knowledge-sources/:sourceId/acl-projections
 POST   /v1/workspaces/:workspaceId/knowledge-reindexes
 
 GET    /v1/workspaces/:workspaceId/entities
+POST   /v1/workspaces/:workspaceId/entities
 GET    /v1/entities/:entityId
 PATCH  /v1/entities/:entityId
 GET    /v1/entities/:entityId/relations
+POST   /v1/entities/:entityId/relations
 POST   /v1/entities/:entityId/merges
 POST   /v1/entities/:entityId/splits
+POST   /v1/entities/:entityId/exports
+GET    /v1/workspaces/:workspaceId/knowledge-admin
+GET    /v1/workspaces/:workspaceId/knowledge-types
+POST   /v1/workspaces/:workspaceId/knowledge-types
+DELETE /v1/knowledge-types/:typeId
 ```
 
 Connector authorization start is a server-generated contract, not a generic
@@ -6929,7 +6936,7 @@ citations.
 
 ### M21 — Entity graph, provenance explorer, and knowledge administration
 
-**Status:** `NOT_STARTED`\
+**Status:** `COMMITTED`\
 **Depends on:** M20\
 **Required commit:** `feat: add the provenance-backed knowledge graph`
 
@@ -9253,7 +9260,7 @@ must appear in that milestone's boundary cell.
 | M18 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic evaluation, encrypted fixtures, release gates, canary, and rollback verified locally; EXT-004 `BLOCKED_EXTERNAL` for live provider suites | `feat: add agent evaluations and controlled releases` |
 | M19 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic upload, scanner-attested quarantine, processing, preview, download, replacement, and deletion verified locally; EXT-002 `BLOCKED_EXTERNAL` for deployed object storage and scanner | `feat: add secure file ingestion and document processing` |
 | M20 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic hybrid retrieval, exact citations, signed five-minute ACL proofs, local revocation, and generation fencing verified; EXT-004 `BLOCKED_EXTERNAL` for live embedding provider evidence | `feat: deliver permission-aware hybrid retrieval` |
-| M21 | `NOT_STARTED` | `NOT_DEPLOYED` | `NOT_APPLICABLE` | `feat: add the provenance-backed knowledge graph` |
+| M21 | `COMMITTED` | `NOT_DEPLOYED` | Deterministic entity resolution, ACL-intersected provenance, bounded graph traversal, merge/split, conflicts, export, and knowledge administration verified locally | `feat: add the provenance-backed knowledge graph` |
 | M22 | `NOT_STARTED` | `NOT_DEPLOYED` | Base framework `SIMULATED`; optional provider branches retain EXT-007, EXT-008, EXT-009, EXT-010, EXT-011, EXT-012, EXT-013, EXT-014, EXT-015, EXT-025 individually | `feat: establish the secure connector platform` |
 | M23 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-007, EXT-009 | `feat: connect Google Notion and Confluence knowledge` |
 | M24 | `NOT_STARTED` | `NOT_DEPLOYED` | EXT-008, EXT-010, EXT-011, EXT-012, EXT-014 | `feat: connect Linear Jira GitHub and collaboration systems` |

@@ -148,6 +148,16 @@
       "tenantIsolated": true,
       "api": true
     },
+    "knowledgeGraph": {
+      "deterministicProviderIdentity": true,
+      "temporalConflictsVisible": true,
+      "provenanceRequired": true,
+      "aclIntersection": true,
+      "boundedTraversal": true,
+      "authorizedExport": true,
+      "tenantIsolated": true,
+      "api": true
+    },
     "auditEvents": 7
   }
 }

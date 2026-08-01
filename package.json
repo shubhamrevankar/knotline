@@ -31,6 +31,7 @@
     "test:evals": "pnpm --filter @knotline/agent-evaluation test",
     "test:files": "pnpm --filter @knotline/document-processing test",
     "test:retrieval": "pnpm --filter @knotline/retrieval test && tsx tooling/retrieval/search-1m-profile.ts && pnpm test:api",
+    "test:graph": "pnpm --filter @knotline/knowledge-graph test && pnpm test:api",
     "pretest:e2e": "pnpm build:packages",
     "test:integration": "bash tooling/containers/test-services.sh",
     "test:auth": "tsx tooling/auth/postgres-suite.ts",

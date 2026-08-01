@@ -1956,6 +1956,186 @@ const FILE_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
       403: apiErrorSchema,
       409: apiErrorSchema
     }
+  },
+  {
+    method: "GET",
+    path: "/v1/workspaces/{workspaceId}/entities",
+    operationId: "listKnowledgeEntities",
+    summary: "List authorized canonical entities",
+    tags: ["Knowledge graph"],
+    exposure: "browser_internal",
+    responses: { 200: apiEnvelope(genericDataSchema), 401: apiErrorSchema, 403: apiErrorSchema }
+  },
+  {
+    method: "POST",
+    path: "/v1/workspaces/{workspaceId}/entities",
+    operationId: "createKnowledgeEntity",
+    summary: "Resolve or create a provenance-backed entity",
+    tags: ["Knowledge graph"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/entities/{entityId}",
+    operationId: "getKnowledgeEntity",
+    summary: "Read an authorized entity profile",
+    tags: ["Knowledge graph"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema
+    }
+  },
+  {
+    method: "PATCH",
+    path: "/v1/entities/{entityId}",
+    operationId: "updateKnowledgeEntity",
+    summary: "Version entity facts and aliases",
+    tags: ["Knowledge graph"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/entities/{entityId}/relations",
+    operationId: "traverseKnowledgeEntity",
+    summary: "Traverse an ACL-safe bounded entity neighborhood",
+    tags: ["Knowledge graph"],
+    exposure: "browser_internal",
+    responses: {
+      200: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/entities/{entityId}/relations",
+    operationId: "createKnowledgeRelation",
+    summary: "Create a provenance-backed relationship",
+    tags: ["Knowledge graph"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/entities/{entityId}/merges",
+    operationId: "mergeKnowledgeEntity",
+    summary: "Manually merge a reviewed entity",
+    tags: ["Knowledge graph"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/entities/{entityId}/splits",
+    operationId: "splitKnowledgeEntity",
+    summary: "Split selected facts and aliases into a new entity",
+    tags: ["Knowledge graph"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  },
+  {
+    method: "POST",
+    path: "/v1/entities/{entityId}/exports",
+    operationId: "exportKnowledgeEntity",
+    summary: "Export an authorized provenance packet",
+    tags: ["Knowledge graph"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema
+    }
+  },
+  {
+    method: "GET",
+    path: "/v1/workspaces/{workspaceId}/knowledge-admin",
+    operationId: "getKnowledgeAdministration",
+    summary: "Inspect source freshness, conflicts, and index health",
+    tags: ["Knowledge graph"],
+    exposure: "browser_internal",
+    responses: { 200: apiEnvelope(genericDataSchema), 401: apiErrorSchema, 403: apiErrorSchema }
+  },
+  {
+    method: "GET",
+    path: "/v1/workspaces/{workspaceId}/knowledge-types",
+    operationId: "listKnowledgeTypes",
+    summary: "List versioned entity and relation types",
+    tags: ["Knowledge graph"],
+    exposure: "browser_internal",
+    responses: { 200: apiEnvelope(genericDataSchema), 401: apiErrorSchema, 403: apiErrorSchema }
+  },
+  {
+    method: "POST",
+    path: "/v1/workspaces/{workspaceId}/knowledge-types",
+    operationId: "publishKnowledgeType",
+    summary: "Publish a validated knowledge type version",
+    tags: ["Knowledge graph"],
+    exposure: "browser_internal",
+    requestBody: genericDataSchema,
+    responses: {
+      201: apiEnvelope(genericDataSchema),
+      400: apiErrorSchema,
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      409: apiErrorSchema
+    }
+  },
+  {
+    method: "DELETE",
+    path: "/v1/knowledge-types/{typeId}",
+    operationId: "retireKnowledgeType",
+    summary: "Retire an unused knowledge type",
+    tags: ["Knowledge graph"],
+    exposure: "browser_internal",
+    responses: {
+      204: z.undefined(),
+      401: apiErrorSchema,
+      403: apiErrorSchema,
+      404: apiErrorSchema,
+      409: apiErrorSchema
+    }
   }
 ];
 

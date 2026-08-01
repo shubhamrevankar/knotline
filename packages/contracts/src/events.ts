@@ -227,6 +227,20 @@ export const knowledgeRetrievalEventPayloadV1Schema = z
   })
   .passthrough();
 
+export const knowledgeGraphEventPayloadV1Schema = z
+  .object({
+    workspaceId: z.uuid(),
+    entityId: z.uuid().optional(),
+    relationId: z.uuid().optional(),
+    sourceEntityId: z.uuid().optional(),
+    targetEntityId: z.uuid().optional(),
+    revision: z.number().int().positive().optional(),
+    factKind: z.enum(["provider", "user", "inferred", "suggestion"]).optional(),
+    provenancePacketId: z.uuid().optional(),
+    reason: z.string().optional()
+  })
+  .passthrough();
+
 export const EVENT_SCHEMA_REGISTRY = [
   {
     eventType: "workflow.created",
@@ -470,6 +484,23 @@ export const EVENT_SCHEMA_REGISTRY = [
     eventVersion: 1,
     owner: "knowledge-platform",
     schema: knowledgeRetrievalEventPayloadV1Schema
+  })),
+  ...[
+    "knowledge.entity_created",
+    "knowledge.entity_changed",
+    "knowledge.entity_merge_proposed",
+    "knowledge.entity_merged",
+    "knowledge.entity_split",
+    "knowledge.fact_conflict_detected",
+    "knowledge.relation_created",
+    "knowledge.type_version_published",
+    "knowledge.provenance_exported",
+    "knowledge.admin_repair_requested"
+  ].map((eventType) => ({
+    eventType,
+    eventVersion: 1,
+    owner: "knowledge-graph",
+    schema: knowledgeGraphEventPayloadV1Schema
   }))
 ] as const;
 

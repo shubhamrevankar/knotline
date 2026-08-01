@@ -26,6 +26,7 @@
     "@knotline/contracts": "workspace:*",
     "@knotline/operations": "workspace:*",
     "@knotline/retrieval": "workspace:*",
+    "@knotline/knowledge-graph": "workspace:*",
     "drizzle-orm": "0.45.2",
     "pg": "8.16.3",
     "zod": "4.1.12"

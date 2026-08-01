@@ -25,6 +25,7 @@ import {
   PostgresEvaluationRepository,
   PostgresFileRepository,
   PostgresRetrievalRepository,
+  PostgresKnowledgeGraphRepository,
   PostgresVersionedWorkflowRepository,
   PostgresWorkflowGenerationRepository,
   PostgresWorkflowRepository,
@@ -203,6 +204,7 @@ async function runSuite(pool: DatabasePool) {
     pool,
     createHash("sha256").update("m20-authorization-proofs").digest()
   );
+  const knowledgeGraphRepository = new PostgresKnowledgeGraphRepository(pool);
   const contextA = { workspaceId: SEED.workspaceA, principalId: SEED.userA, requestId: "m06-a" };
   const contextB = { workspaceId: SEED.workspaceB, principalId: SEED.userB, requestId: "m06-b" };
   const workflowId = await repository.import(contextA, definition());
@@ -909,6 +911,130 @@ async function runSuite(pool: DatabasePool) {
     fencedReindex.generationId !== fencedReindex.servingGeneration,
     "A building reindex replaced the active serving generation"
   );
+  const graphActionId = randomUUID();
+  const graphEvidence = {
+    actionId: graphActionId,
+    contentHash: `sha256:${"9".repeat(64)}`,
+    aclEpoch: 3,
+    principalIds: [contextA.principalId],
+    groupIds: []
+  };
+  const projectEntity = await knowledgeGraphRepository.create(contextA, {
+    type: "project",
+    canonicalName: "Launch readiness",
+    provider: "fixture",
+    providerId: "project-42",
+    aliases: ["GA readiness"],
+    facts: [
+      {
+        key: "target_date",
+        value: "2026-09-01",
+        kind: "provider",
+        confidence: 0.96,
+        validFrom: "2026-08-01T00:00:00.000Z",
+        evidence: [graphEvidence]
+      }
+    ]
+  });
+  const sameProviderEntity = await knowledgeGraphRepository.create(contextA, {
+    type: "project",
+    canonicalName: "Renamed project",
+    provider: "fixture",
+    providerId: "project-42",
+    aliases: [],
+    facts: []
+  });
+  assert(
+    projectEntity.id === sameProviderEntity.id,
+    "Provider identity did not resolve deterministically"
+  );
+  const projectTypeV2 = await knowledgeGraphRepository.publishType(contextA, {
+    key: "project",
+    kind: "entity",
+    version: 2,
+    displayName: "Project",
+    schema: { type: "object", properties: { portfolio: { type: "string" } } },
+    migration: { strategy: "additive", defaultPortfolio: "unassigned" }
+  });
+  let inUseTypeDeletionDenied = false;
+  try {
+    await knowledgeGraphRepository.deleteType(contextA, String(projectTypeV2.id));
+  } catch {
+    inUseTypeDeletionDenied = true;
+  }
+  assert(inUseTypeDeletionDenied, "An in-use entity type was retired");
+  const decisionEntity = await knowledgeGraphRepository.create(contextA, {
+    type: "decision",
+    canonicalName: "Approve launch",
+    aliases: [],
+    facts: []
+  });
+  await knowledgeGraphRepository.addRelation(contextA, String(projectEntity.id), {
+    targetId: decisionEntity.id,
+    type: "informed_by",
+    direction: "outbound",
+    confidence: 1,
+    validFrom: "2026-08-01T00:00:00.000Z",
+    kind: "user",
+    evidence: [graphEvidence]
+  });
+  const updatedGraphEntity = await knowledgeGraphRepository.patch(
+    contextA,
+    String(projectEntity.id),
+    {
+      revision: 1,
+      fact: {
+        key: "target_date",
+        value: "2026-09-15",
+        kind: "user",
+        confidence: 1,
+        validFrom: "2026-08-01T01:00:00.000Z",
+        evidence: [graphEvidence]
+      }
+    }
+  );
+  assert(
+    (updatedGraphEntity.conflicts as unknown[]).length === 1,
+    "Competing temporal facts were silently collapsed"
+  );
+  const graphTraversal = await knowledgeGraphRepository.relations(
+    contextA,
+    String(projectEntity.id),
+    { depth: 2, limit: 50, authorizationProof: retrievalProofForApi.proof }
+  );
+  assert(
+    (graphTraversal.items as unknown[]).length === 2,
+    "Authorized bounded traversal lost a related entity"
+  );
+  const graphPacket = await knowledgeGraphRepository.export(
+    contextA,
+    String(projectEntity.id),
+    retrievalProofForApi.proof
+  );
+  assert(Boolean(graphPacket.entity), "Provenance export omitted the authorized entity profile");
+  const mergeSource = await knowledgeGraphRepository.create(contextA, {
+    type: "decision",
+    canonicalName: "Launch approval duplicate",
+    aliases: ["Go live approval"],
+    facts: []
+  });
+  const merged = await knowledgeGraphRepository.merge(contextA, String(mergeSource.id), {
+    targetEntityId: decisionEntity.id,
+    reason: "Reviewed duplicate fixture"
+  });
+  assert(merged.state === "merged", "Reviewed manual merge did not preserve lineage");
+  const facts = updatedGraphEntity.facts as readonly { id: string }[];
+  const split = await knowledgeGraphRepository.split(contextA, String(projectEntity.id), {
+    factIds: [facts[0]!.id],
+    aliasIds: [],
+    canonicalName: "Launch readiness historical target",
+    reason: "False-match fixture repair"
+  });
+  assert(split.entityId !== projectEntity.id, "Manual split did not create a distinct entity");
+  assert(
+    (await knowledgeGraphRepository.get(contextB, String(projectEntity.id))) === undefined,
+    "Graph entity crossed tenant RLS"
+  );
   const quarantineUpload = await fileRepository.createUpload(contextA, {
     filename: "active.svg",
     purpose: "knowledge_source",
@@ -1574,6 +1700,7 @@ async function runSuite(pool: DatabasePool) {
     evaluations: evaluationRepository,
     files: fileRepository,
     retrieval: retrievalRepository,
+    knowledgeGraph: knowledgeGraphRepository,
     runStarter: {
       start: () => Promise.resolve(),
       signal: () => Promise.resolve(),
@@ -1978,6 +2105,16 @@ async function runSuite(pool: DatabasePool) {
       staleProofFailClosed: true,
       promptInjectionUntrusted: true,
       dualGenerationFence: true,
+      tenantIsolated: true,
+      api: true
+    },
+    knowledgeGraph: {
+      deterministicProviderIdentity: true,
+      temporalConflictsVisible: true,
+      provenanceRequired: true,
+      aclIntersection: true,
+      boundedTraversal: true,
+      authorizedExport: true,
       tenantIsolated: true,
       api: true
     },

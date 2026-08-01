@@ -39,6 +39,7 @@ import type {
   EvaluationRepository,
   FileRepository,
   RetrievalRepository,
+  KnowledgeGraphRepository,
   ToolRepository,
   TaskAdministrationRepository,
   RuntimeRepository,
@@ -92,6 +93,7 @@ export interface BuildAppOptions {
   readonly evaluations?: EvaluationRepository;
   readonly files?: FileRepository;
   readonly retrieval?: RetrievalRepository;
+  readonly knowledgeGraph?: KnowledgeGraphRepository;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -2494,6 +2496,10 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     if (!options.retrieval) throw new Error("Retrieval is not configured");
     return options.retrieval;
   };
+  const knowledgeGraphRepository = () => {
+    if (!options.knowledgeGraph) throw new Error("Knowledge graph is not configured");
+    return options.knowledgeGraph;
+  };
   const fileParams = z.object({ fileId: z.string().uuid() }).strict();
   const fileUploadParams = z.object({ uploadId: z.string().uuid() }).strict();
   app.get("/v1/workspaces/:workspaceId/files", async (request) => {
@@ -2683,6 +2689,106 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       data: await retrievalRepository().reindex(await agentAccess(request, true), request.body)
     });
   });
+  const entityParams = z.object({ entityId: z.string().uuid() }).strict();
+  app.get("/v1/workspaces/:workspaceId/entities", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return {
+      data: await knowledgeGraphRepository().list(await agentAccess(request), request.query)
+    };
+  });
+  app.post("/v1/workspaces/:workspaceId/entities", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await knowledgeGraphRepository().create(await agentAccess(request, true), request.body)
+    });
+  });
+  app.get("/v1/entities/:entityId", async (request, reply) => {
+    const { entityId } = entityParams.parse(request.params);
+    const data = await knowledgeGraphRepository().get(await agentAccess(request), entityId);
+    return data
+      ? { data }
+      : reply.code(404).send({
+          error: {
+            code: "ENTITY_NOT_FOUND",
+            message: "The entity does not exist.",
+            requestId: request.id
+          }
+        });
+  });
+  app.patch("/v1/entities/:entityId", async (request) => {
+    const { entityId } = entityParams.parse(request.params);
+    return {
+      data: await knowledgeGraphRepository().patch(
+        await agentAccess(request, true),
+        entityId,
+        request.body
+      )
+    };
+  });
+  app.get("/v1/entities/:entityId/relations", async (request) => {
+    const { entityId } = entityParams.parse(request.params);
+    return {
+      data: await knowledgeGraphRepository().relations(
+        await agentAccess(request),
+        entityId,
+        request.query
+      )
+    };
+  });
+  app.post("/v1/entities/:entityId/relations", async (request, reply) => {
+    const { entityId } = entityParams.parse(request.params);
+    return reply.code(201).send({
+      data: await knowledgeGraphRepository().addRelation(
+        await agentAccess(request, true),
+        entityId,
+        request.body
+      )
+    });
+  });
+  app.post("/v1/entities/:entityId/merges", async (request, reply) => {
+    const { entityId } = entityParams.parse(request.params);
+    return reply.code(201).send({
+      data: await knowledgeGraphRepository().merge(
+        await agentAccess(request, true),
+        entityId,
+        request.body
+      )
+    });
+  });
+  app.post("/v1/entities/:entityId/splits", async (request, reply) => {
+    const { entityId } = entityParams.parse(request.params);
+    return reply.code(201).send({
+      data: await knowledgeGraphRepository().split(
+        await agentAccess(request, true),
+        entityId,
+        request.body
+      )
+    });
+  });
+  app.post("/v1/entities/:entityId/exports", async (request, reply) => {
+    const { entityId } = entityParams.parse(request.params);
+    const body = z
+      .object({ authorizationProof: z.string().min(16) })
+      .strict()
+      .parse(request.body);
+    return reply.code(201).send({
+      data: await knowledgeGraphRepository().export(
+        await agentAccess(request, true),
+        entityId,
+        body.authorizationProof
+      )
+    });
+  });
+  app.get("/v1/workspaces/:workspaceId/knowledge-admin", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await knowledgeGraphRepository().admin(await agentAccess(request, true)) };
+  });
   app.delete("/v1/documents/:documentId", async (request) => {
     const { documentId } = z
       .object({ documentId: z.string().uuid() })
@@ -2701,6 +2807,28 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
         retrieval
       }
     };
+  });
+  app.get("/v1/workspaces/:workspaceId/knowledge-types", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return { data: await knowledgeGraphRepository().listTypes(await agentAccess(request, true)) };
+  });
+  app.post("/v1/workspaces/:workspaceId/knowledge-types", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    return reply.code(201).send({
+      data: await knowledgeGraphRepository().publishType(
+        await agentAccess(request, true),
+        request.body
+      )
+    });
+  });
+  app.delete("/v1/knowledge-types/:typeId", async (request, reply) => {
+    const { typeId } = z.object({ typeId: z.string().uuid() }).strict().parse(request.params);
+    await knowledgeGraphRepository().deleteType(await agentAccess(request, true), typeId);
+    return reply.code(204).send();
   });
   app.get("/v1/files/:fileId/preview", async (request) => {
     const { fileId } = fileParams.parse(request.params);

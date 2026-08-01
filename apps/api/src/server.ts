@@ -17,6 +17,7 @@ import {
   PostgresEvaluationRepository,
   PostgresFileRepository,
   PostgresRetrievalRepository,
+  PostgresKnowledgeGraphRepository,
   createPool,
   migrate,
   PostgresWorkflowRepository,
@@ -98,6 +99,7 @@ const authorizationProofKey = process.env.AUTHORIZATION_PROOF_SIGNING_KEY
   ? Buffer.from(process.env.AUTHORIZATION_PROOF_SIGNING_KEY, "base64")
   : createHash("sha256").update("knotline-local-authorization-proofs").digest();
 const retrieval = new PostgresRetrievalRepository(pool, authorizationProofKey);
+const knowledgeGraph = new PostgresKnowledgeGraphRepository(pool);
 const temporalConnection = await Connection.connect({
   address: process.env.TEMPORAL_ADDRESS ?? "127.0.0.1:7233"
 });
@@ -235,6 +237,7 @@ const app = await buildApp({
   evaluations,
   files,
   retrieval,
+  knowledgeGraph,
   runStarter,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),
