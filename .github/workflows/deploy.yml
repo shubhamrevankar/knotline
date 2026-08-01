@@ -1,0 +1,39 @@
+name: Deploy pinned artifact
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Protected target environment
+        required: true
+        type: choice
+        options: [staging, production]
+      artifact_digest:
+        description: Signed sha256 image digest produced by CI
+        required: true
+        type: string
+permissions:
+  contents: read
+  id-token: write
+  attestations: read
+concurrency:
+  group: deploy-${{ inputs.environment }}
+  cancel-in-progress: false
+jobs:
+  admit:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate digest shape
+        env:
+          ARTIFACT_DIGEST: ${{ inputs.artifact_digest }}
+        run: test "${ARTIFACT_DIGEST#sha256:}" != "$ARTIFACT_DIGEST" && test "${#ARTIFACT_DIGEST}" -eq 71
+      - name: Configure AWS through OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_PRIMARY_REGION }}
+      - name: Plan exact reviewed modules
+        run: terraform -chdir=infra/terraform/environments/${{ inputs.environment }} init -input=false && terraform -chdir=infra/terraform/environments/${{ inputs.environment }} plan -input=false -var="artifact_digest=${{ inputs.artifact_digest }}" -out=deployment.plan
+      - name: Admission checkpoint
+        run: echo "Apply requires protected-environment approval and the signed deployment record."

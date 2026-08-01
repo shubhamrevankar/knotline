@@ -188,6 +188,7 @@ const FeatureAccessPage = lazy(async () => ({
 const SecurityAssurancePage = lazy(async () => ({
   default: (await import("./M35Pages.js")).SecurityAssurancePage
 }));
+const ReleasesPage = lazy(async () => ({ default: (await import("./M37Pages.js")).ReleasesPage }));
 
 const solutionNames: Readonly<Record<string, string>> = {
   operations: msg("solution.operations"),
@@ -888,6 +889,12 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
 
 function OperatorRoute({ route }: { route: WebRouteManifestEntry }) {
   useMetadata(msg("operator.surface"), true);
+  if (route.id === "route.ops.releases")
+    return (
+      <Suspense fallback={<Skeleton label="Loading releases" />}>
+        <ReleasesPage />
+      </Suspense>
+    );
   if (route.id === "route.ops.security")
     return (
       <Suspense fallback={<Skeleton label="Loading security assurance" />}>

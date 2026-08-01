@@ -1,0 +1,335 @@
+{
+  "activeGateRows": [
+    "format",
+    "lint",
+    "strict type",
+    "unit coverage",
+    "build",
+    "brand/provenance guard",
+    "package boundaries",
+    "license",
+    "dependency",
+    "secret",
+    "evidence",
+    "docs validation",
+    "browser e2e",
+    "automated accessibility",
+    "responsive/visual regression",
+    "bundle and web vitals smoke",
+    "real postgresql integration",
+    "migration",
+    "rls/tenant isolation",
+    "query plan",
+    "backup smoke",
+    "auth/session/csrf/cors/abuse security suite",
+    "workflow schema/property",
+    "api/openapi",
+    "event compatibility",
+    "temporal replay/restart/concurrency/idempotency",
+    "outbox/dlq",
+    "runtime load-lite",
+    "kill/repair smoke",
+    "restricted task/comment attachment upload",
+    "checksum/quota",
+    "quarantine/malware",
+    "authorization",
+    "download",
+    "and lifecycle gate",
+    "model contract/live-sandbox gate",
+    "structured output",
+    "evaluation smoke",
+    "ai usage/cost and kill switch",
+    "tool/credential/ssrf/sandbox security",
+    "full agent evaluation",
+    "release/canary/rollback",
+    "file malware/parser/object lifecycle",
+    "retrieval quality/acl/citation/performance",
+    "connector contract/oauth/webhook/sync fixture suites",
+    "each named provider’s real sandbox certification row",
+    "notification delivery/render/access-recheck",
+    "billing/entitlement/ledger/stripe sandbox",
+    "privacy/export/delete/retention/hold/restore-deletion",
+    "sso/scim/policy/residency/migration",
+    "complete browser/device/locale/pwa/guest/support/manual at matrix",
+    "aws staging terraform/fresh deploy/canary/rollback plus workforce operator identity",
+    "trace/redaction/sli/alert/runbook/kill/game-day",
+    "sast/dast/iac/container/sbom/signature/penetration evidence",
+    "section 4.2 full load/soak/chaos/backup/restore/dr profiles",
+    "terraform",
+    "fresh bootstrap",
+    "deployment",
+    "canary",
+    "rollback"
+  ],
+  "declaredEnvironmentState": "NOT_DEPLOYED",
+  "deployments": [],
+  "environmentGates": [
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.canary-bad-build-injection-triggers-health-gate-rollback",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:bffcf5b144ad8dd0bcc5dc0f779673c13e6aab501d174cc2b54eeb72fc559528"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.cost-ttl-guard-and-safe-teardown-for-preview",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:f57dbbbf23cd67db0290d79365af6d387afb9c80c1f006460a88e9be71fe1104"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.direct-alb-s3-origin-attempts-prove-cloudfront-waf",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:3fba339f88b4c2a799b831c3a99f341b2bf0fe08f0ada065d4730ed4b1b3adcd"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.drift-failed-migration-unhealthy-canary-expired-certificate-and",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:50e44d53a195eaa0967c1b7e4975c93fcf8b8495a360805b2c824a069d0db328"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.fresh-environment-bootstrap-and-full-application-deploy-from",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:84b786b26fe19f71a82e85a83b6c9d14bd02aa77aa527de2c0e8e70bc818489d"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.infrastructure-drift-injection-detection-review-and-repair",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:4d8590651fba69ffba4e60183a0179e160219acd15fa03332d6b65ae42586985"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.migration-against-previous-production-version-mixed-version-window",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:8a5db0be88abff98ac943ce82565ea90ace7bdb576141540d298d31efb82277b"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.production-like-staging-smoke-of-every-critical-journey",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:8ac7b3513a3bdf3062d8cc62838c6c0e9ca4f5c7c0016acbe490298a7e2c0352"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.required-environment-terminal-a-clean-production-account-region",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBulletDigest": "sha256:65b676d529075cb9419c32bc0a9bedfe26cbf198d1a7c04143c8fc316ab34461"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.required-environment-terminal-exact-and-rows-retain-domain",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBulletDigest": "sha256:de93ba5693105af7f10317458ea60462052ecf2e8261708aa2bcf62ee63e63bb"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.required-environment-terminal-exact-and-rows-retain-secret",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBulletDigest": "sha256:26a8e9b1c4f1d479ae92ae15fcc71afb9ef54a53cc762cb54d727d98e427f6cd"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.required-environment-terminal-production-uses-isolated-identities-networks",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBulletDigest": "sha256:5c36063afaa314d306ba6a35aaa00a038538293813ff015e46870285687ee164"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.required-environment-terminal-reviewed-apply-in-development-staging",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBulletDigest": "sha256:33c4b9ad80f67be7f7957a244214d9dd2a3f0d65102418ef7062572af5c1e841"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.required-environment-terminal-the-approved-temporal-production-account",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBulletDigest": "sha256:6c9260fdbd1c358e611084549e2736f5d8230444c315df134a8d1e1e53ccf975"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.required-environment-terminal-the-exact-signed-image-digest",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBulletDigest": "sha256:ebdac4c7c4714116eafb3c36cc1882959a6fed9bb6cb91eacf63f56ef986c318"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.required-environment-terminal-the-exact-tested-artifact-digest",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBulletDigest": "sha256:452b04dd4d0a092183b31a59e9c0dfda10faa4e0f4fd9b3b246d27e15b5f1c23"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.required-environment-terminal-under-exact-and-fresh-production",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "sourceBulletDigest": "sha256:8796da150026f04f4e16e5e5fad6552f804b75f55aa1dc010e9553c884b9e0b6"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.service-drain-restart-autoscale-az-failure-and-scheduled",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:ad5ae212417e7a61463000c02f7fe05a844791a679eadcd3705c45d11963b547"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.signed-image-sbom-provenance-verification-at-deployment-admission",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:54b22867d822d35ba0d1adb0dc24d95843412139c6357cbaf87fc9f9dcb1f520"
+    },
+    {
+      "actualState": "NOT_DEPLOYED",
+      "criterionId": "M37.ENV.the-deployed-mrsc-authority-has-exactly-the-approved",
+      "environmentId": null,
+      "evidenceUris": [],
+      "requiredTerminalState": "STAGING_VERIFIED",
+      "sourceBulletDigest": "sha256:e5d625dad557542c744285ee89ef889c673b0df8c8ead815b3bc964f9a1fcdfa"
+    }
+  ],
+  "evidenceUris": [
+    "repo://infra/terraform/environments/production/main.tf",
+    "repo://infra/terraform/bootstrap/main.tf",
+    "repo://.github/workflows/deploy.yml",
+    "repo://tooling/delivery/model.mjs",
+    "repo://tests/e2e/releases.spec.ts",
+    "repo://docs/operations/knotline/delivery.md"
+  ],
+  "externalGates": [
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-002",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-003",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-006",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-021",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    },
+    {
+      "accountableOwner": "shurevan",
+      "evidenceUris": [],
+      "gaRequired": true,
+      "gateId": "EXT-022",
+      "requiredTerminalState": "PRODUCTION_VERIFIED",
+      "reviewExpiresAt": null,
+      "state": "BLOCKED_EXTERNAL"
+    }
+  ],
+  "flags": [
+    {
+      "evidenceUri": "repo://docs/operations/knotline/delivery.md",
+      "id": "delivery"
+    }
+  ],
+  "knownRisks": [
+    {
+      "evidenceUri": "repo://artifacts/verification/external-gates.json",
+      "id": "m37-production-account-temporal-domain-email-and-promotion-proof",
+      "owner": "shurevan",
+      "status": "blocked-external-before-production"
+    }
+  ],
+  "manualReviews": [],
+  "migrations": [],
+  "milestone": "M37",
+  "notYetApplicable": [
+    {
+      "activationMilestone": "M38",
+      "reason": "This gate activates with M38.",
+      "row": "every gate row above and every external gate in ga scope; zero gate-row n/a/skip/quarantine. reasoned route-state not_applicable remains governed by section 5.8"
+    }
+  ],
+  "owners": [
+    "shurevan"
+  ],
+  "requirements": [],
+  "schemaVersion": 1,
+  "targetEngineeringState": "COMMITTED",
+  "testRuns": [
+    {
+      "command": "pnpm exec playwright test tests/e2e/releases.spec.ts",
+      "evidenceUri": "artifact://M37/test-results/m37-delivery-browser",
+      "id": "m37-delivery-browser"
+    },
+    {
+      "command": "node --test tooling/delivery/model.test.mjs tooling/quality/terraform-contract.test.mjs",
+      "evidenceUri": "artifact://M37/test-results/m37-delivery-contract",
+      "id": "m37-delivery-contract"
+    },
+    {
+      "command": "pnpm verify:reproducible-build",
+      "evidenceUri": "artifact://M37/test-results/m37-delivery-build",
+      "id": "m37-delivery-build"
+    },
+    {
+      "command": "pnpm verify:secrets",
+      "evidenceUri": "artifact://M37/test-results/m37-delivery-security",
+      "id": "m37-delivery-security"
+    }
+  ]
+}

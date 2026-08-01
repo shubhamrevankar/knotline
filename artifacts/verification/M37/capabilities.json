@@ -1,0 +1,24 @@
+[
+  {
+    "evidence": {
+      "environment": "local",
+      "reference": "repo://artifacts/verification/M37/test-results/m37-delivery-browser.json",
+      "verifiedAt": "2026-08-16T12:00:00.000Z"
+    },
+    "externalGates": [
+      "EXT-002",
+      "EXT-003",
+      "EXT-006",
+      "EXT-021",
+      "EXT-022"
+    ],
+    "id": "delivery.reproducible-environments-promotion-and-rollback",
+    "owner": {
+      "contact": "shurevan",
+      "team": "delivery-platform"
+    },
+    "runbook": "docs/operations/knotline/delivery.md",
+    "status": "DEMO",
+    "summary": "Pinned production infrastructure, OIDC-only protected delivery, build-once records, migration decisions, health gates and rollback UX are verified locally."
+  }
+]
