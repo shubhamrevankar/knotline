@@ -30,6 +30,8 @@ for (const service of ["api", "worker", "web", "model-gateway", "sandbox", "tool
 
 for (const [name, url] of [
   ["web", "http://localhost:5173/ready"],
+  ["web-root", "http://localhost:5173/"],
+  ["web-spa-route", "http://localhost:5173/auth/sign-in"],
   ["api-through-web", "http://localhost:5173/v1/me/bootstrap"],
   ["api", "http://localhost:4100/health/ready"]
 ]) {
