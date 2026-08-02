@@ -7,10 +7,10 @@ test("public home is accessible, responsive, and links to the lazy app", async (
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: "Move critical work forward. Keep every decision clear."
+      name: "Make complex work move like one system."
     })
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: "Enter the workspace" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "Enter the workspace" }).first()).toHaveAttribute(
     "href",
     "/auth/sign-in"
   );
@@ -20,9 +20,37 @@ test("public home is accessible, responsive, and links to the lazy app", async (
   expect(results.violations).toEqual([]);
 });
 
+test("public home explains the product journey and keeps conversion paths real", async ({
+  page
+}) => {
+  await page.goto("/");
+  await expect(
+    page.getByRole("heading", { name: "From process to outcome, without losing control." })
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Delegate the work. Keep authority explicit." })
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Give operators a live room, not another status page." })
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Trust is part of the workflow, not a promise around it." })
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "Visit the security center" })).toHaveAttribute(
+    "href",
+    "/security"
+  );
+  await expect(page.getByRole("link", { name: "See the product" })).toHaveAttribute(
+    "href",
+    "#platform"
+  );
+});
+
 test("known and unknown dynamic public routes are intentional", async ({ page }) => {
   await page.goto("/solutions/operations");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Operations");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "Turn recurring coordination into a reliable operating system."
+  );
   await page.goto("/solutions/unknown");
   await expect(page.getByRole("heading", { level: 2, name: "Page not found" })).toBeVisible();
 });
