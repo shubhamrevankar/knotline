@@ -47,7 +47,75 @@ export class PostgresAnalyticsRepository implements AnalyticsRepository {
       async (client) =>
         (
           await client.query<Record<string, unknown>>(
-            `SELECT id,resource_type "resourceType",resource_id "resourceId",display_fields "fields",updated_at "updatedAt" FROM search_documents WHERE workspace_id=$1 AND deleted_at IS NULL AND search_text @@ websearch_to_tsquery('simple',$2) ORDER BY ts_rank(search_text,websearch_to_tsquery('simple',$2)) DESC,updated_at DESC LIMIT 50`,
+            `WITH search_query AS (
+               SELECT websearch_to_tsquery('simple',$2) value
+             ), candidates AS (
+               SELECT 'index:'||id::text id,resource_type "resourceType",resource_id "resourceId",
+                      display_fields fields,updated_at "updatedAt",ts_rank(search_text,search_query.value) rank
+                 FROM search_documents,search_query
+                WHERE workspace_id=$1 AND deleted_at IS NULL AND search_text @@ search_query.value
+               UNION ALL
+               SELECT 'workflow:'||id::text,'workflow',id,
+                      jsonb_build_object('title',name,'summary',description,'state',state),updated_at,
+                      ts_rank(to_tsvector('simple',concat_ws(' ',name,description,state,id::text)),search_query.value)
+                 FROM workflows,search_query
+                WHERE workspace_id=$1 AND state<>'archived'
+                  AND to_tsvector('simple',concat_ws(' ',name,description,state,id::text)) @@ search_query.value
+               UNION ALL
+               SELECT 'run:'||run.id::text,'run',run.id,
+                      jsonb_build_object('title',workflow.name||' run','summary',initcap(replace(run.state,'_',' '))||' · Workflow v'||run.workflow_version::text,'state',run.state),run.updated_at,
+                      ts_rank(to_tsvector('simple',concat_ws(' ',workflow.name,workflow.description,run.state,run.id::text,run.temporal_workflow_id)),search_query.value)
+                 FROM workflow_runs run
+                 JOIN workflows workflow ON workflow.workspace_id=run.workspace_id AND workflow.id=run.workflow_id
+                 CROSS JOIN search_query
+                WHERE run.workspace_id=$1
+                  AND to_tsvector('simple',concat_ws(' ',workflow.name,workflow.description,run.state,run.id::text,run.temporal_workflow_id)) @@ search_query.value
+               UNION ALL
+               SELECT 'task:'||task.id::text,'task',task.id,
+                      jsonb_build_object('title',initcap(replace(task.node_key,'_',' ')),'summary',initcap(task.queue_class)||' task · '||initcap(replace(task.state,'_',' ')),'state',task.state),task.updated_at,
+                      ts_rank(to_tsvector('simple',concat_ws(' ',task.node_key,task.node_kind,task.queue_class,task.state,task.id::text)),search_query.value)
+                 FROM task_runs task,search_query
+                WHERE task.workspace_id=$1
+                  AND to_tsvector('simple',concat_ws(' ',task.node_key,task.node_kind,task.queue_class,task.state,task.id::text)) @@ search_query.value
+               UNION ALL
+               SELECT 'approval:'||approval.id::text,'approval',approval.id,
+                      jsonb_build_object('title',coalesce(approval.packet->>'title','Approval for '||initcap(replace(task.node_key,'_',' '))),'summary',initcap(replace(approval.state,'_',' '))||' · Expires '||approval.expires_at::date::text,'state',approval.state),approval.updated_at,
+                      ts_rank(to_tsvector('simple',concat_ws(' ',approval.packet->>'title',approval.packet->>'summary',task.node_key,approval.state,approval.id::text)),search_query.value)
+                 FROM approvals approval
+                 JOIN task_runs task ON task.workspace_id=approval.workspace_id AND task.id=approval.task_id
+                 CROSS JOIN search_query
+                WHERE approval.workspace_id=$1
+                  AND to_tsvector('simple',concat_ws(' ',approval.packet->>'title',approval.packet->>'summary',task.node_key,approval.state,approval.id::text)) @@ search_query.value
+               UNION ALL
+               SELECT 'agent:'||id::text,'agent',id,
+                      jsonb_build_object('title',name,'summary',description,'state',state),updated_at,
+                      ts_rank(to_tsvector('simple',concat_ws(' ',name,description,stable_key,state,id::text)),search_query.value)
+                 FROM agent_definitions,search_query
+                WHERE workspace_id=$1 AND state<>'archived'
+                  AND to_tsvector('simple',concat_ws(' ',name,description,stable_key,state,id::text)) @@ search_query.value
+               UNION ALL
+               SELECT 'connection:'||id::text,'connection',id,
+                      jsonb_build_object('title',display_name,'summary',initcap(replace(connector_key,'_',' '))||' · '||initcap(replace(state,'_',' ')),'state',state),updated_at,
+                      ts_rank(to_tsvector('simple',concat_ws(' ',display_name,connector_key,external_account_label,state,id::text)),search_query.value)
+                 FROM connections,search_query
+                WHERE workspace_id=$1 AND deleted_at IS NULL
+                  AND to_tsvector('simple',concat_ws(' ',display_name,connector_key,external_account_label,state,id::text)) @@ search_query.value
+               UNION ALL
+               SELECT 'member:'||membership.id::text,'member',membership.id,
+                      jsonb_build_object('title',users.display_name,'summary',users.email||' · '||initcap(membership.role),'state',membership.state),membership.updated_at,
+                      ts_rank(to_tsvector('simple',concat_ws(' ',users.display_name,users.email,membership.role,membership.state,membership.id::text)),search_query.value)
+                 FROM memberships membership
+                 JOIN users ON users.id=membership.user_id
+                 CROSS JOIN search_query
+                WHERE membership.workspace_id=$1 AND membership.state='active'
+                  AND to_tsvector('simple',concat_ws(' ',users.display_name,users.email,membership.role,membership.state,membership.id::text)) @@ search_query.value
+             ), ranked AS (
+               SELECT *,row_number() OVER(PARTITION BY "resourceType","resourceId" ORDER BY rank DESC,"updatedAt" DESC) ordinal
+                 FROM candidates
+             )
+             SELECT id,"resourceType","resourceId",fields,"updatedAt"
+               FROM ranked WHERE ordinal=1
+              ORDER BY rank DESC,"updatedAt" DESC LIMIT 50`,
             [context.workspaceId, query]
           )
         ).rows

@@ -140,6 +140,124 @@
   display: flex;
   gap: 0.7rem;
 }
+.search-page {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 36px 28px 5rem;
+  gap: 1.5rem;
+}
+.search-page-header {
+  max-width: 780px;
+}
+.search-page-header h1 {
+  margin: 0.65rem 0 0.35rem;
+  color: #193129;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+}
+.search-page-header p {
+  max-width: 720px;
+  color: #62716c;
+  line-height: 1.65;
+}
+.search-page .global-search {
+  max-width: 920px;
+  padding: 0.7rem;
+  border: 1px solid #d7e0da;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgb(20 35 33 / 5%);
+}
+.search-page .global-search label > span {
+  color: #586963;
+  font-size: 0.67rem;
+  font-weight: 750;
+}
+.search-page .global-search input {
+  border: 0;
+  outline: 0;
+  background: #f6f8f5;
+}
+.search-page-results {
+  display: grid;
+  gap: 0.8rem;
+}
+.search-page-results .section-heading > div {
+  display: grid;
+  gap: 0.2rem;
+}
+.search-page-results .section-heading h2 {
+  margin: 0;
+}
+.search-page-results .section-heading span {
+  color: #6d7b76;
+  font-size: 0.7rem;
+}
+.search-filter-tabs {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding-bottom: 0.15rem;
+}
+.search-filter-tabs button {
+  display: flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.65rem;
+  border: 1px solid #d5dfd8;
+  border-radius: 8px;
+  color: #5d6d67;
+  background: #fff;
+  font-size: 0.69rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.search-filter-tabs button[aria-pressed="true"] {
+  border-color: #176b5b;
+  color: #fff;
+  background: #176b5b;
+}
+.search-filter-tabs button span {
+  padding: 0.05rem 0.3rem;
+  border-radius: 999px;
+  background: rgb(20 35 33 / 8%);
+  font-size: 0.58rem;
+}
+.search-filter-tabs button[aria-pressed="true"] span {
+  background: rgb(255 255 255 / 17%);
+}
+.search-page .search-results {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+.search-page .search-results article {
+  display: grid;
+  min-height: 190px;
+  align-content: start;
+  gap: 0.65rem;
+  border-color: #d7e0da;
+  background: #fff;
+}
+.search-page .search-results h3 {
+  margin: 0;
+  color: #193129;
+}
+.search-page .search-results p {
+  margin: 0;
+  color: #687771;
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+.search-page .search-results a {
+  align-self: end;
+  color: #176b5b;
+  font-size: 0.72rem;
+  font-weight: 750;
+}
 .global-search label {
   display: grid;
   gap: 0.3rem;
@@ -349,6 +467,9 @@
   }
 }
 @media (max-width: 480px) {
+  .search-page {
+    padding: 24px 14px 5rem;
+  }
   .pulse-page {
     padding: 24px 14px 5rem;
   }

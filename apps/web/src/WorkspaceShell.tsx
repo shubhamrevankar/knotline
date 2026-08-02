@@ -22,6 +22,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { msg } from "./i18n.js";
 import { fetchMeBootstrap, type MeBootstrap } from "./api.js";
+import { WorkspaceSearch } from "./WorkspaceSearch.js";
 
 const collapsePreference = "knotline.workspace-sidebar-collapsed";
 const WorkspaceShellContext = createContext(false);
@@ -72,6 +73,7 @@ export function WorkspaceShell({
   const nested = useContext(WorkspaceShellContext);
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [identity, setIdentity] = useState<MeBootstrap>();
   const [collapsed, setCollapsed] = useState(() => {
     try {
@@ -112,6 +114,20 @@ export function WorkspaceShell({
     globalThis.addEventListener("keydown", closeOnEscape);
     return () => globalThis.removeEventListener("keydown", closeOnEscape);
   }, [sidebarOpen]);
+
+  useEffect(() => {
+    const openSearch = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      const editing = target?.matches("input, textarea, select, [contenteditable='true']") ?? false;
+      const commandShortcut = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k";
+      const slashShortcut = event.key === "/" && !editing && !event.metaKey && !event.ctrlKey;
+      if (!commandShortcut && !slashShortcut) return;
+      event.preventDefault();
+      setSearchOpen(true);
+    };
+    globalThis.addEventListener("keydown", openSearch);
+    return () => globalThis.removeEventListener("keydown", openSearch);
+  }, []);
 
   const closeMobileSidebar = () => setSidebarOpen(false);
   const activeUtility = location.pathname.startsWith("/app/inbox")
@@ -283,13 +299,19 @@ export function WorkspaceShell({
             >
               <Menu aria-hidden="true" size={19} />
             </button>
-            <Link aria-label="Search workspace" className="command-search" to="/app/search">
+            <button
+              aria-haspopup="dialog"
+              aria-label="Open workspace search"
+              className="command-search"
+              onClick={() => setSearchOpen(true)}
+              type="button"
+            >
               <Search aria-hidden="true" size={16} />
               <span>Find anything…</span>
               <kbd>
                 <Command aria-hidden="true" size={12} /> K
               </kbd>
-            </Link>
+            </button>
             <div className="top-actions">
               <span
                 className={connected ? "connection connection--live" : "connection"}
@@ -326,6 +348,7 @@ export function WorkspaceShell({
             <Bell aria-hidden="true" size={18} /> Inbox
           </Link>
         </nav>
+        <WorkspaceSearch open={searchOpen} onClose={() => setSearchOpen(false)} />
       </div>
     </WorkspaceShellContext.Provider>
   );

@@ -1574,9 +1574,14 @@ async function runSuite(pool: DatabasePool) {
       [contextA.workspaceId, searchDocumentId, searchResourceId]
     )
   );
+  const authorizedSearch = await analyticsRepository.search(contextA, "incident");
   assert(
-    (await analyticsRepository.search(contextA, "incident")).length === 1,
-    "Authorized search missed indexed resource"
+    authorizedSearch.some(({ resourceId }) => resourceId === searchResourceId),
+    "Authorized search missed indexed knowledge"
+  );
+  assert(
+    authorizedSearch.some(({ resourceType }) => resourceType === "workflow"),
+    "Authorized search missed a live workspace resource"
   );
   assert(
     (await analyticsRepository.search(contextB, "incident")).length === 0,

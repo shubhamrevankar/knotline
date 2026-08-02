@@ -43,7 +43,7 @@ test("@a11y authorized search saves a reproducible view on mobile", async ({ pag
   await page.setViewportSize({ width: 320, height: 720 });
   await page.goto("/app/search");
   await page.getByLabel("Search workspace").fill("incident");
-  await page.getByRole("button", { name: "Search" }).click();
+  await page.getByRole("button", { name: "Search", exact: true }).click();
   await expect(page.getByText("Incident response")).toBeVisible();
   await page.getByRole("button", { name: "Save this view" }).click();
   await expect(page.getByText("incident results")).toBeVisible();

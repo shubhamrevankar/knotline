@@ -14,8 +14,8 @@ import {
   Waypoints,
   type LucideIcon
 } from "lucide-react";
-import { useEffect, useState, type FormEvent } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { WorkspacePageHeader } from "./WorkspacePageHeader.js";
 import {
   createReport,
@@ -31,14 +31,23 @@ import {
   type SearchResult
 } from "./api.js";
 import { msg } from "./i18n.js";
+import {
+  searchResultPath,
+  searchResultSummary,
+  searchResultTitle,
+  searchResultTypeLabel
+} from "./search-result.js";
 import "./M28Pages.css";
 const visibleText = (value: unknown, fallback: string) =>
   typeof value === "string" || typeof value === "number" ? String(value) : fallback;
 
 export function GlobalSearchPage() {
-  const [query, setQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlQuery = searchParams.get("q") ?? "";
+  const [query, setQuery] = useState(urlQuery);
   const [results, setResults] = useState<readonly SearchResult[]>([]);
   const [views, setViews] = useState<readonly SavedView[]>([]);
+  const [activeType, setActiveType] = useState("all");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   useEffect(() => {
@@ -50,19 +59,39 @@ export function GlobalSearchPage() {
       active = false;
     };
   }, []);
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
-    if (query.trim().length < 2) return;
+  const runSearch = useCallback(async (value: string) => {
+    const normalized = value.trim();
+    if (normalized.length < 2) return;
+    setResults([]);
     setBusy(true);
     try {
-      setResults(await searchWorkspace(query));
+      setResults(await searchWorkspace(normalized));
       setError("");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : msg("search.error"));
     } finally {
       setBusy(false);
     }
+  }, []);
+  useEffect(() => {
+    if (urlQuery.trim().length < 2) return;
+    const timer = globalThis.setTimeout(() => void runSearch(urlQuery), 1);
+    return () => globalThis.clearTimeout(timer);
+  }, [runSearch, urlQuery]);
+  const submit = async (event: FormEvent) => {
+    event.preventDefault();
+    const normalized = query.trim();
+    if (normalized.length < 2) return;
+    setActiveType("all");
+    setSearchParams({ q: normalized }, { replace: true });
+    if (normalized === urlQuery) await runSearch(normalized);
   };
+  const resultTypes = useMemo(
+    () => [...new Set(results.map((result) => result.resourceType))],
+    [results]
+  );
+  const visibleResults =
+    activeType === "all" ? results : results.filter((result) => result.resourceType === activeType);
   const save = async () => {
     const view = await createSavedView({
       name: msg("search.saved.name", { query }),
@@ -77,8 +106,8 @@ export function GlobalSearchPage() {
     setViews([...views, view]);
   };
   return (
-    <main className="page-shell insight-shell">
-      <header>
+    <main className="page-shell insight-shell search-page">
+      <header className="search-page-header">
         <Badge tone="accent">
           <Search aria-hidden />
           {msg("search.badge")}
@@ -102,30 +131,51 @@ export function GlobalSearchPage() {
       {busy ? <Skeleton label={msg("search.loading")} /> : null}
       {error ? <ErrorState title={msg("search.error")}>{error}</ErrorState> : null}
       {results.length ? (
-        <section>
+        <section className="search-page-results">
           <div className="section-heading">
-            <h2>{msg("search.results")}</h2>
+            <div>
+              <h2>{msg("search.results")}</h2>
+              <span>
+                {msg("search.results.count", {
+                  count: results.length,
+                  query: urlQuery || query
+                })}
+              </span>
+            </div>
             <Button onClick={() => void save()}>{msg("search.save")}</Button>
           </div>
+          <div className="search-filter-tabs" aria-label={msg("search.filters.label")}>
+            <button
+              aria-pressed={activeType === "all"}
+              onClick={() => setActiveType("all")}
+              type="button"
+            >
+              {msg("search.filters.all")} <span>{results.length}</span>
+            </button>
+            {resultTypes.map((type) => (
+              <button
+                aria-pressed={activeType === type}
+                key={type}
+                onClick={() => setActiveType(type)}
+                type="button"
+              >
+                {searchResultTypeLabel(type)}
+                <span>{results.filter((result) => result.resourceType === type).length}</span>
+              </button>
+            ))}
+          </div>
           <div className="search-results">
-            {results.map((result) => (
+            {visibleResults.map((result) => (
               <Card key={result.id}>
-                <Badge tone="neutral">{result.resourceType}</Badge>
-                <h3>
-                  {visibleText(
-                    result.fields.title ?? result.fields.name,
-                    msg("search.result.untitled")
-                  )}
-                </h3>
-                <p>{visibleText(result.fields.summary, msg("search.result.authorized"))}</p>
-                <Link to={`/app/${result.resourceType}s/${result.resourceId}`}>
-                  {msg("search.open")}
-                </Link>
+                <Badge tone="neutral">{searchResultTypeLabel(result.resourceType)}</Badge>
+                <h3>{searchResultTitle(result, msg("search.result.untitled"))}</h3>
+                <p>{searchResultSummary(result, msg("search.result.authorized"))}</p>
+                <Link to={searchResultPath(result)}>{msg("search.open")}</Link>
               </Card>
             ))}
           </div>
         </section>
-      ) : !busy && query ? (
+      ) : !busy && !error && query ? (
         <EmptyState title={msg("search.empty")}>
           <p>{msg("search.empty.body")}</p>
         </EmptyState>
