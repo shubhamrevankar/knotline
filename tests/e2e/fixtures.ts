@@ -46,6 +46,12 @@ export const test = base.extend<{ consoleMessages: string[] }>({
       let demoRunState = "running";
       let demoHumanTaskState = "ready";
       let unassignedTaskClaimed = false;
+      let onboardingCurrentStep = "role_use_case";
+      let onboardingCompletedSteps: string[] = [];
+      let onboardingSkippedSteps: string[] = [];
+      let onboardingProfile: Record<string, unknown> = {};
+      let onboardingRevision = 1;
+      let onboardingCompletedAt: string | undefined;
       const demoRunId = "ca67b16d-049d-4019-b538-1f00c23be76b";
       const demoTaskId = "bf608083-2663-4759-a162-37ce5457220d";
       const unassignedTaskId = "e57ac45a-1756-4929-a90e-383523f92e27";
@@ -310,15 +316,31 @@ export const test = base.extend<{ consoleMessages: string[] }>({
             ]
           };
         } else if (pathname === "/v1/me/onboarding") {
+          if (method === "PUT") {
+            const input = route.request().postDataJSON() as {
+              currentStep: string;
+              completedSteps: string[];
+              skippedSteps: string[];
+              profile: Record<string, unknown>;
+              complete?: boolean;
+            };
+            onboardingCurrentStep = input.currentStep;
+            onboardingCompletedSteps = input.completedSteps;
+            onboardingSkippedSteps = input.skippedSteps;
+            onboardingProfile = input.profile;
+            onboardingRevision += 1;
+            if (input.complete) onboardingCompletedAt = "2026-07-31T00:10:00.000Z";
+          }
           body = {
             data: {
               workspaceId: "10000000-0000-4000-8000-000000000001",
               userId: "20000000-0000-4000-8000-000000000001",
-              currentStep: "role_use_case",
-              completedSteps: [],
-              skippedSteps: [],
-              profile: {},
-              revision: 1
+              currentStep: onboardingCurrentStep,
+              completedSteps: onboardingCompletedSteps,
+              skippedSteps: onboardingSkippedSteps,
+              profile: onboardingProfile,
+              revision: onboardingRevision,
+              ...(onboardingCompletedAt ? { completedAt: onboardingCompletedAt } : {})
             }
           };
         } else if (pathname === "/v1/me/onboarding/sample-workspaces") {

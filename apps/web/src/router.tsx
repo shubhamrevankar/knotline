@@ -71,7 +71,7 @@ const MembersPage = lazy(async () => ({
 }));
 
 const OnboardingPage = lazy(async () => ({
-  default: (await import("./M05Pages.js")).OnboardingPage
+  default: (await import("./M05OnboardingPage.js")).OnboardingPage
 }));
 
 const RolesPage = lazy(async () => ({

@@ -529,3 +529,418 @@
     justify-content: center;
   }
 }
+
+.onboarding-progress-header {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 1.25rem;
+}
+.onboarding-progress-header > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #59665e;
+  font-size: 0.84rem;
+}
+.onboarding-progress-track {
+  height: 0.42rem;
+  overflow: hidden;
+  border-radius: 99px;
+  background: #dce2dd;
+}
+.onboarding-progress-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #416c58;
+  transition: width 240ms ease;
+}
+.onboarding-workspace-layout {
+  display: grid;
+  grid-template-columns: 14rem minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+.onboarding-rail {
+  position: sticky;
+  top: 5.5rem;
+}
+.onboarding-rail ol {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.onboarding-rail button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem;
+  border: 0;
+  border-radius: 0.7rem;
+  color: #617068;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+}
+.onboarding-rail button:not(:disabled) {
+  cursor: pointer;
+}
+.onboarding-rail button:hover:not(:disabled),
+.onboarding-rail button[aria-current="step"] {
+  color: #183426;
+  background: #e7efe9;
+}
+.onboarding-rail button:disabled {
+  opacity: 0.58;
+}
+.onboarding-rail button > span {
+  flex: 0 0 auto;
+  width: 1.8rem;
+  height: 1.8rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid #bdc9c1;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+.onboarding-rail button[aria-current="step"] > span {
+  color: #fff;
+  border-color: #416c58;
+  background: #416c58;
+}
+.onboarding-rail button svg {
+  width: 0.9rem;
+}
+.onboarding-rail button div {
+  display: grid;
+  gap: 0.08rem;
+}
+.onboarding-rail small {
+  color: #78837c;
+  font-size: 0.72rem;
+}
+.onboarding-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 17rem;
+  gap: 1rem;
+  align-items: start;
+}
+.onboarding-main-card {
+  min-height: 36rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid #d6ddd7;
+  background: #fff;
+}
+.onboarding-main-card > h2 {
+  margin: 0.85rem 0 0.5rem;
+  font-size: clamp(1.65rem, 3vw, 2.25rem);
+  letter-spacing: -0.03em;
+}
+.onboarding-lede {
+  max-width: 42rem;
+  margin: 0 0 1.5rem;
+  color: #627067;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.onboarding-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+.onboarding-form-grid label {
+  display: grid;
+  gap: 0.4rem;
+  color: #45534a;
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+.onboarding-form-grid label.is-wide {
+  grid-column: 1 / -1;
+}
+.onboarding-form-grid input,
+.onboarding-form-grid select,
+.onboarding-form-grid textarea {
+  width: 100%;
+  min-height: 2.8rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #c8d2ca;
+  border-radius: 0.65rem;
+  color: #17211c;
+  background: #fff;
+  font: inherit;
+}
+.onboarding-form-grid textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+.onboarding-choice-grid {
+  display: grid;
+  gap: 0.7rem;
+}
+.onboarding-choice-grid article {
+  overflow: hidden;
+  border: 1px solid #d5ddd7;
+  border-radius: 0.8rem;
+  background: #fff;
+}
+.onboarding-choice-grid article.is-selected {
+  border-color: #527b64;
+  box-shadow: 0 0 0 2px rgb(65 108 88 / 12%);
+  background: #f4f8f4;
+}
+.onboarding-choice-grid article > button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.onboarding-choice-grid article > button > span:nth-child(2) {
+  display: grid;
+  gap: 0.22rem;
+}
+.onboarding-choice-grid small {
+  color: #68756d;
+  line-height: 1.45;
+}
+.onboarding-choice-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.7rem;
+  color: #315d47;
+  background: #e5efe7;
+}
+.onboarding-choice-icon svg {
+  width: 1.15rem;
+}
+.onboarding-choice-check svg {
+  width: 1.1rem;
+  color: #416c58;
+}
+.onboarding-choice-grid article > a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.3rem;
+  padding: 0 1rem 0.8rem;
+  color: #416c58;
+  font-size: 0.82rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+.onboarding-choice-grid article > a svg {
+  width: 0.9rem;
+}
+.onboarding-invite > p {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #67746c;
+  font-size: 0.82rem;
+}
+.onboarding-invite > p svg {
+  width: 1rem;
+}
+.onboarding-readiness {
+  display: grid;
+  gap: 0.65rem;
+}
+.onboarding-readiness > div {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  border: 1px solid #e0e5e1;
+  border-radius: 0.7rem;
+  background: #fafbf9;
+}
+.onboarding-readiness > div > span {
+  width: 1.8rem;
+  height: 1.8rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #7a857e;
+  background: #e9ede9;
+}
+.onboarding-readiness > div > span.is-ready {
+  color: #245338;
+  background: #dceee1;
+}
+.onboarding-readiness svg {
+  width: 0.95rem;
+}
+.onboarding-readiness > div > div {
+  display: grid;
+  gap: 0.14rem;
+}
+.onboarding-readiness small {
+  color: #6d7971;
+}
+.onboarding-launch {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  padding: 1.1rem;
+  border: 1px solid #bcd3c2;
+  border-radius: 0.85rem;
+  background: linear-gradient(135deg, #f0f8f1, #fafcf8);
+}
+.onboarding-launch > span {
+  width: 3.1rem;
+  height: 3.1rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.85rem;
+  color: #244c37;
+  background: #d9ebdd;
+}
+.onboarding-launch h3 {
+  margin: 0 0 0.35rem;
+}
+.onboarding-launch p {
+  margin: 0;
+  color: #607067;
+}
+.onboarding-launch ul {
+  display: grid;
+  gap: 0.45rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.onboarding-launch li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #355443;
+  font-size: 0.88rem;
+}
+.onboarding-launch li svg {
+  width: 0.95rem;
+}
+.onboarding-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid #e1e6e2;
+}
+.onboarding-actions > div {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.onboarding-actions a {
+  color: #54645b;
+  font-weight: 700;
+  text-decoration: none;
+}
+.onboarding-side-card {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid #d6ddd7;
+  background: #fff;
+}
+.onboarding-side-card h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+.onboarding-side-card p {
+  margin: 0.3rem 0 0;
+  color: #68756d;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+.onboarding-side-icon {
+  width: 2.3rem;
+  height: 2.3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.7rem;
+  color: #315d47;
+  background: #e5efe7;
+}
+.onboarding-side-icon svg {
+  width: 1.1rem;
+}
+.access-notice.is-error {
+  color: #7b3327;
+  border-color: #e5bbb4;
+  background: #fff2ef;
+}
+
+@media (max-width: 1080px) {
+  .onboarding-stage {
+    grid-template-columns: 1fr;
+  }
+  .onboarding-side-card {
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+  }
+}
+
+@media (max-width: 800px) {
+  .onboarding-workspace-layout {
+    grid-template-columns: 1fr;
+  }
+  .onboarding-rail {
+    position: static;
+    overflow-x: auto;
+  }
+  .onboarding-rail ol {
+    display: flex;
+    min-width: max-content;
+  }
+  .onboarding-rail li {
+    width: 10.5rem;
+  }
+  .onboarding-main-card {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .onboarding-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .onboarding-form-grid label.is-wide {
+    grid-column: 1;
+  }
+  .onboarding-actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+  .onboarding-actions > div {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .onboarding-actions .kl-button {
+    width: 100%;
+    justify-content: center;
+  }
+  .onboarding-side-card {
+    grid-template-columns: auto 1fr;
+  }
+  .onboarding-side-card .kl-button {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1160,9 +1160,9 @@ export const instantiateWorkflowTemplate = (templateId: string) =>
     { values: {} }
   );
 
-export async function fetchWorkflows(): Promise<WorkflowSummary[]> {
+export async function fetchWorkflows(workspace = workspaceId): Promise<WorkflowSummary[]> {
   const response = await request<ApiEnvelope<WorkflowSummary[]>>(
-    `/v1/workspaces/${workspaceId}/workflows`
+    `/v1/workspaces/${encodeURIComponent(workspace)}/workflows`
   );
   return response.data;
 }
@@ -1716,14 +1716,15 @@ export interface ConnectionSourceSurface {
   };
   readonly certification?: ProviderCertification;
 }
-const fetchConnectionSurface = async () =>
+const fetchConnectionSurface = async (workspace = workspaceId) =>
   (
     await request<ApiEnvelope<{ items: ConnectionSummary[]; catalog: ConnectorCatalogItem[] }>>(
-      `/v1/workspaces/${workspaceId}/connections`
+      `/v1/workspaces/${encodeURIComponent(workspace)}/connections`
     )
   ).data;
 export const fetchConnectorCatalog = async () => (await fetchConnectionSurface()).catalog;
-export const fetchConnections = async () => (await fetchConnectionSurface()).items;
+export const fetchConnections = async (workspace?: string) =>
+  (await fetchConnectionSurface(workspace)).items;
 export const fetchConnection = async (id: string) =>
   (
     await request<

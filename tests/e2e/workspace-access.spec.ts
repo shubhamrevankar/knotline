@@ -50,16 +50,32 @@ test("roles and groups expose complete editors and protect synchronized groups",
   await expect(page.getByText("Identity provider", { exact: true })).toBeVisible();
 });
 
-test("@a11y onboarding is resumable, skippable, and honest about dependencies", async ({
+test("@a11y onboarding persists every step and launches the real workflow builder", async ({
   page
 }) => {
   await page.goto("/app/onboarding");
   await expect(page.getByRole("heading", { name: "Set up your workspace" })).toBeVisible();
   await expect(page.getByText("Step 1 of 6")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Skip for now" })).toBeEnabled();
-  await page.getByRole("button", { name: "Create sample data" }).click();
-  await expect(page.getByRole("button", { name: "Remove sample data" })).toBeVisible();
-  await expect(page.locator("main")).toHaveCSS("overflow-x", /^(visible|clip|hidden|auto)$/);
+  await page.getByLabel("Your role").selectOption("operations");
+  await page.getByLabel("Primary use case").selectOption("incident-response");
+  await page.getByLabel("Setup goal").fill("Coordinate consequential incidents end to end.");
+  await page.getByRole("button", { name: /Save and continue/u }).click();
+  await expect(page.getByRole("heading", { name: "Bring your tools into the flow" })).toBeVisible();
+  await page.getByRole("button", { name: /Continue without one/u }).click();
+  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Choose how you want to begin" })).toBeVisible();
+  await page.getByRole("button", { name: /Describe it with AI/u }).click();
+  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Set up your first collaborator" })).toBeVisible();
+  await page.getByRole("button", { name: "Continue solo" }).click();
+  await expect(page.getByRole("heading", { name: "Your workspace is ready" })).toBeVisible();
+  await expect(page.getByText("Team access")).toBeVisible();
+  await page.getByRole("button", { name: /Everything looks good/u }).click();
+  await expect(page.getByRole("heading", { name: "Build your first real workflow" })).toBeVisible();
+  await expect(page.getByText(/no preview-only path/iu)).toBeVisible();
+  await page.getByRole("button", { name: /Create my first workflow/u }).click();
+  await expect(page).toHaveURL("/app/workflows/new");
+  await expect(page.locator("body")).not.toHaveCSS("overflow-x", "scroll");
 });
 
 test("invitation tokens are removed from browser history before preview", async ({ page }) => {
