@@ -212,7 +212,18 @@ const GovernancePage = lazy(async () => ({
 const EnterpriseIdentityPage = lazy(async () => ({
   default: (await import("./M32Pages.js")).EnterpriseIdentityPage
 }));
-const SupportPage = lazy(async () => ({ default: (await import("./M33Pages.js")).SupportPage }));
+const HelpCenterPage = lazy(async () => ({
+  default: (await import("./M33HelpPages.js")).HelpCenterPage
+}));
+const SupportPage = lazy(async () => ({
+  default: (await import("./M33HelpPages.js")).SupportPage
+}));
+const SupportDetailPage = lazy(async () => ({
+  default: (await import("./M33HelpPages.js")).SupportDetailPage
+}));
+const FeedbackPage = lazy(async () => ({
+  default: (await import("./M33HelpPages.js")).FeedbackPage
+}));
 const InformationPage = lazy(async () => ({
   default: (await import("./M33Pages.js")).InformationPage
 }));
@@ -556,7 +567,11 @@ function PublicRoute({ route }: { route: WebRouteManifestEntry }) {
     return (
       <PublicLayout>
         <Suspense fallback={<Skeleton label="Loading information" />}>
-          <InformationPage routeId={route.id === "route.help.wildcard" ? "route.help" : route.id} />
+          {route.id === "route.help" || route.id === "route.help.wildcard" ? (
+            <HelpCenterPage {...(params["*"] ? { slug: params["*"] } : {})} />
+          ) : (
+            <InformationPage routeId={route.id} />
+          )}
         </Suspense>
       </PublicLayout>
     );
@@ -1049,11 +1064,27 @@ function CustomerRouteContent({ route }: { route: WebRouteManifestEntry }) {
         </Suspense>
       </AuthGate>
     );
-  if (["route.app.support", "route.app.support.detail", "route.app.feedback"].includes(route.id))
+  if (route.id === "route.app.support")
     return (
       <AuthGate>
         <Suspense fallback={<Skeleton label="Loading support" />}>
           <SupportPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.support.detail")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading support case" />}>
+          <SupportDetailPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.feedback")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading feedback" />}>
+          <FeedbackPage />
         </Suspense>
       </AuthGate>
     );

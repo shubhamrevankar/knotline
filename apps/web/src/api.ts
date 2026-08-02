@@ -2047,12 +2047,54 @@ export interface SupportTicket {
   readonly severity: string;
   readonly subject: string;
   readonly status: string;
+  readonly diagnosticConsent?: boolean;
+  readonly assignee?: string;
   readonly createdAt: string;
+  readonly updatedAt?: string;
+  readonly messages?: readonly SupportMessage[];
+}
+export interface SupportMessage {
+  readonly id: string;
+  readonly authorUserId: string;
+  readonly body: string;
+  readonly createdAt: string;
+}
+export interface DiagnosticBundle {
+  readonly id: string;
+  readonly ticketId: string;
+  readonly preview: { readonly includes: readonly string[]; readonly excludes: readonly string[] };
+  readonly state: "awaiting_consent" | "building" | "ready" | "expired" | "revoked";
+  readonly expiresAt: string;
 }
 export const fetchSupportTickets = async () =>
   (await request<ApiEnvelope<SupportTicket[]>>("/v1/support-tickets")).data;
 export const createSupportTicket = async (input: Readonly<Record<string, unknown>>) =>
   (await mutate<ApiEnvelope<SupportTicket>>("/v1/support-tickets", "POST", input)).data;
+export const fetchSupportTicket = async (ticketId: string) =>
+  (await request<ApiEnvelope<SupportTicket>>(`/v1/support-tickets/${encodeURIComponent(ticketId)}`))
+    .data;
+export const addSupportMessage = async (ticketId: string, body: string) =>
+  (
+    await mutate<ApiEnvelope<SupportMessage>>(
+      `/v1/support-tickets/${encodeURIComponent(ticketId)}/messages`,
+      "POST",
+      { body }
+    )
+  ).data;
+export const createDiagnosticBundle = async (ticketId: string) =>
+  (
+    await mutate<ApiEnvelope<DiagnosticBundle>>(
+      `/v1/support-tickets/${encodeURIComponent(ticketId)}/diagnostic-bundles`,
+      "POST"
+    )
+  ).data;
+export const consentDiagnosticBundle = async (bundleId: string) =>
+  (
+    await mutate<ApiEnvelope<DiagnosticBundle>>(
+      `/v1/diagnostic-bundles/${encodeURIComponent(bundleId)}/consents`,
+      "POST"
+    )
+  ).data;
 export const submitContactRequest = async (input: Readonly<Record<string, unknown>>) =>
   (await mutate<ApiEnvelope<Record<string, unknown>>>("/edge/v1/contact-requests", "POST", input))
     .data;

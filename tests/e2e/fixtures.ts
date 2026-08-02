@@ -61,6 +61,24 @@ export const test = base.extend<{ consoleMessages: string[] }>({
         timezone: "UTC"
       };
       let otherSessionActive = true;
+      const supportTicketId = "c3300000-0000-4000-8000-000000000001";
+      const supportBundleId = "d3300000-0000-4000-8000-000000000001";
+      let supportMessages: {
+        id: string;
+        authorUserId: string;
+        body: string;
+        createdAt: string;
+      }[] = [];
+      let supportTickets: {
+        id: string;
+        category: string;
+        severity: string;
+        subject: string;
+        status: string;
+        diagnosticConsent: boolean;
+        createdAt: string;
+        updatedAt: string;
+      }[] = [];
       const demoRunId = "ca67b16d-049d-4019-b538-1f00c23be76b";
       const demoTaskId = "bf608083-2663-4759-a162-37ce5457220d";
       const unassignedTaskId = "e57ac45a-1756-4929-a90e-383523f92e27";
@@ -819,6 +837,85 @@ export const test = base.extend<{ consoleMessages: string[] }>({
                   ]
                 : [])
             ]
+          };
+        } else if (pathname === "/v1/support-tickets" && method === "POST") {
+          const input = route.request().postDataJSON() as {
+            category: string;
+            severity: string;
+            subject: string;
+            diagnosticConsent: boolean;
+          };
+          const ticket = {
+            id: supportTicketId,
+            ...input,
+            status: "open",
+            createdAt: "2026-08-02T10:00:00.000Z",
+            updatedAt: "2026-08-02T10:00:00.000Z"
+          };
+          supportTickets = [ticket, ...supportTickets];
+          body = { data: ticket };
+        } else if (pathname === "/v1/support-tickets") {
+          body = { data: supportTickets };
+        } else if (
+          pathname === `/v1/support-tickets/${supportTicketId}/messages` &&
+          method === "POST"
+        ) {
+          const input = route.request().postDataJSON() as { body: string };
+          const message = {
+            id: `e3300000-0000-4000-8000-${String(supportMessages.length + 1).padStart(12, "0")}`,
+            authorUserId: "20000000-0000-4000-8000-000000000001",
+            body: input.body,
+            createdAt: `2026-08-02T10:0${supportMessages.length}:00.000Z`
+          };
+          supportMessages = [...supportMessages, message];
+          body = { data: message };
+        } else if (
+          pathname === `/v1/support-tickets/${supportTicketId}/diagnostic-bundles` &&
+          method === "POST"
+        ) {
+          body = {
+            data: {
+              id: supportBundleId,
+              ticketId: supportTicketId,
+              preview: {
+                includes: ["version", "request_ids", "redacted_errors"],
+                excludes: ["secrets", "content"]
+              },
+              state: "awaiting_consent",
+              expiresAt: "2026-08-03T10:00:00.000Z"
+            }
+          };
+        } else if (
+          pathname === `/v1/diagnostic-bundles/${supportBundleId}/consents` &&
+          method === "POST"
+        ) {
+          body = {
+            data: {
+              id: supportBundleId,
+              ticketId: supportTicketId,
+              preview: {
+                includes: ["version", "request_ids", "redacted_errors"],
+                excludes: ["secrets", "content"]
+              },
+              state: "building",
+              expiresAt: "2026-08-03T10:00:00.000Z"
+            }
+          };
+        } else if (pathname === `/v1/support-tickets/${supportTicketId}`) {
+          body = {
+            data: {
+              ...(supportTickets[0] ?? {
+                id: supportTicketId,
+                category: "product",
+                severity: "normal",
+                subject: "Help with a workflow run",
+                status: "open",
+                diagnosticConsent: false,
+                createdAt: "2026-08-02T10:00:00.000Z",
+                updatedAt: "2026-08-02T10:00:00.000Z"
+              }),
+              messages: supportMessages
+            }
           };
         } else {
           const data = pathname.endsWith("/workflows") ? demoWorkflows : demoWorkflow;

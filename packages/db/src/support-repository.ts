@@ -65,7 +65,7 @@ export class PostgresSupportRepository implements SupportRepository {
       if (!ticket) throw new Error("SUPPORT_TICKET_NOT_FOUND");
       const messages = (
         await x.query<Record<string, unknown>>(
-          `SELECT id,body,created_at "createdAt" FROM support_ticket_messages WHERE workspace_id=$1 AND ticket_id=$2 ORDER BY created_at`,
+          `SELECT id,author_user_id "authorUserId",body,created_at "createdAt" FROM support_ticket_messages WHERE workspace_id=$1 AND ticket_id=$2 ORDER BY created_at`,
           [c.workspaceId, id]
         )
       ).rows;
@@ -79,7 +79,7 @@ export class PostgresSupportRepository implements SupportRepository {
       async (x) =>
         (
           await x.query<Record<string, unknown>>(
-            `INSERT INTO support_ticket_messages(workspace_id,id,ticket_id,author_user_id,body)SELECT $1,$2,id,$3,$4 FROM support_tickets WHERE workspace_id=$1 AND id=$5 RETURNING id,body,created_at "createdAt"`,
+            `INSERT INTO support_ticket_messages(workspace_id,id,ticket_id,author_user_id,body)SELECT $1,$2,id,$3,$4 FROM support_tickets WHERE workspace_id=$1 AND id=$5 RETURNING id,author_user_id "authorUserId",body,created_at "createdAt"`,
             [c.workspaceId, randomUUID(), c.principalId, i.body, id]
           )
         ).rows[0]!
