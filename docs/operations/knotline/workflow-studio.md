@@ -8,6 +8,11 @@ conditional typed connections, synchronized canvas and outline editing,
 optimistic concurrency, encrypted same-session crash recovery, and responsive
 operation without drag-only controls.
 
+The workflow library's **Edit workflow** action opens the studio directly on
+desktop and mobile. Builders can edit workflow metadata, select and focus a
+step from the accessible outline, configure typed step or connection settings,
+and inspect the visual map without changing screens.
+
 ## Save and conflict behavior
 
 - Every command updates a local immutable reducer state and enters the undo log.
@@ -20,6 +25,22 @@ operation without drag-only controls.
   Clearing the session or completing a save removes recoverable content.
 - Validation findings link back to the affected step or connection and focus its
   inspector. Errors block readiness but do not destroy draft edits.
+
+## Review and publish
+
+**Review and publish** is the only product path that seals an edited draft. The
+release dialog requires three explicit gates:
+
+1. Save and validate the current server draft.
+2. Run a controlled safe test with fixture-backed human, agent, and connector
+   outputs. The report must allow publication and always records zero external
+   writes.
+3. Add a release note describing the change.
+
+The publish action remains disabled until every gate passes. Successful
+publication seals an immutable version, displays a version and safety receipt,
+and creates the next editable draft. Closing the dialog before publication does
+not mutate the workflow.
 
 ## Keyboard reference
 

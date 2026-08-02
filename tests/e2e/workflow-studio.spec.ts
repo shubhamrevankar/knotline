@@ -2,6 +2,33 @@ import { expect, test } from "./fixtures.js";
 
 const workflowId = "wf_launch-campaign";
 
+test("workflow library opens the complete edit, test, and publish journey", async ({ page }) => {
+  await page.goto("/app/workflows");
+  await page.getByRole("link", { name: "Edit workflow" }).click();
+  await expect(page).toHaveURL(`/app/workflows/${workflowId}/studio`);
+  await expect(page.getByRole("heading", { name: "Launch intelligence brief" })).toBeVisible();
+
+  await page.getByText("Workflow details", { exact: true }).click();
+  await page.getByLabel("Workflow description").fill("Coordinate a trusted launch review.");
+  await page.getByRole("button", { name: "Capture signal", exact: true }).click();
+  await page.getByLabel("Name", { exact: true }).fill("Receive launch signal");
+  await expect(page.locator(".studio-save-state")).toContainText("All changes saved", {
+    timeout: 4_000
+  });
+
+  await page.getByRole("button", { name: "Review and publish" }).click();
+  await page.getByRole("button", { name: "Validate draft" }).click();
+  await expect(page.getByText("The saved draft is valid and publishable.")).toBeVisible();
+  await page.getByRole("button", { name: "Run safe test" }).click();
+  await expect(page.getByRole("status").filter({ hasText: "steps traversed" })).toContainText(
+    "0 external writes"
+  );
+  await page.getByLabel("Release note").fill("Clarify launch intake and review ownership.");
+  await page.getByRole("button", { name: "Publish immutable version" }).click();
+  await expect(page.getByRole("heading", { name: "Your workflow update is live" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "View published workflow" })).toBeVisible();
+});
+
 test("@a11y keyboard and pointer users can construct and edit a workflow", async ({ page }) => {
   await page.goto(`/app/workflows/${workflowId}/studio`);
   await expect(page.getByRole("heading", { name: "Launch intelligence brief" })).toBeVisible();
@@ -9,13 +36,11 @@ test("@a11y keyboard and pointer users can construct and edit a workflow", async
   await expect(page.getByRole("heading", { name: "Accessible outline" })).toBeVisible();
 
   await page.getByPlaceholder("Search step kinds").fill("integration");
-  await page.getByRole("button", { name: "integration action" }).click();
-  await expect(
-    page.getByRole("button", { name: "integration action 3", exact: true })
-  ).toBeVisible();
+  await page.getByRole("button", { name: "Integration Add to workflow" }).click();
+  await expect(page.getByRole("button", { name: "Integration 3", exact: true })).toBeVisible();
 
   await page.getByRole("button", { name: "Capture signal", exact: true }).click();
-  await page.getByLabel("Name").fill("Receive signal");
+  await page.getByLabel("Name", { exact: true }).fill("Receive signal");
   await expect(page.getByRole("button", { name: "Receive signal", exact: true })).toBeVisible();
 
   await page.getByRole("heading", { name: "Launch intelligence brief" }).click();
@@ -66,10 +91,11 @@ test("optimistic concurrency never silently overwrites another editor", async ({
   });
   await page.goto(`/app/workflows/${workflowId}/studio`);
   await page.getByRole("button", { name: "Capture signal", exact: true }).click();
-  await page.getByLabel("Name").fill("Conflicting edit");
-  await expect(page.getByRole("status")).toContainText("Another editor changed this draft", {
-    timeout: 4_000
-  });
+  await page.getByLabel("Name", { exact: true }).fill("Conflicting edit");
+  await expect(page.locator(".studio-save-state")).toContainText(
+    "Another editor changed this draft",
+    { timeout: 4_000 }
+  );
   await expect(page.getByRole("button", { name: "Reload server draft" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Encrypted recovery available" })).toBeVisible();
 });

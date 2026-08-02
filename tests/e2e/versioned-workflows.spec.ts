@@ -19,10 +19,19 @@ test("@a11y builder validates and publishes an immutable workflow version", asyn
   await expect(page.getByRole("heading", { name: "Launch intelligence brief" })).toBeVisible();
   await expect(page.getByText("v8 · r3")).toBeVisible();
   await page.getByRole("button", { name: "Validate graph" }).click();
-  await expect(page.getByRole("status")).toContainText("valid and publishable");
+  await expect(page.getByText("The workflow definition is valid and publishable.")).toBeVisible();
+  await page.getByRole("link", { name: "Review and publish" }).click();
+  await expect(page.getByRole("dialog", { name: "Review and publish" })).toBeVisible();
+  await page.getByRole("button", { name: "Validate draft" }).click();
+  await expect(page.getByText("The saved draft is valid and publishable.")).toBeVisible();
+  await page.getByRole("button", { name: "Run safe test" }).click();
+  await expect(page.getByRole("status").filter({ hasText: "steps traversed" })).toContainText(
+    "0 external writes"
+  );
+  await page.getByLabel("Release note").fill("Improve the governed editorial review path.");
   await page.getByRole("button", { name: "Publish immutable version" }).click();
-  await expect(page.getByRole("status")).toContainText("Version 8 was published");
-  await expect(page.getByText("Capture signal")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Your workflow update is live" })).toBeVisible();
+  await expect(page.getByText("Published version")).toBeVisible();
 });
 
 test("version history supports inspection, semantic diff, and restore-as-draft", async ({

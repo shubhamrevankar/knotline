@@ -1,5 +1,14 @@
 import { Badge, Button, Card, ErrorState, Skeleton } from "@knotline/ui";
-import { ArrowLeft, CheckCircle2, Copy, GitCompare, History, RotateCcw, Send } from "lucide-react";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Copy,
+  GitCompare,
+  History,
+  PencilLine,
+  RotateCcw,
+  Send
+} from "lucide-react";
 import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -12,7 +21,6 @@ import {
   fetchWorkflowVersion,
   fetchWorkflowVersions,
   instantiateWorkflowTemplate,
-  publishWorkflowDraft,
   restoreWorkflowVersion,
   validateWorkflowDraft,
   type WorkflowDraft,
@@ -64,7 +72,6 @@ export function WorkflowDetailPage() {
   >([]);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
-  const reload = () => fetchWorkflowDraft(workflowId).then(setDraft);
   useEffect(() => {
     Promise.all([fetchWorkflow(workflowId), fetchWorkflowDraft(workflowId)])
       .then(([workflow, currentDraft]) => {
@@ -106,6 +113,10 @@ export function WorkflowDetailPage() {
               </div>
             </dl>
             <div className="action-row">
+              <Link className="primary-button" to={`/app/workflows/${workflowId}/studio`}>
+                <PencilLine aria-hidden="true" />
+                {msg("workflow.edit")}
+              </Link>
               <Button
                 onClick={() =>
                   void validateWorkflowDraft(workflowId).then((result) => {
@@ -121,29 +132,13 @@ export function WorkflowDetailPage() {
                 <CheckCircle2 aria-hidden="true" />
                 {msg("workflow.validate")}
               </Button>
-              <Button
-                tone="accent"
-                onClick={() =>
-                  void publishWorkflowDraft(
-                    workflowId,
-                    draft.revision,
-                    msg("workflow.publish.note")
-                  ).then(async (result) => {
-                    setFindings(result.findings);
-                    setNotice(
-                      result.published
-                        ? msg("workflow.publish.success", {
-                            version: result.publishedVersion ?? draft.version
-                          })
-                        : msg("workflow.validate.invalid")
-                    );
-                    await reload();
-                  })
-                }
+              <Link
+                className="button-link workflow-review-link"
+                to={`/app/workflows/${workflowId}/studio?review=publish`}
               >
                 <Send aria-hidden="true" />
-                {msg("workflow.publish")}
-              </Button>
+                {msg("workflow.review.publish")}
+              </Link>
               <Link className="button-link" to={`/app/workflows/${workflowId}/versions`}>
                 <History aria-hidden="true" />
                 {msg("workflow.versions")}

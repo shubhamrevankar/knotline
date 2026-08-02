@@ -13,29 +13,57 @@ import {
   Controls,
   MarkerType,
   MiniMap,
+  Handle,
+  Position,
   ReactFlow,
   type Connection,
   type Edge,
-  type Node
+  type Node,
+  type NodeProps,
+  type ReactFlowInstance
 } from "@xyflow/react";
 import {
+  ArrowLeft,
   AlignHorizontalSpaceAround,
   Braces,
+  Bot,
+  Check,
+  CheckCircle2,
+  CircleDot,
+  Clock3,
   Copy,
+  FlaskConical,
+  GitBranch,
   HelpCircle,
   LayoutGrid,
   ListTree,
+  Network,
+  PencilLine,
+  PlugZap,
   Plus,
   Redo2,
+  Repeat2,
+  Rocket,
   Save,
   Search,
+  ShieldCheck,
   Trash2,
-  Undo2
+  Undo2,
+  UserRound,
+  X,
+  type LucideIcon
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
-import { fetchWorkflowDraft, saveWorkflowDraft, type WorkflowDraft } from "./api.js";
+import {
+  dryRunWorkflowDefinition,
+  fetchWorkflowDraft,
+  publishWorkflowDraft,
+  saveWorkflowDraft,
+  validateWorkflowDraft,
+  type WorkflowDraft
+} from "./api.js";
 import { AuthGate } from "./AuthPages.js";
 import { msg } from "./i18n.js";
 import {
@@ -44,6 +72,7 @@ import {
   saveEncryptedRecovery
 } from "./studio-recovery.js";
 import { deterministicLayout, initialStudioState, studioReducer } from "./studio-reducer.js";
+import "./StudioPage.css";
 
 const nodeKinds: readonly WorkflowDefinitionNode["kind"][] = [
   "trigger",
@@ -58,7 +87,104 @@ const nodeKinds: readonly WorkflowDefinitionNode["kind"][] = [
   "integration_action"
 ];
 
-const readableKind = (kind: WorkflowDefinitionNode["kind"]) => kind.replaceAll("_", " ");
+const kindLabel = (kind: WorkflowDefinitionNode["kind"]): string => {
+  switch (kind) {
+    case "trigger":
+      return msg("canvas.kind.trigger");
+    case "human":
+      return msg("canvas.kind.human");
+    case "agent":
+      return msg("canvas.kind.agent");
+    case "approval":
+      return msg("canvas.kind.approval");
+    case "condition":
+      return msg("canvas.kind.condition");
+    case "delay":
+      return msg("canvas.kind.delay");
+    case "loop":
+      return msg("canvas.kind.loop");
+    case "subworkflow":
+      return msg("canvas.kind.subworkflow");
+    case "transform":
+      return msg("canvas.kind.transform");
+    case "integration_action":
+      return msg("canvas.kind.integrationaction");
+  }
+};
+
+const studioIconByKind: Record<WorkflowDefinitionNode["kind"], LucideIcon> = {
+  trigger: CircleDot,
+  human: UserRound,
+  agent: Bot,
+  approval: ShieldCheck,
+  condition: GitBranch,
+  delay: Clock3,
+  loop: Repeat2,
+  subworkflow: Network,
+  transform: Braces,
+  integration_action: PlugZap
+};
+
+type StudioNodeData = {
+  readonly label: string;
+  readonly kind: WorkflowDefinitionNode["kind"];
+  readonly disabled: boolean;
+};
+
+function StudioCanvasNode({ data, selected }: NodeProps<Node<StudioNodeData>>) {
+  const Icon = studioIconByKind[data.kind];
+  return (
+    <article
+      className={`studio-operation-node${selected ? " is-selected" : ""}${data.disabled ? " is-disabled" : ""}`}
+    >
+      <Handle type="target" position={Position.Left} />
+      <span className="studio-operation-kind">
+        <Icon aria-hidden="true" />
+        {kindLabel(data.kind)}
+      </span>
+      <strong>{data.label}</strong>
+      <Handle type="source" position={Position.Right} />
+    </article>
+  );
+}
+
+const studioNodeTypes = { operation: StudioCanvasNode };
+
+function safeTestFixture(definition: WorkflowDraft["definition"]) {
+  const humanSubmissions = Object.fromEntries(
+    definition.nodes
+      .filter(({ kind }) => kind === "human")
+      .map(({ key }) => [key, { status: "submitted", source: "controlled_safe_test" }])
+  );
+  const agentOutputs = Object.fromEntries(
+    definition.nodes
+      .filter(({ kind }) => kind === "agent")
+      .map(({ key }) => [key, { status: "completed", source: "controlled_safe_test" }])
+  );
+  const connectorOutputs = Object.fromEntries(
+    definition.nodes
+      .filter(({ kind }) => kind === "integration_action")
+      .map(({ key }) => [key, { status: "simulated", externalWrite: false }])
+  );
+  const healthyConnections = definition.nodes
+    .filter(({ kind }) => kind === "integration_action")
+    .map(({ configuration }) => configuration.connectionRef)
+    .filter((value): value is string => typeof value === "string");
+  return {
+    input: { source: "workflow_studio_safe_test" },
+    humanSubmissions,
+    agentOutputs,
+    connectorOutputs,
+    permissions: ["workflow.run"],
+    entitlements: ["workflows"],
+    healthyConnections,
+    budgetMinor: Math.max(
+      100,
+      definition.nodes.filter(({ kind }) => kind === "agent").length * 100
+    ),
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"
+  };
+}
 
 function createNode(kind: WorkflowDefinitionNode["kind"], index: number): WorkflowDefinitionNode {
   const configuration =
@@ -78,7 +204,7 @@ function createNode(kind: WorkflowDefinitionNode["kind"], index: number): Workfl
   return {
     key: `${kind}_${index}`,
     kind,
-    name: `${readableKind(kind)} ${index}`,
+    name: `${kindLabel(kind)} ${index}`,
     description: "",
     position: { x: 120 + (index % 4) * 260, y: 100 + Math.floor(index / 4) * 180 },
     configuration
@@ -118,6 +244,7 @@ function StudioRoute() {
 }
 
 function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
+  const [searchParams] = useSearchParams();
   const [state, dispatch] = useReducer(
     studioReducer,
     initialStudioState(initialDraft.definition, initialDraft.revision)
@@ -132,8 +259,21 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
   const [recoveryAvailable, setRecoveryAvailable] = useState(false);
   const [conflictServer, setConflictServer] = useState<WorkflowDraft>();
   const [conflictSections, setConflictSections] = useState<readonly string[]>([]);
+  const [showPublishReview, setShowPublishReview] = useState(
+    () => searchParams.get("review") === "publish"
+  );
+  const [reviewValidation, setReviewValidation] =
+    useState<Awaited<ReturnType<typeof validateWorkflowDraft>>>();
+  const [safeTest, setSafeTest] = useState<Awaited<ReturnType<typeof dryRunWorkflowDefinition>>>();
+  const [releaseNote, setReleaseNote] = useState("");
+  const [reviewAction, setReviewAction] = useState<
+    "validating" | "testing" | "publishing" | undefined
+  >();
+  const [reviewError, setReviewError] = useState("");
+  const [published, setPublished] = useState<Awaited<ReturnType<typeof publishWorkflowDraft>>>();
   const saveTimer = useRef<number | undefined>(undefined);
   const fitView = useRef<(() => void) | undefined>(undefined);
+  const flowInstance = useRef<ReactFlowInstance<Node<StudioNodeData>, Edge> | undefined>(undefined);
   const savedSnapshot = useRef(JSON.stringify(initialDraft.definition));
   const baseDefinition = useRef(initialDraft.definition);
 
@@ -168,6 +308,65 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
   });
   const saveDraft = useCallback(() => save.mutate(state.definition), [save, state.definition]);
 
+  const openPublishReview = () => {
+    setReviewValidation(undefined);
+    setSafeTest(undefined);
+    setReviewError("");
+    setShowPublishReview(true);
+  };
+
+  const validateForRelease = async () => {
+    setReviewAction("validating");
+    setReviewError("");
+    setSafeTest(undefined);
+    try {
+      if (JSON.stringify(state.definition) !== savedSnapshot.current)
+        await save.mutateAsync(state.definition);
+      const result = await validateWorkflowDraft(serverDraft.workflowId);
+      setReviewValidation(result);
+    } catch (reason) {
+      setReviewError(reason instanceof Error ? reason.message : String(reason));
+    } finally {
+      setReviewAction(undefined);
+    }
+  };
+
+  const runSafeTest = async () => {
+    setReviewAction("testing");
+    setReviewError("");
+    try {
+      const result = await dryRunWorkflowDefinition(
+        state.definition,
+        safeTestFixture(state.definition)
+      );
+      setSafeTest(result);
+    } catch (reason) {
+      setReviewError(reason instanceof Error ? reason.message : String(reason));
+    } finally {
+      setReviewAction(undefined);
+    }
+  };
+
+  const publishRelease = async () => {
+    if (!reviewValidation?.valid || !safeTest?.preflight.allowed || releaseNote.trim().length < 3)
+      return;
+    setReviewAction("publishing");
+    setReviewError("");
+    try {
+      const result = await publishWorkflowDraft(
+        serverDraft.workflowId,
+        serverDraft.revision,
+        releaseNote.trim()
+      );
+      setPublished(result);
+      if (!result.published) setReviewValidation({ valid: false, findings: result.findings });
+    } catch (reason) {
+      setReviewError(reason instanceof Error ? reason.message : String(reason));
+    } finally {
+      setReviewAction(undefined);
+    }
+  };
+
   useEffect(() => {
     void loadEncryptedRecovery(serverDraft.workflowId).then((recovery) =>
       setRecoveryAvailable(Boolean(recovery))
@@ -180,6 +379,15 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
     saveTimer.current = window.setTimeout(() => saveDraft(), 900);
     return () => window.clearTimeout(saveTimer.current);
   }, [saveDraft, serverDraft.revision, state.definition]);
+
+  useEffect(() => {
+    if (!showPublishReview) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !reviewAction && !published) setShowPublishReview(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [published, reviewAction, showPublishReview]);
 
   useEffect(() => {
     const keyboard = (event: KeyboardEvent) => {
@@ -220,8 +428,19 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
   }[displayedStatus];
 
   const focusFinding = (finding: (typeof findings)[number]) => {
-    if (finding.location.type === "node" && finding.location.key)
+    if (finding.location.type === "node" && finding.location.key) {
       dispatch({ type: "select_node", key: finding.location.key });
+      const node = state.definition.nodes.find(({ key }) => key === finding.location.key);
+      if (node)
+        window.setTimeout(
+          () =>
+            void flowInstance.current?.setCenter(node.position.x + 109, node.position.y + 45, {
+              zoom: 0.9,
+              duration: 350
+            }),
+          0
+        );
+    }
     if (finding.location.type === "edge" && finding.location.key)
       dispatch({ type: "select_edge", key: finding.location.key });
     window.setTimeout(
@@ -271,16 +490,19 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
 
   const selectedNode = state.definition.nodes.find(({ key }) => key === state.selectedNodeKeys[0]);
   const selectedEdge = state.definition.edges.find(({ key }) => key === state.selectedEdgeKey);
-  const nodes: Node[] = useMemo(
+  const nodes: Node<StudioNodeData>[] = useMemo(
     () =>
       state.definition.nodes.map((node) => ({
         id: node.key,
+        type: "operation",
         position: node.position,
-        data: { label: `${node.name} · ${readableKind(node.kind)}` },
+        data: {
+          label: node.name,
+          kind: node.kind,
+          disabled: node.configuration.disabled === true
+        },
         selected: state.selectedNodeKeys.includes(node.key),
-        className: node.configuration.disabled
-          ? "studio-node-disabled"
-          : `studio-node studio-node-${node.kind}`
+        className: `studio-node studio-node-${node.kind}`
       })),
     [state.definition.nodes, state.selectedNodeKeys]
   );
@@ -292,7 +514,8 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
         target: edge.target,
         label: edge.condition,
         selected: edge.key === state.selectedEdgeKey,
-        markerEnd: { type: MarkerType.ArrowClosed }
+        markerEnd: { type: MarkerType.ArrowClosed },
+        style: { stroke: "#80918c", strokeWidth: 1.5 }
       })),
     [state.definition.edges, state.selectedEdgeKey]
   );
@@ -329,13 +552,36 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
   return (
     <>
       <header className="studio-header">
-        <div>
-          <Link to={`/app/workflows/${serverDraft.workflowId}`}>{msg("studio.back")}</Link>
-          <h1>{state.definition.name}</h1>
+        <div className="studio-title-block">
+          <Link className="studio-back-link" to="/app/workflows">
+            <ArrowLeft aria-hidden="true" />
+            {msg("studio.back.library")}
+          </Link>
+          <div className="studio-title-row">
+            <div>
+              <span className="studio-kicker">{msg("studio.kicker")}</span>
+              <h1>{state.definition.name}</h1>
+            </div>
+            <Badge tone="neutral">
+              {msg("studio.draft.version", {
+                revision: serverDraft.revision,
+                version: serverDraft.version
+              })}
+            </Badge>
+          </div>
+          <div className="studio-header-metrics" aria-label={msg("studio.summary")}>
+            <span>{msg("studio.summary.steps", { count: state.definition.nodes.length })}</span>
+            <span>{msg("studio.summary.paths", { count: state.definition.edges.length })}</span>
+            <span
+              className={`studio-save-state studio-save-state-${displayedStatus}`}
+              role="status"
+            >
+              <i aria-hidden="true" />
+              {statusMessage}
+            </span>
+          </div>
         </div>
-        <div className="studio-status" role="status">
-          <span className={`studio-status-${displayedStatus}`} />
-          {statusMessage}
+        <div className="studio-header-actions">
           {recoveryAvailable ? (
             <Button onClick={() => void recoverLocal()}>{msg("studio.recovery.available")}</Button>
           ) : null}
@@ -347,25 +593,13 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
               </Button>
             </>
           ) : null}
-        </div>
-        <div className="action-row">
-          <Button
-            onClick={() => dispatch({ type: "undo" })}
-            disabled={state.past.length === 0}
-            aria-label={msg("studio.undo")}
-          >
-            <Undo2 aria-hidden="true" />
-          </Button>
-          <Button
-            onClick={() => dispatch({ type: "redo" })}
-            disabled={state.future.length === 0}
-            aria-label={msg("studio.redo")}
-          >
-            <Redo2 aria-hidden="true" />
-          </Button>
-          <Button onClick={saveDraft}>
+          <Button onClick={saveDraft} disabled={status === "saving"}>
             <Save aria-hidden="true" />
             {msg("studio.save")}
+          </Button>
+          <Button tone="accent" onClick={openPublishReview} disabled={status !== "saved"}>
+            <Rocket aria-hidden="true" />
+            {msg("studio.review.publish")}
           </Button>
         </div>
       </header>
@@ -380,6 +614,20 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
         </aside>
       ) : null}
       <div className="studio-toolbar" role="toolbar" aria-label={msg("studio.toolbar")}>
+        <Button
+          onClick={() => dispatch({ type: "undo" })}
+          disabled={state.past.length === 0}
+          aria-label={msg("studio.undo")}
+        >
+          <Undo2 aria-hidden="true" />
+        </Button>
+        <Button
+          onClick={() => dispatch({ type: "redo" })}
+          disabled={state.future.length === 0}
+          aria-label={msg("studio.redo")}
+        >
+          <Redo2 aria-hidden="true" />
+        </Button>
         <Button onClick={() => setShowOutline((value) => !value)}>
           <ListTree aria-hidden="true" />
           {msg("studio.outline")}
@@ -435,6 +683,13 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
       </div>
       <div className={`studio-layout ${showOutline ? "studio-layout-outline" : ""}`}>
         <aside className="studio-palette" aria-label={msg("studio.palette")}>
+          <div className="studio-panel-heading">
+            <div>
+              <span>{msg("studio.palette.eyebrow")}</span>
+              <h2>{msg("studio.palette.heading")}</h2>
+            </div>
+            <Plus aria-hidden="true" />
+          </div>
           <label>
             <Search aria-hidden="true" />
             <span className="sr-only">{msg("studio.palette.search")}</span>
@@ -445,23 +700,39 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             />
           </label>
           {nodeKinds
-            .filter((kind) => readableKind(kind).includes(palette.toLowerCase()))
+            .filter((kind) => kindLabel(kind).toLowerCase().includes(palette.toLowerCase()))
             .map((kind) => (
-              <Button key={kind} onClick={() => addNode(kind)}>
+              <Button className="studio-palette-item" key={kind} onClick={() => addNode(kind)}>
+                {(() => {
+                  const Icon = studioIconByKind[kind];
+                  return <Icon aria-hidden="true" />;
+                })()}
+                <span>
+                  <strong>{kindLabel(kind)}</strong>
+                  <small>{msg("studio.palette.add")}</small>
+                </span>
                 <Plus aria-hidden="true" />
-                {readableKind(kind)}
               </Button>
             ))}
         </aside>
         <section className="studio-canvas" aria-label={msg("studio.canvas")}>
+          <div className="studio-canvas-heading">
+            <div>
+              <span>{msg("studio.canvas.eyebrow")}</span>
+              <strong>{msg("studio.canvas.heading")}</strong>
+            </div>
+            <span>{msg("studio.canvas.hint")}</span>
+          </div>
           <ReactFlow
             nodes={nodes}
             edges={edges}
+            nodeTypes={studioNodeTypes}
             onlyRenderVisibleElements
             fitView
             minZoom={0.2}
             maxZoom={2}
             onInit={(instance) => {
+              flowInstance.current = instance;
               fitView.current = () => void instance.fitView({ padding: 0.2 });
             }}
             onNodeClick={(event, node) =>
@@ -519,11 +790,24 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
                     className={state.selectedNodeKeys.includes(node.key) ? "selected" : ""}
                   >
                     <td>
-                      <button onClick={() => dispatch({ type: "select_node", key: node.key })}>
+                      <button
+                        onClick={() => {
+                          dispatch({ type: "select_node", key: node.key });
+                          window.setTimeout(
+                            () =>
+                              void flowInstance.current?.setCenter(
+                                node.position.x + 109,
+                                node.position.y + 45,
+                                { zoom: 0.9, duration: 350 }
+                              ),
+                            0
+                          );
+                        }}
+                      >
                         {node.name}
                       </button>
                     </td>
-                    <td>{readableKind(node.kind)}</td>
+                    <td>{kindLabel(node.kind)}</td>
                     <td>
                       <Button
                         onClick={() => dispatch({ type: "duplicate_nodes", keys: [node.key] })}
@@ -555,6 +839,37 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
           </section>
         ) : null}
         <aside className="studio-inspector" aria-label={msg("studio.inspector")}>
+          <div className="studio-panel-heading">
+            <div>
+              <span>{msg("studio.inspector.eyebrow")}</span>
+              <h2>{msg("studio.inspector.heading")}</h2>
+            </div>
+            <PencilLine aria-hidden="true" />
+          </div>
+          <details className="studio-workflow-settings">
+            <summary>{msg("studio.workflow.settings")}</summary>
+            <label>
+              {msg("studio.workflow.name")}
+              <input
+                value={state.definition.name}
+                onChange={(event) =>
+                  dispatch({ type: "update_workflow", patch: { name: event.target.value } })
+                }
+              />
+            </label>
+            <label>
+              {msg("studio.workflow.description")}
+              <textarea
+                value={state.definition.description}
+                onChange={(event) =>
+                  dispatch({
+                    type: "update_workflow",
+                    patch: { description: event.target.value }
+                  })
+                }
+              />
+            </label>
+          </details>
           {selectedNode ? (
             <NodeInspector
               node={selectedNode}
@@ -600,6 +915,184 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
           )}
         </section>
       </div>
+      {showPublishReview ? (
+        <div className="studio-review-backdrop" role="presentation">
+          <section
+            aria-labelledby="studio-review-heading"
+            aria-modal="true"
+            className="studio-review-dialog"
+            role="dialog"
+          >
+            {published?.published ? (
+              <div className="studio-publish-success" aria-live="polite">
+                <span aria-hidden="true">
+                  <CheckCircle2 />
+                </span>
+                <Badge tone="accent">{msg("studio.publish.success.badge")}</Badge>
+                <h2 id="studio-review-heading">{msg("studio.publish.success.heading")}</h2>
+                <p>
+                  {msg("studio.publish.success.body", {
+                    version: published.publishedVersion ?? serverDraft.version
+                  })}
+                </p>
+                <div className="studio-publish-receipt">
+                  <div>
+                    <span>{msg("studio.publish.receipt.version")}</span>
+                    <strong>v{published.publishedVersion ?? serverDraft.version}</strong>
+                  </div>
+                  <div>
+                    <span>{msg("studio.publish.receipt.next")}</span>
+                    <strong>v{published.nextDraftVersion ?? serverDraft.version + 1}</strong>
+                  </div>
+                  <div>
+                    <span>{msg("studio.publish.receipt.writes")}</span>
+                    <strong>{safeTest?.externalWrites ?? 0}</strong>
+                  </div>
+                </div>
+                <div className="action-row">
+                  <Link className="primary-button" to={`/app/workflows/${serverDraft.workflowId}`}>
+                    {msg("studio.publish.success.view")}
+                  </Link>
+                  <Link className="secondary-button" to="/app/workflows">
+                    {msg("studio.publish.success.library")}
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <>
+                <header className="studio-review-header">
+                  <div>
+                    <span className="studio-kicker">{msg("studio.review.kicker")}</span>
+                    <h2 id="studio-review-heading">{msg("studio.review.heading")}</h2>
+                    <p>{msg("studio.review.body")}</p>
+                  </div>
+                  <Button
+                    aria-label={msg("studio.review.close")}
+                    onClick={() => setShowPublishReview(false)}
+                    disabled={Boolean(reviewAction)}
+                  >
+                    <X aria-hidden="true" />
+                  </Button>
+                </header>
+                <div className="studio-review-summary">
+                  <div>
+                    <span>
+                      {msg("studio.summary.steps", { count: state.definition.nodes.length })}
+                    </span>
+                    <strong>{state.definition.nodes.length}</strong>
+                  </div>
+                  <div>
+                    <span>
+                      {msg("studio.summary.paths", { count: state.definition.edges.length })}
+                    </span>
+                    <strong>{state.definition.edges.length}</strong>
+                  </div>
+                  <div>
+                    <span>{msg("studio.draft.label")}</span>
+                    <strong>v{serverDraft.version}</strong>
+                  </div>
+                </div>
+                <ol className="studio-release-checklist">
+                  <li className={reviewValidation?.valid ? "is-complete" : ""}>
+                    <span aria-hidden="true">{reviewValidation?.valid ? <Check /> : "1"}</span>
+                    <div>
+                      <strong>{msg("studio.review.validate.heading")}</strong>
+                      <p>{msg("studio.review.validate.body")}</p>
+                      {reviewValidation ? (
+                        <small role="status">
+                          {reviewValidation.valid
+                            ? msg("studio.review.validate.passed")
+                            : msg("studio.review.validate.blocked", {
+                                count: reviewValidation.findings.length
+                              })}
+                        </small>
+                      ) : null}
+                    </div>
+                    <Button
+                      onClick={() => void validateForRelease()}
+                      disabled={Boolean(reviewAction)}
+                    >
+                      <CheckCircle2 aria-hidden="true" />
+                      {reviewAction === "validating"
+                        ? msg("studio.review.validating")
+                        : msg("studio.review.validate.action")}
+                    </Button>
+                  </li>
+                  <li className={safeTest?.preflight.allowed ? "is-complete" : ""}>
+                    <span aria-hidden="true">{safeTest?.preflight.allowed ? <Check /> : "2"}</span>
+                    <div>
+                      <strong>{msg("studio.review.test.heading")}</strong>
+                      <p>{msg("studio.review.test.body")}</p>
+                      {safeTest ? (
+                        <small role="status">
+                          {msg("studio.review.test.passed", {
+                            checks: safeTest.preflight.checks.filter(({ passed }) => passed).length,
+                            steps: safeTest.steps.length,
+                            writes: safeTest.externalWrites
+                          })}
+                        </small>
+                      ) : null}
+                    </div>
+                    <Button
+                      onClick={() => void runSafeTest()}
+                      disabled={!reviewValidation?.valid || Boolean(reviewAction)}
+                    >
+                      <FlaskConical aria-hidden="true" />
+                      {reviewAction === "testing"
+                        ? msg("studio.review.testing")
+                        : msg("studio.review.test.action")}
+                    </Button>
+                  </li>
+                  <li className={releaseNote.trim().length >= 3 ? "is-complete" : ""}>
+                    <span aria-hidden="true">
+                      {releaseNote.trim().length >= 3 ? <Check /> : "3"}
+                    </span>
+                    <div className="studio-release-note">
+                      <strong>{msg("studio.review.note.heading")}</strong>
+                      <p>{msg("studio.review.note.body")}</p>
+                      <label>
+                        <span className="sr-only">{msg("studio.review.note.label")}</span>
+                        <textarea
+                          value={releaseNote}
+                          maxLength={2000}
+                          onChange={(event) => setReleaseNote(event.target.value)}
+                          placeholder={msg("studio.review.note.placeholder")}
+                        />
+                      </label>
+                    </div>
+                  </li>
+                </ol>
+                {reviewError ? (
+                  <p className="studio-review-error" role="alert">
+                    {reviewError}
+                  </p>
+                ) : null}
+                <footer className="studio-review-footer">
+                  <div>
+                    <strong>{msg("studio.review.ready.heading")}</strong>
+                    <span>{msg("studio.review.ready.body")}</span>
+                  </div>
+                  <Button
+                    tone="accent"
+                    onClick={() => void publishRelease()}
+                    disabled={
+                      !reviewValidation?.valid ||
+                      !safeTest?.preflight.allowed ||
+                      releaseNote.trim().length < 3 ||
+                      Boolean(reviewAction)
+                    }
+                  >
+                    <Rocket aria-hidden="true" />
+                    {reviewAction === "publishing"
+                      ? msg("studio.review.publishing")
+                      : msg("studio.review.publish.action")}
+                  </Button>
+                </footer>
+              </>
+            )}
+          </section>
+        </div>
+      ) : null}
       {showHelp ? (
         <div className="studio-help-backdrop" role="presentation">
           <Card
@@ -643,7 +1136,7 @@ function NodeInspector({
 }) {
   return (
     <Card className="studio-inspector-card">
-      <Badge tone="accent">{readableKind(node.kind)}</Badge>
+      <Badge tone="accent">{kindLabel(node.kind)}</Badge>
       <h2>{msg("studio.node.inspector")}</h2>
       <label>
         {msg("studio.node.name")}

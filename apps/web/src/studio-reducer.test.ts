@@ -42,6 +42,10 @@ describe("workflow studio command reducer", () => {
   it("supports add, update, connect, split, disable, group, and cascading delete", () => {
     let state = initialStudioState(definition, 1);
     state = studioReducer(state, {
+      type: "update_workflow",
+      patch: { name: "Customer recovery", description: "Coordinate recovery work." }
+    });
+    state = studioReducer(state, {
       type: "add_node",
       node: {
         key: "approve",
@@ -81,6 +85,10 @@ describe("workflow studio command reducer", () => {
       }
     });
     expect(state.definition.nodes).toHaveLength(4);
+    expect(state.definition).toMatchObject({
+      name: "Customer recovery",
+      description: "Coordinate recovery work."
+    });
     expect(state.definition.edges).toHaveLength(3);
     expect(
       state.definition.nodes.find(({ key }) => key === "approve")?.configuration

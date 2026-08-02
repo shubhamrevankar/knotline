@@ -267,17 +267,23 @@ export function App() {
             </article>
             <article>
               <span>{msg("customer.metrics.runs")}</span>
-              <strong>{i18n.number(workflows.reduce((sum, item) => sum + item.activeRuns, 0))}</strong>
+              <strong>
+                {i18n.number(workflows.reduce((sum, item) => sum + item.activeRuns, 0))}
+              </strong>
               <small>{msg("customer.metrics.runsdetail")}</small>
             </article>
             <article>
               <span>{msg("customer.metrics.drafts")}</span>
-              <strong>{i18n.number(workflows.filter((item) => item.status === "draft").length)}</strong>
+              <strong>
+                {i18n.number(workflows.filter((item) => item.status === "draft").length)}
+              </strong>
               <small>{msg("customer.metrics.draftsdetail")}</small>
             </article>
             <article>
               <span>{msg("customer.metrics.steps")}</span>
-              <strong>{i18n.number(workflows.reduce((sum, item) => sum + item.nodeCount, 0))}</strong>
+              <strong>
+                {i18n.number(workflows.reduce((sum, item) => sum + item.nodeCount, 0))}
+              </strong>
               <small>{msg("customer.metrics.stepsdetail")}</small>
             </article>
           </div>
@@ -346,7 +352,10 @@ export function App() {
                       <h2 id="selected-workflow-heading">{workflow.name}</h2>
                     </div>
                     <div className="canvas-actions">
-                      <Link className="secondary-button" to={`/app/workflows/${workflow.id}`}>
+                      <Link
+                        className="workflow-edit-button"
+                        to={`/app/workflows/${workflow.id}/studio`}
+                      >
                         {msg("customer.map.edit")}
                       </Link>
                       <button

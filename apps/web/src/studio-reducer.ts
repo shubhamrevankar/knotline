@@ -18,6 +18,10 @@ export interface StudioState {
 export type StudioCommand =
   | { type: "select_node"; key: string; additive?: boolean }
   | { type: "select_edge"; key: string }
+  | {
+      type: "update_workflow";
+      patch: Partial<Pick<WorkflowDefinition, "name" | "description">>;
+    }
   | { type: "add_node"; node: WorkflowDefinitionNode }
   | { type: "update_node"; key: string; patch: Partial<WorkflowDefinitionNode> }
   | { type: "move_node"; key: string; position: { x: number; y: number } }
@@ -97,6 +101,8 @@ export function studioReducer(state: StudioState, command: StudioCommand): Studi
       };
     case "select_edge":
       return { ...state, selectedNodeKeys: [], selectedEdgeKey: command.key };
+    case "update_workflow":
+      return commit(state, { ...state.definition, ...command.patch });
     case "add_node":
       return {
         ...commit(state, { ...state.definition, nodes: [...state.definition.nodes, command.node] }),

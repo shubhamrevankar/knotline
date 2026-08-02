@@ -23,19 +23,6 @@ import {
   SignInPage
 } from "./AuthPages.js";
 import { msg } from "./i18n.js";
-import {
-  InvitationAcceptPage,
-  MembersPage,
-  OnboardingPage,
-  RolesPage,
-  WorkspaceSettingsPage
-} from "./M05Pages.js";
-import {
-  TemplatesPage,
-  WorkflowDetailPage,
-  WorkflowSettingsPage,
-  WorkflowVersionsPage
-} from "./M06Pages.js";
 import { WEB_ROUTE_MANIFEST, type WebRouteManifestEntry } from "./routes/manifest.js";
 
 const WorkflowApp = lazy(async () => {
@@ -57,6 +44,42 @@ const GuidedWorkflowPage = lazy(async () => {
   const module = await import("./GuidedWorkflowCreate.js");
   return { default: module.GuidedWorkflowPage };
 });
+
+const WorkflowDetailPage = lazy(async () => ({
+  default: (await import("./M06Pages.js")).WorkflowDetailPage
+}));
+
+const WorkflowSettingsPage = lazy(async () => ({
+  default: (await import("./M06Pages.js")).WorkflowSettingsPage
+}));
+
+const WorkflowVersionsPage = lazy(async () => ({
+  default: (await import("./M06Pages.js")).WorkflowVersionsPage
+}));
+
+const TemplatesPage = lazy(async () => ({
+  default: (await import("./M06Pages.js")).TemplatesPage
+}));
+
+const InvitationAcceptPage = lazy(async () => ({
+  default: (await import("./M05Pages.js")).InvitationAcceptPage
+}));
+
+const MembersPage = lazy(async () => ({
+  default: (await import("./M05Pages.js")).MembersPage
+}));
+
+const OnboardingPage = lazy(async () => ({
+  default: (await import("./M05Pages.js")).OnboardingPage
+}));
+
+const RolesPage = lazy(async () => ({
+  default: (await import("./M05Pages.js")).RolesPage
+}));
+
+const WorkspaceSettingsPage = lazy(async () => ({
+  default: (await import("./M05Pages.js")).WorkspaceSettingsPage
+}));
 
 const RunsPage = lazy(async () => {
   const module = await import("./M11Pages.js");
@@ -265,12 +288,17 @@ function useMetadata(title: string, noIndex = false) {
 }
 
 function ConsentBanner() {
+  const storage =
+    typeof globalThis.localStorage?.getItem === "function" &&
+    typeof globalThis.localStorage?.setItem === "function"
+      ? globalThis.localStorage
+      : null;
   const [preference, setPreference] = useState<ConsentPreference | null>(() =>
-    globalThis.localStorage ? readConsent(globalThis.localStorage) : "essential"
+    storage ? readConsent(storage) : "essential"
   );
   if (preference) return null;
   const choose = (value: ConsentPreference) => {
-    if (globalThis.localStorage) writeConsent(globalThis.localStorage, value);
+    if (storage) writeConsent(storage, value);
     setPreference(value);
   };
   return (
@@ -636,11 +664,36 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
     );
   if (route.id === "route.app.profile.sessions") return <SessionsPage />;
   if (route.id === "route.app.profile") return <ProfilePage />;
-  if (route.id === "route.app.onboarding") return <OnboardingPage />;
-  if (route.id === "route.app.settings.workspace") return <WorkspaceSettingsPage />;
-  if (route.id === "route.app.settings.members") return <MembersPage />;
-  if (route.id === "route.app.settings.roles") return <RolesPage />;
-  if (route.id === "route.app.workflows.detail") return <WorkflowDetailPage />;
+  if (route.id === "route.app.onboarding")
+    return (
+      <Suspense fallback={<Skeleton label={msg("app.loading.workspace")} />}>
+        <OnboardingPage />
+      </Suspense>
+    );
+  if (route.id === "route.app.settings.workspace")
+    return (
+      <Suspense fallback={<Skeleton label={msg("app.loading.workspace")} />}>
+        <WorkspaceSettingsPage />
+      </Suspense>
+    );
+  if (route.id === "route.app.settings.members")
+    return (
+      <Suspense fallback={<Skeleton label={msg("app.loading.workspace")} />}>
+        <MembersPage />
+      </Suspense>
+    );
+  if (route.id === "route.app.settings.roles")
+    return (
+      <Suspense fallback={<Skeleton label={msg("app.loading.workspace")} />}>
+        <RolesPage />
+      </Suspense>
+    );
+  if (route.id === "route.app.workflows.detail")
+    return (
+      <Suspense fallback={<Skeleton label={msg("studio.loading")} />}>
+        <WorkflowDetailPage />
+      </Suspense>
+    );
   if (route.id === "route.app.workflows.new")
     return (
       <Suspense fallback={<Skeleton label={msg("generation.loading")} />}>
@@ -653,14 +706,27 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
         <WorkflowStudio />
       </Suspense>
     );
-  if (route.id === "route.app.workflows.detail.settings") return <WorkflowSettingsPage />;
+  if (route.id === "route.app.workflows.detail.settings")
+    return (
+      <Suspense fallback={<Skeleton label={msg("studio.loading")} />}>
+        <WorkflowSettingsPage />
+      </Suspense>
+    );
   if (
     route.id === "route.app.workflows.detail.versions" ||
     route.id === "route.app.workflows.detail.versions.detail"
   )
-    return <WorkflowVersionsPage />;
+    return (
+      <Suspense fallback={<Skeleton label={msg("studio.loading")} />}>
+        <WorkflowVersionsPage />
+      </Suspense>
+    );
   if (route.id === "route.app.templates" || route.id === "route.app.templates.detail")
-    return <TemplatesPage />;
+    return (
+      <Suspense fallback={<Skeleton label={msg("studio.loading")} />}>
+        <TemplatesPage />
+      </Suspense>
+    );
   if (route.id === "route.app.runs")
     return (
       <AuthGate>
@@ -1065,7 +1131,12 @@ function CanonicalRoute({ route }: { route: WebRouteManifestEntry }) {
   if (route.id === "route.auth.check-email") return <CheckEmailPage />;
   if (route.id === "route.auth.magic.callback") return <MagicCallbackPage />;
   if (route.id === "route.auth.google.callback") return <GoogleCallbackPage />;
-  if (route.id === "route.invitations.accept") return <InvitationAcceptPage />;
+  if (route.id === "route.invitations.accept")
+    return (
+      <Suspense fallback={<Skeleton label={msg("app.loading.workspace")} />}>
+        <InvitationAcceptPage />
+      </Suspense>
+    );
   if (route.plane === "operator") return <OperatorRoute route={route} />;
   if (route.plane === "customer") return <CustomerRoute route={route} />;
   return <PublicRoute route={route} />;

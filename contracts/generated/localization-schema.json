@@ -29,7 +29,7 @@
       "key": "activity.loading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:787"
+        "apps/web/src/router.tsx:848"
       ]
     },
     {
@@ -162,8 +162,8 @@
       "usedBy": [
         "apps/web/src/M28Pages.tsx:194",
         "apps/web/src/M28Pages.tsx:270",
-        "apps/web/src/router.tsx:899",
-        "apps/web/src/router.tsx:907"
+        "apps/web/src/router.tsx:960",
+        "apps/web/src/router.tsx:968"
       ]
     },
     {
@@ -274,9 +274,14 @@
       "key": "app.loading.workspace",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:333",
-        "apps/web/src/App.tsx:368",
-        "apps/web/src/router.tsx:632"
+        "apps/web/src/App.tsx:339",
+        "apps/web/src/App.tsx:377",
+        "apps/web/src/router.tsx:1131",
+        "apps/web/src/router.tsx:655",
+        "apps/web/src/router.tsx:664",
+        "apps/web/src/router.tsx:670",
+        "apps/web/src/router.tsx:676",
+        "apps/web/src/router.tsx:682"
       ]
     },
     {
@@ -660,7 +665,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/M29Pages.tsx:39",
-        "apps/web/src/router.tsx:915"
+        "apps/web/src/router.tsx:976"
       ]
     },
     {
@@ -764,10 +769,10 @@
         "apps/web/src/AuthPages.tsx:38",
         "apps/web/src/M05Pages.tsx:46",
         "apps/web/src/M11Pages.tsx:53",
-        "apps/web/src/router.tsx:299",
-        "apps/web/src/router.tsx:314",
-        "apps/web/src/router.tsx:368",
-        "apps/web/src/router.tsx:987"
+        "apps/web/src/router.tsx:1048",
+        "apps/web/src/router.tsx:322",
+        "apps/web/src/router.tsx:337",
+        "apps/web/src/router.tsx:391"
       ]
     },
     {
@@ -790,6 +795,7 @@
       "key": "canvas.kind.agent",
       "placeholders": [],
       "usedBy": [
+        "apps/web/src/StudioPage.tsx:97",
         "apps/web/src/WorkflowCanvas.tsx:56"
       ]
     },
@@ -797,6 +803,7 @@
       "key": "canvas.kind.approval",
       "placeholders": [],
       "usedBy": [
+        "apps/web/src/StudioPage.tsx:99",
         "apps/web/src/WorkflowCanvas.tsx:57"
       ]
     },
@@ -804,6 +811,7 @@
       "key": "canvas.kind.condition",
       "placeholders": [],
       "usedBy": [
+        "apps/web/src/StudioPage.tsx:101",
         "apps/web/src/WorkflowCanvas.tsx:58"
       ]
     },
@@ -811,6 +819,7 @@
       "key": "canvas.kind.delay",
       "placeholders": [],
       "usedBy": [
+        "apps/web/src/StudioPage.tsx:103",
         "apps/web/src/WorkflowCanvas.tsx:59"
       ]
     },
@@ -818,6 +827,7 @@
       "key": "canvas.kind.human",
       "placeholders": [],
       "usedBy": [
+        "apps/web/src/StudioPage.tsx:95",
         "apps/web/src/WorkflowCanvas.tsx:60"
       ]
     },
@@ -825,6 +835,7 @@
       "key": "canvas.kind.integrationaction",
       "placeholders": [],
       "usedBy": [
+        "apps/web/src/StudioPage.tsx:111",
         "apps/web/src/WorkflowCanvas.tsx:61"
       ]
     },
@@ -832,6 +843,7 @@
       "key": "canvas.kind.loop",
       "placeholders": [],
       "usedBy": [
+        "apps/web/src/StudioPage.tsx:105",
         "apps/web/src/WorkflowCanvas.tsx:62"
       ]
     },
@@ -839,6 +851,7 @@
       "key": "canvas.kind.subworkflow",
       "placeholders": [],
       "usedBy": [
+        "apps/web/src/StudioPage.tsx:107",
         "apps/web/src/WorkflowCanvas.tsx:63"
       ]
     },
@@ -846,6 +859,7 @@
       "key": "canvas.kind.transform",
       "placeholders": [],
       "usedBy": [
+        "apps/web/src/StudioPage.tsx:109",
         "apps/web/src/WorkflowCanvas.tsx:64"
       ]
     },
@@ -853,6 +867,7 @@
       "key": "canvas.kind.trigger",
       "placeholders": [],
       "usedBy": [
+        "apps/web/src/StudioPage.tsx:93",
         "apps/web/src/WorkflowCanvas.tsx:65"
       ]
     },
@@ -1023,7 +1038,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/CollaborationPanel.tsx:77",
-        "apps/web/src/M06Pages.tsx:190"
+        "apps/web/src/M06Pages.tsx:185"
       ]
     },
     {
@@ -1314,9 +1329,9 @@
         "apps/web/src/M22Pages.tsx:153",
         "apps/web/src/M22Pages.tsx:385",
         "apps/web/src/M22Pages.tsx:54",
-        "apps/web/src/router.tsx:843",
-        "apps/web/src/router.tsx:851",
-        "apps/web/src/router.tsx:859"
+        "apps/web/src/router.tsx:904",
+        "apps/web/src/router.tsx:912",
+        "apps/web/src/router.tsx:920"
       ]
     },
     {
@@ -1559,28 +1574,28 @@
       "key": "consent.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:280"
+        "apps/web/src/router.tsx:303"
       ]
     },
     {
       "key": "consent.essential",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:282"
+        "apps/web/src/router.tsx:305"
       ]
     },
     {
       "key": "consent.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:279"
+        "apps/web/src/router.tsx:302"
       ]
     },
     {
       "key": "consent.measurement",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:284"
+        "apps/web/src/router.tsx:307"
       ]
     },
     {
@@ -1625,63 +1640,63 @@
         "count"
       ],
       "usedBy": [
-        "apps/web/src/App.tsx:291"
+        "apps/web/src/App.tsx:297"
       ]
     },
     {
       "key": "customer.library.group",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:303"
+        "apps/web/src/App.tsx:309"
       ]
     },
     {
       "key": "customer.library.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:289"
+        "apps/web/src/App.tsx:295"
       ]
     },
     {
       "key": "customer.library.settings",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:295"
+        "apps/web/src/App.tsx:301"
       ]
     },
     {
       "key": "customer.map.complete",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:382"
+        "apps/web/src/App.tsx:391"
       ]
     },
     {
       "key": "customer.map.edit",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:350"
+        "apps/web/src/App.tsx:359"
       ]
     },
     {
       "key": "customer.map.legend",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:371"
+        "apps/web/src/App.tsx:380"
       ]
     },
     {
       "key": "customer.map.run",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:359"
+        "apps/web/src/App.tsx:368"
       ]
     },
     {
       "key": "customer.map.running",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:374"
+        "apps/web/src/App.tsx:383"
       ]
     },
     {
@@ -1690,14 +1705,14 @@
         "version"
       ],
       "usedBy": [
-        "apps/web/src/App.tsx:344"
+        "apps/web/src/App.tsx:350"
       ]
     },
     {
       "key": "customer.map.waiting",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:378"
+        "apps/web/src/App.tsx:387"
       ]
     },
     {
@@ -1714,14 +1729,14 @@
       "key": "customer.metrics.drafts",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:274"
+        "apps/web/src/App.tsx:276"
       ]
     },
     {
       "key": "customer.metrics.draftsdetail",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:276"
+        "apps/web/src/App.tsx:280"
       ]
     },
     {
@@ -1749,21 +1764,21 @@
       "key": "customer.metrics.runsdetail",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:271"
+        "apps/web/src/App.tsx:273"
       ]
     },
     {
       "key": "customer.metrics.steps",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:279"
+        "apps/web/src/App.tsx:283"
       ]
     },
     {
       "key": "customer.metrics.stepsdetail",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:281"
+        "apps/web/src/App.tsx:287"
       ]
     },
     {
@@ -1821,7 +1836,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/App.tsx:124",
-        "apps/web/src/router.tsx:984"
+        "apps/web/src/router.tsx:1045"
       ]
     },
     {
@@ -1835,7 +1850,7 @@
       "key": "customer.nav.mobile",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/App.tsx:389"
+        "apps/web/src/App.tsx:398"
       ]
     },
     {
@@ -1843,7 +1858,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/App.tsx:212",
-        "apps/web/src/router.tsx:1002"
+        "apps/web/src/router.tsx:1063"
       ]
     },
     {
@@ -1865,7 +1880,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/App.tsx:29",
-        "apps/web/src/App.tsx:396"
+        "apps/web/src/App.tsx:405"
       ]
     },
     {
@@ -1873,10 +1888,10 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/App.tsx:28",
-        "apps/web/src/App.tsx:392",
+        "apps/web/src/App.tsx:401",
         "apps/web/src/M11Pages.tsx:61",
-        "apps/web/src/router.tsx:623",
-        "apps/web/src/router.tsx:991"
+        "apps/web/src/router.tsx:1052",
+        "apps/web/src/router.tsx:646"
       ]
     },
     {
@@ -1890,21 +1905,21 @@
       "key": "customer.page.planned",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:624"
+        "apps/web/src/router.tsx:647"
       ]
     },
     {
       "key": "customer.route.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:999"
+        "apps/web/src/router.tsx:1060"
       ]
     },
     {
       "key": "customer.route.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:998"
+        "apps/web/src/router.tsx:1059"
       ]
     },
     {
@@ -2011,7 +2026,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/App.tsx:244",
-        "apps/web/src/App.tsx:400"
+        "apps/web/src/App.tsx:409"
       ]
     },
     {
@@ -2027,7 +2042,7 @@
         "count"
       ],
       "usedBy": [
-        "apps/web/src/App.tsx:327"
+        "apps/web/src/App.tsx:333"
       ]
     },
     {
@@ -2036,7 +2051,7 @@
         "count"
       ],
       "usedBy": [
-        "apps/web/src/App.tsx:326"
+        "apps/web/src/App.tsx:332"
       ]
     },
     {
@@ -2099,7 +2114,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/M30Pages.tsx:37",
-        "apps/web/src/router.tsx:931"
+        "apps/web/src/router.tsx:992"
       ]
     },
     {
@@ -2416,7 +2431,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/M18Pages.tsx:35",
-        "apps/web/src/router.tsx:779"
+        "apps/web/src/router.tsx:840"
       ]
     },
     {
@@ -2565,8 +2580,8 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/M19Pages.tsx:165",
-        "apps/web/src/router.tsx:795",
-        "apps/web/src/router.tsx:803"
+        "apps/web/src/router.tsx:856",
+        "apps/web/src/router.tsx:864"
       ]
     },
     {
@@ -2963,7 +2978,7 @@
       "key": "generation.loading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:646"
+        "apps/web/src/router.tsx:694"
       ]
     },
     {
@@ -3393,9 +3408,9 @@
         "apps/web/src/M21Pages.tsx:148",
         "apps/web/src/M21Pages.tsx:202",
         "apps/web/src/M21Pages.tsx:47",
-        "apps/web/src/router.tsx:819",
-        "apps/web/src/router.tsx:827",
-        "apps/web/src/router.tsx:835"
+        "apps/web/src/router.tsx:880",
+        "apps/web/src/router.tsx:888",
+        "apps/web/src/router.tsx:896"
       ]
     },
     {
@@ -3988,8 +4003,8 @@
       "key": "metadata.description",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:246",
-        "apps/web/src/router.tsx:254"
+        "apps/web/src/router.tsx:269",
+        "apps/web/src/router.tsx:277"
       ]
     },
     {
@@ -3998,49 +4013,49 @@
         "title"
       ],
       "usedBy": [
-        "apps/web/src/router.tsx:228"
+        "apps/web/src/router.tsx:251"
       ]
     },
     {
       "key": "nav.docs",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:306"
+        "apps/web/src/router.tsx:329"
       ]
     },
     {
       "key": "nav.open.demo",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:309"
+        "apps/web/src/router.tsx:332"
       ]
     },
     {
       "key": "nav.product",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:302"
+        "apps/web/src/router.tsx:325"
       ]
     },
     {
       "key": "nav.security",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:305"
+        "apps/web/src/router.tsx:328"
       ]
     },
     {
       "key": "nav.solutions",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:303"
+        "apps/web/src/router.tsx:326"
       ]
     },
     {
       "key": "nav.templates",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:304"
+        "apps/web/src/router.tsx:327"
       ]
     },
     {
@@ -4219,7 +4234,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/M27Pages.tsx:267",
-        "apps/web/src/router.tsx:883"
+        "apps/web/src/router.tsx:944"
       ]
     },
     {
@@ -4341,7 +4356,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/M27Pages.tsx:96",
-        "apps/web/src/router.tsx:875"
+        "apps/web/src/router.tsx:936"
       ]
     },
     {
@@ -4554,24 +4569,24 @@
       "key": "operator.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:1057"
+        "apps/web/src/router.tsx:1118"
       ]
     },
     {
       "key": "operator.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:1056"
+        "apps/web/src/router.tsx:1117"
       ]
     },
     {
       "key": "operator.plane",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:1015",
-        "apps/web/src/router.tsx:1024",
-        "apps/web/src/router.tsx:1042",
-        "apps/web/src/router.tsx:1052"
+        "apps/web/src/router.tsx:1076",
+        "apps/web/src/router.tsx:1085",
+        "apps/web/src/router.tsx:1103",
+        "apps/web/src/router.tsx:1113"
       ]
     },
     {
@@ -4580,14 +4595,14 @@
         "milestone"
       ],
       "usedBy": [
-        "apps/web/src/router.tsx:1055"
+        "apps/web/src/router.tsx:1116"
       ]
     },
     {
       "key": "operator.surface",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:1011"
+        "apps/web/src/router.tsx:1072"
       ]
     },
     {
@@ -4694,421 +4709,421 @@
       "key": "public.capability.async",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:611"
+        "apps/web/src/router.tsx:634"
       ]
     },
     {
       "key": "public.capability.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:608"
+        "apps/web/src/router.tsx:631"
       ]
     },
     {
       "key": "public.capability.static",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:612"
+        "apps/web/src/router.tsx:635"
       ]
     },
     {
       "key": "public.feature.context.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:456"
+        "apps/web/src/router.tsx:479"
       ]
     },
     {
       "key": "public.feature.context.title",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:455"
+        "apps/web/src/router.tsx:478"
       ]
     },
     {
       "key": "public.feature.governance.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:451"
+        "apps/web/src/router.tsx:474"
       ]
     },
     {
       "key": "public.feature.governance.title",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:450"
+        "apps/web/src/router.tsx:473"
       ]
     },
     {
       "key": "public.feature.workflow.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:446"
+        "apps/web/src/router.tsx:469"
       ]
     },
     {
       "key": "public.feature.workflow.title",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:445"
+        "apps/web/src/router.tsx:468"
       ]
     },
     {
       "key": "public.footer.accessibility",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:317"
+        "apps/web/src/router.tsx:340"
       ]
     },
     {
       "key": "public.footer.label",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:315"
+        "apps/web/src/router.tsx:338"
       ]
     },
     {
       "key": "public.footer.privacy",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:316"
+        "apps/web/src/router.tsx:339"
       ]
     },
     {
       "key": "public.footer.status",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:318"
+        "apps/web/src/router.tsx:341"
       ]
     },
     {
       "key": "public.home.assurance.approvals",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:350"
+        "apps/web/src/router.tsx:373"
       ]
     },
     {
       "key": "public.home.assurance.history",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:354"
+        "apps/web/src/router.tsx:377"
       ]
     },
     {
       "key": "public.home.assurance.label",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:347"
+        "apps/web/src/router.tsx:370"
       ]
     },
     {
       "key": "public.home.assurance.permissions",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:358"
+        "apps/web/src/router.tsx:381"
       ]
     },
     {
       "key": "public.home.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:337"
+        "apps/web/src/router.tsx:360"
       ]
     },
     {
       "key": "public.home.cta.demo",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:340"
+        "apps/web/src/router.tsx:363"
       ]
     },
     {
       "key": "public.home.cta.product",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:344"
+        "apps/web/src/router.tsx:367"
       ]
     },
     {
       "key": "public.home.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:336"
+        "apps/web/src/router.tsx:359"
       ]
     },
     {
       "key": "public.home.principle.one",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:444"
+        "apps/web/src/router.tsx:467"
       ]
     },
     {
       "key": "public.home.principle.three",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:454"
+        "apps/web/src/router.tsx:477"
       ]
     },
     {
       "key": "public.home.principle.two",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:449"
+        "apps/web/src/router.tsx:472"
       ]
     },
     {
       "key": "public.home.principles",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:441"
+        "apps/web/src/router.tsx:464"
       ]
     },
     {
       "key": "public.home.product.done",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:408"
+        "apps/web/src/router.tsx:431"
       ]
     },
     {
       "key": "public.home.product.event.actor",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:430"
+        "apps/web/src/router.tsx:453"
       ]
     },
     {
       "key": "public.home.product.event.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:431"
+        "apps/web/src/router.tsx:454"
       ]
     },
     {
       "key": "public.home.product.event.initials",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:428"
+        "apps/web/src/router.tsx:451"
       ]
     },
     {
       "key": "public.home.product.event.time",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:433"
+        "apps/web/src/router.tsx:456"
       ]
     },
     {
       "key": "public.home.product.label",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:363"
+        "apps/web/src/router.tsx:386"
       ]
     },
     {
       "key": "public.home.product.live",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:372"
+        "apps/web/src/router.tsx:395"
       ]
     },
     {
       "key": "public.home.product.nav.approvals",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:387"
+        "apps/web/src/router.tsx:410"
       ]
     },
     {
       "key": "public.home.product.nav.label",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:376"
+        "apps/web/src/router.tsx:399"
       ]
     },
     {
       "key": "public.home.product.nav.runs",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:379"
+        "apps/web/src/router.tsx:402"
       ]
     },
     {
       "key": "public.home.product.nav.workflows",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:383"
+        "apps/web/src/router.tsx:406"
       ]
     },
     {
       "key": "public.home.product.ontrack",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:396"
+        "apps/web/src/router.tsx:419"
       ]
     },
     {
       "key": "public.home.product.run",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:393"
+        "apps/web/src/router.tsx:416"
       ]
     },
     {
       "key": "public.home.product.running",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:416"
+        "apps/web/src/router.tsx:439"
       ]
     },
     {
       "key": "public.home.product.step.approval",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:421"
+        "apps/web/src/router.tsx:444"
       ]
     },
     {
       "key": "public.home.product.step.approval.detail",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:422"
+        "apps/web/src/router.tsx:445"
       ]
     },
     {
       "key": "public.home.product.step.controls",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:413"
+        "apps/web/src/router.tsx:436"
       ]
     },
     {
       "key": "public.home.product.step.controls.detail",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:414"
+        "apps/web/src/router.tsx:437"
       ]
     },
     {
       "key": "public.home.product.step.evidence",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:405"
+        "apps/web/src/router.tsx:428"
       ]
     },
     {
       "key": "public.home.product.step.evidence.detail",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:406"
+        "apps/web/src/router.tsx:429"
       ]
     },
     {
       "key": "public.home.product.title",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:394"
+        "apps/web/src/router.tsx:417"
       ]
     },
     {
       "key": "public.home.product.waiting",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:424"
+        "apps/web/src/router.tsx:447"
       ]
     },
     {
       "key": "public.home.promise.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:463"
+        "apps/web/src/router.tsx:486"
       ]
     },
     {
       "key": "public.home.promise.cta",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:465"
+        "apps/web/src/router.tsx:488"
       ]
     },
     {
       "key": "public.home.promise.eyebrow",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:461"
+        "apps/web/src/router.tsx:484"
       ]
     },
     {
       "key": "public.home.promise.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:462"
+        "apps/web/src/router.tsx:485"
       ]
     },
     {
       "key": "public.home.status",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:334"
+        "apps/web/src/router.tsx:357"
       ]
     },
     {
       "key": "public.home.trust.intro",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:442"
+        "apps/web/src/router.tsx:465"
       ]
     },
     {
       "key": "public.nav.primary",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:301"
+        "apps/web/src/router.tsx:324"
       ]
     },
     {
       "key": "public.notfound.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:477"
+        "apps/web/src/router.tsx:500"
       ]
     },
     {
       "key": "public.notfound.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:474",
-        "apps/web/src/router.tsx:476"
+        "apps/web/src/router.tsx:497",
+        "apps/web/src/router.tsx:499"
       ]
     },
     {
       "key": "public.notfound.return",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:478"
+        "apps/web/src/router.tsx:501"
       ]
     },
     {
       "key": "public.page.available",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:602"
+        "apps/web/src/router.tsx:625"
       ]
     },
     {
       "key": "public.page.body.owned",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:606"
+        "apps/web/src/router.tsx:629"
       ]
     },
     {
       "key": "public.page.body.planned",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:606"
+        "apps/web/src/router.tsx:629"
       ]
     },
     {
@@ -5117,100 +5132,100 @@
         "milestone"
       ],
       "usedBy": [
-        "apps/web/src/router.tsx:603",
-        "apps/web/src/router.tsx:996"
+        "apps/web/src/router.tsx:1057",
+        "apps/web/src/router.tsx:626"
       ]
     },
     {
       "key": "public.page.planned.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:594"
+        "apps/web/src/router.tsx:617"
       ]
     },
     {
       "key": "public.skip",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:294"
+        "apps/web/src/router.tsx:317"
       ]
     },
     {
       "key": "public.title.agents",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:216"
+        "apps/web/src/router.tsx:239"
       ]
     },
     {
       "key": "public.title.changelog",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:223"
+        "apps/web/src/router.tsx:246"
       ]
     },
     {
       "key": "public.title.docs",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:221"
+        "apps/web/src/router.tsx:244"
       ]
     },
     {
       "key": "public.title.documentation",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:222"
+        "apps/web/src/router.tsx:245"
       ]
     },
     {
       "key": "public.title.home",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:213",
-        "apps/web/src/router.tsx:327"
+        "apps/web/src/router.tsx:236",
+        "apps/web/src/router.tsx:350"
       ]
     },
     {
       "key": "public.title.integrations",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:218"
+        "apps/web/src/router.tsx:241"
       ]
     },
     {
       "key": "public.title.knowledge",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:217"
+        "apps/web/src/router.tsx:240"
       ]
     },
     {
       "key": "public.title.product",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:214"
+        "apps/web/src/router.tsx:237"
       ]
     },
     {
       "key": "public.title.security",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:220"
+        "apps/web/src/router.tsx:243"
       ]
     },
     {
       "key": "public.title.templates",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:219"
+        "apps/web/src/router.tsx:242"
       ]
     },
     {
       "key": "public.title.workflows",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:215"
+        "apps/web/src/router.tsx:238"
       ]
     },
     {
@@ -5298,7 +5313,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/M20Pages.tsx:80",
-        "apps/web/src/router.tsx:811"
+        "apps/web/src/router.tsx:872"
       ]
     },
     {
@@ -5660,10 +5675,10 @@
       "key": "run.loading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:667",
-        "apps/web/src/router.tsx:675",
-        "apps/web/src/router.tsx:683",
-        "apps/web/src/router.tsx:691"
+        "apps/web/src/router.tsx:728",
+        "apps/web/src/router.tsx:736",
+        "apps/web/src/router.tsx:744",
+        "apps/web/src/router.tsx:752"
       ]
     },
     {
@@ -5898,7 +5913,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/M28Pages.tsx:87",
-        "apps/web/src/router.tsx:891"
+        "apps/web/src/router.tsx:952"
       ]
     },
     {
@@ -6074,49 +6089,49 @@
       "key": "solution.finance",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:207"
+        "apps/web/src/router.tsx:230"
       ]
     },
     {
       "key": "solution.gotomarket",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:204"
+        "apps/web/src/router.tsx:227"
       ]
     },
     {
       "key": "solution.hr",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:208"
+        "apps/web/src/router.tsx:231"
       ]
     },
     {
       "key": "solution.it",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:209"
+        "apps/web/src/router.tsx:232"
       ]
     },
     {
       "key": "solution.operations",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:203"
+        "apps/web/src/router.tsx:226"
       ]
     },
     {
       "key": "solution.product",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:205"
+        "apps/web/src/router.tsx:228"
       ]
     },
     {
       "key": "solution.support",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:206"
+        "apps/web/src/router.tsx:229"
       ]
     },
     {
@@ -6125,112 +6140,112 @@
         "name"
       ],
       "usedBy": [
-        "apps/web/src/router.tsx:540"
+        "apps/web/src/router.tsx:563"
       ]
     },
     {
       "key": "state.archived.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:561"
+        "apps/web/src/router.tsx:584"
       ]
     },
     {
       "key": "state.archived.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:561"
+        "apps/web/src/router.tsx:584"
       ]
     },
     {
       "key": "state.degraded.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:567"
+        "apps/web/src/router.tsx:590"
       ]
     },
     {
       "key": "state.degraded.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:567"
+        "apps/web/src/router.tsx:590"
       ]
     },
     {
       "key": "state.deleted.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:563"
+        "apps/web/src/router.tsx:586"
       ]
     },
     {
       "key": "state.deleted.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:563"
+        "apps/web/src/router.tsx:586"
       ]
     },
     {
       "key": "state.forbidden.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:555"
+        "apps/web/src/router.tsx:578"
       ]
     },
     {
       "key": "state.forbidden.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:555"
+        "apps/web/src/router.tsx:578"
       ]
     },
     {
       "key": "state.offline.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:565"
+        "apps/web/src/router.tsx:588"
       ]
     },
     {
       "key": "state.offline.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:565"
+        "apps/web/src/router.tsx:588"
       ]
     },
     {
       "key": "state.plan.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:557"
+        "apps/web/src/router.tsx:580"
       ]
     },
     {
       "key": "state.plan.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:557"
+        "apps/web/src/router.tsx:580"
       ]
     },
     {
       "key": "state.return",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:581"
+        "apps/web/src/router.tsx:604"
       ]
     },
     {
       "key": "state.suspended.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:559"
+        "apps/web/src/router.tsx:582"
       ]
     },
     {
       "key": "state.suspended.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:559"
+        "apps/web/src/router.tsx:582"
       ]
     },
     {
@@ -6238,7 +6253,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/AuthPages.tsx:258",
-        "apps/web/src/router.tsx:553"
+        "apps/web/src/router.tsx:576"
       ]
     },
     {
@@ -6246,70 +6261,96 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/AuthPages.tsx:252",
-        "apps/web/src/router.tsx:553"
+        "apps/web/src/router.tsx:576"
       ]
     },
     {
       "key": "studio.actions",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:512"
+        "apps/web/src/StudioPage.tsx:783"
       ]
     },
     {
       "key": "studio.align",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:397"
+        "apps/web/src/StudioPage.tsx:645"
       ]
     },
     {
       "key": "studio.back",
       "placeholders": [],
+      "usedBy": []
+    },
+    {
+      "key": "studio.back.library",
+      "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:333"
+        "apps/web/src/StudioPage.tsx:558"
       ]
     },
     {
       "key": "studio.canvas",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:456"
+        "apps/web/src/StudioPage.tsx:718"
+      ]
+    },
+    {
+      "key": "studio.canvas.eyebrow",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:721"
+      ]
+    },
+    {
+      "key": "studio.canvas.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:722"
+      ]
+    },
+    {
+      "key": "studio.canvas.hint",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:724"
       ]
     },
     {
       "key": "studio.close",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:613"
+        "apps/web/src/StudioPage.tsx:1106"
       ]
     },
     {
       "key": "studio.conflict.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:374"
+        "apps/web/src/StudioPage.tsx:608"
       ]
     },
     {
       "key": "studio.conflict.loading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:378"
+        "apps/web/src/StudioPage.tsx:612"
       ]
     },
     {
       "key": "studio.conflict.reapply",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:346"
+        "apps/web/src/StudioPage.tsx:592"
       ]
     },
     {
       "key": "studio.conflict.reload",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:344"
+        "apps/web/src/StudioPage.tsx:590"
       ]
     },
     {
@@ -6318,192 +6359,234 @@
         "sections"
       ],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:377"
+        "apps/web/src/StudioPage.tsx:611"
       ]
     },
     {
       "key": "studio.delete",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:429",
-        "apps/web/src/StudioPage.tsx:623"
+        "apps/web/src/StudioPage.tsx:1116",
+        "apps/web/src/StudioPage.tsx:677"
       ]
     },
     {
       "key": "studio.distribute",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:403"
+        "apps/web/src/StudioPage.tsx:651"
       ]
     },
     {
       "key": "studio.documentation",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:627"
+        "apps/web/src/StudioPage.tsx:1120"
+      ]
+    },
+    {
+      "key": "studio.draft.label",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:991"
+      ]
+    },
+    {
+      "key": "studio.draft.version",
+      "placeholders": [
+        "revision",
+        "version"
+      ],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:566"
       ]
     },
     {
       "key": "studio.duplicate",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:422"
+        "apps/web/src/StudioPage.tsx:670"
       ]
     },
     {
       "key": "studio.edge",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:835"
+        "apps/web/src/StudioPage.tsx:1328"
       ]
     },
     {
       "key": "studio.edge.condition",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:860"
+        "apps/web/src/StudioPage.tsx:1353"
       ]
     },
     {
       "key": "studio.edge.condition.help",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:872"
+        "apps/web/src/StudioPage.tsx:1365"
       ]
     },
     {
       "key": "studio.edge.condition.placeholder",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:864"
+        "apps/web/src/StudioPage.tsx:1357"
       ]
     },
     {
       "key": "studio.edge.label",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:840"
+        "apps/web/src/StudioPage.tsx:1333"
       ]
     },
     {
       "key": "studio.edge.mapping",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:868"
+        "apps/web/src/StudioPage.tsx:1361"
       ]
     },
     {
       "key": "studio.edge.path",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:847"
+        "apps/web/src/StudioPage.tsx:1340"
       ]
     },
     {
       "key": "studio.edges",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:545"
+        "apps/web/src/StudioPage.tsx:829"
       ]
     },
     {
       "key": "studio.error",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:105"
+        "apps/web/src/StudioPage.tsx:231"
       ]
     },
     {
       "key": "studio.group",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:415"
+        "apps/web/src/StudioPage.tsx:663"
       ]
     },
     {
       "key": "studio.help",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:433",
-        "apps/web/src/StudioPage.tsx:625"
+        "apps/web/src/StudioPage.tsx:1118",
+        "apps/web/src/StudioPage.tsx:681"
       ]
     },
     {
       "key": "studio.inspector",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:557"
+        "apps/web/src/StudioPage.tsx:841"
       ]
     },
     {
       "key": "studio.inspector.empty",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:574"
+        "apps/web/src/StudioPage.tsx:889"
       ]
     },
     {
       "key": "studio.inspector.empty.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:575"
+        "apps/web/src/StudioPage.tsx:890"
+      ]
+    },
+    {
+      "key": "studio.inspector.eyebrow",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:844"
+      ]
+    },
+    {
+      "key": "studio.inspector.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:845"
+      ]
+    },
+    {
+      "key": "studio.kicker",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:562"
       ]
     },
     {
       "key": "studio.kind",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:511"
+        "apps/web/src/StudioPage.tsx:782"
       ]
     },
     {
       "key": "studio.layout",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:391"
+        "apps/web/src/StudioPage.tsx:639"
       ]
     },
     {
       "key": "studio.loading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:109",
-        "apps/web/src/router.tsx:652"
+        "apps/web/src/StudioPage.tsx:235",
+        "apps/web/src/router.tsx:688",
+        "apps/web/src/router.tsx:700",
+        "apps/web/src/router.tsx:706",
+        "apps/web/src/router.tsx:715",
+        "apps/web/src/router.tsx:721"
       ]
     },
     {
       "key": "studio.node",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:510"
+        "apps/web/src/StudioPage.tsx:781"
       ]
     },
     {
       "key": "studio.node.approval",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:720"
+        "apps/web/src/StudioPage.tsx:1213"
       ]
     },
     {
       "key": "studio.node.assignment",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:693"
+        "apps/web/src/StudioPage.tsx:1186"
       ]
     },
     {
       "key": "studio.node.configuration",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:788"
+        "apps/web/src/StudioPage.tsx:1281"
       ]
     },
     {
       "key": "studio.node.connection",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:751"
+        "apps/web/src/StudioPage.tsx:1244"
       ]
     },
     {
@@ -6512,21 +6595,21 @@
         "name"
       ],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:536"
+        "apps/web/src/StudioPage.tsx:820"
       ]
     },
     {
       "key": "studio.node.description",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:653"
+        "apps/web/src/StudioPage.tsx:1146"
       ]
     },
     {
       "key": "studio.node.disabled",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:785"
+        "apps/web/src/StudioPage.tsx:1278"
       ]
     },
     {
@@ -6535,306 +6618,607 @@
         "name"
       ],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:530"
+        "apps/web/src/StudioPage.tsx:814"
       ]
     },
     {
       "key": "studio.node.failure",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:702"
+        "apps/web/src/StudioPage.tsx:1195"
       ]
     },
     {
       "key": "studio.node.input.schema",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:768"
+        "apps/web/src/StudioPage.tsx:1261"
       ]
     },
     {
       "key": "studio.node.inspector",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:647"
+        "apps/web/src/StudioPage.tsx:1140"
       ]
     },
     {
       "key": "studio.node.name",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:649"
+        "apps/web/src/StudioPage.tsx:1142"
       ]
     },
     {
       "key": "studio.node.output.schema",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:773"
+        "apps/web/src/StudioPage.tsx:1266"
       ]
     },
     {
       "key": "studio.node.retry",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:677"
+        "apps/web/src/StudioPage.tsx:1170"
       ]
     },
     {
       "key": "studio.node.risk",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:736"
+        "apps/web/src/StudioPage.tsx:1229"
       ]
     },
     {
       "key": "studio.node.timeout",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:660"
+        "apps/web/src/StudioPage.tsx:1153"
       ]
     },
     {
       "key": "studio.option.continue",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:714"
+        "apps/web/src/StudioPage.tsx:1207"
       ]
     },
     {
       "key": "studio.option.default",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:854"
+        "apps/web/src/StudioPage.tsx:1347"
       ]
     },
     {
       "key": "studio.option.failure",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:856"
+        "apps/web/src/StudioPage.tsx:1349"
       ]
     },
     {
       "key": "studio.option.high",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:747"
+        "apps/web/src/StudioPage.tsx:1240"
       ]
     },
     {
       "key": "studio.option.low",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:745"
+        "apps/web/src/StudioPage.tsx:1238"
       ]
     },
     {
       "key": "studio.option.medium",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:746"
+        "apps/web/src/StudioPage.tsx:1239"
       ]
     },
     {
       "key": "studio.option.retry",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:715"
+        "apps/web/src/StudioPage.tsx:1208"
       ]
     },
     {
       "key": "studio.option.stop",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:713"
+        "apps/web/src/StudioPage.tsx:1206"
       ]
     },
     {
       "key": "studio.option.success",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:855"
+        "apps/web/src/StudioPage.tsx:1348"
       ]
     },
     {
       "key": "studio.outline",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:385",
-        "apps/web/src/StudioPage.tsx:504"
+        "apps/web/src/StudioPage.tsx:633",
+        "apps/web/src/StudioPage.tsx:775"
       ]
     },
     {
       "key": "studio.palette",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:437"
+        "apps/web/src/StudioPage.tsx:685"
+      ]
+    },
+    {
+      "key": "studio.palette.add",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:712"
+      ]
+    },
+    {
+      "key": "studio.palette.eyebrow",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:688"
+      ]
+    },
+    {
+      "key": "studio.palette.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:689"
       ]
     },
     {
       "key": "studio.palette.search",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:440",
-        "apps/web/src/StudioPage.tsx:444"
+        "apps/web/src/StudioPage.tsx:695",
+        "apps/web/src/StudioPage.tsx:699"
+      ]
+    },
+    {
+      "key": "studio.publish.receipt.next",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:944"
+      ]
+    },
+    {
+      "key": "studio.publish.receipt.version",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:940"
+      ]
+    },
+    {
+      "key": "studio.publish.receipt.writes",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:948"
+      ]
+    },
+    {
+      "key": "studio.publish.success.badge",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:931"
+      ]
+    },
+    {
+      "key": "studio.publish.success.body",
+      "placeholders": [
+        "version"
+      ],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:934"
+      ]
+    },
+    {
+      "key": "studio.publish.success.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:932"
+      ]
+    },
+    {
+      "key": "studio.publish.success.library",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:957"
+      ]
+    },
+    {
+      "key": "studio.publish.success.view",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:954"
       ]
     },
     {
       "key": "studio.recovery.available",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:340"
+        "apps/web/src/StudioPage.tsx:586"
       ]
     },
     {
       "key": "studio.redo",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:362",
-        "apps/web/src/StudioPage.tsx:621"
+        "apps/web/src/StudioPage.tsx:1114",
+        "apps/web/src/StudioPage.tsx:627"
+      ]
+    },
+    {
+      "key": "studio.review.body",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:967"
+      ]
+    },
+    {
+      "key": "studio.review.close",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:970"
+      ]
+    },
+    {
+      "key": "studio.review.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:966"
+      ]
+    },
+    {
+      "key": "studio.review.kicker",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:965"
+      ]
+    },
+    {
+      "key": "studio.review.note.body",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1052"
+      ]
+    },
+    {
+      "key": "studio.review.note.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1051"
+      ]
+    },
+    {
+      "key": "studio.review.note.label",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1054"
+      ]
+    },
+    {
+      "key": "studio.review.note.placeholder",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1059"
+      ]
+    },
+    {
+      "key": "studio.review.publish",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:602"
+      ]
+    },
+    {
+      "key": "studio.review.publish.action",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1088"
+      ]
+    },
+    {
+      "key": "studio.review.publishing",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1087"
+      ]
+    },
+    {
+      "key": "studio.review.ready.body",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1073"
+      ]
+    },
+    {
+      "key": "studio.review.ready.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1072"
+      ]
+    },
+    {
+      "key": "studio.review.test.action",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1043"
+      ]
+    },
+    {
+      "key": "studio.review.test.body",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1025"
+      ]
+    },
+    {
+      "key": "studio.review.test.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1024"
+      ]
+    },
+    {
+      "key": "studio.review.test.passed",
+      "placeholders": [
+        "checks",
+        "steps",
+        "writes"
+      ],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1028"
+      ]
+    },
+    {
+      "key": "studio.review.testing",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1042"
+      ]
+    },
+    {
+      "key": "studio.review.validate.action",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1018"
+      ]
+    },
+    {
+      "key": "studio.review.validate.blocked",
+      "placeholders": [
+        "count"
+      ],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1005"
+      ]
+    },
+    {
+      "key": "studio.review.validate.body",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1000"
+      ]
+    },
+    {
+      "key": "studio.review.validate.heading",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:999"
+      ]
+    },
+    {
+      "key": "studio.review.validate.passed",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1004"
+      ]
+    },
+    {
+      "key": "studio.review.validating",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:1017"
       ]
     },
     {
       "key": "studio.save",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:368",
-        "apps/web/src/StudioPage.tsx:617"
+        "apps/web/src/StudioPage.tsx:1110",
+        "apps/web/src/StudioPage.tsx:598"
       ]
     },
     {
       "key": "studio.shortcut.delete",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:622"
+        "apps/web/src/StudioPage.tsx:1115"
       ]
     },
     {
       "key": "studio.shortcut.redo",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:620"
+        "apps/web/src/StudioPage.tsx:1113"
       ]
     },
     {
       "key": "studio.shortcut.save",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:616"
+        "apps/web/src/StudioPage.tsx:1109"
       ]
     },
     {
       "key": "studio.shortcut.undo",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:618"
+        "apps/web/src/StudioPage.tsx:1111"
       ]
     },
     {
       "key": "studio.shortcuts",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:612"
+        "apps/web/src/StudioPage.tsx:1105"
       ]
     },
     {
       "key": "studio.status.conflict",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:218"
+        "apps/web/src/StudioPage.tsx:426"
       ]
     },
     {
       "key": "studio.status.invalid",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:219"
+        "apps/web/src/StudioPage.tsx:427"
       ]
     },
     {
       "key": "studio.status.offline",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:217"
+        "apps/web/src/StudioPage.tsx:425"
       ]
     },
     {
       "key": "studio.status.saved",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:215"
+        "apps/web/src/StudioPage.tsx:423"
       ]
     },
     {
       "key": "studio.status.saving",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:216"
+        "apps/web/src/StudioPage.tsx:424"
+      ]
+    },
+    {
+      "key": "studio.summary",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:572"
+      ]
+    },
+    {
+      "key": "studio.summary.paths",
+      "placeholders": [
+        "count"
+      ],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:574",
+        "apps/web/src/StudioPage.tsx:986"
+      ]
+    },
+    {
+      "key": "studio.summary.steps",
+      "placeholders": [
+        "count"
+      ],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:573",
+        "apps/web/src/StudioPage.tsx:980"
       ]
     },
     {
       "key": "studio.toolbar",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:382"
+        "apps/web/src/StudioPage.tsx:616"
       ]
     },
     {
       "key": "studio.undo",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:355",
-        "apps/web/src/StudioPage.tsx:619"
+        "apps/web/src/StudioPage.tsx:1112",
+        "apps/web/src/StudioPage.tsx:620"
       ]
     },
     {
       "key": "studio.validation",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:581"
+        "apps/web/src/StudioPage.tsx:896"
       ]
     },
     {
       "key": "studio.validation.clear",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/StudioPage.tsx:589"
+        "apps/web/src/StudioPage.tsx:904"
+      ]
+    },
+    {
+      "key": "studio.workflow.description",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:861"
+      ]
+    },
+    {
+      "key": "studio.workflow.name",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:852"
+      ]
+    },
+    {
+      "key": "studio.workflow.settings",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/StudioPage.tsx:850"
       ]
     },
     {
       "key": "templates.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:332"
+        "apps/web/src/M06Pages.tsx:327"
       ]
     },
     {
       "key": "templates.instantiated",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:355"
+        "apps/web/src/M06Pages.tsx:350"
       ]
     },
     {
       "key": "templates.loading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:339"
+        "apps/web/src/M06Pages.tsx:334"
       ]
     },
     {
       "key": "templates.preview",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:351"
+        "apps/web/src/M06Pages.tsx:346"
       ]
     },
     {
       "key": "templates.use",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:359"
+        "apps/web/src/M06Pages.tsx:354"
       ]
     },
     {
@@ -6965,7 +7349,7 @@
       "placeholders": [],
       "usedBy": [
         "apps/web/src/M26Pages.tsx:118",
-        "apps/web/src/router.tsx:867"
+        "apps/web/src/router.tsx:928"
       ]
     },
     {
@@ -7305,7 +7689,7 @@
       "key": "workbench.loading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/router.tsx:531"
+        "apps/web/src/router.tsx:554"
       ]
     },
     {
@@ -7579,137 +7963,138 @@
       "key": "workflow.definition.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:179"
+        "apps/web/src/M06Pages.tsx:174"
       ]
     },
     {
       "key": "workflow.detail.draft",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:86"
+        "apps/web/src/M06Pages.tsx:93"
       ]
     },
     {
       "key": "workflow.detail.edges",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:98"
+        "apps/web/src/M06Pages.tsx:105"
       ]
     },
     {
       "key": "workflow.detail.hash",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:102"
+        "apps/web/src/M06Pages.tsx:109"
       ]
     },
     {
       "key": "workflow.detail.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:61"
+        "apps/web/src/M06Pages.tsx:69"
       ]
     },
     {
       "key": "workflow.detail.loading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:81"
+        "apps/web/src/M06Pages.tsx:88"
       ]
     },
     {
       "key": "workflow.detail.nodes",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:264",
-        "apps/web/src/M06Pages.tsx:348",
-        "apps/web/src/M06Pages.tsx:94"
+        "apps/web/src/M06Pages.tsx:101",
+        "apps/web/src/M06Pages.tsx:259",
+        "apps/web/src/M06Pages.tsx:343"
       ]
     },
     {
       "key": "workflow.diff.compare",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:278"
+        "apps/web/src/M06Pages.tsx:273"
       ]
     },
     {
       "key": "workflow.diff.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:258"
+        "apps/web/src/M06Pages.tsx:253"
       ]
     },
     {
       "key": "workflow.diff.need.two",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:281"
+        "apps/web/src/M06Pages.tsx:276"
+      ]
+    },
+    {
+      "key": "workflow.edit",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:118"
       ]
     },
     {
       "key": "workflow.findings.empty",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:161"
+        "apps/web/src/M06Pages.tsx:156"
       ]
     },
     {
       "key": "workflow.findings.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:159"
+        "apps/web/src/M06Pages.tsx:154"
       ]
     },
     {
       "key": "workflow.manage.back",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:37"
+        "apps/web/src/M06Pages.tsx:45"
       ]
     },
     {
       "key": "workflow.manage.badge",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:40"
+        "apps/web/src/M06Pages.tsx:48"
       ]
     },
     {
       "key": "workflow.manage.error",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:52"
+        "apps/web/src/M06Pages.tsx:60"
       ]
     },
     {
       "key": "workflow.publish",
       "placeholders": [],
-      "usedBy": [
-        "apps/web/src/M06Pages.tsx:145"
-      ]
+      "usedBy": []
     },
     {
       "key": "workflow.publish.note",
       "placeholders": [],
-      "usedBy": [
-        "apps/web/src/M06Pages.tsx:130"
-      ]
+      "usedBy": []
     },
     {
       "key": "workflow.publish.success",
       "placeholders": [
         "version"
       ],
-      "usedBy": [
-        "apps/web/src/M06Pages.tsx:135"
-      ]
+      "usedBy": []
     },
     {
       "key": "workflow.restore",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:248"
+        "apps/web/src/M06Pages.tsx:243"
       ]
     },
     {
@@ -7718,72 +8103,78 @@
         "version"
       ],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:243"
+        "apps/web/src/M06Pages.tsx:238"
+      ]
+    },
+    {
+      "key": "workflow.review.publish",
+      "placeholders": [],
+      "usedBy": [
+        "apps/web/src/M06Pages.tsx:140"
       ]
     },
     {
       "key": "workflow.settings.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:295"
+        "apps/web/src/M06Pages.tsx:290"
       ]
     },
     {
       "key": "workflow.template.create",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:297",
-        "apps/web/src/M06Pages.tsx:309"
+        "apps/web/src/M06Pages.tsx:292",
+        "apps/web/src/M06Pages.tsx:304"
       ]
     },
     {
       "key": "workflow.template.create.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:298"
+        "apps/web/src/M06Pages.tsx:293"
       ]
     },
     {
       "key": "workflow.template.created",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:305"
+        "apps/web/src/M06Pages.tsx:300"
       ]
     },
     {
       "key": "workflow.template.default.body",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:304"
+        "apps/web/src/M06Pages.tsx:299"
       ]
     },
     {
       "key": "workflow.template.default.name",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:303"
+        "apps/web/src/M06Pages.tsx:298"
       ]
     },
     {
       "key": "workflow.validate",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:122"
+        "apps/web/src/M06Pages.tsx:133"
       ]
     },
     {
       "key": "workflow.validate.invalid",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:116",
-        "apps/web/src/M06Pages.tsx:138"
+        "apps/web/src/M06Pages.tsx:127"
       ]
     },
     {
       "key": "workflow.validate.valid",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:115"
+        "apps/web/src/M06Pages.tsx:126"
       ]
     },
     {
@@ -7792,49 +8183,49 @@
         "version"
       ],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:257"
+        "apps/web/src/M06Pages.tsx:252"
       ]
     },
     {
       "key": "workflow.versions",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:149"
+        "apps/web/src/M06Pages.tsx:144"
       ]
     },
     {
       "key": "workflow.versions.heading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:215"
+        "apps/web/src/M06Pages.tsx:210"
       ]
     },
     {
       "key": "workflow.versions.inspect",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:238"
+        "apps/web/src/M06Pages.tsx:233"
       ]
     },
     {
       "key": "workflow.versions.list",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:225"
+        "apps/web/src/M06Pages.tsx:220"
       ]
     },
     {
       "key": "workflow.versions.loading",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:222"
+        "apps/web/src/M06Pages.tsx:217"
       ]
     },
     {
       "key": "workflow.versions.no.note",
       "placeholders": [],
       "usedBy": [
-        "apps/web/src/M06Pages.tsx:234"
+        "apps/web/src/M06Pages.tsx:229"
       ]
     },
     {

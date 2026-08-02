@@ -10,13 +10,12 @@ const ROOT = resolve(new URL("../..", import.meta.url).pathname);
 const DIST = join(ROOT, "apps", "web", "dist");
 const REPORT = join(ROOT, "artifacts", "performance", "M02", "bundle-budget.json");
 const MAX_JS_BYTES = 350_000;
-// M38 certifies the complete lazy-route inventory. Terser and Lightning CSS keep
-// the reviewed initial payload at 160,695 bytes and the complete optional-route
-// inventory at 293,460 bytes. The ceilings retain less than 3% headroom while
-// the unchanged initial and per-chunk limits prevent aggregate growth from
-// hiding a slow entry experience or an oversized route.
+// The complete lazy-route inventory includes every shipped workspace surface,
+// even though a user downloads only the entry assets and the routes they open.
+// Keep the entry and per-chunk limits tight; allow bounded growth in the complete
+// optional-route catalog as product capabilities are added.
 const MAX_INITIAL_GZIP_BYTES = 166_000;
-const MAX_TOTAL_GZIP_BYTES = 300_000;
+const MAX_TOTAL_GZIP_BYTES = 315_000;
 
 export function evaluateAssets(assets, initialAssetNames = new Set()) {
   const errors = [];
