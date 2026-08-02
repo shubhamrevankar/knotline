@@ -14,16 +14,14 @@ import {
   Plus,
   Search,
   Settings2,
-  Sparkles,
   UsersRound
 } from "lucide-react";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import type { Workflow, WorkflowSummary } from "@knotline/contracts";
-import { createVersionedWorkflow, fetchWorkflow, fetchWorkflows, startWorkflowRun } from "./api";
+import { fetchWorkflow, fetchWorkflows, startWorkflowRun } from "./api";
 import { i18n, msg } from "./i18n.js";
 import { WorkflowCanvas } from "./WorkflowCanvas";
-import { GuidedWorkflowCreate } from "./GuidedWorkflowCreate.js";
 
 const nav = [
   { label: msg("customer.nav.pulse"), icon: Gauge, to: "/app" },
@@ -51,8 +49,6 @@ export function App() {
   const [workflow, setWorkflow] = useState<Workflow | null>(null);
   const [selectedId, setSelectedId] = useState("");
   const [connected, setConnected] = useState(false);
-  const [creating, setCreating] = useState(false);
-  const [createError, setCreateError] = useState("");
   const [runError, setRunError] = useState("");
   const [startingRun, setStartingRun] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -104,24 +100,6 @@ export function App() {
     menuButtonRef.current?.focus();
   };
 
-  const createWorkflow = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const name = form.get("name");
-    const description = form.get("description");
-    if (typeof name !== "string" || typeof description !== "string") return;
-    try {
-      const created = await createVersionedWorkflow(name, description);
-      const items = await fetchWorkflows();
-      setWorkflows(items);
-      setSelectedId(created.id);
-      setCreating(false);
-      setCreateError("");
-    } catch (reason) {
-      setCreateError(String(reason));
-    }
-  };
-
   const runWorkflow = async () => {
     if (!workflow || startingRun) return;
     setStartingRun(true);
@@ -141,7 +119,7 @@ export function App() {
   };
 
   return (
-    <div className="app-shell">
+    <div className="app-shell app-shell--activation">
       <aside
         aria-label={msg("customer.nav.label")}
         className={sidebarOpen ? "sidebar sidebar--open" : "sidebar"}
@@ -261,60 +239,14 @@ export function App() {
             >
               <Bell aria-hidden="true" size={18} />
             </Link>
-            <button className="primary-button" onClick={() => setCreating(true)} type="button">
+            <Link className="primary-button" to="/app/workflows/new">
               <Plus aria-hidden="true" size={16} />
               {msg("customer.workflow.new")}
-            </button>
+            </Link>
           </div>
         </header>
 
-        <div className="demo-banner" role="status">
-          <strong>{msg("customer.demo.label")}</strong>
-          <span>{msg("customer.demo.body")}</span>
-          <Link to="/app/runs">{msg("run.list.heading")}</Link>
-          <Link to="/app/inbox">{msg("customer.saved.attention")}</Link>
-          <Link to="/app/agents">{msg("customer.nav.agents")}</Link>
-          <Link to="/app/connections">{msg("customer.nav.connections")}</Link>
-        </div>
-
         <section aria-labelledby="workflows-heading" className="page">
-          {creating ? (
-            <aside className="workflow-create-panel" aria-labelledby="workflow-create-heading">
-              <div className="row-between">
-                <h2 id="workflow-create-heading">{msg("workflow.create.heading")}</h2>
-                <button
-                  className="icon-button"
-                  aria-label={msg("workflow.create.close")}
-                  onClick={() => setCreating(false)}
-                  type="button"
-                >
-                  ×
-                </button>
-              </div>
-              <form onSubmit={(event) => void createWorkflow(event)}>
-                <label>
-                  {msg("workflow.create.name")}
-                  <input name="name" required maxLength={120} />
-                </label>
-                <label>
-                  {msg("workflow.create.description")}
-                  <textarea name="description" maxLength={500} />
-                </label>
-                <button className="primary-button" type="submit">
-                  {msg("workflow.create.submit")}
-                </button>
-              </form>
-              <GuidedWorkflowCreate
-                onCreated={(workflowId) => {
-                  void fetchWorkflows().then(setWorkflows);
-                  setSelectedId(workflowId);
-                  setCreating(false);
-                }}
-              />
-              <Link to="/app/workflows/new">{msg("generation.full.page")}</Link>
-              {createError ? <p role="alert">{createError}</p> : null}
-            </aside>
-          ) : null}
           <div className="page-heading">
             <div>
               <span className="section-index">{msg("customer.section.operations")}</span>
@@ -329,24 +261,24 @@ export function App() {
 
           <div aria-label={msg("customer.metrics.label")} className="metric-strip" role="group">
             <article>
+              <span>{msg("customer.metrics.workflows")}</span>
+              <strong>{i18n.number(workflows.length)}</strong>
+              <small>{msg("customer.metrics.workflowsdetail")}</small>
+            </article>
+            <article>
               <span>{msg("customer.metrics.runs")}</span>
-              <strong>{i18n.number(21)}</strong>
+              <strong>{i18n.number(workflows.reduce((sum, item) => sum + item.activeRuns, 0))}</strong>
               <small>{msg("customer.metrics.runsdetail")}</small>
             </article>
             <article>
-              <span>{msg("customer.metrics.waiting")}</span>
-              <strong>{i18n.number(4, { minimumIntegerDigits: 2 })}</strong>
-              <small>{msg("customer.metrics.waitingdetail")}</small>
+              <span>{msg("customer.metrics.drafts")}</span>
+              <strong>{i18n.number(workflows.filter((item) => item.status === "draft").length)}</strong>
+              <small>{msg("customer.metrics.draftsdetail")}</small>
             </article>
             <article>
-              <span>{msg("customer.metrics.agent")}</span>
-              <strong>{i18n.number(0.962, { style: "percent", maximumFractionDigits: 1 })}</strong>
-              <small>{msg("customer.metrics.agentdetail")}</small>
-            </article>
-            <article className="metric-highlight">
-              <Sparkles aria-hidden="true" size={17} />
-              <span>{msg("customer.metrics.time")}</span>
-              <strong>{msg("customer.metrics.hours", { count: i18n.number(38) })}</strong>
+              <span>{msg("customer.metrics.steps")}</span>
+              <strong>{i18n.number(workflows.reduce((sum, item) => sum + item.nodeCount, 0))}</strong>
+              <small>{msg("customer.metrics.stepsdetail")}</small>
             </article>
           </div>
 

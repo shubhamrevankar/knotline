@@ -1,5 +1,14 @@
 import { Badge, Button, Card, ErrorState, Skeleton } from "@knotline/ui";
-import { KeyRound, Laptop, LogOut, Mail, ShieldCheck, Waypoints } from "lucide-react";
+import {
+  CheckCircle2,
+  KeyRound,
+  Laptop,
+  LockKeyhole,
+  LogOut,
+  Mail,
+  ShieldCheck,
+  Waypoints
+} from "lucide-react";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -23,11 +32,38 @@ import { RequestFailure } from "./query/errors.js";
 function AuthLayout({ children }: { readonly children: ReactNode }) {
   return (
     <main className="auth-page">
-      <Link className="auth-brand" to="/">
-        <Waypoints aria-hidden="true" />
-        {msg("brand.name")}
-      </Link>
-      {children}
+      <header className="auth-header">
+        <Link className="auth-brand" to="/">
+          <Waypoints aria-hidden="true" />
+          {msg("brand.name")}
+        </Link>
+        <span>
+          <LockKeyhole aria-hidden="true" />
+          {msg("auth.header.secure")}
+        </span>
+      </header>
+      <div className="auth-layout">
+        <aside className="auth-story" aria-labelledby="auth-story-heading">
+          <span className="auth-kicker">{msg("auth.story.kicker")}</span>
+          <h2 id="auth-story-heading">{msg("auth.story.heading")}</h2>
+          <p>{msg("auth.story.body")}</p>
+          <ul>
+            <li>
+              <CheckCircle2 aria-hidden="true" />
+              {msg("auth.story.item.one")}
+            </li>
+            <li>
+              <CheckCircle2 aria-hidden="true" />
+              {msg("auth.story.item.two")}
+            </li>
+            <li>
+              <CheckCircle2 aria-hidden="true" />
+              {msg("auth.story.item.three")}
+            </li>
+          </ul>
+        </aside>
+        {children}
+      </div>
       <p className="auth-privacy">{msg("auth.privacy")}</p>
     </main>
   );
@@ -84,6 +120,13 @@ export function SignInPage() {
         <Badge tone="accent">{msg("auth.badge")}</Badge>
         <h1>{msg("auth.signin.heading")}</h1>
         <p>{msg("auth.signin.body")}</p>
+        <Button disabled={busy} onClick={() => void google()} tone="accent" type="button">
+          <ShieldCheck aria-hidden="true" />
+          {busy ? msg("auth.working") : msg("auth.google.submit")}
+        </Button>
+        <div className="auth-divider">
+          <span>{msg("auth.or.email")}</span>
+        </div>
         <form onSubmit={(event) => void submit(event)}>
           <label htmlFor="auth-email">{msg("auth.email.label")}</label>
           <div className="auth-input">
@@ -104,13 +147,10 @@ export function SignInPage() {
             {busy ? msg("auth.working") : msg("auth.magic.submit")}
           </Button>
         </form>
-        <div className="auth-divider">
-          <span>{msg("auth.or")}</span>
-        </div>
-        <Button disabled={busy} onClick={() => void google()} type="button">
-          <ShieldCheck aria-hidden="true" />
-          {msg("auth.google.submit")}
-        </Button>
+        <p className="auth-assurance">
+          <LockKeyhole aria-hidden="true" />
+          {msg("auth.assurance")}
+        </p>
         {error ? (
           <p className="auth-error" role="alert">
             {error}

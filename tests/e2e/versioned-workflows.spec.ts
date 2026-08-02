@@ -5,11 +5,13 @@ const workflowId = "wf_launch-campaign";
 test("builder creates a persisted workflow draft from the workflow library", async ({ page }) => {
   await page.goto("/app/workflows");
   await expect(page.getByRole("heading", { name: "Workflows" })).toBeVisible();
-  await page.getByRole("main").getByRole("button", { name: "New workflow" }).click();
+  await page.getByRole("main").getByRole("link", { name: "New workflow" }).click();
+  await page.getByText("Prefer another starting point?").click();
   await page.getByLabel("Workflow name").fill("Customer escalation");
   await page.getByLabel("Description").fill("Route and resolve escalations");
-  await page.getByRole("button", { name: "Create draft" }).click();
-  await expect(page.getByRole("heading", { name: "Create a real workflow" })).not.toBeVisible();
+  await page.getByRole("button", { name: "Create blank workflow" }).click();
+  await expect(page).toHaveURL(/\/studio$/u);
+  await expect(page.getByRole("heading", { name: "Launch intelligence brief" })).toBeVisible();
 });
 
 test("@a11y builder validates and publishes an immutable workflow version", async ({ page }) => {
