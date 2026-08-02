@@ -294,7 +294,11 @@ async function runSuite(pool: DatabasePool) {
   await toolRepository.revokeCredential(contextA, createdCredential.id);
   const agent = await agentRepository.create(contextA, { definition: agentFixture() });
   const agentRecord = await agentRepository.get(contextA, agent.id);
-  assert(agentRecord?.revision === "1", "Agent draft was not created at revision one");
+  assert(agentRecord?.revision === 1, "Agent draft revision was not returned as a number");
+  assert(
+    Array.isArray(agentRecord.validation_findings),
+    "Agent validation findings were not returned as a JSON array"
+  );
   const [agentSaveA, agentSaveB] = await Promise.allSettled([
     agentRepository.saveDraft(contextA, agent.id, {
       expectedRevision: 1,

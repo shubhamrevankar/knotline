@@ -104,7 +104,7 @@ export class PostgresAgentRepository implements AgentRepository {
       async (client) =>
         (
           await client.query<Record<string, unknown>>(
-            `SELECT agent.*,(agent.owner_id=$3) can_manage,draft.revision,draft.definition,draft.content_hash,draft.validation_findings,
+            `SELECT agent.*,(agent.owner_id=$3) can_manage,draft.revision::integer revision,draft.definition,draft.content_hash,draft.validation_findings,
             coalesce((SELECT jsonb_agg(channel ORDER BY channel.channel) FROM agent_release_channels channel WHERE channel.workspace_id=agent.workspace_id AND channel.agent_id=agent.id),'[]'::jsonb) release_channels,
             coalesce((SELECT jsonb_agg(activity ORDER BY activity.sequence DESC) FROM (SELECT * FROM agent_activity_events event WHERE event.workspace_id=agent.workspace_id AND event.agent_id=agent.id ORDER BY sequence DESC LIMIT 50) activity),'[]'::jsonb) activity
            FROM agent_definitions agent LEFT JOIN agent_drafts draft ON draft.workspace_id=agent.workspace_id AND draft.agent_id=agent.id
@@ -145,7 +145,7 @@ export class PostgresAgentRepository implements AgentRepository {
           id,
           definition,
           contentHash(definition),
-          findings,
+          JSON.stringify(findings),
           context.principalId
         ]
       );
@@ -169,7 +169,7 @@ export class PostgresAgentRepository implements AgentRepository {
           context.principalId,
           value.definition,
           contentHash(value.definition),
-          findings,
+          JSON.stringify(findings),
           value.expectedRevision
         ]
       );
@@ -203,7 +203,7 @@ export class PostgresAgentRepository implements AgentRepository {
       const findings = validateAgentDefinition(draft.rows[0].definition);
       await client.query(
         `UPDATE agent_drafts SET validation_findings=$3 WHERE workspace_id=$1 AND agent_id=$2`,
-        [context.workspaceId, agentId, findings]
+        [context.workspaceId, agentId, JSON.stringify(findings)]
       );
       return { findings };
     });
@@ -358,7 +358,7 @@ export class PostgresAgentRepository implements AgentRepository {
           value.fixture,
           preview.prompts,
           output,
-          preview.findings,
+          JSON.stringify(preview.findings),
           preview.estimatedTokens,
           context.principalId
         ]
