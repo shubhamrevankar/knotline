@@ -7,7 +7,7 @@ test("public home is accessible, responsive, and links to the lazy app", async (
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: "Turn complex operations into one accountable system."
+      name: "Complex operations. One accountable system."
     })
   ).toBeVisible();
   await expect(page.getByRole("link", { name: "Start building" }).first()).toHaveAttribute(

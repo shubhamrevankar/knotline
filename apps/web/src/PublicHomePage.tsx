@@ -519,9 +519,8 @@ export function PublicHomeContent() {
             <span /> Accountable operations for people and AI
           </div>
           <h1>
-            Turn complex operations into
-            <br />
-            <em>one accountable system.</em>
+            <span>Complex operations.</span>
+            <em>One accountable system.</em>
           </h1>
           <p>
             Knotline turns high-stakes operations into live, governed workflows—where agents handle
