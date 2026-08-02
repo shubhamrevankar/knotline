@@ -1,10 +1,11 @@
 /* eslint-disable knotline/no-hardcoded-user-visible-string -- This operational surface now renders server-authored task data; localization follows the verified vertical journey. */
+import type { HumanForm, HumanFormField } from "@knotline/contracts";
 import { Badge, Button, Card, ErrorState, Skeleton } from "@knotline/ui";
-import { CheckCircle2, Search } from "lucide-react";
+import { CheckCircle2, Search, UserRoundCheck } from "lucide-react";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 
-import { fetchHumanTask, fetchHumanTasks, submitHumanTask } from "./api.js";
+import { claimHumanTask, fetchHumanTask, fetchHumanTasks, submitHumanTask } from "./api.js";
 import { WorkspaceShell } from "./WorkspaceShell.js";
 import "./M12Pages.css";
 
@@ -19,6 +20,86 @@ const label = (value: unknown) =>
     "_",
     " "
   );
+
+const taskForm = (task: TaskView) => task.form_schema as HumanForm | undefined;
+
+function FormControl({ field }: { readonly field: HumanFormField }) {
+  const common = {
+    id: `task-field-${field.key}`,
+    name: field.key,
+    required: field.required,
+    disabled: field.readOnly
+  };
+  if (field.type === "boolean")
+    return (
+      <label className="human-field human-field--boolean" htmlFor={common.id}>
+        <input {...common} type="checkbox" />
+        <span>{field.label}</span>
+        {field.help ? <small>{field.help}</small> : null}
+      </label>
+    );
+  return (
+    <label className="human-field" htmlFor={common.id}>
+      <span>{field.label}</span>
+      {field.type === "rich_text" || field.type === "json" ? (
+        <textarea {...common} rows={field.type === "json" ? 10 : 6} />
+      ) : field.type === "choice" || field.type === "multiselect" ? (
+        <select
+          {...common}
+          multiple={field.type === "multiselect"}
+          defaultValue={field.type === "multiselect" ? [] : ""}
+        >
+          {field.type === "choice" ? <option value="">Select an option</option> : null}
+          {field.options?.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          {...common}
+          type={
+            field.type === "number"
+              ? "number"
+              : field.type === "date_time"
+                ? "datetime-local"
+                : field.type === "url"
+                  ? "url"
+                  : field.type === "file"
+                    ? "file"
+                    : "text"
+          }
+        />
+      )}
+      {field.help ? <small>{field.help}</small> : null}
+    </label>
+  );
+}
+
+function submissionValues(
+  form: HTMLFormElement,
+  fields: readonly HumanFormField[]
+): Readonly<Record<string, unknown>> {
+  const data = new FormData(form);
+  const values: Record<string, unknown> = {};
+  for (const field of fields) {
+    if (field.type === "boolean") values[field.key] = data.has(field.key);
+    else if (field.type === "multiselect") values[field.key] = data.getAll(field.key).map(String);
+    else {
+      const value = data.get(field.key);
+      values[field.key] =
+        field.type === "number"
+          ? value === ""
+            ? undefined
+            : Number(value)
+          : typeof value === "string"
+            ? value
+            : (value?.name ?? "");
+    }
+  }
+  return values;
+}
 
 export function TaskInboxPage() {
   const [search, setSearch] = useSearchParams();
@@ -138,16 +219,33 @@ export function TaskDetailPage() {
         setError(cause instanceof Error ? cause : new Error("Unable to load task."))
       );
   }, [taskRunId]);
+  const claim = async () => {
+    if (!task) return;
+    setBusy(true);
+    setError(undefined);
+    try {
+      await claimHumanTask(taskRunId, Number(task.assignment_version));
+      setTask(await fetchHumanTask(taskRunId));
+    } catch (cause) {
+      setError(cause instanceof Error ? cause : new Error("The task could not be claimed."));
+    } finally {
+      setBusy(false);
+    }
+  };
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!task) return;
-    const form = new FormData(event.currentTarget);
-    const publicationNote = form.get("publication_note");
+    const form = taskForm(task);
+    if (!form) return;
     setBusy(true);
+    setError(undefined);
     try {
-      await submitHumanTask(taskRunId, Number(task.state_version), {
-        publication_note: typeof publicationNote === "string" ? publicationNote : ""
-      });
+      await submitHumanTask(
+        taskRunId,
+        Number(task.state_version),
+        submissionValues(event.currentTarget, form.fields),
+        Number(task.form_schema_version)
+      );
       setSubmitted(true);
       setTask(await fetchHumanTask(taskRunId));
     } catch (cause) {
@@ -156,7 +254,7 @@ export function TaskDetailPage() {
       setBusy(false);
     }
   };
-  if (error)
+  if (error && !task)
     return (
       <TaskShell>
         <ErrorState title="Task unavailable">
@@ -182,6 +280,9 @@ export function TaskDetailPage() {
       </TaskShell>
     );
   const ready = ["ready", "running", "waiting"].includes(String(task.state));
+  const canClaim = task.can_claim === true && ready;
+  const canSubmit = task.can_submit === true && ready;
+  const form = taskForm(task);
   return (
     <TaskShell>
       <header className="task-detail-header">
@@ -196,40 +297,71 @@ export function TaskDetailPage() {
           <Badge tone={ready ? "warning" : "neutral"}>{label(task.state)}</Badge>
         </div>
       </header>
+      {error ? (
+        <div className="task-inline-error" role="alert">
+          <strong>That action did not complete.</strong> {error.message}
+        </div>
+      ) : null}
       <div className="task-detail-grid">
-        <form className="task-form" onSubmit={(event) => void submit(event)}>
-          <div className="task-form-status">
-            <strong>Publication confirmation</strong>
-            <span>Submission is immutable.</span>
-          </div>
-          <label className="human-field">
-            <span>Publication note</span>
-            <textarea
-              name="publication_note"
-              required
-              rows={8}
-              defaultValue="Approved launch brief reviewed. Publish to the product, sales, and customer operations audience."
-            />
-          </label>
-          <footer>
-            <span>This completes the final human node.</span>
-            <Button tone="accent" type="submit" disabled={busy || !ready}>
-              {busy ? "Submitting…" : "Submit and complete run"}
+        {canClaim ? (
+          <section className="task-claim-card">
+            <UserRoundCheck aria-hidden="true" />
+            <div>
+              <span className="task-eyebrow">Available for review</span>
+              <h2>Claim this task to begin</h2>
+              <p>
+                Claiming prevents duplicate work and makes you the accountable reviewer. You can
+                inspect the workflow run before deciding.
+              </p>
+            </div>
+            <Button tone="accent" type="button" disabled={busy} onClick={() => void claim()}>
+              {busy ? "Claiming…" : "Claim and start review"}
             </Button>
-          </footer>
-        </form>
+          </section>
+        ) : canSubmit && form ? (
+          <form className="task-form" onSubmit={(event) => void submit(event)}>
+            <div className="task-form-status">
+              <div>
+                <span className="task-eyebrow">Review form</span>
+                <strong>{form.title}</strong>
+              </div>
+              <span>Submission is immutable.</span>
+            </div>
+            {form.fields.map((field) => (
+              <FormControl key={field.key} field={field} />
+            ))}
+            <footer>
+              <span>Your response is recorded in the run audit trail.</span>
+              <Button tone="accent" type="submit" disabled={busy || !ready}>
+                {busy ? "Submitting…" : "Submit review"}
+              </Button>
+            </footer>
+          </form>
+        ) : (
+          <section className="task-claim-card task-claim-card--locked">
+            <UserRoundCheck aria-hidden="true" />
+            <div>
+              <span className="task-eyebrow">Assigned review</span>
+              <h2>This task belongs to another reviewer</h2>
+              <p>
+                You can inspect its run and progress, but only the current assignee can submit it.
+              </p>
+            </div>
+            <Link to="/app/inbox?view=mine">Open my work</Link>
+          </section>
+        )}
         <aside className="task-context">
           <Card>
             <h2>Workflow context</h2>
             <p>
-              This task became ready only after the governed agent completed and leadership approved
-              the exact launch payload.
+              Review the preceding execution, evidence, and outputs before submitting your decision.
             </p>
             <Link to={`/app/runs/${String(task.run_id)}`}>Open run room</Link>
           </Card>
           <Card>
             <h2>Assignment</h2>
             <p>Priority: {label(task.priority)}</p>
+            <p>Status: {canSubmit ? "Assigned to you" : canClaim ? "Unassigned" : "Assigned"}</p>
             <p>State version: {String(task.state_version)}</p>
           </Card>
         </aside>

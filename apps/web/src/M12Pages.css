@@ -173,12 +173,28 @@
 .task-form-status {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
   border-bottom: 1px solid #e8ecea;
   padding-bottom: 16px;
+}
+.task-form-status > div {
+  display: grid;
+  gap: 4px;
+}
+.task-form-status > div > strong {
+  font-size: 1.05rem;
 }
 .task-form-status span {
   color: #567069;
   font-size: 0.85rem;
+}
+.task-eyebrow {
+  color: #39715d;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 .human-field {
   display: grid;
@@ -200,6 +216,68 @@
   padding: 10px;
   background: #fff;
   color: inherit;
+}
+.human-field--boolean {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  border: 1px solid #dce3df;
+  border-radius: 9px;
+  padding: 13px;
+}
+.human-field--boolean input {
+  width: 18px;
+  height: 18px;
+}
+.human-field--boolean small {
+  grid-column: 2;
+}
+.task-claim-card {
+  min-height: 280px;
+  box-sizing: border-box;
+  background: linear-gradient(145deg, #ffffff 0%, #f4faf7 100%);
+  border: 1px solid #cfded7;
+  border-radius: 12px;
+  padding: 36px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-content: center;
+  align-items: start;
+  gap: 22px;
+}
+.task-claim-card > svg {
+  width: 28px;
+  height: 28px;
+  color: #267054;
+}
+.task-claim-card h2 {
+  margin: 6px 0 8px;
+  font-size: 1.25rem;
+}
+.task-claim-card p {
+  max-width: 60ch;
+  margin: 0;
+  color: #5d6e67;
+  line-height: 1.6;
+}
+.task-claim-card > button,
+.task-claim-card > a {
+  grid-column: 2;
+  justify-self: start;
+}
+.task-claim-card > a {
+  color: #176448;
+  font-weight: 650;
+}
+.task-claim-card--locked {
+  background: #fff;
+}
+.task-inline-error {
+  margin-top: 18px;
+  border: 1px solid #e3b9b2;
+  border-radius: 9px;
+  padding: 12px 14px;
+  background: #fff7f5;
+  color: #832f27;
 }
 .check-grid {
   display: flex;
@@ -326,6 +404,17 @@
   }
   .task-form {
     padding: 17px;
+  }
+  .task-claim-card {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+  .task-claim-card > button,
+  .task-claim-card > a {
+    grid-column: 1;
+  }
+  .task-form-status {
+    flex-direction: column;
   }
   .task-form footer {
     align-items: stretch;

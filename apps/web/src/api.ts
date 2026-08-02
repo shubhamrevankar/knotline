@@ -1197,10 +1197,20 @@ export const fetchHumanTask = async (taskRunId: string) =>
     )
   ).data;
 
+export const claimHumanTask = async (taskRunId: string, expectedVersion: number) =>
+  (
+    await mutate<{ readonly data: { readonly assignmentVersion: number } }>(
+      `/v1/task-runs/${encodeURIComponent(taskRunId)}/claims`,
+      "POST",
+      { expectedVersion, idempotencyKey: crypto.randomUUID() }
+    )
+  ).data;
+
 export const submitHumanTask = async (
   taskRunId: string,
   expectedVersion: number,
-  values: Readonly<Record<string, unknown>>
+  values: Readonly<Record<string, unknown>>,
+  schemaVersion = 1
 ) =>
   (
     await mutate<{ readonly data: { readonly id: string } }>(
@@ -1208,7 +1218,7 @@ export const submitHumanTask = async (
       "POST",
       {
         values,
-        schemaVersion: 1,
+        schemaVersion,
         expectedVersion,
         idempotencyKey: crypto.randomUUID()
       }

@@ -45,8 +45,10 @@ export const test = base.extend<{ consoleMessages: string[] }>({
       let collaborationFollowed = false;
       let demoRunState = "running";
       let demoHumanTaskState = "ready";
+      let unassignedTaskClaimed = false;
       const demoRunId = "ca67b16d-049d-4019-b538-1f00c23be76b";
       const demoTaskId = "bf608083-2663-4759-a162-37ce5457220d";
+      const unassignedTaskId = "e57ac45a-1756-4929-a90e-383523f92e27";
       const runtimeRun = () => ({
         workspace_id: "10000000-0000-4000-8000-000000000001",
         id: demoRunId,
@@ -481,9 +483,60 @@ export const test = base.extend<{ consoleMessages: string[] }>({
               ...runtimeRun().tasks.at(-1),
               run_id: demoRunId,
               priority: "normal",
-              assignee_user_id: "20000000-0000-4000-8000-000000000001"
+              assignee_user_id: "20000000-0000-4000-8000-000000000001",
+              assignment_version: 1,
+              can_claim: false,
+              can_submit: true,
+              form_schema_version: 1,
+              form_schema: {
+                schemaVersion: 1,
+                title: "Publication confirmation",
+                fields: [
+                  {
+                    key: "publication_note",
+                    label: "Publication note",
+                    type: "rich_text",
+                    required: true
+                  }
+                ]
+              }
             }
           };
+        } else if (pathname === `/v1/task-runs/${unassignedTaskId}`) {
+          body = {
+            data: {
+              ...runtimeRun().tasks.at(-1),
+              id: unassignedTaskId,
+              node_key: "standard_review",
+              state: unassignedTaskClaimed ? "running" : "ready",
+              state_version: "2",
+              run_id: demoRunId,
+              priority: "high",
+              assignee_user_id: unassignedTaskClaimed
+                ? "20000000-0000-4000-8000-000000000001"
+                : null,
+              assignment_version: unassignedTaskClaimed ? 2 : 1,
+              can_claim: !unassignedTaskClaimed,
+              can_submit: unassignedTaskClaimed,
+              form_schema_version: 1,
+              form_schema: {
+                schemaVersion: 1,
+                title: "Standard review",
+                fields: [
+                  { key: "owner", label: "Owner", type: "text", required: true },
+                  {
+                    key: "customer_context",
+                    label: "Customer context",
+                    type: "rich_text",
+                    required: true
+                  }
+                ]
+              }
+            }
+          };
+        } else if (pathname === `/v1/task-runs/${unassignedTaskId}/claims`) {
+          unassignedTaskClaimed = true;
+          body = { data: { assignmentVersion: 2 } };
         } else if (pathname === `/v1/task-runs/${demoTaskId}/submissions`) {
           demoHumanTaskState = "succeeded";
           demoRunState = "succeeded";

@@ -11,6 +11,7 @@ import type { Pool, PoolClient } from "pg";
 
 import { withTenantTransaction, type TenantContext } from "./context.js";
 import { resolveApprovalSteps } from "./approval-repository.js";
+import { normalizeHumanForm } from "./human-form.js";
 import { contentHash, createId } from "./values.js";
 
 export interface RuntimeRunRecord {
@@ -264,18 +265,7 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
               taskId,
               context.principalId,
               node.configuration.assignment === "workflow_initiator" ? context.principalId : null,
-              node.configuration.formSchema ?? {
-                schemaVersion: 1,
-                title: node.key,
-                fields: [
-                  {
-                    key: "response",
-                    label: "Response",
-                    type: "rich_text",
-                    required: true
-                  }
-                ]
-              }
+              normalizeHumanForm(node.configuration.formSchema, node.key)
             ]
           );
         if (node.kind === "approval") {

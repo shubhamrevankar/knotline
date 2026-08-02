@@ -14,6 +14,7 @@ import type { Pool, PoolClient } from "pg";
 import { z } from "zod";
 
 import { withTenantTransaction, type TenantContext } from "./context.js";
+import { normalizeHumanForm } from "./human-form.js";
 import { createId } from "./values.js";
 
 export class HumanTaskConflictError extends Error {}
@@ -65,6 +66,12 @@ export class PostgresHumanTaskRepository implements HumanTaskRepository {
       const result = await client.query<Record<string, unknown>>(
         `SELECT task.id,task.run_id,task.node_key,task.state,task.state_version,task.created_at,
           detail.priority,detail.due_at,detail.assignee_user_id,detail.assignee_group_id,detail.queue_id,
+          detail.assignment_version,
+          coalesce(detail.assignee_user_id=$3,false) can_submit,
+          (detail.assignee_user_id IS NULL AND (detail.assignee_group_id IS NULL OR EXISTS (
+            SELECT 1 FROM workspace_group_memberships eligibility
+            WHERE eligibility.workspace_id=task.workspace_id AND eligibility.group_id=detail.assignee_group_id AND eligibility.user_id=$3
+          ))) can_claim,
           run.workflow_id,run.workflow_version
          FROM task_runs task JOIN human_task_details detail ON detail.workspace_id=task.workspace_id AND detail.task_id=task.id
          JOIN workflow_runs run ON run.workspace_id=task.workspace_id AND run.id=task.run_id
@@ -99,14 +106,21 @@ export class PostgresHumanTaskRepository implements HumanTaskRepository {
     return withTenantTransaction(this.pool, context, async (client) => {
       const result = await client.query<Record<string, unknown>>(
         `SELECT task.*,detail.*,run.temporal_workflow_id,run.workflow_id,run.workflow_version,
+          coalesce(detail.assignee_user_id=$3,false) can_submit,
+          (detail.assignee_user_id IS NULL AND (detail.assignee_group_id IS NULL OR EXISTS (
+            SELECT 1 FROM workspace_group_memberships eligibility
+            WHERE eligibility.workspace_id=task.workspace_id AND eligibility.group_id=detail.assignee_group_id AND eligibility.user_id=$3
+          ))) can_claim,
           coalesce((SELECT jsonb_agg(draft) FROM human_task_drafts draft WHERE draft.workspace_id=task.workspace_id AND draft.task_id=task.id),'[]'::jsonb) drafts,
           coalesce((SELECT jsonb_agg(submission ORDER BY revision) FROM human_task_submissions submission WHERE submission.workspace_id=task.workspace_id AND submission.task_id=task.id),'[]'::jsonb) submissions
          FROM task_runs task JOIN human_task_details detail ON detail.workspace_id=task.workspace_id AND detail.task_id=task.id
          JOIN workflow_runs run ON run.workspace_id=task.workspace_id AND run.id=task.run_id
          WHERE task.workspace_id=$1 AND task.id=$2`,
-        [context.workspaceId, taskId]
+        [context.workspaceId, taskId, context.principalId]
       );
-      return result.rows[0];
+      const task = result.rows[0];
+      if (task) task.form_schema = normalizeHumanForm(task.form_schema, String(task.node_key));
+      return task;
     });
   }
 
@@ -428,7 +442,8 @@ export class PostgresHumanTaskRepository implements HumanTaskRepository {
         throw new HumanTaskConflictError("STALE_TASK_VERSION");
       if (row.form_schema_version !== submission.schemaVersion)
         throw new HumanTaskConflictError("STALE_FORM_SCHEMA");
-      const errors = validateHumanSubmission(row.form_schema, submission.values);
+      const form = normalizeHumanForm(row.form_schema, row.node_key);
+      const errors = validateHumanSubmission(form, submission.values);
       if (Object.keys(errors).length)
         throw new HumanTaskConflictError(`INVALID_SUBMISSION:${JSON.stringify(errors)}`);
       const id = createId();
