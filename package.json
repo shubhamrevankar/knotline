@@ -78,7 +78,11 @@
     "local:up": "docker compose -f infra/docker-compose.yml up --build",
     "local:infra:up": "docker compose -f infra/docker-compose.yml up -d postgres redis minio mailpit temporal temporal-ui",
     "local:preview": "pnpm local:infra:up && set -a && . ./.env.example && set +a && pnpm dev",
-    "local:down": "docker compose -f infra/docker-compose.yml down"
+    "local:down": "docker compose -f infra/docker-compose.yml down",
+    "release:build": "docker compose -f infra/docker-compose.yml -f infra/docker-compose.release.yml build model-gateway sandbox tool-broker api worker web && node tooling/release/write-local-manifest.mjs",
+    "release:up": "docker compose -f infra/docker-compose.yml -f infra/docker-compose.release.yml up -d --no-build --wait",
+    "release:verify": "node tooling/release/verify-local-release.mjs",
+    "release:down": "docker compose -f infra/docker-compose.yml -f infra/docker-compose.release.yml down"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.12.1",

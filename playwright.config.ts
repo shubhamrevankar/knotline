@@ -46,7 +46,8 @@ export default defineConfig({
     }
   ],
   webServer: {
-    command: "pnpm --filter @knotline/web dev --host 127.0.0.1 --port 4173",
+    command:
+      "VITE_API_URL=http://localhost:4100 pnpm --filter @knotline/web dev --host 127.0.0.1 --port 4173",
     url: webUrl,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000

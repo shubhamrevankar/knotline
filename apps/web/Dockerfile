@@ -11,8 +11,6 @@ COPY packages/ui/package.json packages/ui/package.json
 RUN pnpm install --frozen-lockfile --filter @knotline/web...
 
 FROM dependencies AS build
-ARG VITE_API_URL=http://localhost:4100
-ENV VITE_API_URL=${VITE_API_URL}
 COPY tsconfig.base.json ./
 COPY apps/web apps/web
 COPY packages/contracts packages/contracts

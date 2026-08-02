@@ -12,7 +12,7 @@ import type {
 import { classifyStatus, RequestFailure } from "./query/errors.js";
 
 const configuredApiUrl: unknown = import.meta.env.VITE_API_URL;
-const apiUrl = typeof configuredApiUrl === "string" ? configuredApiUrl : "http://localhost:4100";
+const apiUrl = typeof configuredApiUrl === "string" ? configuredApiUrl.replace(/\/$/u, "") : "";
 const configuredWorkspaceId: unknown = import.meta.env.VITE_WORKSPACE_ID;
 const workspaceId =
   typeof configuredWorkspaceId === "string"

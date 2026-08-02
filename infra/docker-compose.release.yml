@@ -1,0 +1,26 @@
+name: knotline-personal-release
+
+# Release-local changes only artifact identity and public routing. Application
+# services still use the production Dockerfiles from docker-compose.yml, while
+# dependency endpoints remain isolated local substitutes for managed services.
+services:
+  model-gateway:
+    image: knotline-personal/model-gateway:${KNOTLINE_RELEASE_TAG:-local}
+
+  sandbox:
+    image: knotline-personal/sandbox:${KNOTLINE_RELEASE_TAG:-local}
+
+  tool-broker:
+    image: knotline-personal/tool-broker:${KNOTLINE_RELEASE_TAG:-local}
+
+  api:
+    image: knotline-personal/api:${KNOTLINE_RELEASE_TAG:-local}
+    environment:
+      KNOTLINE_API_ORIGIN: http://localhost:5173
+      KNOTLINE_WEB_ORIGIN: http://localhost:5173
+
+  worker:
+    image: knotline-personal/worker:${KNOTLINE_RELEASE_TAG:-local}
+
+  web:
+    image: knotline-personal/web:${KNOTLINE_RELEASE_TAG:-local}

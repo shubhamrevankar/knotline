@@ -23,6 +23,8 @@
 !packages/db/tsconfig.json
 !packages/db/tsconfig.build.json
 !packages/db/src/**
+!packages/db/migrations/**
+!packages/db/registry/**
 !packages/retrieval/package.json
 !packages/retrieval/tsconfig.json
 !packages/retrieval/tsconfig.build.json

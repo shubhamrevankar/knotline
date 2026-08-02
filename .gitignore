@@ -10,6 +10,7 @@ blob-report
 artifacts/attestation/
 artifacts/coverage/
 artifacts/scans/
+artifacts/releases/
 artifacts/verification/*/manifest.json
 .env
 .env.*

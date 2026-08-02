@@ -11,10 +11,16 @@
 !packages/contracts/tsconfig.json
 !packages/contracts/tsconfig.build.json
 !packages/contracts/src/**
+!packages/agent-runtime/package.json
+!packages/agent-runtime/tsconfig.json
+!packages/agent-runtime/tsconfig.build.json
+!packages/agent-runtime/src/**
 !packages/db/package.json
 !packages/db/tsconfig.json
 !packages/db/tsconfig.build.json
 !packages/db/src/**
+!packages/db/migrations/**
+!packages/db/registry/**
 !packages/operations/package.json
 !packages/operations/tsconfig.json
 !packages/operations/tsconfig.build.json

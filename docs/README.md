@@ -46,6 +46,7 @@ docs/
   acceptance
 - [Knotline product build blueprint](product/knotline/2026-07-31-product-build-blueprint.md)
 - [Knotline complete product demo](demo/knotline/2026-08-02-complete-product-demo.md)
+- [Release-local production runtime](operations/knotline/release-local-runtime.md)
 - [Trace.so technical analysis](research/trace-so/2026-07-29-trace-so-technical-analysis.md)
 - [Trace end-to-end system design](system-design/trace/2026-07-29-trace-end-to-end-system-design.md)
 
