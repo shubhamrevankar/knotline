@@ -1,5 +1,8 @@
 .connection-shell {
   display: grid;
+  width: min(100%, 1236px);
+  margin: 0 auto;
+  padding: 36px 28px 64px;
   gap: 2rem;
 }
 .connection-shell header {
@@ -117,6 +120,9 @@
   color: var(--color-text-muted);
 }
 @media (max-width: 640px) {
+  .connection-shell {
+    padding: 24px 14px 5rem;
+  }
   .connection-actions > * {
     width: 100%;
   }

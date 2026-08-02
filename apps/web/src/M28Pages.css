@@ -5,8 +5,9 @@
   gap: 1.25rem;
 }
 .pulse-page {
+  width: 100%;
   gap: 2rem;
-  padding-bottom: 5rem;
+  padding: 36px 28px 5rem;
 }
 .pulse-header {
   display: flex;
@@ -346,6 +347,9 @@
   }
 }
 @media (max-width: 480px) {
+  .pulse-page {
+    padding: 24px 14px 5rem;
+  }
   .pulse-status,
   .pulse-section-heading {
     align-items: flex-start;
