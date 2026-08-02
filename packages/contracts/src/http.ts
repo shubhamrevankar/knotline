@@ -21,7 +21,19 @@ import {
 
 export const workflowStatusSchema = z.enum(["draft", "active", "paused", "archived"]);
 export const nodeStatusSchema = z.enum(["queued", "running", "waiting", "complete", "failed"]);
-export const nodeKindSchema = z.enum(["trigger", "human", "agent", "approval", "action"]);
+export const nodeKindSchema = z.enum([
+  "trigger",
+  "human",
+  "agent",
+  "approval",
+  "action",
+  "condition",
+  "delay",
+  "loop",
+  "subworkflow",
+  "transform",
+  "integration_action"
+]);
 
 export const workflowNodeSchema = z
   .object({

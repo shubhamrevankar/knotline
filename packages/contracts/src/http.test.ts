@@ -49,4 +49,43 @@ describe("HTTP contracts", () => {
       })
     ).toThrow();
   });
+
+  it.each([
+    "trigger",
+    "human",
+    "agent",
+    "approval",
+    "action",
+    "condition",
+    "delay",
+    "loop",
+    "subworkflow",
+    "transform",
+    "integration_action"
+  ] as const)("accepts the %s workflow canvas node kind", (kind) => {
+    expect(
+      workflowSchema.parse({
+        id: "wf_complex",
+        teamId: "team_demo",
+        name: "Complex workflow",
+        description: "",
+        status: "active",
+        version: 1,
+        updatedAt: "2026-08-02T00:00:00.000Z",
+        nodes: [
+          {
+            id: `node_${kind}`,
+            title: "Operation",
+            description: "",
+            kind,
+            owner: "Operations",
+            status: "queued",
+            x: 0,
+            y: 0
+          }
+        ],
+        edges: []
+      }).nodes[0]?.kind
+    ).toBe(kind);
+  });
 });

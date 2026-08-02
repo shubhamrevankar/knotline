@@ -36,6 +36,33 @@ const creationSteps = [
   msg("generation.step.publish")
 ];
 
+type GeneratedNodeKind = WorkflowDefinition["nodes"][number]["kind"];
+
+function generatedCapabilityLabel(kind: GeneratedNodeKind): string {
+  switch (kind) {
+    case "trigger":
+      return msg("generation.kind.trigger");
+    case "human":
+      return msg("generation.kind.human");
+    case "agent":
+      return msg("generation.kind.agent");
+    case "approval":
+      return msg("generation.kind.approval");
+    case "condition":
+      return msg("generation.kind.condition");
+    case "delay":
+      return msg("generation.kind.delay");
+    case "loop":
+      return msg("generation.kind.loop");
+    case "subworkflow":
+      return msg("generation.kind.subworkflow");
+    case "transform":
+      return msg("generation.kind.transform");
+    case "integration_action":
+      return msg("generation.kind.integrationaction");
+  }
+}
+
 export function GuidedWorkflowPage() {
   const navigate = useNavigate();
   const [stage, setStage] = useState<CreationStage>(1);
@@ -382,7 +409,7 @@ export function GuidedWorkflowCreate({
                   <strong>{msg("generation.capabilities.heading")}</strong>
                   <div>
                     {generatedCapabilities.map((kind) => (
-                      <span key={kind}>{msg(`generation.kind.${kind}`)}</span>
+                      <span key={kind}>{generatedCapabilityLabel(kind)}</span>
                     ))}
                   </div>
                 </div>

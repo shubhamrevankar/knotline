@@ -12,7 +12,21 @@ import {
   type Node,
   type NodeProps
 } from "@xyflow/react";
-import { Bot, Check, CircleDot, Send, ShieldCheck, UserRound } from "lucide-react";
+import {
+  Bot,
+  Braces,
+  Check,
+  CircleDot,
+  Clock3,
+  GitBranch,
+  Network,
+  PlugZap,
+  Repeat2,
+  Send,
+  ShieldCheck,
+  UserRound,
+  type LucideIcon
+} from "lucide-react";
 import { msg } from "./i18n.js";
 
 type OperationNodeData = {
@@ -23,23 +37,37 @@ type OperationNodeData = {
   status: NodeStatus;
 };
 
-const iconByKind = {
+const iconByKind: Record<NodeKind, LucideIcon> = {
   trigger: CircleDot,
   human: UserRound,
   agent: Bot,
   approval: ShieldCheck,
-  action: Send
+  action: Send,
+  condition: GitBranch,
+  delay: Clock3,
+  loop: Repeat2,
+  subworkflow: Network,
+  transform: Braces,
+  integration_action: PlugZap
 };
 
+const kindLabels = (): Record<NodeKind, string> => ({
+  action: msg("canvas.kind.action"),
+  agent: msg("canvas.kind.agent"),
+  approval: msg("canvas.kind.approval"),
+  condition: msg("canvas.kind.condition"),
+  delay: msg("canvas.kind.delay"),
+  human: msg("canvas.kind.human"),
+  integration_action: msg("canvas.kind.integrationaction"),
+  loop: msg("canvas.kind.loop"),
+  subworkflow: msg("canvas.kind.subworkflow"),
+  transform: msg("canvas.kind.transform"),
+  trigger: msg("canvas.kind.trigger")
+});
+
 function OperationNode({ data }: NodeProps<Node<OperationNodeData>>) {
-  const Icon = iconByKind[data.kind];
-  const kindLabel = {
-    action: msg("canvas.kind.action"),
-    agent: msg("canvas.kind.agent"),
-    approval: msg("canvas.kind.approval"),
-    human: msg("canvas.kind.human"),
-    trigger: msg("canvas.kind.trigger")
-  }[data.kind];
+  const Icon = iconByKind[data.kind] ?? CircleDot;
+  const kindLabel = kindLabels()[data.kind] ?? data.kind;
   return (
     <article className={`operation-node operation-node--${data.status}`}>
       <Handle type="target" position={Position.Left} />
@@ -69,13 +97,7 @@ function OperationNode({ data }: NodeProps<Node<OperationNodeData>>) {
 const nodeTypes = { operation: OperationNode };
 
 export function WorkflowCanvas({ workflow }: { workflow: Workflow }) {
-  const kindLabels: Record<NodeKind, string> = {
-    action: msg("canvas.kind.action"),
-    agent: msg("canvas.kind.agent"),
-    approval: msg("canvas.kind.approval"),
-    human: msg("canvas.kind.human"),
-    trigger: msg("canvas.kind.trigger")
-  };
+  const labelsByKind = kindLabels();
   const statusLabels: Record<NodeStatus, string> = {
     complete: msg("canvas.status.complete"),
     failed: msg("canvas.status.failed"),
@@ -85,7 +107,7 @@ export function WorkflowCanvas({ workflow }: { workflow: Workflow }) {
   };
   const nodes: Node<OperationNodeData>[] = workflow.nodes.map((node) => ({
     ariaLabel: msg("canvas.node.aria", {
-      kind: kindLabels[node.kind],
+      kind: labelsByKind[node.kind] ?? node.kind,
       owner: node.owner,
       status: statusLabels[node.status],
       title: node.title
