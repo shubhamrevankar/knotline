@@ -3638,3 +3638,70 @@ a.run-button {
     padding-inline: 1rem;
   }
 }
+
+.workflow-complexity {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 1rem 0;
+}
+
+.workflow-complexity article {
+  display: grid;
+  min-height: 84px;
+  align-content: center;
+  gap: 0.25rem;
+  padding: 0.8rem;
+  border: 1px solid #d9dfd8;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.workflow-complexity strong {
+  color: #142321;
+  font-family: "DM Mono", monospace;
+  font-size: 1.45rem;
+  font-weight: 500;
+}
+
+.workflow-complexity span {
+  color: #60706c;
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
+.workflow-capabilities {
+  display: grid;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.workflow-capabilities > strong {
+  font-size: 0.78rem;
+}
+
+.workflow-capabilities > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.workflow-capabilities span {
+  padding: 0.35rem 0.6rem;
+  border: 1px solid #b9cec7;
+  border-radius: 999px;
+  color: #0d493f;
+  background: #e7f0eb;
+  font-size: 0.68rem;
+  font-weight: 650;
+}
+
+@media (max-width: 760px) {
+  .workflow-complexity {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .workflow-complexity article:last-child {
+    grid-column: 1 / -1;
+  }
+}

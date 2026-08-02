@@ -143,6 +143,8 @@ export function GuidedWorkflowCreate({
     readonly definition: WorkflowDefinition;
     readonly findings: readonly { readonly severity: string; readonly message: string }[];
   }>();
+  const generatedNodes = generation?.result?.definition.nodes ?? [];
+  const generatedCapabilities = [...new Set(generatedNodes.map(({ kind }) => kind))];
 
   useEffect(() => {
     if (!generation || !["QUEUED", "RUNNING", "CANCELLING"].includes(generation.lifecycle)) return;
@@ -179,15 +181,35 @@ export function GuidedWorkflowCreate({
     setWorking(true);
     setError("");
     try {
+      const nodes = generation.result.definition.nodes;
+      const humanSubmissions = Object.fromEntries(
+        nodes
+          .filter(({ kind }) => kind === "human")
+          .map(({ key }) => [key, { status: "submitted", source: "controlled_safe_test" }])
+      );
+      const agentOutputs = Object.fromEntries(
+        nodes
+          .filter(({ kind }) => kind === "agent")
+          .map(({ key }) => [key, { status: "completed", source: "controlled_safe_test" }])
+      );
+      const connectorOutputs = Object.fromEntries(
+        nodes
+          .filter(({ kind }) => kind === "integration_action")
+          .map(({ key }) => [key, { status: "simulated", externalWrite: false }])
+      );
+      const healthyConnections = nodes
+        .filter(({ kind }) => kind === "integration_action")
+        .map(({ configuration }) => configuration.connectionRef)
+        .filter((value): value is string => typeof value === "string");
       const report = await dryRunWorkflowDefinition(generation.result.definition, {
         input: { source: "guided_fixture" },
-        humanSubmissions: { prepare_request: { status: "submitted" } },
-        agentOutputs: {},
-        connectorOutputs: {},
+        humanSubmissions,
+        agentOutputs,
+        connectorOutputs,
         permissions: ["workflow.run"],
         entitlements: ["workflows"],
-        healthyConnections: [],
-        budgetMinor: 100,
+        healthyConnections,
+        budgetMinor: Math.max(100, nodes.filter(({ kind }) => kind === "agent").length * 100),
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"
       });
       setDryRun(report);
@@ -291,7 +313,9 @@ export function GuidedWorkflowCreate({
             <span>{msg("generation.prompt.hint")}</span>
             <Button tone="accent" type="submit" disabled={working || prompt.trim().length < 10}>
               <Sparkles aria-hidden="true" />
-              {working && !generation?.result ? msg("generation.working") : msg("generation.generate")}
+              {working && !generation?.result
+                ? msg("generation.working")
+                : msg("generation.generate")}
             </Button>
           </div>
         </form>
@@ -306,7 +330,9 @@ export function GuidedWorkflowCreate({
                 <h3>{generation.result?.definition.name ?? msg("generation.preparing")}</h3>
               </div>
               {["QUEUED", "RUNNING"].includes(generation.lifecycle) ? (
-                <Button onClick={() => void cancelWorkflowGeneration(generation.id).then(setGeneration)}>
+                <Button
+                  onClick={() => void cancelWorkflowGeneration(generation.id).then(setGeneration)}
+                >
                   {msg("generation.cancel")}
                 </Button>
               ) : null}
@@ -320,12 +346,55 @@ export function GuidedWorkflowCreate({
                     edges: generation.result.diff.addedEdges
                   })}
                 </p>
+                <div
+                  className="workflow-complexity"
+                  aria-label={msg("generation.complexity.label")}
+                >
+                  <article>
+                    <strong>{generatedNodes.length}</strong>
+                    <span>{msg("generation.complexity.steps")}</span>
+                  </article>
+                  <article>
+                    <strong>{generation.result.definition.edges.length}</strong>
+                    <span>{msg("generation.complexity.paths")}</span>
+                  </article>
+                  <article>
+                    <strong>{generatedNodes.filter(({ kind }) => kind === "agent").length}</strong>
+                    <span>{msg("generation.complexity.agents")}</span>
+                  </article>
+                  <article>
+                    <strong>
+                      {
+                        generatedNodes.filter(({ kind }) => kind === "human" || kind === "approval")
+                          .length
+                      }
+                    </strong>
+                    <span>{msg("generation.complexity.human.gates")}</span>
+                  </article>
+                  <article>
+                    <strong>
+                      {generatedNodes.filter(({ kind }) => kind === "integration_action").length}
+                    </strong>
+                    <span>{msg("generation.complexity.integrations")}</span>
+                  </article>
+                </div>
+                <div className="workflow-capabilities">
+                  <strong>{msg("generation.capabilities.heading")}</strong>
+                  <div>
+                    {generatedCapabilities.map((kind) => (
+                      <span key={kind}>{msg(`generation.kind.${kind}`)}</span>
+                    ))}
+                  </div>
+                </div>
                 <div className="review-columns">
                   <section>
                     <h4>{msg("generation.assumptions")}</h4>
                     <ul>
                       {generation.result.assumptions.map((assumption) => (
-                        <li key={assumption}><Check aria-hidden="true" />{assumption}</li>
+                        <li key={assumption}>
+                          <Check aria-hidden="true" />
+                          {assumption}
+                        </li>
                       ))}
                     </ul>
                   </section>
@@ -333,7 +402,10 @@ export function GuidedWorkflowCreate({
                     <h4>{msg("generation.assignments")}</h4>
                     <ul>
                       {generation.result.assignments.map((assignment) => (
-                        <li key={assignment}><Check aria-hidden="true" />{assignment}</li>
+                        <li key={assignment}>
+                          <Check aria-hidden="true" />
+                          {assignment}
+                        </li>
                       ))}
                     </ul>
                   </section>
@@ -341,27 +413,70 @@ export function GuidedWorkflowCreate({
                 <details className="technical-details">
                   <summary>{msg("generation.technical.details")}</summary>
                   <dl className="generation-metadata">
-                    <div><dt>{msg("generation.environment")}</dt><dd>{generation.result.environmentStatus}</dd></div>
-                    <div><dt>{msg("generation.provider")}</dt><dd>{generation.result.provider}</dd></div>
-                    <div><dt>{msg("generation.model")}</dt><dd>{generation.result.exactModelId ?? msg("generation.model.recorded")}</dd></div>
-                    <div><dt>{msg("generation.prompt.version")}</dt><dd>{generation.result.promptVersion}</dd></div>
-                    <div><dt>{msg("generation.cost")}</dt><dd>{generation.result.usage.costMinor} {generation.result.usage.currency}</dd></div>
-                    <div><dt>{msg("generation.repairs")}</dt><dd>{generation.result.repairAttempts}</dd></div>
+                    <div>
+                      <dt>{msg("generation.environment")}</dt>
+                      <dd>{generation.result.environmentStatus}</dd>
+                    </div>
+                    <div>
+                      <dt>{msg("generation.provider")}</dt>
+                      <dd>{generation.result.provider}</dd>
+                    </div>
+                    <div>
+                      <dt>{msg("generation.model")}</dt>
+                      <dd>{generation.result.exactModelId ?? msg("generation.model.recorded")}</dd>
+                    </div>
+                    <div>
+                      <dt>{msg("generation.prompt.version")}</dt>
+                      <dd>{generation.result.promptVersion}</dd>
+                    </div>
+                    <div>
+                      <dt>{msg("generation.cost")}</dt>
+                      <dd>
+                        {generation.result.usage.costMinor} {generation.result.usage.currency}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>{msg("generation.repairs")}</dt>
+                      <dd>{generation.result.repairAttempts}</dd>
+                    </div>
                   </dl>
                   <h4>{msg("generation.integrations")}</h4>
                   {generation.result.missingIntegrations.length ? (
-                    <ul>{generation.result.missingIntegrations.map((item) => <li key={item}>{item}</li>)}</ul>
-                  ) : <p>{msg("generation.integrations.none")}</p>}
+                    <ul>
+                      {generation.result.missingIntegrations.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{msg("generation.integrations.none")}</p>
+                  )}
                   <h4>{msg("generation.findings")}</h4>
                   {generation.result.findings.length ? (
-                    <ul>{generation.result.findings.map((finding) => <li key={`${finding.code}-${finding.message}`}>{finding.severity}: {finding.message}</li>)}</ul>
-                  ) : <p>{msg("generation.findings.none")}</p>}
+                    <ul>
+                      {generation.result.findings.map((finding) => (
+                        <li key={`${finding.code}-${finding.message}`}>
+                          {finding.severity}: {finding.message}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{msg("generation.findings.none")}</p>
+                  )}
                 </details>
                 <div className="review-actions">
-                  <Button onClick={() => void generate(undefined, generation.id)} disabled={working}>
+                  <Button
+                    onClick={() => void generate(undefined, generation.id)}
+                    disabled={working}
+                  >
                     {msg("generation.regenerate")}
                   </Button>
-                  <Button onClick={() => { setGeneration(undefined); setDryRun(undefined); onStageChange(1); }}>
+                  <Button
+                    onClick={() => {
+                      setGeneration(undefined);
+                      setDryRun(undefined);
+                      onStageChange(1);
+                    }}
+                  >
                     {msg("generation.discard")}
                   </Button>
                   <Button tone="accent" onClick={() => void testSafely()} disabled={working}>
@@ -387,14 +502,27 @@ export function GuidedWorkflowCreate({
             </div>
             <p>{msg("dryrun.explanation")}</p>
             <div className="test-summary">
-              <span><strong>{dryRun.steps.length}</strong>{msg("dryrun.steps")}</span>
-              <span><strong>{dryRun.externalWrites}</strong>{msg("dryrun.external.writes")}</span>
-              <span><strong>{dryRun.preflight.checks.filter((check) => check.passed).length}</strong>{msg("dryrun.checks.passed")}</span>
+              <span>
+                <strong>{dryRun.steps.length}</strong>
+                {msg("dryrun.steps")}
+              </span>
+              <span>
+                <strong>{dryRun.externalWrites}</strong>
+                {msg("dryrun.external.writes")}
+              </span>
+              <span>
+                <strong>{dryRun.preflight.checks.filter((check) => check.passed).length}</strong>
+                {msg("dryrun.checks.passed")}
+              </span>
             </div>
             <ul className="check-list">
               {dryRun.preflight.checks.map((check) => (
                 <li key={check.key} className={check.passed ? "is-passed" : "is-blocked"}>
-                  {check.passed ? <CheckCircle2 aria-hidden="true" /> : <span aria-hidden="true">×</span>}
+                  {check.passed ? (
+                    <CheckCircle2 aria-hidden="true" />
+                  ) : (
+                    <span aria-hidden="true">×</span>
+                  )}
                   {check.message}
                 </li>
               ))}
@@ -404,37 +532,72 @@ export function GuidedWorkflowCreate({
                 <strong>{msg("generation.publish.ready.heading")}</strong>
                 <span>{msg("generation.publish.ready.body")}</span>
               </div>
-              <Button tone="accent" onClick={() => void accept()} disabled={working || !dryRun.preflight.allowed}>
+              <Button
+                tone="accent"
+                onClick={() => void accept()}
+                disabled={working || !dryRun.preflight.allowed}
+              >
                 {working ? msg("generation.publishing") : msg("generation.accept.publish")}
               </Button>
             </div>
           </section>
         ) : null}
 
-        {error ? <p className="guided-error" role="alert">{error}</p> : null}
+        {error ? (
+          <p className="guided-error" role="alert">
+            {error}
+          </p>
+        ) : null}
       </Card>
 
       <details className="import-workflow">
-        <summary><Upload aria-hidden="true" />{msg("import.heading")}<ChevronDown aria-hidden="true" /></summary>
+        <summary>
+          <Upload aria-hidden="true" />
+          {msg("import.heading")}
+          <ChevronDown aria-hidden="true" />
+        </summary>
         <div>
           <p>{msg("import.body")}</p>
           <form onSubmit={(event) => void previewImport(event)}>
-            <label>{msg("import.format")}
-              <select value={importFormat} onChange={(event) => setImportFormat(event.target.value as "json" | "csv")}>
+            <label>
+              {msg("import.format")}
+              <select
+                value={importFormat}
+                onChange={(event) => setImportFormat(event.target.value as "json" | "csv")}
+              >
                 <option value="json">{msg("import.json")}</option>
                 <option value="csv">{msg("import.csv")}</option>
               </select>
             </label>
-            <label>{msg("import.content")}
-              <textarea value={importContent} onChange={(event) => setImportContent(event.target.value)} required />
+            <label>
+              {msg("import.content")}
+              <textarea
+                value={importContent}
+                onChange={(event) => setImportContent(event.target.value)}
+                required
+              />
             </label>
-            <Button type="submit" disabled={working}><Braces aria-hidden="true" />{msg("import.preview")}</Button>
+            <Button type="submit" disabled={working}>
+              <Braces aria-hidden="true" />
+              {msg("import.preview")}
+            </Button>
           </form>
           {importPreview ? (
             <div className="import-preview">
               <strong>{importPreview.definition.name}</strong>
-              <p>{msg("import.summary", { nodes: importPreview.definition.nodes.length, findings: importPreview.findings.length })}</p>
-              <Button tone="accent" onClick={() => void acceptImport()} disabled={working || importPreview.findings.some(({ severity }) => severity === "error")}>
+              <p>
+                {msg("import.summary", {
+                  nodes: importPreview.definition.nodes.length,
+                  findings: importPreview.findings.length
+                })}
+              </p>
+              <Button
+                tone="accent"
+                onClick={() => void acceptImport()}
+                disabled={
+                  working || importPreview.findings.some(({ severity }) => severity === "error")
+                }
+              >
                 {msg("import.accept")}
               </Button>
             </div>
