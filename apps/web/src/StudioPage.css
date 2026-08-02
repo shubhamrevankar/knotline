@@ -171,6 +171,40 @@
   gap: 0.45rem;
 }
 
+.studio-toolbar-group {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.studio-toolbar-primary button:first-child {
+  border-color: #a7c1b9;
+  color: #0d493f;
+  background: #e8f1ec;
+}
+
+.studio-toolbar-divider {
+  width: 1px;
+  height: 24px;
+  margin: 0 0.15rem;
+  background: #dfe4df;
+}
+
+.studio-toolbar-spacer {
+  flex: 1;
+}
+
+.studio-toolbar-selection > span {
+  padding: 0 0.4rem;
+  color: #176b5b;
+  font-family: "DM Mono", monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
 .studio-header-actions {
   justify-content: flex-end;
 }
@@ -242,6 +276,20 @@
     "validation validation validation";
 }
 
+.studio-layout-no-palette {
+  grid-template-columns: minmax(500px, 1fr) 350px;
+  grid-template-areas:
+    "canvas inspector"
+    "validation validation";
+}
+
+.studio-layout-no-palette.studio-layout-outline {
+  grid-template-columns: 270px minmax(500px, 1fr) 350px;
+  grid-template-areas:
+    "outline canvas inspector"
+    "validation validation validation";
+}
+
 .studio-palette,
 .studio-outline,
 .studio-canvas,
@@ -281,6 +329,27 @@
 
 .studio-panel-heading > svg {
   color: #176b5b;
+}
+
+.studio-panel-heading > button {
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0.25rem;
+  border-color: #d9dfd8;
+  color: #60706c;
+  background: #fff;
+}
+
+.studio-insert-context {
+  grid-column: 1 / -1;
+  margin: -0.15rem 0 0.25rem;
+  padding: 0.6rem;
+  border: 1px solid #cfe0d8;
+  border-radius: 7px;
+  color: #365b52;
+  background: #edf5f1;
+  font-size: 0.65rem;
+  line-height: 1.45;
 }
 
 .studio-palette > label {
@@ -384,6 +453,91 @@
   font-size: 0.65rem;
 }
 
+.studio-canvas-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.studio-health {
+  padding: 0.32rem 0.5rem;
+  border-radius: 999px;
+  color: #176b5b;
+  background: #e6f1ec;
+  font-size: 0.6rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.studio-health-attention {
+  color: #8a4b1e;
+  background: #fff0df;
+}
+
+.studio-step-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.studio-step-search > svg {
+  position: absolute;
+  z-index: 2;
+  left: 0.6rem;
+  width: 14px;
+  color: #71807c;
+}
+
+.studio-step-search > input {
+  width: 180px;
+  height: 34px;
+  padding: 0 0.6rem 0 1.9rem;
+  border: 1px solid #d9dfd8;
+  border-radius: 7px;
+  color: #142321;
+  background: #fafbf8;
+  font: inherit;
+  font-size: 0.66rem;
+}
+
+.studio-step-results {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  display: grid;
+  width: 260px;
+  padding: 0.35rem;
+  border: 1px solid #d9dfd8;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 18px 42px rgb(20 35 33 / 16%);
+}
+
+.studio-step-results button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem;
+  border: 0;
+  border-radius: 6px;
+  color: #142321;
+  background: transparent;
+  font: inherit;
+  font-size: 0.68rem;
+  text-align: left;
+}
+
+.studio-step-results button:hover {
+  background: #edf3ef;
+}
+
+.studio-step-results small {
+  color: #60706c;
+  font-size: 0.58rem;
+}
+
 .studio-canvas > .react-flow {
   height: calc(100% - 64px);
   background: radial-gradient(circle at 48% 40%, rgb(23 107 91 / 6%), transparent 30rem), #f8faf7;
@@ -417,6 +571,47 @@
   color: #142321;
   background: rgb(255 255 255 / 97%);
   box-shadow: 0 10px 28px rgb(20 35 33 / 9%);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.studio-operation-node:hover {
+  border-color: #9dbcb3;
+  box-shadow: 0 14px 34px rgb(20 35 33 / 13%);
+  transform: translateY(-1px);
+}
+
+.studio-node-insert {
+  position: absolute;
+  top: 50%;
+  right: -31px;
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #9dbcb3;
+  border-radius: 50%;
+  color: #fff;
+  background: #176b5b;
+  box-shadow: 0 6px 14px rgb(23 107 91 / 24%);
+  opacity: 0;
+  transform: translateY(-50%) scale(0.85);
+  transition: 140ms ease;
+  cursor: pointer;
+}
+
+.studio-operation-node:hover .studio-node-insert,
+.studio-operation-node.is-selected .studio-node-insert,
+.studio-node-insert:focus-visible {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.studio-node-insert svg {
+  width: 13px;
 }
 
 .studio-operation-node.is-selected {
@@ -615,8 +810,79 @@
   font-size: 1rem;
 }
 
+.studio-node-test {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0.45rem 0 0.25rem;
+  padding: 0.7rem;
+  border: 1px solid #cfe0d8;
+  border-radius: 8px;
+  background: #f0f6f3;
+}
+
+.studio-node-test > div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.studio-node-test strong {
+  font-size: 0.68rem;
+}
+
+.studio-node-test span {
+  color: #60706c;
+  font-size: 0.58rem;
+  line-height: 1.35;
+}
+
+.studio-node-test button {
+  min-height: 34px;
+  border-color: #9dbcb3;
+  color: #0d493f;
+  background: #fff;
+  font-size: 0.62rem;
+}
+
+.studio-node-test > p {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  color: #176b5b;
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+.studio-node-test > p svg {
+  width: 14px;
+}
+
 .studio-inspector-card details {
   margin-top: 0.65rem;
+}
+
+.studio-advanced-settings {
+  padding: 0.7rem;
+  border: 1px solid #d9dfd8;
+  border-radius: 8px;
+  background: #fafbf8;
+}
+
+.studio-advanced-settings summary {
+  color: #142321;
+  font-size: 0.7rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.studio-advanced-settings > p {
+  margin: 0.45rem 0 0;
+  color: #60706c;
+  font-size: 0.62rem;
+  line-height: 1.45;
 }
 
 .studio-inspector-card pre {
@@ -926,6 +1192,16 @@
       "validation validation";
   }
 
+  .studio-layout-no-palette,
+  .studio-layout-no-palette.studio-layout-outline {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "canvas"
+      "outline"
+      "inspector"
+      "validation";
+  }
+
   .studio-inspector {
     display: grid;
     max-height: none;
@@ -973,15 +1249,32 @@
     flex: 0 0 auto;
   }
 
+  .studio-toolbar-divider,
+  .studio-toolbar-spacer {
+    display: none;
+  }
+
+  .studio-canvas-tools {
+    max-width: 58%;
+  }
+
+  .studio-health {
+    display: none;
+  }
+
+  .studio-step-search > input {
+    width: 145px;
+  }
+
   .studio-layout,
   .studio-layout-outline {
     width: calc(100% - 1rem);
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
-      "palette"
-      "outline"
-      "inspector"
       "canvas"
+      "palette"
+      "inspector"
+      "outline"
       "validation";
   }
 

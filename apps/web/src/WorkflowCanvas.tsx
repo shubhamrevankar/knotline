@@ -128,8 +128,8 @@ export function WorkflowCanvas({ workflow }: { workflow: Workflow }) {
     ...edge,
     type: "smoothstep",
     animated: true,
-    markerEnd: { type: MarkerType.ArrowClosed, color: "#7f8b8f" },
-    style: { stroke: "#7f8b8f", strokeWidth: 1.5 }
+    markerEnd: { type: MarkerType.ArrowClosed, color: "#77938a" },
+    style: { stroke: "#77938a", strokeWidth: 1.5 }
   }));
 
   return (
@@ -150,7 +150,7 @@ export function WorkflowCanvas({ workflow }: { workflow: Workflow }) {
         proOptions={{ hideAttribution: true }}
       >
         <Background
-          color="rgba(190, 205, 209, 0.14)"
+          color="rgba(23, 107, 91, 0.16)"
           gap={24}
           size={1}
           variant={BackgroundVariant.Dots}
@@ -159,8 +159,8 @@ export function WorkflowCanvas({ workflow }: { workflow: Workflow }) {
         <MiniMap
           pannable
           zoomable
-          nodeColor={(node) => (node.data.status === "running" ? "#c8ff52" : "#5e6b70")}
-          maskColor="rgba(17, 19, 21, 0.78)"
+          nodeColor={(node) => (node.data.status === "running" ? "#176b5b" : "#a9bbb4")}
+          maskColor="rgba(245, 246, 241, 0.72)"
         />
       </ReactFlow>
     </div>

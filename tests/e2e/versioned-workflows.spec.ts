@@ -14,6 +14,14 @@ test("builder creates a persisted workflow draft from the workflow library", asy
   await expect(page.getByRole("heading", { name: "Launch intelligence brief" })).toBeVisible();
 });
 
+test("workflow library preview uses the trusted light product theme", async ({ page }) => {
+  await page.goto("/app/workflows");
+  const node = page.locator(".operation-node").first();
+  await expect(node).toBeVisible();
+  await expect(node).toHaveCSS("background-color", "rgba(255, 255, 255, 0.97)");
+  await expect(page.locator(".canvas-panel")).toHaveCSS("color", "rgb(20, 35, 33)");
+});
+
 test("@a11y builder validates and publishes an immutable workflow version", async ({ page }) => {
   await page.goto(`/app/workflows/${workflowId}`);
   await expect(page.getByRole("heading", { name: "Launch intelligence brief" })).toBeVisible();

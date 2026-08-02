@@ -38,6 +38,8 @@ import {
   LayoutGrid,
   ListTree,
   Network,
+  PanelLeftClose,
+  PanelLeftOpen,
   PencilLine,
   PlugZap,
   Plus,
@@ -46,6 +48,7 @@ import {
   Rocket,
   Save,
   Search,
+  ScanSearch,
   ShieldCheck,
   Trash2,
   Undo2,
@@ -129,6 +132,7 @@ type StudioNodeData = {
   readonly label: string;
   readonly kind: WorkflowDefinitionNode["kind"];
   readonly disabled: boolean;
+  readonly onInsertAfter: () => void;
 };
 
 function StudioCanvasNode({ data, selected }: NodeProps<Node<StudioNodeData>>) {
@@ -143,6 +147,17 @@ function StudioCanvasNode({ data, selected }: NodeProps<Node<StudioNodeData>>) {
         {kindLabel(data.kind)}
       </span>
       <strong>{data.label}</strong>
+      <button
+        aria-label={msg("studio.node.insertafter", { name: data.label })}
+        className="studio-node-insert"
+        onClick={(event) => {
+          event.stopPropagation();
+          data.onInsertAfter();
+        }}
+        type="button"
+      >
+        <Plus aria-hidden="true" />
+      </button>
       <Handle type="source" position={Position.Right} />
     </article>
   );
@@ -254,6 +269,9 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
     "saved"
   );
   const [palette, setPalette] = useState("");
+  const [showPalette, setShowPalette] = useState(true);
+  const [insertAfterKey, setInsertAfterKey] = useState<string>();
+  const [stepSearch, setStepSearch] = useState("");
   const [showHelp, setShowHelp] = useState(false);
   const [showOutline, setShowOutline] = useState(true);
   const [recoveryAvailable, setRecoveryAvailable] = useState(false);
@@ -271,6 +289,12 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
   >();
   const [reviewError, setReviewError] = useState("");
   const [published, setPublished] = useState<Awaited<ReturnType<typeof publishWorkflowDraft>>>();
+  const [stepTest, setStepTest] = useState<{
+    key: string;
+    steps: number;
+    writes: number;
+  }>();
+  const [testingStep, setTestingStep] = useState(false);
   const saveTimer = useRef<number | undefined>(undefined);
   const fitView = useRef<(() => void) | undefined>(undefined);
   const flowInstance = useRef<ReactFlowInstance<Node<StudioNodeData>, Edge> | undefined>(undefined);
@@ -499,7 +523,12 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
         data: {
           label: node.name,
           kind: node.kind,
-          disabled: node.configuration.disabled === true
+          disabled: node.configuration.disabled === true,
+          onInsertAfter: () => {
+            setInsertAfterKey(node.key);
+            setPalette("");
+            setShowPalette(true);
+          }
         },
         selected: state.selectedNodeKeys.includes(node.key),
         className: `studio-node studio-node-${node.kind}`
@@ -525,7 +554,49 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
     let key = base.key;
     let suffix = 2;
     while (state.definition.nodes.some((node) => node.key === key)) key = `${base.key}_${suffix++}`;
-    dispatch({ type: "add_node", node: { ...base, key } });
+    const source = state.definition.nodes.find(({ key: nodeKey }) => nodeKey === insertAfterKey);
+    const node = source
+      ? { ...base, key, position: { x: source.position.x + 285, y: source.position.y + 120 } }
+      : { ...base, key };
+    dispatch({ type: "add_node", node });
+    if (source) {
+      const edgePrefix = `edge_${source.key}_${key}`;
+      let edgeKey = edgePrefix;
+      let edgeSuffix = 2;
+      while (state.definition.edges.some(({ key: candidate }) => candidate === edgeKey))
+        edgeKey = `${edgePrefix}_${edgeSuffix++}`;
+      dispatch({
+        type: "connect",
+        edge: {
+          key: edgeKey,
+          source: source.key,
+          target: key,
+          pathType: "default",
+          mapping: {}
+        }
+      });
+    }
+    dispatch({ type: "select_node", key });
+    setInsertAfterKey(undefined);
+    setPalette("");
+  };
+
+  const testSelectedStep = async () => {
+    if (!selectedNode) return;
+    setTestingStep(true);
+    try {
+      const result = await dryRunWorkflowDefinition(
+        state.definition,
+        safeTestFixture(state.definition)
+      );
+      setStepTest({
+        key: selectedNode.key,
+        steps: result.steps.length,
+        writes: result.externalWrites
+      });
+    } finally {
+      setTestingStep(false);
+    }
   };
   const autoLayout = (direction: "horizontal" | "vertical") => {
     try {
@@ -614,126 +685,242 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
         </aside>
       ) : null}
       <div className="studio-toolbar" role="toolbar" aria-label={msg("studio.toolbar")}>
-        <Button
-          onClick={() => dispatch({ type: "undo" })}
-          disabled={state.past.length === 0}
-          aria-label={msg("studio.undo")}
-        >
-          <Undo2 aria-hidden="true" />
-        </Button>
-        <Button
-          onClick={() => dispatch({ type: "redo" })}
-          disabled={state.future.length === 0}
-          aria-label={msg("studio.redo")}
-        >
-          <Redo2 aria-hidden="true" />
-        </Button>
-        <Button onClick={() => setShowOutline((value) => !value)}>
-          <ListTree aria-hidden="true" />
-          {msg("studio.outline")}
-        </Button>
-        <Button
-          onClick={() => autoLayout(state.direction === "horizontal" ? "vertical" : "horizontal")}
-        >
-          <LayoutGrid aria-hidden="true" />
-          {msg("studio.layout")}
-        </Button>
-        <Button
-          onClick={() => dispatch({ type: "align", keys: state.selectedNodeKeys, axis: "y" })}
-        >
-          <AlignHorizontalSpaceAround aria-hidden="true" />
-          {msg("studio.align")}
-        </Button>
-        <Button
-          onClick={() => dispatch({ type: "distribute", keys: state.selectedNodeKeys, axis: "x" })}
-          disabled={state.selectedNodeKeys.length < 3}
-        >
-          {msg("studio.distribute")}
-        </Button>
-        <Button
-          onClick={() =>
-            dispatch({
-              type: "group",
-              keys: state.selectedNodeKeys,
-              groupId: `group_${Date.now()}`
-            })
-          }
-          disabled={state.selectedNodeKeys.length < 2}
-        >
-          {msg("studio.group")}
-        </Button>
-        <Button
-          onClick={() => dispatch({ type: "duplicate_nodes", keys: state.selectedNodeKeys })}
-          disabled={state.selectedNodeKeys.length === 0}
-        >
-          <Copy aria-hidden="true" />
-          {msg("studio.duplicate")}
-        </Button>
-        <Button
-          onClick={() => dispatch({ type: "delete_nodes", keys: state.selectedNodeKeys })}
-          disabled={state.selectedNodeKeys.length === 0}
-        >
-          <Trash2 aria-hidden="true" />
-          {msg("studio.delete")}
-        </Button>
+        <div className="studio-toolbar-group studio-toolbar-primary">
+          <Button
+            onClick={() => {
+              setInsertAfterKey(undefined);
+              setShowPalette((value) => !value);
+            }}
+            aria-expanded={showPalette}
+          >
+            {showPalette ? (
+              <PanelLeftClose aria-hidden="true" />
+            ) : (
+              <PanelLeftOpen aria-hidden="true" />
+            )}
+            {msg("studio.addstep")}
+          </Button>
+          <Button onClick={() => fitView.current?.()}>
+            <ScanSearch aria-hidden="true" />
+            {msg("studio.fit")}
+          </Button>
+        </div>
+        <span className="studio-toolbar-divider" aria-hidden="true" />
+        <div className="studio-toolbar-group">
+          <Button
+            onClick={() => dispatch({ type: "undo" })}
+            disabled={state.past.length === 0}
+            aria-label={msg("studio.undo")}
+          >
+            <Undo2 aria-hidden="true" />
+          </Button>
+          <Button
+            onClick={() => dispatch({ type: "redo" })}
+            disabled={state.future.length === 0}
+            aria-label={msg("studio.redo")}
+          >
+            <Redo2 aria-hidden="true" />
+          </Button>
+        </div>
+        <span className="studio-toolbar-divider" aria-hidden="true" />
+        <div className="studio-toolbar-group">
+          <Button onClick={() => setShowOutline((value) => !value)}>
+            <ListTree aria-hidden="true" />
+            {msg("studio.outline")}
+          </Button>
+          <Button
+            onClick={() => autoLayout(state.direction === "horizontal" ? "vertical" : "horizontal")}
+          >
+            <LayoutGrid aria-hidden="true" />
+            {msg("studio.layout")}
+          </Button>
+        </div>
+        {state.selectedNodeKeys.length > 0 ? (
+          <>
+            <span className="studio-toolbar-divider" aria-hidden="true" />
+            <div className="studio-toolbar-group studio-toolbar-selection">
+              <span>{msg("studio.selected", { count: state.selectedNodeKeys.length })}</span>
+              <Button
+                onClick={() => dispatch({ type: "align", keys: state.selectedNodeKeys, axis: "y" })}
+              >
+                <AlignHorizontalSpaceAround aria-hidden="true" />
+                {msg("studio.align")}
+              </Button>
+              <Button
+                onClick={() =>
+                  dispatch({ type: "distribute", keys: state.selectedNodeKeys, axis: "x" })
+                }
+                disabled={state.selectedNodeKeys.length < 3}
+              >
+                {msg("studio.distribute")}
+              </Button>
+              <Button
+                onClick={() =>
+                  dispatch({
+                    type: "group",
+                    keys: state.selectedNodeKeys,
+                    groupId: `group_${Date.now()}`
+                  })
+                }
+                disabled={state.selectedNodeKeys.length < 2}
+              >
+                {msg("studio.group")}
+              </Button>
+              <Button
+                onClick={() => dispatch({ type: "duplicate_nodes", keys: state.selectedNodeKeys })}
+                disabled={state.selectedNodeKeys.length === 0}
+              >
+                <Copy aria-hidden="true" />
+                {msg("studio.duplicate")}
+              </Button>
+              <Button
+                onClick={() => dispatch({ type: "delete_nodes", keys: state.selectedNodeKeys })}
+                disabled={state.selectedNodeKeys.length === 0}
+              >
+                <Trash2 aria-hidden="true" />
+                {msg("studio.delete")}
+              </Button>
+            </div>
+          </>
+        ) : null}
+        <div className="studio-toolbar-spacer" />
         <Button onClick={() => setShowHelp(true)}>
           <HelpCircle aria-hidden="true" />
           {msg("studio.help")}
         </Button>
       </div>
-      <div className={`studio-layout ${showOutline ? "studio-layout-outline" : ""}`}>
-        <aside className="studio-palette" aria-label={msg("studio.palette")}>
-          <div className="studio-panel-heading">
-            <div>
-              <span>{msg("studio.palette.eyebrow")}</span>
-              <h2>{msg("studio.palette.heading")}</h2>
-            </div>
-            <Plus aria-hidden="true" />
-          </div>
-          <label>
-            <Search aria-hidden="true" />
-            <span className="sr-only">{msg("studio.palette.search")}</span>
-            <input
-              value={palette}
-              onChange={(event) => setPalette(event.target.value)}
-              placeholder={msg("studio.palette.search")}
-            />
-          </label>
-          {nodeKinds
-            .filter((kind) => kindLabel(kind).toLowerCase().includes(palette.toLowerCase()))
-            .map((kind) => (
-              <Button className="studio-palette-item" key={kind} onClick={() => addNode(kind)}>
-                {(() => {
-                  const Icon = studioIconByKind[kind];
-                  return <Icon aria-hidden="true" />;
-                })()}
+      <div
+        className={`studio-layout ${showOutline ? "studio-layout-outline" : ""} ${showPalette ? "" : "studio-layout-no-palette"}`}
+      >
+        {showPalette ? (
+          <aside className="studio-palette" aria-label={msg("studio.palette")}>
+            <div className="studio-panel-heading">
+              <div>
                 <span>
-                  <strong>{kindLabel(kind)}</strong>
-                  <small>{msg("studio.palette.add")}</small>
+                  {insertAfterKey
+                    ? msg("studio.palette.insert.eyebrow")
+                    : msg("studio.palette.eyebrow")}
                 </span>
-                <Plus aria-hidden="true" />
+                <h2>
+                  {insertAfterKey
+                    ? msg("studio.palette.insert.heading")
+                    : msg("studio.palette.heading")}
+                </h2>
+              </div>
+              <Button
+                aria-label={msg("studio.palette.close")}
+                onClick={() => {
+                  setShowPalette(false);
+                  setInsertAfterKey(undefined);
+                }}
+              >
+                <X aria-hidden="true" />
               </Button>
-            ))}
-        </aside>
+            </div>
+            {insertAfterKey ? (
+              <p className="studio-insert-context">
+                {msg("studio.palette.insert.body", {
+                  name: state.definition.nodes.find(({ key }) => key === insertAfterKey)?.name ?? ""
+                })}
+              </p>
+            ) : null}
+            <label>
+              <Search aria-hidden="true" />
+              <span className="sr-only">{msg("studio.palette.search")}</span>
+              <input
+                value={palette}
+                onChange={(event) => setPalette(event.target.value)}
+                placeholder={msg("studio.palette.search")}
+              />
+            </label>
+            {nodeKinds
+              .filter((kind) => kindLabel(kind).toLowerCase().includes(palette.toLowerCase()))
+              .map((kind) => (
+                <Button className="studio-palette-item" key={kind} onClick={() => addNode(kind)}>
+                  {(() => {
+                    const Icon = studioIconByKind[kind];
+                    return <Icon aria-hidden="true" />;
+                  })()}
+                  <span>
+                    <strong>{kindLabel(kind)}</strong>
+                    <small>{msg("studio.palette.add")}</small>
+                  </span>
+                  <Plus aria-hidden="true" />
+                </Button>
+              ))}
+          </aside>
+        ) : null}
         <section className="studio-canvas" aria-label={msg("studio.canvas")}>
           <div className="studio-canvas-heading">
             <div>
               <span>{msg("studio.canvas.eyebrow")}</span>
               <strong>{msg("studio.canvas.heading")}</strong>
             </div>
-            <span>{msg("studio.canvas.hint")}</span>
+            <div className="studio-canvas-tools">
+              <span
+                className={
+                  findings.length ? "studio-health studio-health-attention" : "studio-health"
+                }
+              >
+                {findings.length
+                  ? msg("studio.health.issues", { count: findings.length })
+                  : msg("studio.health.ready")}
+              </span>
+              <label className="studio-step-search">
+                <Search aria-hidden="true" />
+                <span className="sr-only">{msg("studio.find")}</span>
+                <input
+                  value={stepSearch}
+                  onChange={(event) => setStepSearch(event.target.value)}
+                  placeholder={msg("studio.find")}
+                />
+                {stepSearch ? (
+                  <span className="studio-step-results">
+                    {state.definition.nodes
+                      .filter(({ name }) => name.toLowerCase().includes(stepSearch.toLowerCase()))
+                      .slice(0, 6)
+                      .map((node) => (
+                        <button
+                          key={node.key}
+                          onClick={() => {
+                            dispatch({ type: "select_node", key: node.key });
+                            setStepSearch("");
+                            void flowInstance.current?.setCenter(
+                              node.position.x + 109,
+                              node.position.y + 45,
+                              { zoom: 0.9, duration: 350 }
+                            );
+                          }}
+                          type="button"
+                        >
+                          {node.name}
+                          <small>{kindLabel(node.kind)}</small>
+                        </button>
+                      ))}
+                  </span>
+                ) : null}
+              </label>
+            </div>
           </div>
           <ReactFlow
             nodes={nodes}
             edges={edges}
             nodeTypes={studioNodeTypes}
             onlyRenderVisibleElements
-            fitView
             minZoom={0.2}
             maxZoom={2}
             onInit={(instance) => {
               flowInstance.current = instance;
               fitView.current = () => void instance.fitView({ padding: 0.2 });
+              const firstNode = state.definition.nodes[0];
+              window.setTimeout(() => {
+                if (firstNode && state.definition.nodes.length > 8)
+                  void instance.setCenter(firstNode.position.x + 109, firstNode.position.y + 45, {
+                    zoom: 0.82,
+                    duration: 450
+                  });
+                else void instance.fitView({ padding: 0.2 });
+              }, 0);
             }}
             onNodeClick={(event, node) =>
               dispatch({
@@ -877,6 +1064,9 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
               disable={(disabled) =>
                 dispatch({ type: "disable", keys: [selectedNode.key], disabled })
               }
+              testing={testingStep}
+              onTest={() => void testSelectedStep()}
+              {...(stepTest?.key === selectedNode.key ? { testResult: stepTest } : {})}
             />
           ) : selectedEdge ? (
             <EdgeInspector
@@ -1128,16 +1318,41 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
 function NodeInspector({
   node,
   update,
-  disable
+  disable,
+  testing,
+  testResult,
+  onTest
 }: {
   node: WorkflowDefinitionNode;
   update: (patch: Partial<WorkflowDefinitionNode>) => void;
   disable: (disabled: boolean) => void;
+  testing: boolean;
+  testResult?: { steps: number; writes: number };
+  onTest: () => void;
 }) {
   return (
     <Card className="studio-inspector-card">
       <Badge tone="accent">{kindLabel(node.kind)}</Badge>
       <h2>{msg("studio.node.inspector")}</h2>
+      <div className="studio-node-test">
+        <div>
+          <strong>{msg("studio.node.test.heading")}</strong>
+          <span>{msg("studio.node.test.body")}</span>
+        </div>
+        <Button onClick={onTest} disabled={testing}>
+          <FlaskConical aria-hidden="true" />
+          {testing ? msg("studio.node.testing") : msg("studio.node.test.action")}
+        </Button>
+        {testResult ? (
+          <p role="status">
+            <CheckCircle2 aria-hidden="true" />
+            {msg("studio.node.test.passed", {
+              steps: testResult.steps,
+              writes: testResult.writes
+            })}
+          </p>
+        ) : null}
+      </div>
       <label>
         {msg("studio.node.name")}
         <input value={node.name} onChange={(event) => update({ name: event.target.value })} />
@@ -1257,18 +1472,24 @@ function NodeInspector({
           </label>
         </>
       ) : null}
-      <JsonConfigurationField
-        label={msg("studio.node.input.schema")}
-        value={node.configuration.inputSchema ?? { schemaVersion: 1 }}
-        update={(inputSchema) => update({ configuration: { ...node.configuration, inputSchema } })}
-      />
-      <JsonConfigurationField
-        label={msg("studio.node.output.schema")}
-        value={node.configuration.outputSchema ?? { schemaVersion: 1 }}
-        update={(outputSchema) =>
-          update({ configuration: { ...node.configuration, outputSchema } })
-        }
-      />
+      <details className="studio-advanced-settings">
+        <summary>{msg("studio.node.advanced")}</summary>
+        <p>{msg("studio.node.advanced.body")}</p>
+        <JsonConfigurationField
+          label={msg("studio.node.input.schema")}
+          value={node.configuration.inputSchema ?? { schemaVersion: 1 }}
+          update={(inputSchema) =>
+            update({ configuration: { ...node.configuration, inputSchema } })
+          }
+        />
+        <JsonConfigurationField
+          label={msg("studio.node.output.schema")}
+          value={node.configuration.outputSchema ?? { schemaVersion: 1 }}
+          update={(outputSchema) =>
+            update({ configuration: { ...node.configuration, outputSchema } })
+          }
+        />
+      </details>
       <label className="checkbox-row">
         <input
           type="checkbox"

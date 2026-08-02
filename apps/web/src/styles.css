@@ -838,7 +838,6 @@
   }
 }
 
-
 .app-shell {
   min-height: 100vh;
 }
@@ -3540,19 +3539,103 @@ a.run-button {
 }
 
 .app-shell--activation .canvas-panel {
-  --text: #eef2f0;
-  --muted: #9aa6a4;
-  --line: rgb(226 236 234 / 12%);
-  color: #eef2f0;
+  --text: #142321;
+  --muted: #60706c;
+  --line: #d9dfd8;
+  color: #142321;
+  background: radial-gradient(circle at 52% 42%, rgb(23 107 91 / 6%), transparent 26rem), #f8faf7;
 }
 
 .app-shell--activation .canvas-panel .canvas-header {
-  border-color: rgb(226 236 234 / 12%);
+  border-color: #d9dfd8;
+  background: #fff;
 }
 
 .app-shell--activation .canvas-panel h2,
 .app-shell--activation .canvas-panel .canvas {
-  color: #eef2f0;
+  color: #142321;
+}
+
+.app-shell--activation .operation-node {
+  border-color: #cfd8d2;
+  color: #142321;
+  background: rgb(255 255 255 / 97%);
+  box-shadow: 0 12px 30px rgb(20 35 33 / 10%);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.app-shell--activation .operation-node:hover {
+  border-color: #9dbcb3;
+  box-shadow: 0 16px 38px rgb(20 35 33 / 13%);
+  transform: translateY(-1px);
+}
+
+.app-shell--activation .operation-node--running {
+  border-color: #4b9584;
+  box-shadow:
+    0 0 0 3px rgb(23 107 91 / 9%),
+    0 16px 36px rgb(20 35 33 / 12%);
+}
+
+.app-shell--activation .node-kind {
+  color: #176b5b;
+}
+
+.app-shell--activation .operation-node p,
+.app-shell--activation .operation-node footer {
+  color: #60706c;
+}
+
+.app-shell--activation .operation-node footer {
+  border-color: #e4e9e4;
+}
+
+.app-shell--activation .status-dot--running {
+  background: #176b5b;
+  box-shadow: 0 0 8px rgb(23 107 91 / 42%);
+}
+
+.app-shell--activation .status-dot--complete {
+  background: #6eaa9b;
+}
+
+.app-shell--activation .node-check {
+  color: #176b5b;
+}
+
+.app-shell--activation .react-flow__handle {
+  border-color: #fff;
+  background: #176b5b;
+}
+
+.app-shell--activation .canvas .react-flow__controls,
+.app-shell--activation .canvas .react-flow__minimap {
+  border-color: #d9dfd8;
+  background: #fff;
+  box-shadow: 0 8px 22px rgb(20 35 33 / 8%);
+}
+
+.app-shell--activation .canvas .react-flow__controls-button {
+  border-color: #d9dfd8;
+  color: #142321;
+  background: #fff;
+}
+
+.app-shell--activation .canvas .react-flow__controls-button:hover {
+  background: #edf3ef;
+}
+
+.app-shell--activation .canvas-legend {
+  border-color: #d9dfd8;
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 8px 22px rgb(20 35 33 / 7%);
+}
+
+.app-shell--activation .canvas-legend span {
+  color: #60706c;
 }
 
 .app-shell--activation .profile {

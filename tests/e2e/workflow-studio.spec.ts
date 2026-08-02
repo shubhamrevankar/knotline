@@ -61,8 +61,31 @@ test("@a11y keyboard and pointer users can construct and edit a workflow", async
   await page.getByRole("button", { name: "Change layout" }).click();
   await page.getByRole("button", { name: "Keyboard help" }).click();
   await expect(page.getByRole("dialog", { name: "Workflow studio shortcuts" })).toBeVisible();
-  await page.getByRole("button", { name: "Close" }).click();
+  await page.getByRole("button", { name: "Close", exact: true }).click();
   await expect(page.getByRole("status")).toContainText("Draft needs attention");
+});
+
+test("contextual editing keeps complex workflow changes fast and safe", async ({ page }) => {
+  await page.goto(`/app/workflows/${workflowId}/studio`);
+  await page.getByRole("button", { name: "Capture signal", exact: true }).click();
+  await page.getByRole("button", { name: "Insert a step after Capture signal" }).click();
+  await expect(page.getByRole("heading", { name: "Choose next step" })).toBeVisible();
+  await expect(
+    page.getByText("The new step will be connected after Capture signal.")
+  ).toBeVisible();
+
+  await page.getByPlaceholder("Search step kinds").fill("delay");
+  await page.getByRole("button", { name: "Delay Add to workflow" }).click();
+  await expect(page.getByRole("button", { name: "Delay 3", exact: true })).toBeVisible();
+
+  await page.getByRole("button", { name: "Test step" }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Route passed" })).toContainText(
+    "0 external writes"
+  );
+
+  await page.getByPlaceholder("Find a step").fill("Editorial gate");
+  await page.getByRole("button", { name: /Editorial gate.*Approval/ }).click();
+  await expect(page.getByLabel("Approval policy")).toBeVisible();
 });
 
 test("mobile uses a complete outline-first editing alternative", async ({ page }) => {

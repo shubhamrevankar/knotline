@@ -13,6 +13,20 @@ desktop and mobile. Builders can edit workflow metadata, select and focus a
 step from the accessible outline, configure typed step or connection settings,
 and inspect the visual map without changing screens.
 
+## Fast editing model
+
+- Complex workflows open at a readable first-step zoom. **Fit workflow** restores
+  the complete system view, while the minimap preserves orientation.
+- A selected step exposes a contextual **+** control that inserts and connects
+  the next step without requiring an initial drag gesture.
+- **Find a step** jumps to a matching node and opens its typed inspector.
+- The step palette can be collapsed for more canvas space. Selection-only
+  layout, grouping, duplicate, and delete controls appear only when relevant.
+- The canvas reports live draft health, and each selected step offers a
+  controlled, zero-write safe preview.
+- Versioned input and output schemas remain available under **Advanced data
+  contracts**, keeping common settings prominent without removing expert controls.
+
 ## Save and conflict behavior
 
 - Every command updates a local immutable reducer state and enters the undo log.
@@ -56,8 +70,9 @@ not mutate the workflow.
 | `?` | Open the shortcut sheet |
 
 The outline exposes selection, duplication, deletion, edge selection, and every
-typed inspector without requiring pointer dragging. On narrow screens it appears
-before the canvas; the searchable palette and inspector remain fully available.
+typed inspector without requiring pointer dragging. On narrow screens the
+readable canvas appears first, followed by the searchable palette, inspector,
+outline, and validation findings.
 
 ## Large graphs
 
