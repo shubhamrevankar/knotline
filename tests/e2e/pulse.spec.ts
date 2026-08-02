@@ -4,6 +4,7 @@ import { expect, test } from "./fixtures.js";
 
 test("Pulse presents a useful local operational snapshot", async ({ page }) => {
   await page.goto("/app");
+  await expect(page.getByText("01 / Overview", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Pulse", exact: true })).toBeVisible();
   await expect(page.getByText("Local demonstration data")).toBeVisible();
   await expect(page.getByText("96.4%")).toBeVisible();

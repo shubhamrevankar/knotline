@@ -49,6 +49,7 @@ import {
   type WorkspaceSummary
 } from "./api.js";
 import { AuthGate } from "./AuthPages.js";
+import { WorkspacePageHeader } from "./WorkspacePageHeader.js";
 import { WorkspaceShell } from "./WorkspaceShell.js";
 import "./M05Pages.css";
 
@@ -96,16 +97,17 @@ function AdminFrame({
     <AuthGate>
       <WorkspaceShell contentClassName="access-shell-content">
         <main className="access-page">
-          <header className="access-heading">
-            <div>
-              <span className="access-eyebrow">Workspace administration</span>
-              <h1>{title}</h1>
-              <p>{description}</p>
-            </div>
-            <Link className="access-back-link" to="/app/workflows">
-              Back to workflows
-            </Link>
-          </header>
+          <WorkspacePageHeader
+            actions={
+              <Link className="access-back-link" to="/app/workflows">
+                Back to workflows
+              </Link>
+            }
+            className="access-heading"
+            description={description}
+            eyebrow={title === "People" ? "05 / Organization" : "Workspace administration"}
+            title={title}
+          />
           <nav className="access-tabs" aria-label="Workspace settings">
             <NavLink to="/app/settings/workspace">Workspace</NavLink>
             <NavLink to="/app/settings/members">People</NavLink>

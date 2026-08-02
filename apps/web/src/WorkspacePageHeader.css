@@ -1,0 +1,89 @@
+.workspace-page-header.workspace-page-header {
+  display: flex;
+  padding-bottom: 0;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  border-bottom: 0;
+}
+
+.workspace-page-header__copy {
+  min-width: 0;
+  max-width: 46rem;
+}
+
+.workspace-page-header.workspace-page-header .workspace-page-header__eyebrow {
+  display: block;
+  color: #176b5b;
+  font-family: var(--product-font-mono, "DM Mono", ui-monospace, monospace);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.app-shell--activation .workspace-page-header.workspace-page-header h1 {
+  margin: 8px 0 4px;
+  color: #142321;
+  font-family: var(--product-font-display, Georgia, "Times New Roman", serif);
+  font-size: clamp(32px, 4vw, 51px);
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.workspace-page-header.workspace-page-header p {
+  max-width: 42rem;
+  margin: 0;
+  color: #60706c;
+  font-family: var(--product-font-sans, Inter, "SF Pro Display", "Segoe UI", sans-serif);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.workspace-page-header__actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.workspace-page-header__actions > a,
+.workspace-page-header__actions > nav a {
+  display: inline-flex;
+  min-height: 40px;
+  padding: 0 0.8rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border: 1px solid #d2dbd3;
+  border-radius: 0.55rem;
+  color: #365248;
+  background: #fff;
+  font-family: var(--product-font-sans, Inter, "SF Pro Display", "Segoe UI", sans-serif);
+  font-size: 0.7rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.workspace-page-header__actions .foundry-primary {
+  color: #fff;
+  background: #176b5b;
+}
+
+@media (max-width: 620px) {
+  .workspace-page-header.workspace-page-header {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .workspace-page-header__actions {
+    align-items: stretch;
+  }
+
+  .workspace-page-header__actions > :only-child {
+    flex: 1;
+  }
+}

@@ -4,7 +4,6 @@ import {
   ArrowDownRight,
   ArrowRight,
   ArrowUpRight,
-  BarChart3,
   Bot,
   Clock3,
   Download,
@@ -17,6 +16,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
+import { WorkspacePageHeader } from "./WorkspacePageHeader.js";
 import {
   createReport,
   createSavedView,
@@ -243,26 +243,24 @@ export function AnalyticsPage() {
   };
   return (
     <main className="page-shell insight-shell pulse-page">
-      <header className="pulse-header">
-        <div>
-          <Badge tone="accent">
-            <BarChart3 aria-hidden />
-            {msg("analytics.badge")}
-          </Badge>
-          <h1>{msg("analytics.heading")}</h1>
-          <p>{msg("analytics.body")}</p>
-        </div>
-        <nav aria-label={msg("analytics.actions.label")}>
-          <Link to="/app/runs">
-            {msg("analytics.actions.runs")}
-            <ArrowRight aria-hidden />
-          </Link>
-          <Link to="/app/workflows/new">
-            {msg("analytics.actions.workflow")}
-            <ArrowRight aria-hidden />
-          </Link>
-        </nav>
-      </header>
+      <WorkspacePageHeader
+        actions={
+          <nav aria-label={msg("analytics.actions.label")}>
+            <Link to="/app/runs">
+              {msg("analytics.actions.runs")}
+              <ArrowRight aria-hidden />
+            </Link>
+            <Link to="/app/workflows/new">
+              {msg("analytics.actions.workflow")}
+              <ArrowRight aria-hidden />
+            </Link>
+          </nav>
+        }
+        className="pulse-header"
+        description={msg("analytics.body")}
+        eyebrow={msg("workspace.section.pulse")}
+        title={msg("analytics.heading")}
+      />
       {error ? <ErrorState title={msg("analytics.error")}>{error}</ErrorState> : null}
       {!data ? (
         <Skeleton label={msg("analytics.loading")} />

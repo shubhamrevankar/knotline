@@ -16,6 +16,7 @@ import {
   type ConnectorCatalogItem
 } from "./api.js";
 import { msg } from "./i18n.js";
+import { WorkspacePageHeader } from "./WorkspacePageHeader.js";
 import "./M22Pages.css";
 
 const lastSegment = () => location.pathname.split("/").filter(Boolean).at(-1) ?? "";
@@ -46,11 +47,11 @@ export function ConnectionsPage() {
   }, []);
   return (
     <main className="page-shell connection-shell">
-      <header>
-        <Badge tone="accent">{msg("connections.badge")}</Badge>
-        <h1>{msg("connections.heading")}</h1>
-        <p>{msg("connections.body")}</p>
-      </header>
+      <WorkspacePageHeader
+        description={msg("connections.body")}
+        eyebrow={msg("workspace.section.connections")}
+        title={msg("connections.heading")}
+      />
       {busy ? <Skeleton label={msg("connections.loading")} /> : null}
       {error ? <ErrorState title={msg("connections.error")}>{error}</ErrorState> : null}
       <section aria-labelledby="connected-heading">

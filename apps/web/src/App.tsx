@@ -13,6 +13,7 @@ import {
 } from "./api";
 import { i18n, msg } from "./i18n.js";
 import { WorkflowCanvas } from "./WorkflowCanvas";
+import { WorkspacePageHeader } from "./WorkspacePageHeader.js";
 import { WorkspaceShell } from "./WorkspaceShell.js";
 
 function StatusPill({ status }: { status: WorkflowSummary["status"] }) {
@@ -70,20 +71,20 @@ export function App() {
     const properties = runSchema.properties;
     if (!properties || typeof properties !== "object" || Array.isArray(properties)) return [];
     const required = new Set(Array.isArray(runSchema.required) ? runSchema.required : []);
-    return Object.entries(properties as Readonly<Record<string, Readonly<Record<string, unknown>>>>).map(
-      ([key, property]) => ({
-        key,
-        label:
-          typeof property.title === "string"
-            ? property.title
-            : key.replace(/([a-z])([A-Z])/gu, "$1 $2").replace(/^./u, (value) => value.toUpperCase()),
-        description: typeof property.description === "string" ? property.description : "",
-        type: typeof property.type === "string" ? property.type : "string",
-        format: typeof property.format === "string" ? property.format : "",
-        options: Array.isArray(property.enum) ? property.enum.map(String) : [],
-        required: required.has(key)
-      })
-    );
+    return Object.entries(
+      properties as Readonly<Record<string, Readonly<Record<string, unknown>>>>
+    ).map(([key, property]) => ({
+      key,
+      label:
+        typeof property.title === "string"
+          ? property.title
+          : key.replace(/([a-z])([A-Z])/gu, "$1 $2").replace(/^./u, (value) => value.toUpperCase()),
+      description: typeof property.description === "string" ? property.description : "",
+      type: typeof property.type === "string" ? property.type : "string",
+      format: typeof property.format === "string" ? property.format : "",
+      options: Array.isArray(property.enum) ? property.enum.map(String) : [],
+      required: required.has(key)
+    }));
   }, [runSchema]);
 
   const suggestedValue = (key: string, property: Readonly<Record<string, unknown>>) => {
@@ -114,7 +115,9 @@ export function App() {
       const version = await fetchWorkflowVersion(workflow.id, published.version);
       const schema = version.definition.inputSchema;
       const properties =
-        schema.properties && typeof schema.properties === "object" && !Array.isArray(schema.properties)
+        schema.properties &&
+        typeof schema.properties === "object" &&
+        !Array.isArray(schema.properties)
           ? (schema.properties as Readonly<Record<string, Readonly<Record<string, unknown>>>>)
           : {};
       setRunVersion(published.version);
@@ -159,19 +162,20 @@ export function App() {
   return (
     <>
       <WorkspaceShell connected={connected}>
-
         <section aria-labelledby="workflows-heading" className="page">
-          <div className="page-heading">
-            <div>
-              <span className="section-index">{msg("customer.section.operations")}</span>
-              <h1 id="workflows-heading">{msg("customer.workflow.heading")}</h1>
-              <p>{msg("customer.workflow.tagline")}</p>
-            </div>
-            <Link className="secondary-button" to="/app/templates">
-              <Library aria-hidden="true" size={16} />
-              {msg("customer.workflow.patterns")}
-            </Link>
-          </div>
+          <WorkspacePageHeader
+            actions={
+              <Link className="secondary-button" to="/app/templates">
+                <Library aria-hidden="true" size={16} />
+                {msg("customer.workflow.patterns")}
+              </Link>
+            }
+            className="page-heading"
+            description={msg("customer.workflow.tagline")}
+            eyebrow={msg("customer.section.operations")}
+            headingId="workflows-heading"
+            title={msg("customer.workflow.heading")}
+          />
 
           <div aria-label={msg("customer.metrics.label")} className="metric-strip" role="group">
             <article>
@@ -317,8 +321,13 @@ export function App() {
         <div className="run-launch-dialog">
           <div className="run-launch-context">
             <span>Production execution</span>
-            <strong>{runVersion ? `Published version ${runVersion}` : "Checking published version"}</strong>
-            <p>The values below become the immutable input for this run. You can inspect them later in the run room.</p>
+            <strong>
+              {runVersion ? `Published version ${runVersion}` : "Checking published version"}
+            </strong>
+            <p>
+              The values below become the immutable input for this run. You can inspect them later
+              in the run room.
+            </p>
           </div>
           {runDefinitionLoading ? (
             <p role="status">Loading run requirements…</p>
@@ -338,7 +347,9 @@ export function App() {
                       }}
                     >
                       <option value="">Select an option</option>
-                      {field.options.map((option) => <option key={option}>{option}</option>)}
+                      {field.options.map((option) => (
+                        <option key={option}>{option}</option>
+                      ))}
                     </select>
                   ) : field.key.toLowerCase().includes("summary") ? (
                     <textarea
@@ -351,7 +362,13 @@ export function App() {
                     />
                   ) : (
                     <input
-                      type={field.format === "date-time" ? "datetime-local" : field.type === "number" ? "number" : "text"}
+                      type={
+                        field.format === "date-time"
+                          ? "datetime-local"
+                          : field.type === "number"
+                            ? "number"
+                            : "text"
+                      }
                       value={runInput[field.key] ?? ""}
                       onChange={(event) => {
                         const value = event.currentTarget.value;
@@ -366,15 +383,34 @@ export function App() {
           ) : !runError ? (
             <p>This workflow does not require any input. It is ready to run.</p>
           ) : null}
-          {runError ? <p className="workflow-run-error" role="alert">{runError}</p> : null}
+          {runError ? (
+            <p className="workflow-run-error" role="alert">
+              {runError}
+            </p>
+          ) : null}
           <div className="run-launch-checks" aria-label="Run preflight checks">
-            <span>Published definition</span><strong>{runVersion ? "Ready" : "Pending"}</strong>
-            <span>Execution policy</span><strong>Enforced</strong>
-            <span>External actions</span><strong>Governed</strong>
+            <span>Published definition</span>
+            <strong>{runVersion ? "Ready" : "Pending"}</strong>
+            <span>Execution policy</span>
+            <strong>Enforced</strong>
+            <span>External actions</span>
+            <strong>Governed</strong>
           </div>
           <div className="run-launch-actions">
-            <button className="secondary-button" disabled={startingRun} onClick={() => setRunDialogOpen(false)} type="button">Cancel</button>
-            <button className="run-button" disabled={startingRun || runDefinitionLoading || !runVersion} onClick={() => void runWorkflow()} type="button">
+            <button
+              className="secondary-button"
+              disabled={startingRun}
+              onClick={() => setRunDialogOpen(false)}
+              type="button"
+            >
+              Cancel
+            </button>
+            <button
+              className="run-button"
+              disabled={startingRun || runDefinitionLoading || !runVersion}
+              onClick={() => void runWorkflow()}
+              type="button"
+            >
               <Play aria-hidden="true" size={15} /> {startingRun ? "Starting run…" : "Start run"}
             </button>
           </div>

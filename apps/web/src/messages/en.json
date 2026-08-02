@@ -1231,6 +1231,8 @@
   "search.view.meta": "{visibility} · schema v{version}",
   "analytics.badge": "Workspace pulse",
   "analytics.heading": "Pulse",
+  "workspace.section.pulse": "01 / Overview",
+  "workspace.section.connections": "06 / Integrations",
   "analytics.body": "See the health, pace, and impact of your operations in one current, decision-ready view.",
   "analytics.actions.label": "Pulse actions",
   "analytics.actions.runs": "View live runs",

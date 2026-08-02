@@ -838,6 +838,10 @@ export const test = base.extend<{ consoleMessages: string[] }>({
                 : [])
             ]
           };
+        } else if (pathname.endsWith("/agents") && method === "GET") {
+          body = { data: [] };
+        } else if (pathname.endsWith("/connections") && method === "GET") {
+          body = { data: { items: [], catalog: [] } };
         } else if (pathname.endsWith("/analytics")) {
           body = {
             data: {

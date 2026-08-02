@@ -35,6 +35,7 @@ import {
   type AgentSummary
 } from "./api.js";
 import { WorkspaceShell } from "./WorkspaceShell.js";
+import { WorkspacePageHeader } from "./WorkspacePageHeader.js";
 import "./M14Pages.css";
 
 const starter: AgentDefinition = {
@@ -117,18 +118,17 @@ export function AgentCatalogPage() {
   }, [search, state, visibility]);
   return (
     <FoundryShell>
-      <header className="foundry-header">
-        <div>
-          <Badge tone="accent">Governed building blocks</Badge>
-          <h1>Agent catalog</h1>
-          <p>
-            Reusable agents with exact versions, visible authority, and bounded execution policy.
-          </p>
-        </div>
-        <Link className="foundry-primary" to="/app/agents/new">
-          <Sparkles aria-hidden="true" /> New agent
-        </Link>
-      </header>
+      <WorkspacePageHeader
+        actions={
+          <Link className="foundry-primary" to="/app/agents/new">
+            <Sparkles aria-hidden="true" /> New agent
+          </Link>
+        }
+        className="foundry-header"
+        description="Reusable agents with exact versions, visible authority, and bounded execution policy."
+        eyebrow="04 / Intelligence"
+        title="Agent catalog"
+      />
       <div className="catalog-toolbar">
         <label className="foundry-search">
           <span>Search agents</span>

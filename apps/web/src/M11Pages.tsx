@@ -33,6 +33,7 @@ import {
 } from "./api.js";
 import { msg } from "./i18n.js";
 import { WorkspaceShell } from "./WorkspaceShell.js";
+import { WorkspacePageHeader } from "./WorkspacePageHeader.js";
 import { WorkflowCanvas } from "./WorkflowCanvas.js";
 import "./M11Pages.css";
 
@@ -111,16 +112,17 @@ export function RunsPage() {
   };
   return (
     <RunShell>
-      <header className="run-page-header">
-        <div>
-          <span className="run-section-index">03 / Execution</span>
-          <h1>{msg("run.list.heading")}</h1>
-          <p>Follow live work, resolve anything blocked, and inspect every decision.</p>
-        </div>
-        <Button onClick={exportCsv} disabled={!visible.length}>
-          <Download aria-hidden="true" /> {msg("run.export")}
-        </Button>
-      </header>
+      <WorkspacePageHeader
+        actions={
+          <Button onClick={exportCsv} disabled={!visible.length}>
+            <Download aria-hidden="true" /> {msg("run.export")}
+          </Button>
+        }
+        className="run-page-header"
+        description="Follow live work, resolve anything blocked, and inspect every decision."
+        eyebrow="03 / Execution"
+        title={msg("run.list.heading")}
+      />
       {runs ? (
         <section className="run-list-metrics" aria-label="Run summary">
           <article>
