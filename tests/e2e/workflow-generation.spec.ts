@@ -4,7 +4,7 @@ test("@a11y guided generation reviews, safely tests, and publishes accepted outp
   page
 }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "Enter the workspace" }).click();
+  await page.getByRole("link", { name: "Start building" }).first().click();
   await expect(page.getByRole("heading", { name: "Sign in to Knotline" })).toBeVisible();
   const googleButton = page.getByRole("button", { name: "Continue with Google" });
   await expect(googleButton).toHaveCSS("align-items", "center");

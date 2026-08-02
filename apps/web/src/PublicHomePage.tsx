@@ -26,26 +26,30 @@ import { Link } from "react-router-dom";
 import { KnotlineMark } from "./KnotlineLogo.js";
 import "./PublicHomePage.css";
 
-const operatingPrinciples = [
+const teams = [
   [
     "01",
-    "Design the whole operation",
-    "Map the happy path, exceptions, owners, evidence, and recovery in one visual workflow."
+    "Operations",
+    "Coordinate recurring, cross-functional work with explicit owners, response targets, exceptions, and recovery.",
+    "/solutions/operations"
   ],
   [
     "02",
-    "Give agents clear authority",
-    "Set the tools, knowledge, limits, and review policy for every agent before it joins live work."
+    "Customer support",
+    "Resolve consequential cases with complete account context, governed remediation, and visible customer communication.",
+    "/solutions/support"
   ],
   [
     "03",
-    "Keep people in command",
-    "Route consequential decisions to the right person with the context they need to act confidently."
+    "Product teams",
+    "Turn signals into coordinated launch, feedback, and incident workflows shared across teams and agents.",
+    "/solutions/product"
   ],
   [
     "04",
-    "Know what happened",
-    "Follow every run, input, decision, retry, and handoff from first signal to final outcome."
+    "IT & service delivery",
+    "Standardize access, change, incidents, and service delivery without hiding control inside brittle automation.",
+    "/solutions/it"
   ]
 ] as const;
 
@@ -253,8 +257,8 @@ function RunRoomPreview() {
                 </span>
               </div>
               <div className="kh-review__actions">
-                <button type="button">Request changes</button>
-                <button type="button">Approve step</button>
+                <span>Request changes</span>
+                <span>Approve step</span>
               </div>
             </aside>
           </div>
@@ -306,7 +310,7 @@ function WorkflowPreview() {
         </div>
       </div>
       <div className="kh-builder__toolbar">
-        <button type="button">＋ Add step</button>
+        <span className="kh-mock-action">＋ Add step</span>
         <span>100%</span>
         <span>Fit view</span>
       </div>
@@ -358,7 +362,7 @@ function AgentPreview() {
               <strong>Authority boundary</strong>
               <small>3 tools allowed · External writes require approval</small>
             </span>
-            <button type="button">Review policy</button>
+            <span className="kh-mock-action">Review policy</span>
           </div>
         </section>
       </div>
@@ -436,6 +440,75 @@ function AuditPreview() {
   );
 }
 
+function OperationsPreview() {
+  const runs = [
+    ["Enterprise customer recovery", "Critical account · Recovery team", "9 / 26", "Running"],
+    ["Launch readiness", "Release 8.4 · Product operations", "18 / 21", "Approval"],
+    ["Privileged access review", "Quarterly review · IT security", "12 / 12", "On track"],
+    ["Partner onboarding", "Northstar Health · Partnerships", "6 / 14", "Waiting"]
+  ] as const;
+
+  return (
+    <div className="kh-mini-ui kh-operations" aria-label="Live operations portfolio preview">
+      <div className="kh-mini-ui__bar">
+        <span>
+          <i /> Live operations
+        </span>
+        <span>Updated just now</span>
+      </div>
+      <div className="kh-operations__body">
+        <div className="kh-operations__metrics">
+          <span>
+            <small>ACTIVE RUNS</small>
+            <strong>18</strong>
+          </span>
+          <span>
+            <small>NEEDS REVIEW</small>
+            <strong>2</strong>
+          </span>
+          <span>
+            <small>ON TRACK</small>
+            <strong>94%</strong>
+          </span>
+          <span>
+            <small>RESPONSE TARGET</small>
+            <strong>31m</strong>
+          </span>
+        </div>
+        <div className="kh-operations__list">
+          <div className="kh-operations__header">
+            <span>Operation</span>
+            <span>Progress</span>
+            <span>Status</span>
+          </div>
+          {runs.map(([name, detail, progress, status]) => (
+            <div className="kh-operations__row" key={name}>
+              <span>
+                <strong>{name}</strong>
+                <small>{detail}</small>
+              </span>
+              <b>{progress}</b>
+              <em className={`is-${status.toLowerCase().replace(" ", "-")}`}>{status}</em>
+            </div>
+          ))}
+        </div>
+        <div className="kh-operations__attention">
+          <span>
+            <UserCheck />
+          </span>
+          <div>
+            <strong>Two decisions need attention</strong>
+            <small>Both are inside their response targets.</small>
+          </div>
+          <b>
+            Review queue <ArrowRight />
+          </b>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function PublicHomeContent() {
   return (
     <div className="knot-home">
@@ -446,9 +519,9 @@ export function PublicHomeContent() {
             <span /> Accountable operations for people and AI
           </div>
           <h1>
-            Make complex work move
+            Turn complex operations into
             <br />
-            <em>like one system.</em>
+            <em>one accountable system.</em>
           </h1>
           <p>
             Knotline turns high-stakes operations into live, governed workflows—where agents handle
@@ -456,10 +529,10 @@ export function PublicHomeContent() {
           </p>
           <div className="kh-actions">
             <Link className="kh-button kh-button--primary" to="/auth/sign-in">
-              Enter the workspace <ArrowRight />
+              Start building <ArrowRight />
             </Link>
             <a className="kh-button kh-button--quiet" href="#platform">
-              See the product <Play />
+              See how it works <Play />
             </a>
           </div>
           <div className="kh-assurance" aria-label="Platform assurances">
@@ -478,7 +551,7 @@ export function PublicHomeContent() {
           <RunRoomPreview />
         </div>
         <div className="kh-wrap kh-proofbar">
-          <p>One operating system for consequential work</p>
+          <p>For operations, support, product, and IT teams</p>
           <span>
             <Workflow /> Visual workflows
           </span>
@@ -642,7 +715,7 @@ export function PublicHomeContent() {
               See the execution platform <ArrowRight />
             </Link>
           </div>
-          <RunRoomPreview />
+          <OperationsPreview />
         </div>
         <div className="kh-wrap kh-feature kh-feature--reverse">
           <AuditPreview />
@@ -712,16 +785,19 @@ export function PublicHomeContent() {
 
       <section className="kh-principles kh-section">
         <div className="kh-wrap kh-section-heading">
-          <span className="kh-section-index">04 / BUILT FOR TRUST</span>
-          <h2>Speed is useful. Controlled speed changes how a company operates.</h2>
+          <span className="kh-section-index">04 / BUILT FOR THE WORK</span>
+          <h2>One operating foundation. Four teams that cannot afford ambiguity.</h2>
         </div>
         <div className="kh-wrap kh-principle-grid">
-          {operatingPrinciples.map(([number, title, body]) => (
-            <article key={number}>
+          {teams.map(([number, title, body, href]) => (
+            <Link to={href} key={number}>
               <span>{number}</span>
               <h3>{title}</h3>
               <p>{body}</p>
-            </article>
+              <b>
+                See the solution <ArrowRight />
+              </b>
+            </Link>
           ))}
         </div>
       </section>
@@ -809,13 +885,13 @@ export function PublicHomeContent() {
           <p>Build the workflow. Govern the agents. Keep people in command.</p>
           <div className="kh-actions">
             <Link className="kh-button kh-button--light" to="/auth/sign-in">
-              Enter the workspace <ArrowRight />
+              Start building <ArrowRight />
             </Link>
-            <Link className="kh-button kh-button--dark-quiet" to="/product">
-              Explore the platform
+            <Link className="kh-button kh-button--dark-quiet" to="/contact">
+              Talk to us
             </Link>
           </div>
-          <small>No invented black box. Just accountable execution.</small>
+          <small>From first signal to verified outcome.</small>
         </div>
       </section>
     </div>

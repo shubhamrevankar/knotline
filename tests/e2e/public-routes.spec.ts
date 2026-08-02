@@ -7,10 +7,10 @@ test("public home is accessible, responsive, and links to the lazy app", async (
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: "Make complex work move like one system."
+      name: "Turn complex operations into one accountable system."
     })
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: "Enter the workspace" }).first()).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "Start building" }).first()).toHaveAttribute(
     "href",
     "/auth/sign-in"
   );
@@ -40,9 +40,13 @@ test("public home explains the product journey and keeps conversion paths real",
     "href",
     "/security"
   );
-  await expect(page.getByRole("link", { name: "See the product" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "See how it works" })).toHaveAttribute(
     "href",
     "#platform"
+  );
+  await expect(page.getByRole("link", { name: /Operations/ })).toHaveAttribute(
+    "href",
+    "/solutions/operations"
   );
 });
 
