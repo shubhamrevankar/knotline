@@ -97,6 +97,28 @@ describe("versioned workflow definition validation", () => {
     expect(restrictedExpressionSchema.safeParse("value; import('x')").success).toBe(false);
   });
 
+  it("rejects approval policies with no independent approver or usable deadline", () => {
+    const findings = validateWorkflowDefinition({
+      ...valid,
+      nodes: [
+        valid.nodes[0],
+        {
+          ...valid.nodes[1],
+          kind: "approval",
+          configuration: {
+            policy: "independent-review",
+            allowSelfApproval: false,
+            dueInMinutes: 0
+          }
+        }
+      ]
+    });
+
+    expect(findings.map(({ code }) => code)).toEqual(
+      expect.arrayContaining(["WF_APPROVER_REQUIRED", "WF_APPROVAL_DEADLINE_INVALID"])
+    );
+  });
+
   it("validates generated linear DAGs without findings", () => {
     for (let size = 2; size <= 32; size += 5) {
       const nodes: WorkflowDefinition["nodes"] = Array.from({ length: size }, (_, index) => ({

@@ -66,8 +66,12 @@ export async function resolveApprovalSteps(
       [context.workspaceId, eligibleUserIds]
     );
     eligibleUserIds = [...new Set(active.rows.map(({ user_id }) => user_id))];
+    if (!policy.allowSelfApproval)
+      eligibleUserIds = eligibleUserIds.filter((userId) => userId !== context.principalId);
     if (!eligibleUserIds.length)
-      throw new HumanTaskConflictError(`NO_ELIGIBLE_APPROVER:${step.key}`);
+      throw new HumanTaskConflictError(
+        `NO_ELIGIBLE_APPROVER:${step.key}:${policy.allowSelfApproval ? "NO_ACTIVE_MEMBER" : "SELF_APPROVAL_FORBIDDEN"}`
+      );
     if (step.mode === "quorum" && (step.quorum ?? 0) > eligibleUserIds.length)
       throw new HumanTaskConflictError(`QUORUM_EXCEEDS_ELIGIBLE:${step.key}`);
     resolved.push({ ...step, eligibleUserIds });
@@ -127,7 +131,9 @@ export class PostgresApprovalRepository implements ApprovalRepository {
           await client.query<Record<string, unknown>>(
             `SELECT approval.id,approval.task_id,approval.state,approval.state_version,approval.expires_at,
           approval.packet->>'title' title,approval.packet->'risk'->>'level' risk,
-          EXISTS(SELECT 1 FROM approval_steps step WHERE step.workspace_id=approval.workspace_id AND step.approval_id=approval.id AND $2=ANY(step.eligible_user_ids)) eligible
+          (EXISTS(SELECT 1 FROM approval_steps step WHERE step.workspace_id=approval.workspace_id AND step.approval_id=approval.id AND step.state='active' AND $2=ANY(step.eligible_user_ids))
+            AND (coalesce((approval.policy_snapshot->>'allowSelfApproval')::boolean,false) OR approval.requester_id<>$2)
+            AND approval.state IN ('PENDING','IN_REVIEW') AND approval.expires_at>clock_timestamp()) eligible
          FROM approvals approval WHERE approval.workspace_id=$1
           AND (approval.requester_id=$2 OR EXISTS(SELECT 1 FROM approval_steps step WHERE step.workspace_id=approval.workspace_id AND step.approval_id=approval.id AND $2=ANY(step.eligible_user_ids)))
          ORDER BY approval.expires_at,approval.id LIMIT 100`,
@@ -145,9 +151,19 @@ export class PostgresApprovalRepository implements ApprovalRepository {
         (
           await client.query<Record<string, unknown>>(
             `SELECT approval.*,
+          (EXISTS(SELECT 1 FROM approval_steps active_step WHERE active_step.workspace_id=approval.workspace_id AND active_step.approval_id=approval.id AND active_step.state='active' AND $3=ANY(active_step.eligible_user_ids))
+            AND (coalesce((approval.policy_snapshot->>'allowSelfApproval')::boolean,false) OR approval.requester_id<>$3)
+            AND approval.state IN ('PENDING','IN_REVIEW') AND approval.expires_at>clock_timestamp()) can_decide,
+          CASE
+            WHEN approval.state NOT IN ('PENDING','IN_REVIEW') THEN 'TERMINAL'
+            WHEN approval.expires_at<=clock_timestamp() THEN 'EXPIRED'
+            WHEN approval.requester_id=$3 AND NOT coalesce((approval.policy_snapshot->>'allowSelfApproval')::boolean,false) THEN 'SELF_APPROVAL_FORBIDDEN'
+            WHEN NOT EXISTS(SELECT 1 FROM approval_steps active_step WHERE active_step.workspace_id=approval.workspace_id AND active_step.approval_id=approval.id AND active_step.state='active' AND $3=ANY(active_step.eligible_user_ids)) THEN 'NOT_ELIGIBLE'
+            ELSE NULL
+          END decision_block_reason,
           coalesce((SELECT jsonb_agg(step ORDER BY step.step_order,step.step_key) FROM approval_steps step WHERE step.workspace_id=approval.workspace_id AND step.approval_id=approval.id),'[]'::jsonb) steps,
           coalesce((SELECT jsonb_agg(decision ORDER BY decision.decided_at,decision.id) FROM approval_decisions decision WHERE decision.workspace_id=approval.workspace_id AND decision.approval_id=approval.id),'[]'::jsonb) decisions,
-          run.temporal_workflow_id,task.node_key
+          run.id run_id,run.temporal_workflow_id,task.node_key
          FROM approvals approval JOIN task_runs task ON task.workspace_id=approval.workspace_id AND task.id=approval.task_id
          JOIN workflow_runs run ON run.workspace_id=task.workspace_id AND run.id=task.run_id
          WHERE approval.workspace_id=$1 AND approval.id=$2 AND
@@ -536,6 +552,13 @@ export class PostgresApprovalRepository implements ApprovalRepository {
       await client.query(
         `UPDATE approvals SET state=$3,state_version=state_version+1,resolved_at=clock_timestamp(),updated_at=clock_timestamp() WHERE workspace_id=$1 AND id=$2`,
         [context.workspaceId, approvalId, next]
+      );
+      await client.query(
+        `UPDATE task_runs SET state='failed',state_version=state_version+1,
+          output=coalesce(output,'{}'::jsonb)||jsonb_build_object('code','APPROVAL_EXPIRED','approvalId',$3::text,'outcome',$4::text),
+          finished_at=clock_timestamp(),updated_at=clock_timestamp()
+         WHERE workspace_id=$1 AND id=$2 AND state IN ('ready','running')`,
+        [context.workspaceId, row.task_id, approvalId, next]
       );
       await client.query(
         `UPDATE sla_timer_events SET state='handled',fired_at=coalesce(fired_at,clock_timestamp()),handled_at=clock_timestamp() WHERE workspace_id=$1 AND approval_id=$2 AND timer_type='expiry'`,

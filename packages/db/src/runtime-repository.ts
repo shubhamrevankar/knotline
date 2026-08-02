@@ -269,6 +269,16 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
             ]
           );
         if (node.kind === "approval") {
+          const definitionNode = version.definition.nodes.find(({ key }) => key === node.key);
+          const allowSelfApproval = node.configuration.allowSelfApproval === true;
+          const configuredApprovers = Array.isArray(node.configuration.approverUserIds)
+            ? node.configuration.approverUserIds
+            : undefined;
+          const selector = configuredApprovers?.length
+            ? { type: "user" as const, userIds: configuredApprovers }
+            : typeof node.configuration.assignment === "string" && !allowSelfApproval
+              ? { type: "role" as const, roles: [node.configuration.assignment] }
+              : { type: "user" as const, userIds: [context.principalId] };
           const policy = approvalPolicySchema.parse(
             node.configuration.approvalPolicy ?? {
               schemaVersion: 1,
@@ -277,17 +287,14 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
               steps: [
                 {
                   key: "review",
-                  selector: {
-                    type: "user",
-                    userIds: node.configuration.approverUserIds ?? [context.principalId]
-                  },
+                  selector,
                   mode: "single",
                   order: 0,
                   allowAbstain: true
                 }
               ],
-              allowSelfApproval: node.configuration.allowSelfApproval === true,
-              separationOfDuties: true,
+              allowSelfApproval,
+              separationOfDuties: !allowSelfApproval,
               reasonRequired: true,
               autoOutcome: node.configuration.autoOutcome ?? "none"
             }
@@ -295,19 +302,30 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
           const packet = approvalPacketSchema.parse(
             node.configuration.approvalPacket ?? {
               title:
-                typeof node.configuration.title === "string" ? node.configuration.title : node.key,
+                typeof node.configuration.title === "string"
+                  ? node.configuration.title
+                  : (definitionNode?.name ?? node.key),
               proposedAction:
                 typeof node.configuration.proposedAction === "string"
                   ? node.configuration.proposedAction
-                  : `Authorize workflow node ${node.key}`,
-              affectedResources: [],
-              diff: node.configuration.diff ?? {},
+                  : definitionNode?.description || `Authorize workflow node ${node.key}`,
+              affectedResources: Object.entries(input.input)
+                .filter(([key, value]) => /id$/iu.test(key) && typeof value === "string")
+                .map(([key, value]) => ({ type: key, id: String(value), label: String(value) })),
+              diff: node.configuration.diff ?? {
+                requestedInput: input.input,
+                prerequisiteNodes: node.dependencies
+              },
               risk: {
                 level: node.configuration.riskLevel ?? "medium",
                 findings: node.configuration.riskFindings ?? []
               },
-              evidence: [],
+              evidence: node.dependencies.map((dependency) => ({
+                label: `Recorded output from ${dependency.replaceAll("_", " ")}`,
+                uri: `knotline://runs/${runId}/tasks/${dependency}`
+              })),
               provenance: {
+                runId,
                 workflowId,
                 workflowVersion: version.version,
                 nodeKey: node.key

@@ -56,4 +56,35 @@ describe("durable runtime contracts", () => {
     expect(canReserveUnits("100", "60", "39", "1")).toBe(true);
     expect(canReserveUnits("100", "60", "39", "2")).toBe(false);
   });
+
+  it("honors human-readable approval deadlines", () => {
+    const plan = compileRuntimePlan({
+      schemaVersion: 1,
+      name: "Approval deadline",
+      description: "",
+      inputSchema: {},
+      outputSchema: {},
+      nodes: [
+        {
+          key: "start",
+          kind: "trigger",
+          name: "Start",
+          description: "",
+          position: { x: 0, y: 0 },
+          configuration: {}
+        },
+        {
+          key: "authorize",
+          kind: "approval",
+          name: "Authorize",
+          description: "",
+          position: { x: 1, y: 0 },
+          configuration: { policy: "owner", allowSelfApproval: true, dueInMinutes: 30 }
+        }
+      ],
+      edges: [{ key: "start_authorize", source: "start", target: "authorize" }]
+    });
+
+    expect(plan[1]?.timeoutMs).toBe(1_800_000);
+  });
 });

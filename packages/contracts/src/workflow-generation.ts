@@ -101,7 +101,11 @@ function generatedDefinition(prompt: string): WorkflowDefinition {
   ];
   if (includesApproval)
     nodes.push(
-      node("review_request", "approval", "Review request", 640, { policy: "workspace_owner" })
+      node("review_request", "approval", "Review request", 640, {
+        policy: "workspace_owner",
+        allowSelfApproval: true,
+        dueInMinutes: 30
+      })
     );
   if (includesNotification)
     nodes.push(

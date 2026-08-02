@@ -10,6 +10,8 @@ const approval = {
   title: "Authorize production release",
   risk: "high",
   eligible: true,
+  can_decide: true,
+  run_id: "ca67b16d-049d-4019-b538-1f00c23be76b",
   packet: {
     title: "Authorize production release",
     proposedAction: "Promote release candidate 24 to the customer environment.",
@@ -50,4 +52,24 @@ test("approval decision surface remains usable at 320 pixels", async ({ page }) 
   await page.goto(`/app/approvals/${approvalId}`);
   await expect(page.getByLabel("Reason")).toBeVisible();
   await expect(page.locator("body")).not.toHaveCSS("overflow-x", "scroll");
+});
+
+test("expired approval explains why no decision can be made", async ({ page }) => {
+  await page.route(`**/v1/approvals/${approvalId}`, (route) =>
+    route.fulfill({
+      json: {
+        data: {
+          ...approval,
+          state: "EXPIRED",
+          eligible: false,
+          can_decide: false,
+          decision_block_reason: "TERMINAL"
+        }
+      }
+    })
+  );
+  await page.goto(`/app/approvals/${approvalId}`);
+  await expect(page.getByText(/expired before a decision was recorded/u)).toBeVisible();
+  await expect(page.getByRole("button", { name: "Approve" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Return to the run" })).toBeVisible();
 });

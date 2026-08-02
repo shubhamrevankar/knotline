@@ -92,7 +92,15 @@ export function compileRuntimePlan(definition: WorkflowDefinition): readonly Run
     maxAttempts: Math.max(1, Math.min(10, Number(node.configuration.maxAttempts ?? 3))),
     timeoutMs: Math.max(
       1_000,
-      Math.min(86_400_000, Number(node.configuration.timeoutMs ?? 60_000))
+      Math.min(
+        86_400_000,
+        Number(
+          node.configuration.timeoutMs ??
+            (typeof node.configuration.dueInMinutes === "number"
+              ? node.configuration.dueInMinutes * 60_000
+              : 60_000)
+        )
+      )
     ),
     configuration: node.configuration
   }));

@@ -399,7 +399,11 @@ export interface ApprovalSummary {
 }
 
 export interface ApprovalDetail extends ApprovalSummary {
+  readonly run_id: string;
   readonly requester_id: string;
+  readonly can_decide: boolean;
+  readonly decision_block_reason?:
+    "TERMINAL" | "EXPIRED" | "SELF_APPROVAL_FORBIDDEN" | "NOT_ELIGIBLE";
   readonly packet: {
     readonly title: string;
     readonly proposedAction: string;

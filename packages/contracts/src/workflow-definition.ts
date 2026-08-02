@@ -153,14 +153,42 @@ export function validateWorkflowDefinition(input: unknown): readonly ValidationF
           })
         );
     }
-    if (node.kind === "approval" && typeof node.configuration.policy !== "string")
-      findings.push(
-        finding("WF_APPROVAL_POLICY_REQUIRED", "Approval nodes require a policy.", {
-          type: "node",
-          key: node.key,
-          path: "configuration.policy"
-        })
-      );
+    if (node.kind === "approval") {
+      if (typeof node.configuration.policy !== "string")
+        findings.push(
+          finding("WF_APPROVAL_POLICY_REQUIRED", "Approval nodes require a policy.", {
+            type: "node",
+            key: node.key,
+            path: "configuration.policy"
+          })
+        );
+      const hasExplicitApprover =
+        node.configuration.approvalPolicy !== undefined ||
+        (Array.isArray(node.configuration.approverUserIds) &&
+          node.configuration.approverUserIds.length > 0) ||
+        typeof node.configuration.assignment === "string";
+      if (node.configuration.allowSelfApproval !== true && !hasExplicitApprover)
+        findings.push(
+          finding(
+            "WF_APPROVER_REQUIRED",
+            "Self-approval is disabled, so an independent user, role, or approval policy is required.",
+            { type: "node", key: node.key, path: "configuration.assignment" }
+          )
+        );
+      if (
+        node.configuration.dueInMinutes !== undefined &&
+        (!Number.isFinite(node.configuration.dueInMinutes) ||
+          Number(node.configuration.dueInMinutes) < 1 ||
+          Number(node.configuration.dueInMinutes) > 1_440)
+      )
+        findings.push(
+          finding(
+            "WF_APPROVAL_DEADLINE_INVALID",
+            "Approval deadlines must be between 1 minute and 24 hours.",
+            { type: "node", key: node.key, path: "configuration.dueInMinutes" }
+          )
+        );
+    }
     if (node.kind === "integration_action") {
       if (typeof node.configuration.connectionRef !== "string")
         findings.push(

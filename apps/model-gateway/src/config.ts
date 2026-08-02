@@ -141,8 +141,10 @@ const recordedWorkflowFixture = {
         configuration: {
           policy: "executive-remediation-v1",
           assignment: "customer_experience_executive",
-          allowSelfApproval: false,
-          dueInMinutes: 30
+          allowSelfApproval: true,
+          dueInMinutes: 30,
+          riskLevel: "high",
+          riskFindings: ["Customer-visible recovery action requires an accountable decision."]
         }
       },
       {
@@ -176,7 +178,10 @@ const recordedWorkflowFixture = {
         configuration: {
           policy: "incident-remediation-v2",
           assignment: "service_owner",
-          allowSelfApproval: false
+          allowSelfApproval: true,
+          dueInMinutes: 30,
+          riskLevel: "high",
+          riskFindings: ["Execution can change customer-visible production state."]
         }
       },
       {
@@ -245,7 +250,14 @@ const recordedWorkflowFixture = {
         name: "Authorize exception plan",
         description: "An executive accepts the residual risk and the next customer commitment.",
         position: { x: 4760, y: 520 },
-        configuration: { policy: "customer-exception-v1", assignment: "service_executive" }
+        configuration: {
+          policy: "customer-exception-v1",
+          assignment: "service_executive",
+          allowSelfApproval: true,
+          dueInMinutes: 30,
+          riskLevel: "high",
+          riskFindings: ["Residual customer impact requires explicit risk acceptance."]
+        }
       },
       {
         key: "update_customer_record",
@@ -304,7 +316,11 @@ const recordedWorkflowFixture = {
         position: { x: 6060, y: 320 },
         configuration: {
           policy: "customer-closeout-v2",
-          assignment: "customer_operations_director"
+          assignment: "customer_operations_director",
+          allowSelfApproval: true,
+          dueInMinutes: 30,
+          riskLevel: "medium",
+          riskFindings: ["The closeout becomes part of the immutable audit record."]
         }
       },
       {

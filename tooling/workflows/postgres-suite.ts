@@ -135,7 +135,7 @@ const definition = (name = "Incident response"): WorkflowDefinition => ({
       name: "Approve response",
       description: "",
       position: { x: 480, y: 0 },
-      configuration: { policy: "workspace_owner" }
+      configuration: { policy: "workspace_owner", allowSelfApproval: true, dueInMinutes: 30 }
     }
   ],
   edges: [
@@ -1877,18 +1877,20 @@ async function runSuite(pool: DatabasePool) {
     "Human task inbox crossed a tenant boundary"
   );
   const automaticApprovals = await approvalRepository.list(contextA);
-  const automaticApproval = automaticApprovals.find((approval) => approval.title === "approval");
+  const automaticApproval = automaticApprovals.find(
+    (approval) => approval.title === "Approve response"
+  );
   assert(typeof automaticApproval?.id === "string", "Approval node did not snapshot a request");
   const selfApproval = await Promise.allSettled([
     approvalRepository.decide(contextA, String(automaticApproval.id), {
       stepKey: "review",
       outcome: "approve",
-      reason: "Must be rejected by separation of duties",
+      reason: "Single-member fixture policy explicitly permits the requester to approve.",
       expectedVersion: 1,
       idempotencyKey: "approval-self-denial-0001"
     })
   ]);
-  assert(selfApproval[0]?.status === "rejected", "Self-approval bypassed the recorded policy");
+  assert(selfApproval[0]?.status === "fulfilled", "Explicit self-approval policy was ignored");
   assert((await approvalRepository.list(contextB)).length === 0, "Approval RLS crossed tenants");
 
   const raceTaskId = "a1300000-0000-4000-8000-000000000001";

@@ -336,9 +336,11 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
     );
   const completed = run.tasks?.filter(({ state }) => state === "succeeded").length ?? 0;
   const total = run.tasks?.length ?? 0;
-  const waitingTask = run.tasks?.find(
-    ({ node_kind, state }) => ["approval", "human"].includes(node_kind) && state === "ready"
-  );
+  const waitingTask = terminalStates.has(run.state)
+    ? undefined
+    : run.tasks?.find(
+        ({ node_kind, state }) => ["approval", "human"].includes(node_kind) && state === "ready"
+      );
   const failedTask = run.tasks?.find(({ state }) => state === "failed");
   const activeTask =
     run.tasks?.find(({ state }) => state === "running") ??
@@ -420,22 +422,26 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
           <strong>
             {run.state === "failed"
               ? `Execution stopped at ${focusNode?.title ?? failedTask?.node_key.replaceAll("_", " ") ?? "a workflow step"}`
-              : run.state === "succeeded"
-                ? "Workflow completed successfully"
-                : waitingTask
-                  ? `${waitingTask.node_kind === "approval" ? "Approval" : "Human input"} required to continue`
-                  : run.state === "paused"
-                    ? "Execution is paused"
-                    : "Execution is progressing automatically"}
+              : run.state === "policy_stopped"
+                ? "Execution stopped because an approval policy was not satisfied"
+                : run.state === "succeeded"
+                  ? "Workflow completed successfully"
+                  : waitingTask
+                    ? `${waitingTask.node_kind === "approval" ? "Approval" : "Human input"} required to continue`
+                    : run.state === "paused"
+                      ? "Execution is paused"
+                      : "Execution is progressing automatically"}
           </strong>
           <p>
             {run.state === "failed"
               ? `The step could not complete after its configured retries. ${failureCode}`
-              : terminalStates.has(run.state)
-                ? `${completed} of ${total} steps completed in ${duration(run)}.`
-                : focusNode
-                  ? `${focusNode.title} · ${completed} of ${total} steps complete. This page updates automatically.`
-                  : `${completed} of ${total} steps complete. This page updates automatically.`}
+              : run.state === "policy_stopped"
+                ? `${completed} of ${total} steps completed. The required approval expired or could not be authorized; no later actions were started.`
+                : terminalStates.has(run.state)
+                  ? `${completed} of ${total} steps completed in ${duration(run)}.`
+                  : focusNode
+                    ? `${focusNode.title} · ${completed} of ${total} steps complete. This page updates automatically.`
+                    : `${completed} of ${total} steps complete. This page updates automatically.`}
           </p>
         </div>
         {failedTask ? (
@@ -660,12 +666,16 @@ function RunExecution({
       <aside>
         <h2>What happens next</h2>
         <p>
-          {run.tasks?.some(({ node_kind, state }) => node_kind === "approval" && state === "ready")
-            ? "Leadership approval is ready. Open the approval node to decide."
-            : run.tasks?.some(({ node_kind, state }) => node_kind === "human" && state === "ready")
-              ? "The final publication task is ready for human submission."
-              : terminalStates.has(run.state)
-                ? "Review any step to inspect its recorded input, output, timing, and execution state."
+          {terminalStates.has(run.state)
+            ? "Review the stopped step and audit timeline, then correct the workflow policy before starting a new run."
+            : run.tasks?.some(
+                  ({ node_kind, state }) => node_kind === "approval" && state === "ready"
+                )
+              ? "Leadership approval is ready. Open the approval node to decide."
+              : run.tasks?.some(
+                    ({ node_kind, state }) => node_kind === "human" && state === "ready"
+                  )
+                ? "The final publication task is ready for human submission."
                 : "Ready steps advance automatically. This view refreshes as the durable worker records progress."}
         </p>
         <Link to={`/app/runs/${run.id}/timeline`}>
@@ -746,10 +756,12 @@ function TaskInspector({
             Started: {task.started_at ? new Date(task.started_at).toLocaleString() : "Not started"}
           </p>
           <p>
-            Finished: {task.finished_at ? new Date(task.finished_at).toLocaleString() : "Not finished"}
+            Finished:{" "}
+            {task.finished_at ? new Date(task.finished_at).toLocaleString() : "Not finished"}
           </p>
           <p>
-            Duration: {task.started_at && task.finished_at
+            Duration:{" "}
+            {task.started_at && task.finished_at
               ? `${String(Math.max(0, Math.round((Date.parse(task.finished_at) - Date.parse(task.started_at)) / 1000)))}s`
               : task.started_at
                 ? "In progress"

@@ -128,6 +128,28 @@
 .approval-risk-card--critical {
   border-left-color: #c74c40 !important;
 }
+.approval-blocked {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border: 1px solid #e2b9b2;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background: #fff7f5;
+  color: #702d26;
+}
+.approval-blocked > svg {
+  width: 1.2rem;
+  flex: 0 0 auto;
+}
+.approval-blocked p {
+  margin: 0.35rem 0 0.65rem;
+  line-height: 1.5;
+}
+.approval-blocked a {
+  color: inherit;
+  font-weight: 650;
+}
 .approval-packet pre {
   white-space: pre-wrap;
   overflow-wrap: anywhere;

@@ -26,6 +26,16 @@ function stateTone(state: string): "accent" | "danger" | "warning" | "neutral" {
   return "neutral";
 }
 
+function blockedDecisionMessage(approval: ApprovalDetail) {
+  if (approval.state === "EXPIRED" || approval.decision_block_reason === "EXPIRED")
+    return "This approval expired before a decision was recorded. It cannot be approved now.";
+  if (approval.decision_block_reason === "SELF_APPROVAL_FORBIDDEN")
+    return "You requested this approval, and its separation-of-duties policy requires a different reviewer.";
+  if (approval.decision_block_reason === "NOT_ELIGIBLE")
+    return "This decision is assigned to another eligible reviewer.";
+  return "This approval is no longer accepting decisions.";
+}
+
 export function ApprovalInboxPage() {
   const [items, setItems] = useState<readonly ApprovalSummary[]>();
   const [error, setError] = useState<Error>();
@@ -200,7 +210,7 @@ export function ApprovalDetailPage() {
         <aside className="approval-decision" aria-label="Decision controls">
           <h2>Decision</h2>
           <p>Expires {new Date(approval.packet.expiresAt).toLocaleString()}</p>
-          {open && activeStep ? (
+          {open && activeStep && approval.can_decide ? (
             <>
               <label>
                 <span>Reason</span>
@@ -248,7 +258,14 @@ export function ApprovalDetailPage() {
               </Button>
             </>
           ) : (
-            <p>This approval is no longer accepting decisions.</p>
+            <div className="approval-blocked" role="status">
+              <AlertTriangle aria-hidden="true" />
+              <div>
+                <strong>Decision unavailable</strong>
+                <p>{blockedDecisionMessage(approval)}</p>
+                <Link to={`/app/runs/${approval.run_id}`}>Return to the run</Link>
+              </div>
+            </div>
           )}
           <p aria-live="polite">{notice}</p>
           <h3>Recorded decisions</h3>
