@@ -47,6 +47,28 @@ test("run surfaces use light cards and the persistent shared navigation", async 
   await expect(page.getByRole("button", { name: "Expand sidebar" })).toBeVisible();
 });
 
+test("workflows and runs share the same product typography", async ({ page }) => {
+  await page.goto("/app/workflows");
+  const workflowTitle = await page
+    .getByRole("heading", { name: "Workflows", exact: true })
+    .evaluate((element) => {
+      const style = getComputedStyle(element);
+      return { family: style.fontFamily, weight: style.fontWeight };
+    });
+  await page.goto("/app/runs");
+  const runTitle = await page
+    .getByRole("heading", { name: "Runs", exact: true })
+    .evaluate((element) => {
+      const style = getComputedStyle(element);
+      return { family: style.fontFamily, weight: style.fontWeight };
+    });
+  expect(runTitle).toEqual(workflowTitle);
+  await expect(page.getByText("Total runs").locator("..").locator("strong")).toHaveCSS(
+    "font-weight",
+    "400"
+  );
+});
+
 test("failed execution explains the stopped step and offers recovery destinations", async ({
   page
 }) => {

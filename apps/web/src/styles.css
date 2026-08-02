@@ -3498,6 +3498,13 @@ a.run-button {
 .app-shell--activation,
 .auth-page,
 .workflow-onboarding {
+  --product-font-sans: Inter, "SF Pro Display", "Segoe UI", sans-serif;
+  --product-font-display: Georgia, "Times New Roman", serif;
+  --product-font-mono: "DM Mono", ui-monospace, monospace;
+  --product-weight-regular: 400;
+  --product-weight-medium: 500;
+  --product-weight-semibold: 600;
+  --product-weight-bold: 700;
   --background: #f5f6f1;
   --surface: #fff;
   --surface-subtle: #edf1eb;
@@ -3519,7 +3526,22 @@ a.run-button {
   --kl-focus: #176b5b;
   color: #142321;
   background-color: #f5f6f1;
-  font-family: Inter, "SF Pro Display", "Segoe UI", sans-serif;
+  font-family: var(--product-font-sans);
+}
+
+.app-shell--activation .main {
+  font-family: var(--product-font-sans);
+  font-weight: var(--product-weight-regular);
+}
+
+.app-shell--activation .main h1 {
+  font-family: var(--product-font-display);
+  font-weight: var(--product-weight-medium);
+  letter-spacing: -0.045em;
+}
+
+.app-shell--activation .main :where(button, input, select, textarea) {
+  font-family: inherit;
 }
 
 .app-shell--activation .sidebar {

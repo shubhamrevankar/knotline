@@ -190,7 +190,7 @@
 }
 .run-workspace-content {
   min-width: 0;
-  padding: 34px clamp(18px, 4vw, 56px) 64px;
+  padding: 36px 28px 64px;
   color: #142321;
   background: #f5f6f1;
 }
@@ -221,11 +221,12 @@
 }
 .run-page-header h1,
 .run-room-header h1 {
-  margin: 10px 0 4px;
-  font-family: "Newsreader", Georgia, serif;
-  font-size: clamp(2rem, 3vw, 3rem);
-  font-weight: 600;
-  letter-spacing: -0.025em;
+  margin: 8px 0 4px;
+  font-family: var(--product-font-display);
+  font-size: clamp(32px, 4vw, 51px);
+  font-weight: var(--product-weight-medium);
+  line-height: 1;
+  letter-spacing: -0.065em;
 }
 .run-page-header p,
 .run-room-header p {
@@ -234,10 +235,10 @@
 }
 .run-section-index {
   color: #176b5b;
-  font-family: ui-monospace, monospace;
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
+  font-family: var(--product-font-mono);
+  font-size: 9px;
+  font-weight: var(--product-weight-medium);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 .run-list-metrics {
@@ -261,12 +262,18 @@
 .run-list-metrics span,
 .run-list-metrics small {
   color: #6b7873;
-  font-size: 0.72rem;
+}
+.run-list-metrics span {
+  font-size: 10px;
+}
+.run-list-metrics small {
+  font-size: 9px;
 }
 .run-list-metrics strong {
-  font-family: "Newsreader", Georgia, serif;
-  font-size: 1.65rem;
-  font-weight: 600;
+  font-family: var(--product-font-mono);
+  font-size: 23px;
+  font-weight: var(--product-weight-regular);
+  letter-spacing: -0.06em;
 }
 .run-filters {
   margin: 28px 0 18px;
@@ -279,7 +286,7 @@
   gap: 6px;
   color: #4f5f58;
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: var(--product-weight-semibold);
 }
 .run-filters label:first-child {
   flex: 1;
@@ -423,7 +430,7 @@
 .run-now span {
   color: #176b5b;
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: var(--product-weight-bold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -438,7 +445,7 @@
   align-items: center;
   gap: 5px;
   color: #0f5b4d;
-  font-weight: 750;
+  font-weight: var(--product-weight-semibold);
   text-decoration: none;
 }
 
@@ -541,7 +548,9 @@
   font-size: 0.8rem;
 }
 .run-metrics strong {
+  font-family: var(--product-font-mono);
   font-size: 1.05rem;
+  font-weight: var(--product-weight-medium);
 }
 .run-connected {
   color: #19734e;
@@ -558,7 +567,7 @@
   cursor: pointer;
   padding: 13px 15px;
   color: #334c43;
-  font-weight: 750;
+  font-weight: var(--product-weight-semibold);
 }
 
 .run-input-summary summary span {
@@ -686,7 +695,7 @@
   align-items: center;
   gap: 6px;
   color: #5b4a12;
-  font-weight: 700;
+  font-weight: var(--product-weight-semibold);
   text-decoration: none;
 }
 .run-execution aside a svg {
@@ -783,7 +792,7 @@
   cursor: pointer;
   color: #3f6256;
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: var(--product-weight-semibold);
 }
 .run-timeline pre {
   overflow: auto;
@@ -828,7 +837,7 @@
   gap: 7px;
   color: #33443f;
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: var(--product-weight-semibold);
 }
 
 .run-confirm-dialog input {
