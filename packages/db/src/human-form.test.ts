@@ -23,24 +23,33 @@ describe("normalizeHumanForm", () => {
       schemaVersion: 1,
       title: "Standard review",
       fields: [
-        { key: "owner", label: "Owner", type: "text", required: true },
+        {
+          key: "owner",
+          label: "Accountable owner",
+          type: "text",
+          required: true,
+          help: "Enter the person responsible for coordinating this response, including their role."
+        },
         {
           key: "response_target",
-          label: "Response Target",
+          label: "Response commitment",
           type: "text",
-          required: true
+          required: true,
+          help: "State the promised response and recovery timeframes, including update frequency."
         },
         {
           key: "customer_context",
-          label: "Customer Context",
+          label: "Customer situation",
           type: "rich_text",
-          required: true
+          required: true,
+          help: "Summarize who is affected, business impact, urgency, known facts, and open questions."
         },
         {
           key: "evidence_complete",
-          label: "Evidence Complete",
+          label: "Required evidence is complete",
           type: "boolean",
-          required: true
+          required: true,
+          help: "Confirm only after checking the evidence available in the run."
         }
       ]
     });

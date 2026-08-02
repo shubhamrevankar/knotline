@@ -14,11 +14,12 @@ test("@a11y member finds and completes a durable human task", async ({ page }) =
 test("member claims an unassigned review before editing it", async ({ page }) => {
   await page.goto("/app/tasks/e57ac45a-1756-4929-a90e-383523f92e27");
   await expect(page.getByRole("heading", { name: "Claim this task to begin" })).toBeVisible();
-  await expect(page.getByLabel("Owner")).toHaveCount(0);
+  await expect(page.getByLabel("Accountable owner")).toHaveCount(0);
   await page.getByRole("button", { name: "Claim and start review" }).click();
   await expect(page.getByText("Standard review", { exact: true })).toBeVisible();
-  await expect(page.getByLabel("Owner")).toBeEditable();
-  await expect(page.getByLabel("Customer context")).toBeEditable();
+  await expect(page.getByLabel("Accountable owner")).toBeEditable();
+  await expect(page.getByLabel("Customer situation")).toBeEditable();
+  await expect(page.getByText(/person responsible for coordinating/u)).toBeVisible();
 });
 
 test("human task form remains usable on a narrow screen", async ({ page }) => {

@@ -25,6 +25,31 @@ const inferredType = (key: string): HumanFormField["type"] =>
         ? "url"
         : "text";
 
+const fieldPresentation = (source: string): Pick<HumanFormField, "label" | "help"> => {
+  const key = fieldKey(source, 0);
+  if (key === "owner")
+    return {
+      label: "Accountable owner",
+      help: "Enter the person responsible for coordinating this response, including their role."
+    };
+  if (key === "response_target")
+    return {
+      label: "Response commitment",
+      help: "State the promised response and recovery timeframes, including update frequency."
+    };
+  if (key === "customer_context")
+    return {
+      label: "Customer situation",
+      help: "Summarize who is affected, business impact, urgency, known facts, and open questions."
+    };
+  if (key === "evidence_complete")
+    return {
+      label: "Required evidence is complete",
+      help: "Confirm only after checking the evidence available in the run."
+    };
+  return { label: humanize(source), help: undefined };
+};
+
 /** Converts legacy generated field lists into the canonical, validated human-task form. */
 export function normalizeHumanForm(value: unknown, title: string): HumanForm {
   const canonical = humanFormSchema.safeParse(value);
@@ -42,11 +67,13 @@ export function normalizeHumanForm(value: unknown, title: string): HumanForm {
     let key = fieldKey(source, index);
     while (usedKeys.has(key)) key = `${key.slice(0, 60)}_${index + 1}`;
     usedKeys.add(key);
+    const presentation = fieldPresentation(source);
     return {
       key,
-      label: humanize(source),
+      label: presentation.label,
       type: inferredType(source),
-      required: true
+      required: true,
+      ...(presentation.help ? { help: presentation.help } : {})
     } satisfies HumanFormField;
   });
 

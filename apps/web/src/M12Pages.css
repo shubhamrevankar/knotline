@@ -201,9 +201,31 @@
   gap: 7px;
   font-weight: 650;
 }
+.human-field > span {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.human-field > span em {
+  color: #718079;
+  font-size: 0.7rem;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
 .human-field > small {
   font-weight: 400;
   color: #66756e;
+}
+.task-form-intro {
+  margin: -4px 0 0;
+  border-left: 3px solid #82ad9d;
+  padding: 2px 0 2px 12px;
+  color: #5d6e67;
+  font-size: 0.9rem;
+  line-height: 1.55;
 }
 .human-field input,
 .human-field select,

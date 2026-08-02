@@ -523,12 +523,19 @@ export const test = base.extend<{ consoleMessages: string[] }>({
                 schemaVersion: 1,
                 title: "Standard review",
                 fields: [
-                  { key: "owner", label: "Owner", type: "text", required: true },
+                  {
+                    key: "owner",
+                    label: "Accountable owner",
+                    type: "text",
+                    required: true,
+                    help: "Enter the person responsible for coordinating this response, including their role."
+                  },
                   {
                     key: "customer_context",
-                    label: "Customer context",
+                    label: "Customer situation",
                     type: "rich_text",
-                    required: true
+                    required: true,
+                    help: "Summarize who is affected, business impact, urgency, known facts, and open questions."
                   }
                 ]
               }

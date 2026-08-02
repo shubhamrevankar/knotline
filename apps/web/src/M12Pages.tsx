@@ -23,26 +23,45 @@ const label = (value: unknown) =>
 
 const taskForm = (task: TaskView) => task.form_schema as HumanForm | undefined;
 
+const fieldPlaceholder = (field: HumanFormField) => {
+  if (field.key === "owner") return "e.g. Maya Chen — Customer Operations Lead";
+  if (field.key === "response_target")
+    return "e.g. Initial response in 30 minutes; recovery plan in 2 hours";
+  if (field.key === "customer_context")
+    return "Describe the customer, impact, urgency, confirmed facts, and unknowns…";
+  if (field.type === "rich_text") return `Enter ${field.label.toLowerCase()}…`;
+  return undefined;
+};
+
 function FormControl({ field }: { readonly field: HumanFormField }) {
+  const helpId = field.help ? `task-field-${field.key}-help` : undefined;
   const common = {
     id: `task-field-${field.key}`,
     name: field.key,
     required: field.required,
-    disabled: field.readOnly
+    disabled: field.readOnly,
+    "aria-describedby": helpId
   };
   if (field.type === "boolean")
     return (
       <label className="human-field human-field--boolean" htmlFor={common.id}>
         <input {...common} type="checkbox" />
         <span>{field.label}</span>
-        {field.help ? <small>{field.help}</small> : null}
+        {field.help ? <small id={helpId}>{field.help}</small> : null}
       </label>
     );
   return (
     <label className="human-field" htmlFor={common.id}>
-      <span>{field.label}</span>
+      <span>
+        {field.label}
+        {field.required ? <em>Required</em> : null}
+      </span>
       {field.type === "rich_text" || field.type === "json" ? (
-        <textarea {...common} rows={field.type === "json" ? 10 : 6} />
+        <textarea
+          {...common}
+          rows={field.type === "json" ? 10 : 6}
+          placeholder={fieldPlaceholder(field)}
+        />
       ) : field.type === "choice" || field.type === "multiselect" ? (
         <select
           {...common}
@@ -59,6 +78,7 @@ function FormControl({ field }: { readonly field: HumanFormField }) {
       ) : (
         <input
           {...common}
+          placeholder={fieldPlaceholder(field)}
           type={
             field.type === "number"
               ? "number"
@@ -72,7 +92,7 @@ function FormControl({ field }: { readonly field: HumanFormField }) {
           }
         />
       )}
-      {field.help ? <small>{field.help}</small> : null}
+      {field.help ? <small id={helpId}>{field.help}</small> : null}
     </label>
   );
 }
@@ -327,6 +347,10 @@ export function TaskDetailPage() {
               </div>
               <span>Submission is immutable.</span>
             </div>
+            <p className="task-form-intro">
+              Use confirmed information from the run. If a fact is unknown, say so instead of
+              guessing.
+            </p>
             {form.fields.map((field) => (
               <FormControl key={field.key} field={field} />
             ))}
