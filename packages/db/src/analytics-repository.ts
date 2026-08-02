@@ -123,7 +123,7 @@ export class PostgresAnalyticsRepository implements AnalyticsRepository {
     return withTenantTransaction(this.pool, context, async (client) => {
       const rows = (
         await client.query<Record<string, unknown>>(
-          `SELECT metric_key "metricKey",value::float8,contributing_count "contributingCount",source_watermark "freshThrough" FROM metric_buckets WHERE workspace_id=$1 AND bucket_end>clock_timestamp()-interval '30 days' ORDER BY bucket_start DESC LIMIT 100`,
+          `SELECT metric_key "metricKey",value::float8,contributing_count "contributingCount",source_watermark "freshThrough",dimensions FROM metric_buckets WHERE workspace_id=$1 AND bucket_end>clock_timestamp()-interval '30 days' ORDER BY bucket_start DESC LIMIT 100`,
           [context.workspaceId]
         )
       ).rows;

@@ -838,6 +838,61 @@ export const test = base.extend<{ consoleMessages: string[] }>({
                 : [])
             ]
           };
+        } else if (pathname.endsWith("/analytics")) {
+          body = {
+            data: {
+              metrics: [
+                {
+                  metricKey: "workflow.success_rate",
+                  value: 96.4,
+                  contributingCount: 184,
+                  freshThrough: "2026-08-02T12:00:00.000Z",
+                  dimensions: { trend: 3.8, dataClass: "local_demo" }
+                },
+                {
+                  metricKey: "runs.in_progress",
+                  value: 7,
+                  contributingCount: 7,
+                  freshThrough: "2026-08-02T12:00:00.000Z",
+                  dimensions: { trend: 2, dataClass: "local_demo" }
+                },
+                {
+                  metricKey: "run.median_duration_minutes",
+                  value: 18.6,
+                  contributingCount: 172,
+                  freshThrough: "2026-08-02T12:00:00.000Z",
+                  dimensions: { trend: -12.4, dataClass: "local_demo" }
+                },
+                {
+                  metricKey: "hours.returned",
+                  value: 146.5,
+                  contributingCount: 184,
+                  freshThrough: "2026-08-02T12:00:00.000Z",
+                  dimensions: { trend: 18.3, dataClass: "local_demo" }
+                }
+              ],
+              freshThrough: "2026-08-02T12:00:00.000Z",
+              partial: false,
+              demoExcluded: false
+            }
+          };
+        } else if (pathname.endsWith("/reports")) {
+          body = {
+            data: [
+              {
+                id: "82000000-0000-4000-8000-000000000001",
+                name: "Executive operations brief",
+                definition: {
+                  summary:
+                    "Weekly view of reliability, throughput, and items needing leadership attention."
+                },
+                visibility: "workspace",
+                state: "active",
+                revision: 1,
+                updatedAt: "2026-08-02T10:00:00.000Z"
+              }
+            ]
+          };
         } else if (pathname === "/v1/support-tickets" && method === "POST") {
           const input = route.request().postDataJSON() as {
             category: string;

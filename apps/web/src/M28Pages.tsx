@@ -1,5 +1,20 @@
 import { Badge, Button, Card, EmptyState, ErrorState, Skeleton } from "@knotline/ui";
-import { BarChart3, Download, Search, Share2 } from "lucide-react";
+import {
+  Activity,
+  ArrowDownRight,
+  ArrowRight,
+  ArrowUpRight,
+  BarChart3,
+  Bot,
+  Clock3,
+  Download,
+  Gauge,
+  Search,
+  Share2,
+  Sparkles,
+  Waypoints,
+  type LucideIcon
+} from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -145,6 +160,53 @@ type AnalyticsData = {
   partial: boolean;
   demoExcluded: boolean;
 };
+
+type MetricPresentation = {
+  readonly label: Parameters<typeof msg>[0];
+  readonly format: "percent" | "count" | "minutes" | "hours";
+  readonly icon: LucideIcon;
+};
+
+const metricPresentation: Readonly<Record<string, MetricPresentation>> = {
+  "workflow.success_rate": {
+    label: "analytics.metric.workflow.success",
+    format: "percent",
+    icon: Gauge
+  },
+  "runs.in_progress": { label: "analytics.metric.runs.progress", format: "count", icon: Activity },
+  "run.median_duration_minutes": {
+    label: "analytics.metric.run.duration",
+    format: "minutes",
+    icon: Clock3
+  },
+  "task.sla_on_track": { label: "analytics.metric.task.sla", format: "percent", icon: Sparkles },
+  "approvals.waiting": {
+    label: "analytics.metric.approvals.waiting",
+    format: "count",
+    icon: Clock3
+  },
+  "agent.success_rate": { label: "analytics.metric.agent.success", format: "percent", icon: Bot },
+  "hours.returned": { label: "analytics.metric.hours.returned", format: "hours", icon: Sparkles },
+  "workflow.active": { label: "analytics.metric.workflow.active", format: "count", icon: Waypoints }
+};
+
+const metricDimensions = (metric: Readonly<Record<string, unknown>>) =>
+  metric.dimensions && typeof metric.dimensions === "object"
+    ? (metric.dimensions as Readonly<Record<string, unknown>>)
+    : {};
+
+const metricValue = (
+  metric: Readonly<Record<string, unknown>>,
+  format: MetricPresentation["format"]
+) => {
+  if (typeof metric.value !== "number") return msg("analytics.unavailable");
+  if (format === "percent") return `${metric.value.toFixed(1)}%`;
+  if (format === "minutes")
+    return msg("analytics.value.minutes", { value: metric.value.toFixed(1) });
+  if (format === "hours") return msg("analytics.value.hours", { value: metric.value.toFixed(1) });
+  return Math.round(metric.value).toLocaleString();
+};
+
 export function AnalyticsPage() {
   const [data, setData] = useState<AnalyticsData>();
   const [reports, setReports] = useState<readonly ReportSummary[]>([]);
@@ -180,44 +242,105 @@ export function AnalyticsPage() {
     setReports([report, ...reports]);
   };
   return (
-    <main className="page-shell insight-shell">
-      <header>
-        <Badge tone="accent">
-          <BarChart3 aria-hidden />
-          {msg("analytics.badge")}
-        </Badge>
-        <h1>{msg("analytics.heading")}</h1>
-        <p>{msg("analytics.body")}</p>
+    <main className="page-shell insight-shell pulse-page">
+      <header className="pulse-header">
+        <div>
+          <Badge tone="accent">
+            <BarChart3 aria-hidden />
+            {msg("analytics.badge")}
+          </Badge>
+          <h1>{msg("analytics.heading")}</h1>
+          <p>{msg("analytics.body")}</p>
+        </div>
+        <nav aria-label={msg("analytics.actions.label")}>
+          <Link to="/app/runs">
+            {msg("analytics.actions.runs")}
+            <ArrowRight aria-hidden />
+          </Link>
+          <Link to="/app/workflows/new">
+            {msg("analytics.actions.workflow")}
+            <ArrowRight aria-hidden />
+          </Link>
+        </nav>
       </header>
       {error ? <ErrorState title={msg("analytics.error")}>{error}</ErrorState> : null}
       {!data ? (
         <Skeleton label={msg("analytics.loading")} />
       ) : (
         <>
-          <Card className="freshness">
-            <strong>{data.partial ? msg("analytics.partial") : msg("analytics.fresh")}</strong>
-            <span>
-              {data.freshThrough
-                ? new Date(data.freshThrough).toLocaleString()
-                : msg("analytics.no.data")}
-            </span>
-            <small>{msg("analytics.demo.excluded")}</small>
-          </Card>
-          <section className="metric-grid">
-            {data.metrics.map((metric, index) => (
-              <Card key={`${visibleText(metric.metricKey, "metric")}-${index}`}>
-                <small>{visibleText(metric.metricKey, msg("analytics.metric"))}</small>
-                <strong>{visibleText(metric.value, msg("analytics.unavailable"))}</strong>
-                <span>
-                  {msg("analytics.contributors", {
-                    count:
-                      typeof metric.contributingCount === "number"
-                        ? String(metric.contributingCount)
-                        : "0"
-                  })}
-                </span>
-              </Card>
-            ))}
+          <section className="pulse-status" aria-label={msg("analytics.status.label")}>
+            <div>
+              <i aria-hidden />
+              <span>
+                <strong>{data.partial ? msg("analytics.partial") : msg("analytics.fresh")}</strong>
+                <small>
+                  {data.freshThrough
+                    ? new Date(data.freshThrough).toLocaleString()
+                    : msg("analytics.no.data")}
+                </small>
+              </span>
+            </div>
+            <p>
+              {data.metrics.some((metric) => metricDimensions(metric).dataClass === "local_demo")
+                ? msg("analytics.local.demo")
+                : msg("analytics.demo.excluded")}
+            </p>
+          </section>
+          <section aria-labelledby="pulse-overview-heading" className="pulse-overview">
+            <div className="pulse-section-heading">
+              <div>
+                <span>{msg("analytics.overview.eyebrow")}</span>
+                <h2 id="pulse-overview-heading">{msg("analytics.overview.heading")}</h2>
+              </div>
+              <small>{msg("analytics.overview.range")}</small>
+            </div>
+            <div className="metric-grid">
+              {data.metrics.map((metric, index) => {
+                const metricKey = visibleText(metric.metricKey, "metric");
+                const presentation = metricPresentation[metricKey] ?? {
+                  label: "analytics.metric",
+                  format: "count" as const,
+                  icon: Gauge
+                };
+                const dimensions = metricDimensions(metric);
+                const trend = typeof dimensions.trend === "number" ? dimensions.trend : undefined;
+                const TrendIcon = trend !== undefined && trend < 0 ? ArrowDownRight : ArrowUpRight;
+                const Icon = presentation.icon;
+                return (
+                  <Card className="pulse-metric" key={`${metricKey}-${index}`}>
+                    <div>
+                      <span>
+                        <Icon aria-hidden />
+                      </span>
+                      <small>{msg(presentation.label)}</small>
+                    </div>
+                    <strong>{metricValue(metric, presentation.format)}</strong>
+                    <footer>
+                      <span>
+                        {msg("analytics.contributors", {
+                          count:
+                            typeof metric.contributingCount === "number"
+                              ? String(metric.contributingCount)
+                              : "0"
+                        })}
+                      </span>
+                      {trend !== undefined ? (
+                        <b
+                          className={
+                            dimensions.trendTone === "attention"
+                              ? "pulse-trend pulse-trend--attention"
+                              : "pulse-trend"
+                          }
+                        >
+                          <TrendIcon aria-hidden />
+                          {Math.abs(trend).toFixed(1)}%
+                        </b>
+                      ) : null}
+                    </footer>
+                  </Card>
+                );
+              })}
+            </div>
           </section>
           {!data.metrics.length ? (
             <EmptyState title={msg("analytics.empty")}>
@@ -226,25 +349,43 @@ export function AnalyticsPage() {
           ) : null}
         </>
       )}
-      <section>
-        <div className="section-heading">
-          <h2>{msg("analytics.reports")}</h2>
+      <section className="pulse-reports">
+        <div className="section-heading pulse-section-heading">
+          <div>
+            <span>{msg("analytics.reports.eyebrow")}</span>
+            <h2>{msg("analytics.reports")}</h2>
+          </div>
           <Button tone="accent" onClick={() => void add()}>
             {msg("analytics.report.create")}
           </Button>
         </div>
         <div className="report-list">
           {reports.map((report) => (
-            <Card key={report.id}>
-              <Share2 aria-hidden />
+            <Card className="pulse-report" key={report.id}>
+              <div>
+                <span>
+                  <Share2 aria-hidden />
+                </span>
+                <Badge tone="neutral">{report.visibility}</Badge>
+              </div>
               <h3>{report.name}</h3>
-              <p>
-                {msg("analytics.report.meta", {
-                  visibility: report.visibility,
-                  state: report.state
-                })}
-              </p>
-              <Link to={`/app/analytics/reports/${report.id}`}>{msg("analytics.report.open")}</Link>
+              <p>{visibleText(report.definition.summary, msg("analytics.report.summary"))}</p>
+              <footer>
+                <span>
+                  {report.updatedAt
+                    ? msg("analytics.report.updated", {
+                        date: new Date(report.updatedAt).toLocaleDateString()
+                      })
+                    : msg("analytics.report.meta", {
+                        visibility: report.visibility,
+                        state: report.state
+                      })}
+                </span>
+                <Link to={`/app/analytics/reports/${report.id}`}>
+                  {msg("analytics.report.open")}
+                  <ArrowRight aria-hidden />
+                </Link>
+              </footer>
             </Card>
           ))}
         </div>
