@@ -28,6 +28,64 @@ const approvals = pool ? new PostgresApprovalRepository(pool) : undefined;
 const agentExecutions = pool ? new PostgresAgentExecutionRepository(pool) : undefined;
 const memories = pool ? new PostgresMemoryRepository(pool) : undefined;
 
+type TransformScope = {
+  readonly input: Record<string, unknown>;
+  readonly nodes: Record<string, { readonly output: unknown }>;
+};
+
+const readTransformPath = (scope: TransformScope, path: string): unknown => {
+  const segments = path.split(".");
+  let value: unknown = scope;
+  for (const segment of segments) {
+    if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
+    value = (value as Record<string, unknown>)[segment];
+  }
+  return value;
+};
+
+const renderTransformValue = (value: unknown, scope: TransformScope): unknown => {
+  if (Array.isArray(value)) return value.map((item) => renderTransformValue(item, scope));
+  if (value && typeof value === "object")
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [key, renderTransformValue(item, scope)])
+    );
+  if (typeof value !== "string") return value;
+  const exact = /^\$\{([a-zA-Z0-9_.-]+)\}$/u.exec(value);
+  if (exact?.[1]) return readTransformPath(scope, exact[1]);
+  return value.replaceAll(/\$\{([a-zA-Z0-9_.-]+)\}/gu, (_match, path: string) => {
+    const resolved = readTransformPath(scope, path);
+    if (resolved === undefined || resolved === null) return "";
+    if (typeof resolved === "string") return resolved;
+    if (typeof resolved === "number" || typeof resolved === "boolean") return `${resolved}`;
+    return JSON.stringify(resolved);
+  });
+};
+
+const removeEmptyTransformValues = (value: unknown): unknown => {
+  if (Array.isArray(value))
+    return value
+      .map(removeEmptyTransformValues)
+      .filter((item) => item !== undefined && item !== null && item !== "");
+  if (value && typeof value === "object")
+    return Object.fromEntries(
+      Object.entries(value)
+        .map(([key, item]) => [key, removeEmptyTransformValues(item)] as const)
+        .filter(([, item]) => item !== undefined && item !== null && item !== "")
+    );
+  return value;
+};
+
+export const executeTransformMapping = (
+  mapping: unknown,
+  scope: TransformScope,
+  dropEmpty: boolean
+): unknown => {
+  if (!mapping || typeof mapping !== "object" || Array.isArray(mapping))
+    throw new Error("TRANSFORM_MAPPING_REQUIRED");
+  const rendered = renderTransformValue(mapping, scope);
+  return dropEmpty ? removeEmptyTransformValues(rendered) : rendered;
+};
+
 export async function recordRunTransition(
   input: DurableRunInput & {
     readonly expected: "queued" | "running" | "paused" | "cancelling";
@@ -97,13 +155,29 @@ export async function executeSyntheticTask(
     input.node.configuration.fixtureOutcome === "uncertain"
   )
     throw new Error("EXTERNAL_OPERATION_UNCERTAIN");
+  if (!repository) throw new Error("DATABASE_URL_REQUIRED");
+  const output =
+    input.node.kind === "transform"
+      ? executeTransformMapping(
+          input.node.configuration.mapping,
+          await repository.taskExecutionContext(
+            {
+              workspaceId: input.workspaceId,
+              principalId: input.principalId,
+              requestId: `activity-${info.activityId}`
+            },
+            input.runId,
+            input.node.key
+          ),
+          input.node.configuration.dropEmpty === true
+        )
+      : input.node.configuration.fixtureOutput ?? {};
   const result = {
     nodeKey: input.node.key,
     attempt: info.attempt,
     queue: input.node.queue,
-    output: input.node.configuration.fixtureOutput ?? {}
+    output
   };
-  if (!repository) throw new Error("DATABASE_URL_REQUIRED");
   await repository.completeSyntheticTask(
     {
       workspaceId: input.workspaceId,

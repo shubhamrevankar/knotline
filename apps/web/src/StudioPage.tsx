@@ -276,6 +276,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
   const [showHelp, setShowHelp] = useState(false);
   const [showOutline, setShowOutline] = useState(false);
   const [inspectorOpen, setInspectorOpen] = useState(true);
+  const [inspectorMode, setInspectorMode] = useState<"workflow" | "selection">("workflow");
   const [recentlyAddedKey, setRecentlyAddedKey] = useState<string>();
   const [isDragging, setIsDragging] = useState(false);
   const [addAtPosition, setAddAtPosition] = useState<{ x: number; y: number }>();
@@ -478,6 +479,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
   const focusFinding = (finding: (typeof findings)[number]) => {
     if (finding.location.type === "node" && finding.location.key) {
       setInspectorOpen(true);
+      setInspectorMode("selection");
       dispatch({ type: "select_node", key: finding.location.key });
       const node = state.definition.nodes.find(({ key }) => key === finding.location.key);
       if (node)
@@ -492,7 +494,10 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
     }
     if (finding.location.type === "edge" && finding.location.key)
       dispatch({ type: "select_edge", key: finding.location.key });
-    if (finding.location.type === "edge") setInspectorOpen(true);
+    if (finding.location.type === "edge") {
+      setInspectorOpen(true);
+      setInspectorMode("selection");
+    }
     window.setTimeout(
       () =>
         document
@@ -617,6 +622,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
     }
     dispatch({ type: "select_node", key });
     setInspectorOpen(true);
+    setInspectorMode("selection");
     setRecentlyAddedKey(key);
     window.setTimeout(() => setRecentlyAddedKey((current) => (current === key ? undefined : current)), 2200);
     window.setTimeout(
@@ -781,7 +787,10 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             <ListTree aria-hidden="true" />
             {msg("studio.outline")}
           </Button>
-          <Button onClick={() => setInspectorOpen(true)}>
+          <Button onClick={() => {
+            setInspectorMode("workflow");
+            setInspectorOpen(true);
+          }}>
             <PencilLine aria-hidden="true" />
             {msg("studio.inspector.open")}
           </Button>
@@ -952,6 +961,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
                           key={node.key}
                           onClick={() => {
                             setInspectorOpen(true);
+                            setInspectorMode("selection");
                             dispatch({ type: "select_node", key: node.key });
                             setStepSearch("");
                             void flowInstance.current?.setCenter(
@@ -996,6 +1006,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             onNodeClick={(event, node) => {
               setContextMenu(undefined);
               setInspectorOpen(true);
+              setInspectorMode("selection");
               dispatch({
                 type: "select_node",
                 key: node.id,
@@ -1005,11 +1016,13 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             onEdgeClick={(_event, edge) => {
               setContextMenu(undefined);
               setInspectorOpen(true);
+              setInspectorMode("selection");
               dispatch({ type: "select_edge", key: edge.id });
             }}
             onNodeContextMenu={(event, node) => {
               event.preventDefault();
               setInspectorOpen(true);
+              setInspectorMode("selection");
               dispatch({ type: "select_node", key: node.id });
               setContextMenu({
                 kind: "node",
@@ -1021,6 +1034,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             onEdgeContextMenu={(event, edge) => {
               event.preventDefault();
               setInspectorOpen(true);
+              setInspectorMode("selection");
               dispatch({ type: "select_edge", key: edge.id });
               setContextMenu({
                 kind: "edge",
@@ -1099,6 +1113,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
                       <button
                         onClick={() => {
                           setInspectorOpen(true);
+                          setInspectorMode("selection");
                           setShowOutline(false);
                           dispatch({ type: "select_node", key: node.key });
                           window.setTimeout(
@@ -1141,6 +1156,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
                   <button
                     onClick={() => {
                       setInspectorOpen(true);
+                      setInspectorMode("selection");
                       setShowOutline(false);
                       dispatch({ type: "select_edge", key: edge.key });
                     }}
@@ -1161,15 +1177,27 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
         {inspectorOpen ? <aside className="studio-inspector" aria-label={msg("studio.inspector")}>
           <div className="studio-panel-heading">
             <div>
-              <span>{msg("studio.inspector.eyebrow")}</span>
-              <h2>{msg("studio.inspector.heading")}</h2>
+              <span>
+                {inspectorMode === "workflow"
+                  ? msg("studio.workflow.eyebrow")
+                  : selectedEdge
+                    ? msg("studio.edge.eyebrow")
+                    : msg("studio.node.eyebrow")}
+              </span>
+              <h2>
+                {inspectorMode === "workflow"
+                  ? msg("studio.workflow.settings")
+                  : selectedEdge
+                    ? msg("studio.edge.edit")
+                    : msg("studio.node.edit")}
+              </h2>
             </div>
             <Button aria-label={msg("studio.inspector.close")} onClick={() => setInspectorOpen(false)}>
               <X aria-hidden="true" />
             </Button>
           </div>
-          <details className="studio-workflow-settings">
-            <summary>{msg("studio.workflow.settings")}</summary>
+          {inspectorMode === "workflow" ? <section className="studio-workflow-settings">
+            <p>{msg("studio.workflow.settings.body")}</p>
             <label>
               {msg("studio.workflow.name")}
               <input
@@ -1191,9 +1219,10 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
                 }
               />
             </label>
-          </details>
-          {selectedNode ? (
+          </section> : null}
+          {inspectorMode === "selection" && selectedNode ? (
             <NodeInspector
+              key={selectedNode.key}
               node={selectedNode}
               update={(patch) => dispatch({ type: "update_node", key: selectedNode.key, patch })}
               disable={(disabled) =>
@@ -1203,19 +1232,19 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
               onTest={() => void testSelectedStep()}
               {...(stepTest?.key === selectedNode.key ? { testResult: stepTest } : {})}
             />
-          ) : selectedEdge ? (
+          ) : inspectorMode === "selection" && selectedEdge ? (
             <EdgeInspector
               edge={selectedEdge}
               update={(patch) => dispatch({ type: "update_edge", key: selectedEdge.key, patch })}
               remove={() => dispatch({ type: "delete_edge", key: selectedEdge.key })}
             />
-          ) : (
+          ) : inspectorMode === "selection" ? (
             <Card>
               <Braces aria-hidden="true" />
               <h2>{msg("studio.inspector.empty")}</h2>
               <p>{msg("studio.inspector.empty.body")}</p>
             </Card>
-          )}
+          ) : null}
         </aside> : null}
         <section className="studio-validation" aria-labelledby="studio-validation-heading">
           <div className="row-between">
@@ -1551,7 +1580,22 @@ function NodeInspector({
   return (
     <Card className="studio-inspector-card">
       <Badge tone="accent">{kindLabel(node.kind)}</Badge>
-      <h2>{msg("studio.node.inspector")}</h2>
+      <h2>{node.name}</h2>
+      <p className="studio-step-identity">
+        {msg("studio.node.identity", { key: node.key, kind: kindLabel(node.kind) })}
+      </p>
+      <label>
+        {msg("studio.node.name")}
+        <input value={node.name} onChange={(event) => update({ name: event.target.value })} />
+      </label>
+      <label>
+        {msg("studio.node.description")}
+        <textarea
+          value={node.description}
+          onChange={(event) => update({ description: event.target.value })}
+        />
+      </label>
+      <StepBehaviorEditor node={node} update={update} />
       <div className="studio-node-test">
         <div>
           <strong>{msg("studio.node.test.heading")}</strong>
@@ -1571,17 +1615,6 @@ function NodeInspector({
           </p>
         ) : null}
       </div>
-      <label>
-        {msg("studio.node.name")}
-        <input value={node.name} onChange={(event) => update({ name: event.target.value })} />
-      </label>
-      <label>
-        {msg("studio.node.description")}
-        <textarea
-          value={node.description}
-          onChange={(event) => update({ description: event.target.value })}
-        />
-      </label>
       <label>
         {msg("studio.node.timeout")}
         <input
@@ -1718,9 +1751,166 @@ function NodeInspector({
       </label>
       <details>
         <summary>{msg("studio.node.configuration")}</summary>
-        <pre>{JSON.stringify(node.configuration, null, 2)}</pre>
+        <p>{msg("studio.node.configuration.body")}</p>
+        <JsonConfigurationField
+          label={msg("studio.node.configuration.json")}
+          value={node.configuration}
+          update={(configuration) =>
+            update({ configuration: configuration as Record<string, unknown> })
+          }
+        />
       </details>
     </Card>
+  );
+}
+
+function StepBehaviorEditor({
+  node,
+  update
+}: {
+  node: WorkflowDefinitionNode;
+  update: (patch: Partial<WorkflowDefinitionNode>) => void;
+}) {
+  const configuration = node.configuration;
+  const updateConfiguration = (patch: Record<string, unknown>) =>
+    update({ configuration: { ...configuration, ...patch } });
+  const behaviorDescription: Record<WorkflowDefinitionNode["kind"], string> = {
+    trigger: msg("studio.behavior.trigger"),
+    human: msg("studio.behavior.human"),
+    agent: msg("studio.behavior.agent"),
+    approval: msg("studio.behavior.approval"),
+    condition: msg("studio.behavior.condition"),
+    delay: msg("studio.behavior.delay"),
+    loop: msg("studio.behavior.loop"),
+    subworkflow: msg("studio.behavior.subworkflow"),
+    transform: msg("studio.behavior.transform"),
+    integration_action: msg("studio.behavior.integration")
+  };
+  return (
+    <section className="studio-step-behavior" aria-labelledby={`behavior-${node.key}`}>
+      <div>
+        <span>{msg("studio.behavior.eyebrow")}</span>
+        <h3 id={`behavior-${node.key}`}>{msg("studio.behavior.heading")}</h3>
+        <p>{behaviorDescription[node.kind]}</p>
+      </div>
+      {node.kind === "transform" ? (
+        <>
+          <label>
+            {msg("studio.transform.mode")}
+            <select
+              value={typeof configuration.mode === "string" ? configuration.mode : "map_fields"}
+              onChange={(event) => updateConfiguration({ mode: event.target.value })}
+            >
+              <option value="map_fields">{msg("studio.transform.mode.map")}</option>
+              <option value="template">{msg("studio.transform.mode.template")}</option>
+              <option value="expression">{msg("studio.transform.mode.expression")}</option>
+            </select>
+          </label>
+          <JsonConfigurationField
+            label={msg("studio.transform.mapping")}
+            value={configuration.mapping ?? {}}
+            update={(mapping) => updateConfiguration({ mapping })}
+          />
+          {Object.keys((configuration.mapping as Record<string, unknown> | undefined) ?? {}).length === 0 ? (
+            <p className="studio-behavior-warning">{msg("studio.transform.mapping.empty")}</p>
+          ) : null}
+          <label>
+            {msg("studio.transform.deduplicate")}
+            <input
+              value={
+                Array.isArray(configuration.deduplicateBy)
+                  ? configuration.deduplicateBy.join(", ")
+                  : ""
+              }
+              onChange={(event) =>
+                updateConfiguration({
+                  deduplicateBy: event.target.value
+                    .split(",")
+                    .map((value) => value.trim())
+                    .filter(Boolean)
+                })
+              }
+              placeholder={msg("studio.transform.deduplicate.placeholder")}
+            />
+          </label>
+          <label className="checkbox-row">
+            <input
+              type="checkbox"
+              checked={configuration.dropEmpty === true}
+              onChange={(event) => updateConfiguration({ dropEmpty: event.target.checked })}
+            />
+            {msg("studio.transform.dropempty")}
+          </label>
+          <label>
+            {msg("studio.transform.revision")}
+            <input
+              value={
+                typeof configuration.transformRevision === "string"
+                  ? configuration.transformRevision
+                  : typeof configuration.transformVersion === "string"
+                    ? configuration.transformVersion
+                    : ""
+              }
+              onChange={(event) => updateConfiguration({ transformRevision: event.target.value })}
+            />
+            <small>{msg("studio.transform.revision.help")}</small>
+          </label>
+        </>
+      ) : node.kind === "condition" ? (
+        <label>
+          {msg("studio.condition.expression")}
+          <textarea
+            value={typeof configuration.expression === "string" ? configuration.expression : ""}
+            onChange={(event) => updateConfiguration({ expression: event.target.value })}
+            placeholder={msg("studio.condition.expression.placeholder")}
+          />
+        </label>
+      ) : node.kind === "agent" ? (
+        <>
+          <label>
+            {msg("studio.agent.role")}
+            <input
+              value={typeof configuration.agentRole === "string" ? configuration.agentRole : ""}
+              onChange={(event) => updateConfiguration({ agentRole: event.target.value })}
+            />
+          </label>
+          <label>
+            {msg("studio.agent.instructions")}
+            <textarea
+              value={typeof configuration.instructions === "string" ? configuration.instructions : ""}
+              onChange={(event) => updateConfiguration({ instructions: event.target.value })}
+              placeholder={msg("studio.agent.instructions.placeholder")}
+            />
+          </label>
+        </>
+      ) : node.kind === "loop" ? (
+        <label>
+          {msg("studio.loop.exit")}
+          <textarea
+            value={typeof configuration.exitCondition === "string" ? configuration.exitCondition : ""}
+            onChange={(event) => updateConfiguration({ exitCondition: event.target.value })}
+          />
+        </label>
+      ) : node.kind === "delay" ? (
+        <label>
+          {msg("studio.delay.duration")}
+          <input
+            type="number"
+            min="1"
+            value={Math.max(1, Number(configuration.delayMs ?? 60000) / 60000)}
+            onChange={(event) => updateConfiguration({ delayMs: Number(event.target.value) * 60000 })}
+          />
+        </label>
+      ) : node.kind === "subworkflow" ? (
+        <label>
+          {msg("studio.subworkflow.reference")}
+          <input
+            value={typeof configuration.workflowRef === "string" ? configuration.workflowRef : ""}
+            onChange={(event) => updateConfiguration({ workflowRef: event.target.value })}
+          />
+        </label>
+      ) : null}
+    </section>
   );
 }
 

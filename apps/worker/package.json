@@ -11,8 +11,8 @@
     "dev": "pnpm build && node --enable-source-maps dist/main.js",
     "start": "node dist/main.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run src",
-    "test:unit": "vitest run src",
+    "test": "vitest run --root ../.. apps/worker/src",
+    "test:unit": "vitest run --root ../.. apps/worker/src",
     "lint": "eslint src --max-warnings 0"
   },
   "dependencies": {

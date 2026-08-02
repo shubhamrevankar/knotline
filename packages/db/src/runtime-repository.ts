@@ -69,6 +69,14 @@ export interface RuntimeRepository {
   ): Promise<readonly Record<string, unknown>[]>;
   pendingStarts(context: TenantContext): Promise<PendingRuntimeStart[]>;
   markStartDispatched(context: TenantContext, runId: string): Promise<void>;
+  taskExecutionContext(
+    context: TenantContext,
+    runId: string,
+    nodeKey: string
+  ): Promise<{
+    readonly input: Record<string, unknown>;
+    readonly nodes: Record<string, { readonly output: unknown }>;
+  }>;
   completeSyntheticTask(
     context: TenantContext,
     runId: string,
@@ -561,6 +569,33 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
         workerIdentity,
         { nodeKey, attempt: attemptNumber }
       );
+    });
+  }
+
+  async taskExecutionContext(context: TenantContext, runId: string, nodeKey: string) {
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const run = await client.query<{ input: Record<string, unknown> }>(
+        `SELECT input FROM workflow_runs WHERE workspace_id=$1 AND id=$2`,
+        [context.workspaceId, runId]
+      );
+      if (!run.rows[0]) throw new Error("RUN_NOT_FOUND");
+      const dependencies = await client.query<{ node_key: string; output: unknown }>(
+        `SELECT dependency.node_key,dependency.output
+         FROM task_dependencies relation
+         JOIN task_runs task ON task.workspace_id=relation.workspace_id AND task.id=relation.task_id
+         JOIN task_runs dependency ON dependency.workspace_id=relation.workspace_id AND dependency.id=relation.depends_on_task_id
+         WHERE relation.workspace_id=$1 AND relation.run_id=$2 AND task.node_key=$3`,
+        [context.workspaceId, runId, nodeKey]
+      );
+      return {
+        input: run.rows[0].input,
+        nodes: Object.fromEntries(
+          dependencies.rows.map((dependency) => [
+            dependency.node_key,
+            { output: dependency.output }
+          ])
+        )
+      };
     });
   }
 

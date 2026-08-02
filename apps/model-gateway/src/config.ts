@@ -59,7 +59,19 @@ const recordedWorkflowFixture = {
         name: "Normalize account and incident context",
         description: "Create a canonical case record and remove duplicate or incomplete signals.",
         position: { x: 340, y: 320 },
-        configuration: { transformVersion: "customer-case.v2" }
+        configuration: {
+          mode: "map_fields",
+          mapping: {
+            caseId: "${input.caseId}",
+            customerId: "${input.customerId}",
+            summary: "${input.summary}",
+            reportedAt: "${input.reportedAt}",
+            contractTier: "${input.contractTier}"
+          },
+          deduplicateBy: ["caseId"],
+          dropEmpty: true,
+          transformRevision: "customer-case.v2"
+        }
       },
       {
         key: "classify_impact",

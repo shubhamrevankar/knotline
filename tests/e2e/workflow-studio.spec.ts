@@ -138,6 +138,46 @@ test("canvas-first editing exposes fast placement and connection actions", async
   await expect(page.getByRole("heading", { name: "Add steps" })).toBeVisible();
 });
 
+test("studio contains page scrolling and makes executable step behavior editable", async ({ page }) => {
+  await page.goto(`/app/workflows/${workflowId}/studio`);
+  await page.mouse.move(4, 360);
+  await page.mouse.wheel(0, 900);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+
+  await page.getByRole("button", { name: "Add step" }).click();
+  await page.getByPlaceholder("Search step kinds").fill("transform");
+  await page.getByRole("button", { name: "Transform Add to workflow" }).click();
+
+  await expect(page.getByRole("heading", { name: "Edit step" })).toBeVisible();
+  await expect(page.getByText("Executable behavior")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "What this step does" })).toBeVisible();
+  await expect(page.getByText("The field mapping below is the transformation logic.")).toBeVisible();
+  await expect(page.getByText("No transformation rules are configured yet.")).toBeVisible();
+  await page
+    .getByLabel("Output field mapping (JSON)")
+    .fill('{\n  "caseId": "${input.caseId}",\n  "summary": "${input.summary}"\n}');
+  await page.getByLabel("Logic revision").fill("customer-case.v3");
+  await expect(page.getByText("This is only a revision label for auditing.")).toBeVisible();
+
+  await page.getByText("Advanced configuration", { exact: true }).click();
+  await expect(page.getByLabel("Complete configuration (JSON)")).toBeEditable();
+
+  if ((page.viewportSize()?.width ?? 0) > 760) {
+    await page.getByRole("button", { name: "Close inspector" }).click();
+    await page.getByRole("button", { name: "Fit workflow" }).click();
+    await page.getByTestId("rf__node-start").click();
+    await page.keyboard.down("Control");
+    await page.getByTestId("rf__node-review").click();
+    await page.getByTestId("rf__node-transform_3").click();
+    await page.keyboard.up("Control");
+    await expect(page.getByRole("button", { name: "Distribute selection" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Group selection" })).toBeVisible();
+  }
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
+  ).toBe(true);
+});
+
 test("optimistic concurrency never silently overwrites another editor", async ({ page }) => {
   await page.route(`http://localhost:4100/v1/workflows/${workflowId}/draft`, async (route) => {
     if (route.request().method() === "PUT") {
