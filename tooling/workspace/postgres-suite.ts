@@ -219,6 +219,36 @@ async function runSuite(pool: DatabasePool) {
     groups.find(({ id }) => id === groupId)?.memberIds.length === 2,
     "Group membership failed"
   );
+  const scimGroupId = "65000000-0000-4000-8000-000000000001";
+  await withTenantTransaction(
+    pool,
+    {
+      workspaceId: workspace.id,
+      principalId: SEED.userA,
+      requestId: "m05-scim-group-seed"
+    },
+    async (client) => {
+      await client.query(
+      `INSERT INTO workspace_groups(workspace_id,id,name,description,source,created_by)
+       VALUES ($1,$2,'Directory operations','Synchronized group','scim',$3)`,
+        [workspace.id, scimGroupId, SEED.userA]
+      );
+    }
+  );
+  const scimMutation = await Promise.allSettled([
+    service.saveGroup(mayaIdentity, "m05-scim-group-mutation", {
+      id: scimGroupId,
+      name: "Renamed locally",
+      description: "Must fail",
+      memberIds: []
+    })
+  ]);
+  assert(
+    scimMutation[0]?.status === "rejected" &&
+      scimMutation[0].reason instanceof AuthFailure &&
+      scimMutation[0].reason.code === "SCIM_GROUP_READ_ONLY",
+    "SCIM group accepted a manual mutation"
+  );
   await service.saveReportingRelationship(mayaIdentity, "m05-reporting", {
     reportUserId: SEED.userB,
     managerUserId: SEED.userA
@@ -235,6 +265,24 @@ async function runSuite(pool: DatabasePool) {
     service.updateMember(mayaIdentity, "m05-last-owner", mayaMember.id, { state: "suspended" })
   ]);
   assert(lastOwner[0]?.status === "rejected", "Last owner safeguard did not execute");
+  const genericRemoval = await Promise.allSettled([
+    service.updateMember(mayaIdentity, "m05-generic-removal", eliasMember.id, { state: "removed" })
+  ]);
+  assert(
+    genericRemoval[0]?.status === "rejected" &&
+      genericRemoval[0].reason instanceof AuthFailure &&
+      genericRemoval[0].reason.code === "MEMBER_REMOVAL_REQUIRED",
+    "Generic member update bypassed governed removal"
+  );
+  const ownerRemoval = await Promise.allSettled([
+    service.removeMember(mayaIdentity, "m05-owner-removal", mayaMember.id, eliasMember.id)
+  ]);
+  assert(
+    ownerRemoval[0]?.status === "rejected" &&
+      ownerRemoval[0].reason instanceof AuthFailure &&
+      ownerRemoval[0].reason.code === "OWNER_REMOVAL_REQUIRES_TRANSFER",
+    "Workspace owner was removable without ownership transfer"
+  );
   assert(
     await service.transferOwnership(mayaIdentity, "m05-transfer", eliasMember.id),
     "Ownership transfer failed"
@@ -295,7 +343,7 @@ async function runSuite(pool: DatabasePool) {
     workspace: { create: true, switch: true, sandboxLabel: true, multiWorkspace: true },
     invitation: { previewBinding: true, accept: true, replay: true, forwardingRejected: true },
     access: { personaMatrix: true, permissionCeiling: true, lastOwner: true, transfer: true },
-    groups: { membership: true, cycleRejected: true },
+    groups: { membership: true, scimReadOnly: true, cycleRejected: true },
     onboarding: { persisted: true, skipResume: true, revisionConflict: true },
     sampleData: { labeled: true, removed: true },
     isolation: { rls: true },

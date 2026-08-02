@@ -505,7 +505,11 @@ export function RolesPage() {
           onSubmit={(event) => {
             event.preventDefault();
             const form = new FormData(event.currentTarget);
-            void createGroup(workspace, formString(form, "groupName"), []).then(reload);
+            void createGroup(workspace, {
+              name: formString(form, "groupName"),
+              description: "",
+              memberIds: []
+            }).then(reload);
             event.currentTarget.reset();
           }}
         >

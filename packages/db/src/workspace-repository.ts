@@ -139,6 +139,16 @@ export const PERMISSION_CATALOG = [
   "audit.read"
 ] as const;
 
+const SYSTEM_ROLE_IDS: Readonly<Record<SystemRole, string>> = {
+  owner: "00000000-0000-4000-8000-000000000001",
+  admin: "00000000-0000-4000-8000-000000000002",
+  builder: "00000000-0000-4000-8000-000000000003",
+  member: "00000000-0000-4000-8000-000000000004",
+  approver: "00000000-0000-4000-8000-000000000005",
+  billing: "00000000-0000-4000-8000-000000000006",
+  auditor: "00000000-0000-4000-8000-000000000007"
+};
+
 const workspaceFromRow = (row: {
   id: string;
   slug: string;
@@ -594,7 +604,7 @@ export class PostgresWorkspaceRepository {
          WHERE workspace_id=$1 ORDER BY is_system DESC,name`,
         [context.workspaceId]
       );
-      return result.rows.map((row) => ({
+      const stored = result.rows.map((row) => ({
         id: row.id,
         key: row.role_key,
         name: row.name,
@@ -602,6 +612,21 @@ export class PostgresWorkspaceRepository {
         permissions: row.permissions,
         system: row.is_system
       }));
+      const storedKeys = new Set(stored.map(({ key }) => key));
+      const missingSystemRoles = Object.entries(SYSTEM_ROLE_PERMISSIONS)
+        .filter(([key]) => !storedKeys.has(key))
+        .map(([key, permissions]) => {
+          const systemRole = key as SystemRole;
+          return {
+            id: SYSTEM_ROLE_IDS[systemRole],
+            key: systemRole,
+            name: `${systemRole[0]?.toUpperCase() ?? ""}${systemRole.slice(1)}`,
+            description: `Built-in ${systemRole} role`,
+            permissions,
+            system: true
+          } satisfies RoleRecord;
+        });
+      return [...missingSystemRoles, ...stored];
     });
   }
 

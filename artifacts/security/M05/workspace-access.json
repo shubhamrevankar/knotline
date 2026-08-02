@@ -22,6 +22,7 @@
     },
     "groups": {
       "membership": true,
+      "scimReadOnly": true,
       "cycleRejected": true
     },
     "onboarding": {

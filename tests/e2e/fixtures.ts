@@ -192,33 +192,48 @@ export const test = base.extend<{ consoleMessages: string[] }>({
             serverTime: "2026-07-31T00:00:00.000Z"
           };
         } else if (pathname === "/v1/workspaces") {
-          body = {
-            data: [
-              {
-                id: "10000000-0000-4000-8000-000000000001",
-                slug: "northstar-studio",
-                name: "Northstar Studio",
-                state: "active",
-                timezone: "UTC",
-                locale: "en",
-                region: "local",
-                role: "owner",
-                isSandbox: false
-              },
-              {
-                id: "10000000-0000-4000-8000-000000000002",
-                slug: "sample-lab",
-                name: "Sample Lab",
-                state: "active",
-                timezone: "UTC",
-                locale: "en",
-                region: "local",
-                role: "admin",
-                isSandbox: true,
-                sandboxLabel: "Sandbox — sample data"
-              }
-            ]
-          };
+          body =
+            method === "POST"
+              ? {
+                  data: {
+                    id: "10000000-0000-4000-8000-000000000003",
+                    slug: "launch-operations",
+                    name: "Launch Operations",
+                    state: "active",
+                    timezone: "UTC",
+                    locale: "en",
+                    region: "local",
+                    role: "owner",
+                    isSandbox: false
+                  }
+                }
+              : {
+                  data: [
+                    {
+                      id: "10000000-0000-4000-8000-000000000001",
+                      slug: "northstar-studio",
+                      name: "Northstar Studio",
+                      state: "active",
+                      timezone: "UTC",
+                      locale: "en",
+                      region: "local",
+                      role: "owner",
+                      isSandbox: false
+                    },
+                    {
+                      id: "10000000-0000-4000-8000-000000000002",
+                      slug: "sample-lab",
+                      name: "Sample Lab",
+                      state: "active",
+                      timezone: "UTC",
+                      locale: "en",
+                      region: "local",
+                      role: "admin",
+                      isSandbox: true,
+                      sandboxLabel: "Sandbox — sample data"
+                    }
+                  ]
+                };
         } else if (pathname.endsWith("/members")) {
           body = {
             data: [
@@ -254,11 +269,46 @@ export const test = base.extend<{ consoleMessages: string[] }>({
                 description: "Built-in owner role",
                 permissions: ["*"],
                 system: true
+              },
+              ...["admin", "builder", "member", "approver", "billing", "auditor"].map(
+                (key, index) => ({
+                  id: `50000000-0000-4000-8000-00000000000${index + 2}`,
+                  key,
+                  name: key.charAt(0).toUpperCase() + key.slice(1),
+                  description: `Built-in ${key} role`,
+                  permissions: ["workspace.read", "workflow.read"],
+                  system: true
+                })
+              ),
+              {
+                id: "50000000-0000-4000-8000-000000000009",
+                key: "custom-incident-reviewer",
+                name: "Incident reviewer",
+                description: "Reviews incident workflows and audit history",
+                permissions: ["workspace.read", "workflow.read", "audit.read"],
+                system: false
               }
             ]
           };
         } else if (pathname.endsWith("/groups")) {
-          body = { data: [] };
+          body = {
+            data: [
+              {
+                id: "51000000-0000-4000-8000-000000000001",
+                name: "Launch team",
+                description: "Coordinates launch approvals",
+                source: "manual",
+                memberIds: ["20000000-0000-4000-8000-000000000001"]
+              },
+              {
+                id: "51000000-0000-4000-8000-000000000002",
+                name: "Identity operations",
+                description: "Synchronized from the identity provider",
+                source: "scim",
+                memberIds: ["20000000-0000-4000-8000-000000000002"]
+              }
+            ]
+          };
         } else if (pathname === "/v1/me/onboarding") {
           body = {
             data: {

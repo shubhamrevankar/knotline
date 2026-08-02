@@ -202,6 +202,22 @@ export class WorkspaceService {
         409,
         "Use the ownership transfer action to assign an owner."
       );
+    const member = (await this.repository.listMembers(context)).find(
+      (candidate) => candidate.id === memberId
+    );
+    if (!member) return false;
+    if (member.role === "owner")
+      throw new AuthFailure(
+        "OWNER_MUTATION_REQUIRES_TRANSFER",
+        409,
+        "Transfer ownership before changing or suspending the workspace owner."
+      );
+    if (input.state === "removed")
+      throw new AuthFailure(
+        "MEMBER_REMOVAL_REQUIRED",
+        409,
+        "Use the remove member action so owned content can be reassigned safely."
+      );
     return this.repository.updateMember(context, memberId, input);
   }
 
@@ -212,6 +228,22 @@ export class WorkspaceService {
     reassignToMemberId: string
   ) {
     const { context } = await this.require(identity, requestId, "member.remove");
+    const members = await this.repository.listMembers(context);
+    const member = members.find((candidate) => candidate.id === memberId);
+    const assignee = members.find((candidate) => candidate.id === reassignToMemberId);
+    if (!member) throw new AuthFailure("MEMBER_NOT_FOUND", 404, "The member does not exist.");
+    if (member.role === "owner")
+      throw new AuthFailure(
+        "OWNER_REMOVAL_REQUIRES_TRANSFER",
+        409,
+        "Transfer ownership before removing the workspace owner."
+      );
+    if (!assignee || assignee.state !== "active")
+      throw new AuthFailure(
+        "REASSIGNMENT_MEMBER_INVALID",
+        409,
+        "Choose another active member to receive owned content."
+      );
     return this.repository.reassignAndRemoveMember(context, memberId, reassignToMemberId);
   }
 
@@ -362,6 +394,18 @@ export class WorkspaceService {
     }
   ) {
     const { context } = await this.require(identity, requestId, "group.manage");
+    if (input.id) {
+      const existing = (await this.repository.groups(context)).find(
+        (candidate) => candidate.id === input.id
+      );
+      if (!existing) throw new AuthFailure("GROUP_NOT_FOUND", 404, "The group does not exist.");
+      if (existing.source === "scim")
+        throw new AuthFailure(
+          "SCIM_GROUP_READ_ONLY",
+          409,
+          "This group is managed by your identity provider and cannot be edited here."
+        );
+    }
     return this.repository.saveGroup(context, input);
   }
 

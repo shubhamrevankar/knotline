@@ -134,6 +134,7 @@ export interface WorkspaceInvitation {
   readonly workspaceName: string;
   readonly email: string;
   readonly role: string;
+  readonly customRoleId?: string;
   readonly state: string;
   readonly expiresAt: string;
   readonly createdAt: string;
@@ -715,6 +716,12 @@ export const updateMember = (workspace: string, member: string, input: unknown) 
     input
   );
 
+export const removeMember = (workspace: string, member: string, reassignToMemberId: string) =>
+  mutate<void>(
+    `/v1/workspaces/${encodeURIComponent(workspace)}/members/${encodeURIComponent(member)}?reassignToMemberId=${encodeURIComponent(reassignToMemberId)}`,
+    "DELETE"
+  );
+
 export const transferOwnership = (workspace: string, targetMemberId: string) =>
   mutate<{ readonly transferred: true }>(
     `/v1/workspaces/${encodeURIComponent(workspace)}/ownership-transfers`,
@@ -729,17 +736,30 @@ export const fetchInvitations = async (workspace: string) =>
     )
   ).data;
 
-export const inviteMember = async (workspace: string, email: string, role: string) =>
+export const inviteMember = async (
+  workspace: string,
+  email: string,
+  role: string,
+  customRoleId?: string
+) =>
   (
     await mutate<{ readonly data: WorkspaceInvitation }>(
       `/v1/workspaces/${encodeURIComponent(workspace)}/invitations`,
       "POST",
-      { email, role }
+      { email, role, ...(customRoleId ? { customRoleId } : {}) }
     )
   ).data;
 
 export const cancelInvitation = (invitationId: string) =>
   mutate<void>(`/v1/invitations/${encodeURIComponent(invitationId)}`, "DELETE");
+
+export const resendInvitation = async (invitationId: string) =>
+  (
+    await mutate<{ readonly data: WorkspaceInvitation }>(
+      `/v1/invitations/${encodeURIComponent(invitationId)}/resends`,
+      "POST"
+    )
+  ).data;
 
 export const previewInvitation = async (token: string) =>
   (
@@ -779,6 +799,25 @@ export const createRole = async (
     )
   ).data;
 
+export const updateRole = async (
+  roleId: string,
+  input: {
+    readonly name: string;
+    readonly description: string;
+    readonly permissions: readonly string[];
+  }
+) =>
+  (
+    await mutate<{ readonly data: WorkspaceRole }>(
+      `/v1/roles/${encodeURIComponent(roleId)}`,
+      "PATCH",
+      input
+    )
+  ).data;
+
+export const deleteRole = (roleId: string) =>
+  mutate<void>(`/v1/roles/${encodeURIComponent(roleId)}`, "DELETE");
+
 export const fetchGroups = async (workspace: string) =>
   (
     await request<{ readonly data: readonly WorkspaceGroup[] }>(
@@ -786,12 +825,31 @@ export const fetchGroups = async (workspace: string) =>
     )
   ).data;
 
-export const createGroup = (workspace: string, name: string, memberIds: readonly string[]) =>
+export const createGroup = (
+  workspace: string,
+  input: {
+    readonly name: string;
+    readonly description: string;
+    readonly memberIds: readonly string[];
+  }
+) =>
   mutate<{ readonly id: string }>(
     `/v1/workspaces/${encodeURIComponent(workspace)}/groups`,
     "POST",
-    { name, description: "", memberIds }
+    input
   );
+
+export const saveGroup = (
+  groupId: string,
+  input: {
+    readonly name: string;
+    readonly description: string;
+    readonly memberIds: readonly string[];
+  }
+) => mutate<{ readonly id: string }>(`/v1/groups/${encodeURIComponent(groupId)}`, "PATCH", input);
+
+export const deleteGroup = (groupId: string) =>
+  mutate<void>(`/v1/groups/${encodeURIComponent(groupId)}`, "DELETE");
 
 export const fetchOnboarding = async () =>
   (await request<{ readonly data: OnboardingProgress }>("/v1/me/onboarding")).data;

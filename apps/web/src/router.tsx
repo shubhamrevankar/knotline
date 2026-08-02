@@ -67,7 +67,7 @@ const InvitationAcceptPage = lazy(async () => ({
 }));
 
 const MembersPage = lazy(async () => ({
-  default: (await import("./M05Pages.js")).MembersPage
+  default: (await import("./M05AdminPages.js")).MembersPage
 }));
 
 const OnboardingPage = lazy(async () => ({
@@ -75,11 +75,11 @@ const OnboardingPage = lazy(async () => ({
 }));
 
 const RolesPage = lazy(async () => ({
-  default: (await import("./M05Pages.js")).RolesPage
+  default: (await import("./M05AdminPages.js")).RolesPage
 }));
 
 const WorkspaceSettingsPage = lazy(async () => ({
-  default: (await import("./M05Pages.js")).WorkspaceSettingsPage
+  default: (await import("./M05AdminPages.js")).WorkspaceSettingsPage
 }));
 
 const RunsPage = lazy(async () => {
@@ -1048,15 +1048,15 @@ function CustomerRouteContent({ route }: { route: WebRouteManifestEntry }) {
   return (
     <AuthGate>
       <div className="page-shell">
-          <Badge tone="warning">
-            {msg("public.page.planned", { milestone: route.ownerMilestone })}
-          </Badge>
-          <h1>{msg("customer.route.heading")}</h1>
-          <p>{msg("customer.route.body")}</p>
-          <Button>
-            <Menu aria-hidden="true" />
-            {msg("customer.nav.open")}
-          </Button>
+        <Badge tone="warning">
+          {msg("public.page.planned", { milestone: route.ownerMilestone })}
+        </Badge>
+        <h1>{msg("customer.route.heading")}</h1>
+        <p>{msg("customer.route.body")}</p>
+        <Button>
+          <Menu aria-hidden="true" />
+          {msg("customer.nav.open")}
+        </Button>
       </div>
     </AuthGate>
   );
