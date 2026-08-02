@@ -1083,6 +1083,134 @@ export async function fetchWorkflow(id: string): Promise<Workflow> {
   return response.data;
 }
 
+export interface RuntimeTaskView {
+  readonly id: string;
+  readonly node_key: string;
+  readonly node_kind: string;
+  readonly instance_key: string;
+  readonly queue_class: string;
+  readonly state: string;
+  readonly state_version: string | number;
+  readonly input?: unknown;
+  readonly output?: unknown;
+  readonly started_at?: string;
+  readonly finished_at?: string;
+}
+
+export interface RuntimeEventView {
+  readonly sequence: string | number;
+  readonly event_type: string;
+  readonly actor_type: string;
+  readonly actor_id: string;
+  readonly payload: Readonly<Record<string, unknown>>;
+  readonly occurred_at: string;
+}
+
+export interface RuntimeRunView {
+  readonly id: string;
+  readonly workflow_id: string;
+  readonly workflow_version: number;
+  readonly state: string;
+  readonly created_by: string;
+  readonly input?: Readonly<Record<string, unknown>>;
+  readonly policy_snapshot?: Readonly<Record<string, unknown>>;
+  readonly started_at?: string;
+  readonly finished_at?: string;
+  readonly created_at: string;
+  readonly updated_at: string;
+  readonly duration_ms?: string | number;
+  readonly reserved_quantity?: string;
+  readonly tasks?: readonly RuntimeTaskView[];
+  readonly events?: readonly RuntimeEventView[];
+  readonly workflowName?: string;
+}
+
+export const startWorkflowRun = async (
+  workflowId: string,
+  input: Readonly<Record<string, unknown>> = {}
+) =>
+  (
+    await mutate<{ readonly data: RuntimeRunView }>(
+      `/v1/workflows/${encodeURIComponent(workflowId)}/runs`,
+      "POST",
+      {
+        input,
+        idempotencyKey: crypto.randomUUID(),
+        maximumQuantity: "1000",
+        policyVersion: "demo-v1"
+      }
+    )
+  ).data;
+
+export const fetchWorkflowRuns = async (workflowId: string) =>
+  (
+    await request<{ readonly data: readonly RuntimeRunView[] }>(
+      `/v1/workflows/${encodeURIComponent(workflowId)}/runs`
+    )
+  ).data;
+
+export const fetchAllWorkflowRuns = async () => {
+  const workflows = await fetchWorkflows();
+  const groups = await Promise.all(
+    workflows.map(async (workflow) =>
+      (await fetchWorkflowRuns(workflow.id)).map((run) => ({
+        ...run,
+        workflowName: workflow.name
+      }))
+    )
+  );
+  return groups
+    .flat()
+    .sort((left, right) => String(right.created_at).localeCompare(String(left.created_at)));
+};
+
+export const fetchRuntimeRun = async (runId: string) =>
+  (await request<{ readonly data: RuntimeRunView }>(`/v1/runs/${encodeURIComponent(runId)}`)).data;
+
+export const signalRuntimeRun = (runId: string, action: "pause" | "resume" | "cancel") =>
+  mutate<{ readonly accepted: true }>(
+    `/v1/runs/${encodeURIComponent(runId)}/${
+      action === "pause" ? "pauses" : action === "resume" ? "resumptions" : "cancellations"
+    }`,
+    "POST",
+    {
+      reason: `Operator requested ${action} from the run room.`,
+      idempotencyKey: crypto.randomUUID()
+    }
+  );
+
+export const fetchHumanTasks = async (view = "all") =>
+  (
+    await request<{ readonly data: readonly Readonly<Record<string, unknown>>[] }>(
+      `/v1/task-runs?view=${encodeURIComponent(view)}`
+    )
+  ).data;
+
+export const fetchHumanTask = async (taskRunId: string) =>
+  (
+    await request<{ readonly data: Readonly<Record<string, unknown>> }>(
+      `/v1/task-runs/${encodeURIComponent(taskRunId)}`
+    )
+  ).data;
+
+export const submitHumanTask = async (
+  taskRunId: string,
+  expectedVersion: number,
+  values: Readonly<Record<string, unknown>>
+) =>
+  (
+    await mutate<{ readonly data: { readonly id: string } }>(
+      `/v1/task-runs/${encodeURIComponent(taskRunId)}/submissions`,
+      "POST",
+      {
+        values,
+        schemaVersion: 1,
+        expectedVersion,
+        idempotencyKey: crypto.randomUUID()
+      }
+    )
+  ).data;
+
 export type MemoryRecordView = Readonly<{
   id: string;
   agent_id: string;

@@ -1,95 +1,48 @@
-import { Badge, Button, Card } from "@knotline/ui";
+/* eslint-disable knotline/no-hardcoded-user-visible-string -- This operational surface now renders server-authored run data; localization follows the verified vertical journey. */
+import { Badge, Button, Card, ErrorState, Skeleton } from "@knotline/ui";
 import {
   Activity,
   ArrowLeft,
   Download,
-  GitCompare,
   ListTree,
   Pause,
   Play,
-  RotateCcw,
   Search,
   StopCircle
 } from "lucide-react";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 
+import {
+  fetchAllWorkflowRuns,
+  fetchRuntimeRun,
+  fetchWorkflows,
+  signalRuntimeRun,
+  type RuntimeEventView,
+  type RuntimeRunView,
+  type RuntimeTaskView
+} from "./api.js";
 import { msg } from "./i18n.js";
 import "./M11Pages.css";
 
-type RunState = "running" | "failed" | "succeeded" | "paused";
-interface RunFixture {
-  readonly id: string;
-  readonly workflow: string;
-  readonly state: RunState;
-  readonly attention: string;
-  readonly initiator: string;
-  readonly duration: string;
-  readonly usage: string;
-  readonly started: string;
-}
+const terminalStates = new Set(["cancelled", "succeeded", "failed", "policy_stopped"]);
 
-const runs: readonly RunFixture[] = [
-  {
-    id: "run-1042",
-    workflow: "Customer escalation",
-    state: "running",
-    attention: "Watching",
-    initiator: "Maya Chen",
-    duration: "4m 12s",
-    usage: "$0.18",
-    started: "Today, 10:42"
-  },
-  {
-    id: "run-1041",
-    workflow: "Incident response",
-    state: "failed",
-    attention: "Needs action",
-    initiator: "Pager webhook",
-    duration: "2m 08s",
-    usage: "$0.06",
-    started: "Today, 10:31"
-  },
-  {
-    id: "run-1040",
-    workflow: "Weekly account review",
-    state: "succeeded",
-    attention: "None",
-    initiator: "Schedule",
-    duration: "8m 44s",
-    usage: "$0.42",
-    started: "Today, 09:00"
-  },
-  {
-    id: "run-1039",
-    workflow: "Contract review",
-    state: "paused",
-    attention: "Approval overdue",
-    initiator: "Noah Williams",
-    duration: "1h 22m",
-    usage: "$0.11",
-    started: "Today, 08:17"
-  }
-];
-
-const timeline = [
-  ["1", "Run admitted", "Exact usage reservation created", "System · 10:42:01"],
-  ["2", "Trigger accepted", "Webhook signature and replay window verified", "Gateway · 10:42:02"],
-  ["3", "Classify request", "Attempt 1 completed with governed output", "Worker · 10:42:04"],
-  ["4", "Draft response", "Attempt 1 is running", "Agent runtime · 10:42:08"]
-] as const;
-
-const runStateLabel = (state: RunState) => {
-  if (state === "failed") return msg("run.status.failed");
-  if (state === "paused") return msg("run.status.paused");
-  if (state === "succeeded") return msg("run.status.succeeded");
-  return msg("run.status.running");
+const stateTone = (state: string): "accent" | "danger" | "success" | "warning" => {
+  if (["failed", "cancelled", "policy_stopped"].includes(state)) return "danger";
+  if (state === "succeeded") return "success";
+  if (["paused", "waiting", "queued"].includes(state)) return "warning";
+  return "accent";
 };
 
-const taskStateLabel = (state: "pending" | "running" | "succeeded") => {
-  if (state === "pending") return msg("run.task.pending");
-  if (state === "succeeded") return msg("run.task.succeeded");
-  return msg("run.task.running");
+const stateLabel = (state: string) => state.replaceAll("_", " ");
+
+const duration = (run: RuntimeRunView) => {
+  const start = Date.parse(run.started_at ?? run.created_at);
+  const end = run.finished_at ? Date.parse(run.finished_at) : Date.now();
+  const seconds = Math.max(0, Math.floor((end - start) / 1000));
+  return seconds < 60
+    ? `${String(seconds)}s`
+    : `${String(Math.floor(seconds / 60))}m ${String(seconds % 60)}s`;
 };
 
 function RunShell({ children }: { readonly children: ReactNode }) {
@@ -107,6 +60,8 @@ function RunShell({ children }: { readonly children: ReactNode }) {
           <ListTree aria-hidden="true" />
           {msg("customer.nav.workflows")}
         </Link>
+        <Link to="/app/approvals">Approvals</Link>
+        <Link to="/app/inbox">Human work</Link>
       </aside>
       <main>{children}</main>
     </div>
@@ -115,16 +70,25 @@ function RunShell({ children }: { readonly children: ReactNode }) {
 
 export function RunsPage() {
   const [search, setSearch] = useSearchParams();
+  const [runs, setRuns] = useState<readonly RuntimeRunView[]>();
+  const [error, setError] = useState<Error>();
   const query = search.get("query") ?? "";
   const status = search.get("status") ?? "all";
+  useEffect(() => {
+    void fetchAllWorkflowRuns()
+      .then(setRuns)
+      .catch((cause: unknown) =>
+        setError(cause instanceof Error ? cause : new Error("Unable to load durable runs."))
+      );
+  }, []);
   const visible = useMemo(
     () =>
-      runs.filter(
+      (runs ?? []).filter(
         (run) =>
           (status === "all" || run.state === status) &&
-          run.workflow.toLowerCase().includes(query.toLowerCase())
+          (run.workflowName ?? run.workflow_id).toLowerCase().includes(query.toLowerCase())
       ),
-    [query, status]
+    [query, runs, status]
   );
   const update = (key: string, value: string) => {
     const next = new URLSearchParams(search);
@@ -133,10 +97,11 @@ export function RunsPage() {
     setSearch(next, { replace: true });
   };
   const exportCsv = () => {
-    const safe = (value: string) => (/^[=+\-@]/u.test(value) ? `'${value}` : value);
     const body = [
       "Run,Workflow,Status,Started",
-      ...visible.map((run) => [run.id, safe(run.workflow), run.state, run.started].join(","))
+      ...visible.map((run) =>
+        [run.id, run.workflowName ?? run.workflow_id, run.state, run.created_at].join(",")
+      )
     ].join("\n");
     const link = document.createElement("a");
     link.href = URL.createObjectURL(new Blob([body], { type: "text/csv" }));
@@ -148,13 +113,12 @@ export function RunsPage() {
     <RunShell>
       <header className="run-page-header">
         <div>
-          <Badge tone="accent">{msg("run.live")}</Badge>
+          <Badge tone="accent">Persisted execution</Badge>
           <h1>{msg("run.list.heading")}</h1>
-          <p>{msg("run.list.body")}</p>
+          <p>Every row is an admitted database run controlled by the durable worker.</p>
         </div>
-        <Button onClick={exportCsv}>
-          <Download aria-hidden="true" />
-          {msg("run.export")}
+        <Button onClick={exportCsv} disabled={!visible.length}>
+          <Download aria-hidden="true" /> {msg("run.export")}
         </Button>
       </header>
       <section className="run-filters" aria-label={msg("run.filters.label")}>
@@ -168,150 +132,190 @@ export function RunsPage() {
         <label>
           <span>{msg("run.status")}</span>
           <select value={status} onChange={(event) => update("status", event.currentTarget.value)}>
-            <option value="all">{msg("run.status.all")}</option>
-            <option value="running">{msg("run.status.running")}</option>
-            <option value="failed">{msg("run.status.failed")}</option>
-            <option value="paused">{msg("run.status.paused")}</option>
-            <option value="succeeded">{msg("run.status.succeeded")}</option>
+            <option value="all">All states</option>
+            <option value="queued">Queued</option>
+            <option value="running">Running</option>
+            <option value="paused">Paused</option>
+            <option value="succeeded">Succeeded</option>
+            <option value="failed">Failed</option>
           </select>
         </label>
       </section>
-      <div className="run-table-wrap">
-        <table>
-          <caption className="sr-only">{msg("run.list.caption")}</caption>
-          <thead>
-            <tr>
-              <th>{msg("run.workflow")}</th>
-              <th>{msg("run.status")}</th>
-              <th>{msg("run.attention")}</th>
-              <th>{msg("run.initiator")}</th>
-              <th>{msg("run.duration")}</th>
-              <th>{msg("run.usage")}</th>
-              <th>{msg("run.started")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {visible.map((run) => (
-              <tr key={run.id}>
-                <td>
-                  <Link to={`/app/runs/${run.id}`}>
-                    <strong>{run.workflow}</strong>
-                    <small>{run.id}</small>
-                  </Link>
-                </td>
-                <td>
-                  <Badge
-                    tone={
-                      run.state === "failed"
-                        ? "danger"
-                        : run.state === "succeeded"
-                          ? "success"
-                          : "accent"
-                    }
-                  >
-                    {runStateLabel(run.state)}
-                  </Badge>
-                </td>
-                <td>{run.attention}</td>
-                <td>{run.initiator}</td>
-                <td>{run.duration}</td>
-                <td>{run.usage}</td>
-                <td>{run.started}</td>
+      {error ? (
+        <ErrorState title="Runs unavailable">
+          <p>{error.message}</p>
+        </ErrorState>
+      ) : !runs ? (
+        <Skeleton label="Loading persisted runs" />
+      ) : visible.length === 0 ? (
+        <Card>
+          <h2>No runs yet</h2>
+          <p>Start the launch workflow from the workflow library.</p>
+          <Link to="/app/workflows">Open workflows</Link>
+        </Card>
+      ) : (
+        <div className="run-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Workflow</th>
+                <th>Status</th>
+                <th>Duration</th>
+                <th>Version</th>
+                <th>Started</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {visible.map((run) => (
+                <tr key={run.id}>
+                  <td>
+                    <Link to={`/app/runs/${run.id}`}>
+                      <strong>{run.workflowName ?? "Workflow run"}</strong>
+                      <small>{run.id}</small>
+                    </Link>
+                  </td>
+                  <td>
+                    <Badge tone={stateTone(run.state)}>{stateLabel(run.state)}</Badge>
+                  </td>
+                  <td>{duration(run)}</td>
+                  <td>v{run.workflow_version}</td>
+                  <td>{new Date(run.created_at).toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </RunShell>
   );
 }
 
 export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timeline" | "task" }) {
-  const { runId = "run-1042", taskRunId } = useParams();
-  const selected = runs.find((run) => run.id === runId) ?? runs[0]!;
-  const [state, setState] = useState<RunState>(selected.state);
+  const { runId = "", taskRunId } = useParams();
+  const [run, setRun] = useState<RuntimeRunView>();
+  const [workflowName, setWorkflowName] = useState("Workflow run");
+  const [error, setError] = useState<Error>();
+  const [busy, setBusy] = useState(false);
   const [mode, setMode] = useState<"outline" | "graph" | "timeline">(
     view === "timeline" ? "timeline" : "outline"
   );
+  const refresh = async () => {
+    const next = await fetchRuntimeRun(runId);
+    setRun(next);
+    return next;
+  };
+  useEffect(() => {
+    const load = async () => {
+      const [current, workflows] = await Promise.all([fetchRuntimeRun(runId), fetchWorkflows()]);
+      setRun(current);
+      setWorkflowName(
+        workflows.find(({ id }) => id === current.workflow_id)?.name ?? "Workflow run"
+      );
+    };
+    void load().catch((cause: unknown) =>
+      setError(cause instanceof Error ? cause : new Error("Unable to load run."))
+    );
+    const timer = globalThis.setInterval(
+      () =>
+        void fetchRuntimeRun(runId)
+          .then(setRun)
+          .catch(() => undefined),
+      1000
+    );
+    return () => globalThis.clearInterval(timer);
+  }, [runId]);
+  const signal = async (action: "pause" | "resume" | "cancel") => {
+    setBusy(true);
+    try {
+      await signalRuntimeRun(runId, action);
+      await refresh();
+    } finally {
+      setBusy(false);
+    }
+  };
+  if (error)
+    return (
+      <RunShell>
+        <ErrorState title="Run unavailable">
+          <p>{error.message}</p>
+        </ErrorState>
+      </RunShell>
+    );
+  if (!run)
+    return (
+      <RunShell>
+        <Skeleton label="Loading durable run" />
+      </RunShell>
+    );
   return (
     <RunShell>
       <Link className="run-back" to="/app/runs">
-        <ArrowLeft aria-hidden="true" />
-        {msg("run.back")}
+        <ArrowLeft aria-hidden="true" /> {msg("run.back")}
       </Link>
       <header className="run-room-header">
         <div>
-          <Badge
-            tone={state === "failed" ? "danger" : state === "succeeded" ? "success" : "accent"}
-          >
-            {runStateLabel(state)}
-          </Badge>
-          <h1>{selected.workflow}</h1>
+          <Badge tone={stateTone(run.state)}>{stateLabel(run.state)}</Badge>
+          <h1>{workflowName}</h1>
           <p>
-            {msg("run.header.metadata", {
-              runId,
-              initiator: selected.initiator,
-              started: selected.started
-            })}
+            {run.id} · published version {run.workflow_version} · started{" "}
+            {new Date(run.created_at).toLocaleString()}
           </p>
         </div>
         <div className="run-actions">
-          {state === "running" ? (
-            <Button onClick={() => setState("paused")}>
-              <Pause aria-hidden="true" />
-              {msg("run.pause")}
+          {run.state === "running" ? (
+            <Button disabled={busy} onClick={() => void signal("pause")}>
+              <Pause aria-hidden="true" /> Pause
             </Button>
-          ) : (
-            <Button onClick={() => setState("running")}>
-              <Play aria-hidden="true" />
-              {msg("run.resume")}
+          ) : run.state === "paused" ? (
+            <Button disabled={busy} onClick={() => void signal("resume")}>
+              <Play aria-hidden="true" /> Resume
+            </Button>
+          ) : null}
+          {!terminalStates.has(run.state) && (
+            <Button disabled={busy} onClick={() => void signal("cancel")}>
+              <StopCircle aria-hidden="true" /> Cancel
             </Button>
           )}
-          <Button onClick={() => setState("failed")}>
-            <StopCircle aria-hidden="true" />
-            {msg("run.cancel")}
-          </Button>
-          <Button>
-            <RotateCcw aria-hidden="true" />
-            {msg("run.retry")}
-          </Button>
         </div>
       </header>
       <section className="run-metrics" aria-label={msg("run.summary")}>
         <Card>
-          <span>{msg("run.elapsed")}</span>
-          <strong>{selected.duration}</strong>
+          <span>Elapsed</span>
+          <strong>{duration(run)}</strong>
         </Card>
         <Card>
-          <span>{msg("run.usage")}</span>
-          <strong>{selected.usage}</strong>
+          <span>Tasks</span>
+          <strong>{String(run.tasks?.length ?? 0)}</strong>
         </Card>
         <Card>
-          <span>{msg("run.environment")}</span>
-          <strong>{msg("run.environment.sandbox")}</strong>
+          <span>Workflow</span>
+          <strong>v{run.workflow_version}</strong>
         </Card>
         <Card>
-          <span>{msg("run.connection")}</span>
-          <strong className="run-connected">{msg("run.connection.live")}</strong>
+          <span>Connection</span>
+          <strong className="run-connected">Live database</strong>
         </Card>
       </section>
       {view === "task" ? (
-        <TaskInspector taskRunId={taskRunId ?? "task-draft"} />
+        <TaskInspector task={run.tasks?.find(({ id }) => id === taskRunId)} />
       ) : (
         <>
           <nav className="run-view-tabs" aria-label={msg("run.views")}>
             <button aria-pressed={mode === "outline"} onClick={() => setMode("outline")}>
-              {msg("run.view.outline")}
+              Outline
             </button>
             <button aria-pressed={mode === "graph"} onClick={() => setMode("graph")}>
-              {msg("run.view.graph")}
+              Graph
             </button>
             <button aria-pressed={mode === "timeline"} onClick={() => setMode("timeline")}>
-              {msg("run.view.timeline")}
+              Timeline
             </button>
-            <Link to={`/app/runs/${runId}/timeline`}>{msg("run.timeline.complete")}</Link>
           </nav>
-          {mode === "timeline" ? <Timeline /> : <RunExecution mode={mode} runId={runId} />}
+          {mode === "timeline" ? (
+            <Timeline events={run.events ?? []} />
+          ) : (
+            <RunExecution mode={mode} run={run} />
+          )}
         </>
       )}
     </RunShell>
@@ -320,56 +324,68 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
 
 function RunExecution({
   mode,
-  runId
+  run
 }: {
   readonly mode: "outline" | "graph";
-  readonly runId: string;
+  readonly run: RuntimeRunView;
 }) {
-  const tasks = [
-    ["receive", "Receive request", "succeeded"],
-    ["classify", "Classify request", "succeeded"],
-    ["draft", "Draft response", "running"],
-    ["approve", "Manager approval", "pending"]
-  ] as const;
+  const approvals = new Map(
+    (run.events ?? [])
+      .filter(({ event_type }) => event_type === "approval.requested")
+      .map(({ payload }) => [String(payload.nodeKey), String(payload.approvalId)])
+  );
   return (
-    <section className={`run-execution run-execution--${mode}`} aria-label={msg("run.execution")}>
+    <section className={`run-execution run-execution--${mode}`} aria-label="Run execution">
       <div>
-        {tasks.map(([id, label, state], index) => (
-          <Link
-            key={id}
-            to={`/app/runs/${runId}/tasks/${id}`}
-            className={`run-node run-node--${state}`}
-          >
-            <span>{index + 1}</span>
-            <div>
-              <strong>{label}</strong>
-              <small>{taskStateLabel(state)}</small>
-            </div>
-          </Link>
-        ))}
+        {(run.tasks ?? []).map((task, index) => {
+          const approvalId = approvals.get(task.node_key);
+          const target =
+            task.node_kind === "human"
+              ? `/app/tasks/${task.id}`
+              : approvalId
+                ? `/app/approvals/${approvalId}`
+                : `/app/runs/${run.id}/tasks/${task.id}`;
+          return (
+            <Link key={task.id} to={target} className={`run-node run-node--${task.state}`}>
+              <span>{index + 1}</span>
+              <div>
+                <strong>{task.node_key.replaceAll("_", " ")}</strong>
+                <small>
+                  {stateLabel(task.state)} · {task.node_kind}
+                </small>
+              </div>
+            </Link>
+          );
+        })}
       </div>
       <aside>
-        <h2>{msg("run.attention.heading")}</h2>
-        <p>{msg("run.attention.body")}</p>
-        <Button>
-          <GitCompare aria-hidden="true" />
-          {msg("run.compare")}
-        </Button>
+        <h2>Next action</h2>
+        <p>
+          {run.tasks?.some(({ node_kind, state }) => node_kind === "approval" && state === "ready")
+            ? "Leadership approval is ready. Open the approval node to decide."
+            : run.tasks?.some(({ node_kind, state }) => node_kind === "human" && state === "ready")
+              ? "The final publication task is ready for human submission."
+              : terminalStates.has(run.state)
+                ? "The durable run has reached a terminal state."
+                : "The worker is advancing dependency-ready tasks."}
+        </p>
       </aside>
     </section>
   );
 }
 
-function Timeline() {
+function Timeline({ events }: { readonly events: readonly RuntimeEventView[] }) {
   return (
     <ol className="run-timeline">
-      {timeline.map(([sequence, title, body, actor]) => (
-        <li key={sequence}>
-          <span>{sequence}</span>
+      {events.map((event) => (
+        <li key={String(event.sequence)}>
+          <span>{event.sequence}</span>
           <div>
-            <strong>{title}</strong>
-            <p>{body}</p>
-            <small>{actor}</small>
+            <strong>{event.event_type.replaceAll(".", " ")}</strong>
+            <p>{JSON.stringify(event.payload)}</p>
+            <small>
+              {event.actor_type} · {new Date(event.occurred_at).toLocaleString()}
+            </small>
           </div>
         </li>
       ))}
@@ -377,59 +393,37 @@ function Timeline() {
   );
 }
 
-function TaskInspector({ taskRunId }: { readonly taskRunId: string }) {
+function TaskInspector({ task }: { readonly task: RuntimeTaskView | undefined }) {
+  if (!task)
+    return (
+      <ErrorState title="Task not found">
+        <p>This task is not part of the current run projection.</p>
+      </ErrorState>
+    );
   return (
     <section className="task-inspector">
       <header>
         <div>
-          <Badge tone="accent">{msg("run.task.running")}</Badge>
-          <h2>{msg("run.task.heading")}</h2>
+          <Badge tone={stateTone(task.state)}>{stateLabel(task.state)}</Badge>
+          <h2>{task.node_key.replaceAll("_", " ")}</h2>
           <p>
-            {taskRunId} · {msg("run.task.attempt")}
+            {task.id} · {task.node_kind}
           </p>
         </div>
-        <Button>{msg("run.task.retry")}</Button>
       </header>
       <div className="task-grid">
         <Card>
-          <h3>{msg("run.task.input")}</h3>
-          <pre>{JSON.stringify({ priority: "high", channel: "email" }, null, 2)}</pre>
+          <h3>Input</h3>
+          <pre>{JSON.stringify(task.input ?? {}, null, 2)}</pre>
         </Card>
         <Card>
-          <h3>{msg("run.task.output")}</h3>
-          <pre>{JSON.stringify({ classification: "billing", confidence: 0.96 }, null, 2)}</pre>
+          <h3>Output</h3>
+          <pre>{JSON.stringify(task.output ?? {}, null, 2)}</pre>
         </Card>
         <Card>
-          <h3>{msg("run.task.provenance")}</h3>
-          <p>{msg("run.task.provenance.body")}</p>
-        </Card>
-        <Card>
-          <h3>{msg("run.task.logs")}</h3>
-          <p>{msg("run.task.logs.body")}</p>
-        </Card>
-        <Card>
-          <Badge tone="warning">{msg("run.agent.badge")}</Badge>
-          <h3>{msg("run.agent.controls")}</h3>
-          <dl>
-            <dt>{msg("run.agent.context")}</dt>
-            <dd>{msg("run.agent.context.value")}</dd>
-            <dt>{msg("run.agent.loop")}</dt>
-            <dd>{msg("run.agent.loop.value")}</dd>
-            <dt>{msg("run.agent.budget")}</dt>
-            <dd>{msg("run.agent.budget.value")}</dd>
-            <dt>{msg("run.agent.review")}</dt>
-            <dd>{msg("run.agent.review.value")}</dd>
-          </dl>
-        </Card>
-        <Card>
-          <h3>{msg("run.agent.provenance")}</h3>
-          <ol>
-            <li>{msg("run.agent.provenance.version")}</li>
-            <li>{msg("run.agent.provenance.context")}</li>
-            <li>{msg("run.agent.provenance.tool")}</li>
-            <li>{msg("run.agent.provenance.output")}</li>
-          </ol>
-          <p>{msg("run.agent.reasoning")}</p>
+          <h3>Execution</h3>
+          <p>Queue: {task.queue_class}</p>
+          <p>State version: {String(task.state_version)}</p>
         </Card>
       </div>
     </section>

@@ -18,9 +18,9 @@ import {
   UsersRound
 } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { Workflow, WorkflowSummary } from "@knotline/contracts";
-import { createVersionedWorkflow, fetchWorkflow, fetchWorkflows } from "./api";
+import { createVersionedWorkflow, fetchWorkflow, fetchWorkflows, startWorkflowRun } from "./api";
 import { i18n, msg } from "./i18n.js";
 import { WorkflowCanvas } from "./WorkflowCanvas";
 import { GuidedWorkflowCreate } from "./GuidedWorkflowCreate.js";
@@ -28,7 +28,7 @@ import { GuidedWorkflowCreate } from "./GuidedWorkflowCreate.js";
 const nav = [
   { label: msg("customer.nav.pulse"), icon: Gauge, to: "/app" },
   { label: msg("customer.nav.workflows"), icon: Blocks, to: "/app/workflows", active: true },
-  { label: msg("customer.nav.runs"), icon: Activity, to: "/app/runs", badge: "21" },
+  { label: msg("customer.nav.runs"), icon: Activity, to: "/app/runs" },
   { label: msg("customer.nav.agents"), icon: Bot, to: "/app/agents" },
   { label: msg("customer.nav.people"), icon: UsersRound, to: "/app/settings/members" },
   { label: msg("customer.nav.connections"), icon: Cable, to: "/app/connections" }
@@ -45,6 +45,7 @@ function StatusPill({ status }: { status: WorkflowSummary["status"] }) {
 }
 
 export function App() {
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [workflows, setWorkflows] = useState<WorkflowSummary[]>([]);
   const [workflow, setWorkflow] = useState<Workflow | null>(null);
@@ -52,6 +53,8 @@ export function App() {
   const [connected, setConnected] = useState(false);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState("");
+  const [runError, setRunError] = useState("");
+  const [startingRun, setStartingRun] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -119,6 +122,24 @@ export function App() {
     }
   };
 
+  const runWorkflow = async () => {
+    if (!workflow || startingRun) return;
+    setStartingRun(true);
+    setRunError("");
+    try {
+      const run = await startWorkflowRun(workflow.id, {
+        launchName: "Knotline governed operations launch",
+        audience: "Operations, product, and customer teams",
+        objective: "Produce an evidence-backed launch brief with explicit leadership approval"
+      });
+      void navigate(`/app/runs/${run.id}`);
+    } catch (reason) {
+      setRunError(reason instanceof Error ? reason.message : "The run could not be started.");
+    } finally {
+      setStartingRun(false);
+    }
+  };
+
   return (
     <div className="app-shell">
       <aside
@@ -155,7 +176,7 @@ export function App() {
         </Link>
 
         <nav className="nav-list" aria-label={msg("customer.nav.main")}>
-          {nav.map(({ label, icon: Icon, to, active, badge }) => (
+          {nav.map(({ label, icon: Icon, to, active }) => (
             <Link
               aria-current={active ? "page" : undefined}
               className={active ? "nav-item nav-item--active" : "nav-item"}
@@ -165,7 +186,6 @@ export function App() {
             >
               <Icon aria-hidden="true" size={17} />
               <span>{label}</span>
-              {badge && <b>{badge}</b>}
             </Link>
           ))}
         </nav>
@@ -251,7 +271,7 @@ export function App() {
         <div className="demo-banner" role="status">
           <strong>{msg("customer.demo.label")}</strong>
           <span>{msg("customer.demo.body")}</span>
-          <Link to="/app/runs/run-1042">{msg("run.list.heading")}</Link>
+          <Link to="/app/runs">{msg("run.list.heading")}</Link>
           <Link to="/app/inbox">{msg("customer.saved.attention")}</Link>
           <Link to="/app/agents">{msg("customer.nav.agents")}</Link>
           <Link to="/app/connections">{msg("customer.nav.connections")}</Link>
@@ -397,11 +417,17 @@ export function App() {
                       <Link className="secondary-button" to={`/app/workflows/${workflow.id}`}>
                         {msg("customer.map.edit")}
                       </Link>
-                      <Link className="run-button" to="/app/runs/run-1042">
+                      <button
+                        className="run-button"
+                        disabled={startingRun}
+                        onClick={() => void runWorkflow()}
+                        type="button"
+                      >
                         <span aria-hidden="true" />
-                        {msg("customer.map.run")}
-                      </Link>
+                        {startingRun ? "Starting…" : msg("customer.map.run")}
+                      </button>
                     </div>
+                    {runError && <p className="workflow-run-error">{runError}</p>}
                   </div>
                   <WorkflowCanvas workflow={workflow} />
                 </>

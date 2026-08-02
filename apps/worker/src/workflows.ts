@@ -58,7 +58,7 @@ export async function durableWorkflowRun(input: DurableRunInput) {
   setHandler(completeApprovalSignal, (nodeKey, operationId) => {
     approvedOperations.set(nodeKey, operationId);
   });
-  while (complete.size < input.plan.length && !cancelled) {
+  execution: while (complete.size < input.plan.length && !cancelled) {
     if (paused && currentState === "running") {
       await recordRunTransition({
         ...input,
@@ -84,14 +84,16 @@ export async function durableWorkflowRun(input: DurableRunInput) {
     if (ready.length === 0) throw new Error("RUNTIME_GRAPH_STALLED");
     for (const node of ready) {
       if (node.kind === "human") {
-        await condition(() => completedHumanTasks.has(node.key) || cancelled);
+        await condition(() => completedHumanTasks.has(node.key) || paused || cancelled);
         if (cancelled) break;
+        if (paused) continue execution;
       } else if (node.kind === "approval") {
         const authorized = await condition(
-          () => approvedOperations.has(node.key) || cancelled,
+          () => approvedOperations.has(node.key) || paused || cancelled,
           node.timeoutMs
         );
         if (cancelled) break;
+        if (paused) continue execution;
         if (!authorized) {
           await expireApproval({ ...input, node });
           policyStopped = true;
@@ -103,6 +105,7 @@ export async function durableWorkflowRun(input: DurableRunInput) {
           operationId: approvedOperations.get(node.key)!,
           fencingToken: 1
         });
+        await executeSyntheticTask({ ...input, node });
       } else if (node.kind === "delay") {
         await sleep(Math.min(Number(node.configuration.delayMs ?? 1), 86_400_000));
         await executeSyntheticTask({ ...input, node });

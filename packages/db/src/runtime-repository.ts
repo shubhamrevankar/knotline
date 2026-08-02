@@ -236,12 +236,13 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
         );
         if (node.kind === "human")
           await client.query(
-            `INSERT INTO human_task_details(workspace_id,task_id,created_by,priority,form_schema,form_schema_version)
-             VALUES ($1,$2,$3,'normal',$4,1)`,
+            `INSERT INTO human_task_details(workspace_id,task_id,created_by,assignee_user_id,priority,form_schema,form_schema_version)
+             VALUES ($1,$2,$3,$4,'normal',$5,1)`,
             [
               context.workspaceId,
               taskId,
               context.principalId,
+              node.configuration.assignment === "workflow_initiator" ? context.principalId : null,
               node.configuration.formSchema ?? {
                 schemaVersion: 1,
                 title: node.key,
@@ -571,7 +572,7 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
       );
       if (!run.rows[0]) return undefined;
       const tasks = await client.query(
-        `SELECT id,node_key,instance_key,queue_class,state,state_version,fencing_token,input,output,started_at,finished_at FROM task_runs WHERE workspace_id=$1 AND run_id=$2 ORDER BY created_at`,
+        `SELECT id,node_key,node_kind,instance_key,queue_class,state,state_version,fencing_token,input,output,started_at,finished_at FROM task_runs WHERE workspace_id=$1 AND run_id=$2 ORDER BY created_at`,
         [context.workspaceId, runId]
       );
       const events = await client.query(

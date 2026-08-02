@@ -21,7 +21,8 @@ export const SEED = {
   workspaceB: "10000000-0000-4000-8000-000000000002",
   userA: "20000000-0000-4000-8000-000000000001",
   userB: "20000000-0000-4000-8000-000000000002",
-  workflow: "30000000-0000-4000-8000-000000000001"
+  workflow: "30000000-0000-4000-8000-000000000001",
+  agent: "33000000-0000-4000-8000-000000000001"
 } as const;
 
 export async function seedSyntheticTenants(pool: Pool): Promise<void> {
@@ -47,7 +48,33 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
         name: "Research market context",
         description: "Compile grounded launch intelligence from authorized sources.",
         position: { x: 360, y: 180 },
-        configuration: { owner: "Market analyst", status: "running" }
+        configuration: {
+          owner: "Market analyst",
+          status: "running",
+          agentId: SEED.agent,
+          agentVersion: 1,
+          fixtureAgentSteps: [
+            {
+              type: "final",
+              output: {
+                executiveSummary:
+                  "The launch is positioned for operations teams that need governed human and AI execution.",
+                marketSignals: [
+                  "Buyers expect visible approval boundaries for consequential automation.",
+                  "Operational teams value durable execution and source-backed outputs."
+                ],
+                recommendation:
+                  "Lead with legibility, bounded agent authority, and a complete audit trail."
+              },
+              summary: "Market context compiled from the authorized launch brief.",
+              usage: {
+                inputTokens: 428,
+                outputTokens: 186,
+                costDecimal: "0.014200000000"
+              }
+            }
+          ]
+        }
       },
       {
         key: "leadership_review",
@@ -58,7 +85,16 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
         configuration: {
           owner: "Launch council",
           status: "waiting",
-          policy: "launch-readiness-v1"
+          policy: "launch-readiness-v1",
+          timeoutMs: 900_000,
+          allowSelfApproval: true,
+          proposedAction: "Authorize publication of the evidence-backed launch brief",
+          riskLevel: "medium",
+          riskFindings: ["The approved narrative will become the release baseline."],
+          diff: {
+            status: { from: "draft", to: "approved" },
+            audience: "Product, sales, and customer operations"
+          }
         }
       },
       {
@@ -67,7 +103,24 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
         name: "Publish launch brief",
         description: "Finalize the approved narrative and distribution plan.",
         position: { x: 920, y: 180 },
-        configuration: { owner: "Maya Chen", status: "queued" }
+        configuration: {
+          owner: "Maya Chen",
+          status: "queued",
+          assignment: "workflow_initiator",
+          formSchema: {
+            schemaVersion: 1,
+            title: "Publish the approved launch brief",
+            fields: [
+              {
+                key: "publication_note",
+                label: "Publication note",
+                type: "rich_text",
+                required: true,
+                help: "Confirm the final audience and publication context."
+              }
+            ]
+          }
+        }
       }
     ],
     edges: [
@@ -105,6 +158,58 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
        ($3, $2, 'Harbor operations review', 'Harbor tenant-owned workflow.', 'active')
        ON CONFLICT (workspace_id, id) DO NOTHING`,
       [SEED.workspaceA, SEED.workflow, SEED.workspaceB]
+    );
+    const agentDefinition = {
+      schemaVersion: 1,
+      name: "Market intelligence analyst",
+      description: "Produces a bounded, evidence-backed launch intelligence brief.",
+      purpose: "Turn authorized launch context into structured market signals and recommendations.",
+      visibility: "workspace",
+      tags: ["launch", "research"],
+      prompts: {
+        system: "You are a careful market intelligence analyst.",
+        developer: "Use only the authorized context and return the required schema.",
+        user: "Prepare the launch intelligence brief.",
+        variables: []
+      },
+      modelPolicy: {
+        role: "balanced",
+        requiredCapabilities: ["text", "structured_output"],
+        temperature: 0.2,
+        reasoning: "medium",
+        fallbackRoles: ["fast"]
+      },
+      inputSchema: { type: "object", additionalProperties: true },
+      outputSchema: { type: "object", additionalProperties: true },
+      tools: [],
+      knowledge: [],
+      memory: { scope: "none", retentionDays: 0, purpose: "" },
+      limits: {
+        maxModelCalls: 3,
+        maxToolCalls: 0,
+        maxInputTokens: 4000,
+        maxOutputTokens: 2000,
+        maxDurationMs: 120000,
+        maxCostMinor: 100
+      },
+      fallback: { behavior: "human_task", message: "Route research to a person." },
+      humanApproval: { requiredForRisk: ["high", "critical"] }
+    };
+    await client.query(
+      `INSERT INTO agent_definitions(
+       workspace_id,id,stable_key,name,description,owner_id,visibility,state,current_version
+       ) VALUES
+       ($1,$2,'market-intelligence-analyst','Market intelligence analyst',$3,$4,'workspace','active',1)
+       ON CONFLICT (workspace_id,id) DO NOTHING`,
+      [SEED.workspaceA, SEED.agent, agentDefinition.description, SEED.userA]
+    );
+    await client.query(
+      `INSERT INTO agent_versions(
+       workspace_id,agent_id,version,definition,content_hash,change_summary,published_by
+       ) VALUES
+       ($1,$2,1,$3,$4,'Initial governed demo release',$5)
+       ON CONFLICT (workspace_id,agent_id,version) DO NOTHING`,
+      [SEED.workspaceA, SEED.agent, agentDefinition, contentHash(agentDefinition), SEED.userA]
     );
     await client.query(
       `INSERT INTO workflow_versions(
@@ -213,8 +318,114 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
       [SEED.workflow, [SEED.workspaceA, SEED.workspaceB]]
     );
     await client.query(
-      `UPDATE workflows SET current_version=2
-       WHERE id=$1 AND workspace_id=ANY($2::uuid[]) AND current_version=1`,
+      `UPDATE workflow_versions
+       SET definition=$3,content_hash=$4,draft_revision=draft_revision+1
+       WHERE workflow_id=$1 AND workspace_id=ANY($2::uuid[]) AND version=3 AND state='draft'`,
+      [SEED.workflow, [SEED.workspaceA, SEED.workspaceB], definition, contentHash(definition)]
+    );
+    for (const workspaceId of [SEED.workspaceA, SEED.workspaceB])
+      for (const node of definition.nodes)
+        await client.query(
+          `UPDATE workflow_nodes SET kind=$4,configuration=$5,position_x=$6,position_y=$7
+           WHERE workspace_id=$1 AND workflow_id=$2 AND workflow_version=3 AND stable_key=$3
+             AND EXISTS (
+               SELECT 1 FROM workflow_versions
+               WHERE workspace_id=$1 AND workflow_id=$2 AND version=3 AND state='draft'
+             )`,
+          [
+            workspaceId,
+            SEED.workflow,
+            node.key,
+            node.kind,
+            { title: node.name, description: node.description, ...node.configuration },
+            node.position.x,
+            node.position.y
+          ]
+        );
+    await client.query(
+      `UPDATE workflow_versions
+       SET state='published',published_at=clock_timestamp(),release_note='Complete executable demo scenario'
+       WHERE workflow_id=$1 AND workspace_id=ANY($2::uuid[]) AND version=3 AND state='draft'`,
+      [SEED.workflow, [SEED.workspaceA, SEED.workspaceB]]
+    );
+    await client.query(
+      `UPDATE workflows SET current_version=3
+       WHERE id=$1 AND workspace_id=ANY($2::uuid[]) AND current_version<3`,
+      [SEED.workflow, [SEED.workspaceA, SEED.workspaceB]]
+    );
+    for (const version of [14, 15]) {
+      await client.query(
+        `INSERT INTO workflow_versions(
+           workspace_id,workflow_id,version,state,definition,content_hash,draft_revision,created_by
+         ) VALUES
+         ($1,$2,$3,'draft',$4,$5,1,$6),
+         ($7,$2,$3,'draft',$4,$5,1,$8)
+         ON CONFLICT (workspace_id,workflow_id,version) DO NOTHING`,
+        [
+          SEED.workspaceA,
+          SEED.workflow,
+          version,
+          definition,
+          contentHash(definition),
+          SEED.userA,
+          SEED.workspaceB,
+          SEED.userB
+        ]
+      );
+      for (const workspaceId of [SEED.workspaceA, SEED.workspaceB]) {
+        for (const node of definition.nodes)
+          await client.query(
+            `INSERT INTO workflow_nodes(
+               workspace_id,workflow_id,workflow_version,id,stable_key,kind,configuration,position_x,position_y
+             ) SELECT $1,$2,$3,$4,$5,$6,$7,$8,$9
+             WHERE EXISTS (
+               SELECT 1 FROM workflow_versions
+               WHERE workspace_id=$1 AND workflow_id=$2 AND version=$3 AND state='draft'
+             )
+             ON CONFLICT (workspace_id,workflow_id,workflow_version,stable_key) DO NOTHING`,
+            [
+              workspaceId,
+              SEED.workflow,
+              version,
+              nodeIds.get(node.key),
+              node.key,
+              node.kind,
+              { title: node.name, description: node.description, ...node.configuration },
+              node.position.x,
+              node.position.y
+            ]
+          );
+        for (const [index, edge] of definition.edges.entries())
+          await client.query(
+            `INSERT INTO workflow_edges(
+               workspace_id,workflow_id,workflow_version,id,source_node_id,target_node_id,configuration
+             ) SELECT $1,$2,$3,$4,$5,$6,$7
+             WHERE EXISTS (
+               SELECT 1 FROM workflow_versions
+               WHERE workspace_id=$1 AND workflow_id=$2 AND version=$3 AND state='draft'
+             )
+             ON CONFLICT (workspace_id,workflow_id,workflow_version,id) DO NOTHING`,
+            [
+              workspaceId,
+              SEED.workflow,
+              version,
+              edgeIds[index],
+              nodeIds.get(edge.source),
+              nodeIds.get(edge.target),
+              { key: edge.key }
+            ]
+          );
+      }
+    }
+    await client.query(
+      `UPDATE workflow_versions
+       SET state='published',published_at=clock_timestamp(),release_note='Complete executable demo scenario'
+       WHERE workflow_id=$1 AND workspace_id=ANY($2::uuid[]) AND version=14 AND state='draft'`,
+      [SEED.workflow, [SEED.workspaceA, SEED.workspaceB]]
+    );
+    await client.query(
+      `UPDATE workflows SET current_version=14
+       WHERE id=$1 AND workspace_id=ANY($2::uuid[]) AND current_version<14`,
       [SEED.workflow, [SEED.workspaceA, SEED.workspaceB]]
     );
     await client.query(

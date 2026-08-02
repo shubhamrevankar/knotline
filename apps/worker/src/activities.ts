@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 
 import { Context, activityInfo } from "@temporalio/activity";
 import { GovernedAgentRuntime, type AgentModelStep } from "@knotline/agent-runtime";
@@ -122,7 +122,70 @@ export async function executeGovernedAgent(
   input: DurableRunInput & { readonly node: DurableRunInput["plan"][number] }
 ) {
   if (!repository || !agentExecutions || !memories) throw new Error("DATABASE_URL_REQUIRED");
-  const request = input.node.configuration.agentExecutionRequest as AgentExecutionRequest;
+  const configuredRequest = input.node.configuration.agentExecutionRequest as
+    AgentExecutionRequest | undefined;
+  const executionId = randomUUID();
+  const taskId = randomUUID();
+  const now = new Date();
+  const contextText = JSON.stringify({
+    objective: "Prepare a governed launch intelligence brief",
+    workflowRunId: input.runId,
+    node: input.node.key
+  });
+  const request: AgentExecutionRequest =
+    configuredRequest ??
+    ({
+      workspaceId: input.workspaceId,
+      executionId,
+      runId: input.runId,
+      taskId,
+      attemptId: randomUUID(),
+      principalId: input.principalId,
+      agentId:
+        typeof input.node.configuration.agentId === "string"
+          ? input.node.configuration.agentId
+          : "33000000-0000-4000-8000-000000000001",
+      agentVersion: Number(input.node.configuration.agentVersion ?? 1),
+      modelPolicyVersionId: "local-recorded-v1",
+      promptVersionId: "market-intelligence-v1",
+      outputSchema: { type: "object", additionalProperties: true },
+      contextManifest: {
+        manifestId: randomUUID(),
+        workspaceId: input.workspaceId,
+        principalId: input.principalId,
+        executionId,
+        references: [
+          {
+            kind: "workflow_input",
+            referenceId: `run:${input.runId}`,
+            contentHash: createHash("sha256").update(contextText).digest("hex"),
+            permissionProofId: `workspace-membership:${input.workspaceId}`,
+            permissionRevision: 1,
+            authorizedAt: now.toISOString(),
+            reauthorizeBefore: new Date(now.getTime() + 60 * 60 * 1000).toISOString(),
+            dataClassification: "internal",
+            content: contextText
+          }
+        ],
+        totalBytes: Buffer.byteLength(contextText),
+        totalTokensEstimate: Math.ceil(contextText.length / 4),
+        assembledAt: now.toISOString(),
+        dispatchProofExpiresAt: new Date(now.getTime() + 60 * 60 * 1000).toISOString()
+      },
+      limits: {
+        maxTurns: 3,
+        maxModelCalls: 3,
+        maxToolCalls: 0,
+        maxInputTokens: 4000,
+        maxOutputTokens: 2000,
+        maxCostDecimal: "1.000000000000",
+        maxWallTimeMs: 120000,
+        maxOutputBytes: 50000,
+        maxContextBytes: 50000
+      },
+      reviewMode: "none",
+      deadlineAt: new Date(now.getTime() + 5 * 60 * 1000).toISOString()
+    } satisfies AgentExecutionRequest);
   const context = {
     workspaceId: input.workspaceId,
     principalId: input.principalId,
