@@ -206,7 +206,7 @@ export function App() {
             </article>
           </div>
 
-          <div className="workspace-grid">
+          <div className="workspace-grid workflow-workspace-grid">
             <section aria-labelledby="workflow-library-heading" className="workflow-list-panel">
               <div className="panel-heading">
                 <div>
@@ -226,7 +226,7 @@ export function App() {
               <div
                 aria-label={msg("customer.library.group")}
                 className="workflow-list"
-                role="group"
+                role="region"
               >
                 {workflows.map((item) => (
                   <button

@@ -1454,9 +1454,23 @@ a.run-button {
   background: var(--panel);
 }
 
+.workspace-grid.workflow-workspace-grid {
+  height: clamp(620px, calc(100dvh - 330px), 820px);
+  min-height: 0;
+  grid-template-columns: 304px minmax(0, 1fr);
+  align-items: stretch;
+}
+
 .workflow-list-panel {
   border-right: 1px solid var(--line);
   background: #15181a;
+}
+
+.workflow-workspace-grid .workflow-list-panel {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: 74px minmax(0, 1fr);
+  overflow: hidden;
 }
 
 .panel-heading,
@@ -1486,6 +1500,13 @@ a.run-button {
   flex-direction: column;
   gap: 7px;
   padding: 10px;
+}
+
+.workflow-workspace-grid .workflow-list {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 .workflow-card {
@@ -1578,6 +1599,11 @@ a.run-button {
     radial-gradient(circle at 55% 42%, rgba(100, 164, 255, 0.06), transparent 25rem), #131618;
 }
 
+.workflow-workspace-grid .canvas-panel {
+  height: 100%;
+  min-height: 0;
+}
+
 .canvas-header {
   padding: 0 18px;
 }
@@ -1592,6 +1618,11 @@ a.run-button {
 .canvas {
   position: relative;
   min-height: 545px;
+}
+
+.workflow-workspace-grid .canvas {
+  height: 100%;
+  min-height: 0;
 }
 
 .operation-node {
@@ -1906,6 +1937,11 @@ a.run-button {
     grid-template-columns: 1fr;
   }
 
+  .workspace-grid.workflow-workspace-grid {
+    height: auto;
+    grid-template-columns: 1fr;
+  }
+
   .workflow-list-panel {
     border-right: 0;
     border-bottom: 1px solid var(--line);
@@ -1915,6 +1951,21 @@ a.run-button {
     display: grid;
     grid-template-columns: repeat(3, minmax(230px, 1fr));
     overflow-x: auto;
+  }
+
+  .workflow-workspace-grid .workflow-list-panel {
+    grid-template-rows: 74px auto;
+  }
+
+  .workflow-workspace-grid .workflow-list {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-gutter: auto;
+  }
+
+  .workflow-workspace-grid .canvas-panel {
+    height: 594px;
+    min-height: 594px;
   }
 
   .canvas {
@@ -1948,6 +1999,11 @@ a.run-button {
     height: auto;
     gap: 12px;
     padding: 14px;
+  }
+
+  .workflow-workspace-grid .canvas-panel {
+    height: 620px;
+    grid-template-rows: auto minmax(0, 1fr);
   }
 
   .canvas-actions .secondary-button {

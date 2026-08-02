@@ -22,6 +22,28 @@ test("workflow library preview uses the trusted light product theme", async ({ p
   await expect(page.locator(".canvas-panel")).toHaveCSS("color", "rgb(20, 35, 33)");
 });
 
+test("a growing workflow library scrolls without pushing the map down", async ({ page }) => {
+  await page.goto("/app/workflows");
+  const library = page.locator(".workflow-list");
+  const canvas = page.locator(".canvas-panel");
+  const initialCanvasHeight = await canvas.evaluate(
+    (element) => element.getBoundingClientRect().height
+  );
+
+  await library.evaluate((element) => {
+    const card = element.querySelector(".workflow-card");
+    if (!card) throw new Error("Expected a workflow card fixture");
+    for (let index = 0; index < 18; index += 1) element.append(card.cloneNode(true));
+  });
+
+  expect(await library.evaluate((element) => element.scrollHeight > element.clientHeight)).toBe(
+    true
+  );
+  expect(await canvas.evaluate((element) => element.getBoundingClientRect().height)).toBe(
+    initialCanvasHeight
+  );
+});
+
 test("@a11y builder validates and publishes an immutable workflow version", async ({ page }) => {
   await page.goto(`/app/workflows/${workflowId}`);
   await expect(page.getByRole("heading", { name: "Launch intelligence brief" })).toBeVisible();
