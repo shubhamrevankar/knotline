@@ -188,18 +188,28 @@
   border-radius: 50%;
   background: #176b5b;
 }
-.run-workspace > main {
+.run-workspace-content {
   min-width: 0;
   padding: 34px clamp(18px, 4vw, 56px) 64px;
+  color: #142321;
+  background: #f5f6f1;
 }
 .run-mobile-nav {
   display: none;
 }
 
-.run-shell .kl-button {
+.run-workspace-content .kl-button {
   border-color: #cad5cf;
   color: #18362c;
   background: #fff;
+}
+
+.run-workspace-content .kl-card,
+.run-metrics > article {
+  border-color: #d9dfd8;
+  color: #142321;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(20 35 33 / 4%);
 }
 .run-page-header,
 .run-room-header,
@@ -522,7 +532,7 @@
   color: #77847f;
   font-size: 0.68rem;
 }
-.run-metrics > div {
+.run-metrics > article {
   display: grid;
   gap: 6px;
 }
@@ -856,7 +866,7 @@
   .run-topbar > div .run-api-status {
     display: none;
   }
-  .run-workspace > main {
+  .run-workspace-content {
     padding: 22px 16px 80px;
     min-width: 0;
     width: 100%;
@@ -943,11 +953,11 @@
     padding-inline: 8px;
     white-space: normal;
   }
-  .run-shell .kl-backdrop {
+  .run-workspace-content .kl-backdrop {
     width: 100vw;
     overflow: hidden;
   }
-  .run-shell .kl-dialog {
+  .run-workspace-content .kl-dialog {
     width: 100%;
     min-width: 0;
   }

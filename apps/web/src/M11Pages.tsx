@@ -5,27 +5,21 @@ import {
   Activity,
   ArrowLeft,
   Bell,
-  Bot,
-  Cable,
   CheckCircle2,
   ChevronRight,
-  CircleHelp,
-  Command,
   Copy,
   Download,
   ExternalLink,
-  Gauge,
   ListTree,
   Pause,
   Play,
   RotateCcw,
   Search,
-  Settings2,
   Share2,
   StopCircle
 } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { Link, useLocation, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
 import {
   fetchAllWorkflowRuns,
@@ -38,6 +32,7 @@ import {
   type RuntimeTaskView
 } from "./api.js";
 import { msg } from "./i18n.js";
+import { WorkspaceShell } from "./WorkspaceShell.js";
 import { WorkflowCanvas } from "./WorkflowCanvas.js";
 import "./M11Pages.css";
 
@@ -70,99 +65,7 @@ const duration = (run: RuntimeRunView) => {
 };
 
 function RunShell({ children }: { readonly children: ReactNode }) {
-  const location = useLocation();
-  const active = (prefix: string) => location.pathname.startsWith(prefix);
-  return (
-    <div className="run-shell">
-      <aside aria-label={msg("run.nav.label")}>
-        <Link className="run-brand" to="/app/workflows">
-          <span aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
-          {msg("brand.name")}
-        </Link>
-        <Link className="run-workspace-switcher" to="/app/settings/workspace">
-          <span>N</span>
-          <strong>Northstar Studio</strong>
-          <ChevronRight aria-hidden="true" />
-        </Link>
-        <nav aria-label="Workspace">
-          <Link to="/app">
-            <Gauge aria-hidden="true" /> Pulse
-          </Link>
-          <Link to="/app/workflows" aria-current={active("/app/workflows") ? "page" : undefined}>
-            <ListTree aria-hidden="true" /> {msg("customer.nav.workflows")}
-          </Link>
-          <Link to="/app/runs" aria-current={active("/app/runs") ? "page" : undefined}>
-            <Activity aria-hidden="true" /> {msg("run.nav.runs")}
-          </Link>
-          <Link to="/app/agents">
-            <Bot aria-hidden="true" /> Agents
-          </Link>
-          <Link to="/app/connections">
-            <Cable aria-hidden="true" /> Connections
-          </Link>
-        </nav>
-        <div className="run-saved-views">
-          <span>Saved views</span>
-          <Link to="/app/inbox">
-            <i className="run-view-dot run-view-dot--lime" /> Needs attention
-          </Link>
-          <Link to="/app/runs?status=running">
-            <i className="run-view-dot run-view-dot--blue" /> Running now
-          </Link>
-          <Link to="/app/approvals">
-            <i className="run-view-dot run-view-dot--amber" /> Approvals
-          </Link>
-        </div>
-        <footer>
-          <Link to="/help">
-            <CircleHelp aria-hidden="true" /> Help and docs
-          </Link>
-          <Link to="/app/settings/workspace">
-            <Settings2 aria-hidden="true" /> Workspace settings
-          </Link>
-          <Link className="run-profile" to="/app/profile/sessions">
-            <span>MC</span>
-            <strong>Maya Chen</strong>
-          </Link>
-        </footer>
-      </aside>
-      <div className="run-workspace">
-        <header className="run-topbar">
-          <Link to="/app/search">
-            <Search aria-hidden="true" />
-            <span>Find anything…</span>
-            <kbd>
-              <Command aria-hidden="true" /> K
-            </kbd>
-          </Link>
-          <div>
-            <span className="run-api-status">
-              <i /> Database connected
-            </span>
-            <Link aria-label="Notifications" to="/app/notifications">
-              <Bell aria-hidden="true" />
-            </Link>
-          </div>
-        </header>
-        <main>{children}</main>
-      </div>
-      <nav className="run-mobile-nav" aria-label="Mobile navigation">
-        <Link to="/app/workflows">
-          <ListTree aria-hidden="true" /> Workflows
-        </Link>
-        <Link to="/app/runs" aria-current="page">
-          <Activity aria-hidden="true" /> Runs
-        </Link>
-        <Link to="/app/inbox">
-          <Bell aria-hidden="true" /> Inbox
-        </Link>
-      </nav>
-    </div>
-  );
+  return <WorkspaceShell contentClassName="run-workspace-content">{children}</WorkspaceShell>;
 }
 
 export function RunsPage() {

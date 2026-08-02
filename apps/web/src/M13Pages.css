@@ -31,9 +31,12 @@
   font-weight: 800;
   margin-bottom: 1.4rem;
 }
-.approval-shell > main {
+.approval-shell-content {
   padding: clamp(1rem, 3vw, 3rem);
   min-width: 0;
+  min-height: calc(100vh - 74px);
+  color: #17211c;
+  background: #f5f6f1;
 }
 .approval-header,
 .approval-detail-header {
@@ -200,7 +203,7 @@
   }
 }
 @media (max-width: 420px) {
-  .approval-shell > main {
+  .approval-shell-content {
     padding: 1rem;
   }
   .approval-actions {

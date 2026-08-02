@@ -31,9 +31,12 @@
   font-weight: 800;
   margin-bottom: 1.5rem;
 }
-.foundry-shell > main {
+.foundry-shell-content {
   padding: clamp(1rem, 3vw, 3rem);
   min-width: 0;
+  min-height: calc(100vh - 74px);
+  color: #17211c;
+  background: #f5f6f1;
 }
 .foundry-header,
 .builder-header {
@@ -192,13 +195,32 @@
 .builder-tabs button {
   border: 0;
   background: transparent;
+  color: #42544d;
   padding: 0.8rem;
   font: inherit;
   white-space: nowrap;
 }
 .builder-tabs button[aria-pressed="true"] {
   border-bottom: 3px solid #416c58;
+  color: #153f34;
   font-weight: 800;
+}
+
+.foundry-shell-content input,
+.foundry-shell-content textarea,
+.foundry-shell-content select,
+.foundry-shell-content button {
+  color: #17211c;
+}
+
+.foundry-shell-content input,
+.foundry-shell-content textarea,
+.foundry-shell-content select {
+  background: #fff;
+}
+
+.foundry-shell-content .kl-button.is-accent {
+  color: #fff;
 }
 .builder-layout {
   display: grid;
@@ -344,7 +366,7 @@
   .variable-list > div {
     grid-template-columns: 1fr;
   }
-  .foundry-shell > main {
+  .foundry-shell-content {
     padding: 1rem;
   }
 }

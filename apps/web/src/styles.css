@@ -870,6 +870,38 @@
   letter-spacing: -0.04em;
 }
 
+.brand-home {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 11px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.sidebar-collapse {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  margin-left: auto;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.sidebar-collapse:hover {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+.sidebar-collapse svg {
+  width: 16px;
+}
+
 .brand-mark {
   position: relative;
   display: grid;
@@ -1037,6 +1069,10 @@
   background: var(--blue);
 }
 
+.view-dot--amber {
+  background: #b98231;
+}
+
 .sidebar-footer {
   margin-top: auto;
   padding: 12px;
@@ -1072,6 +1108,58 @@
 .main {
   min-height: 100vh;
   margin-left: 244px;
+}
+
+.app-shell--collapsed .sidebar {
+  width: 76px;
+}
+
+.app-shell--collapsed .main {
+  margin-left: 76px;
+}
+
+.app-shell--collapsed .brand {
+  justify-content: center;
+  gap: 4px;
+  padding-inline: 8px;
+}
+
+.app-shell--collapsed .brand-home {
+  gap: 0;
+}
+
+.app-shell--collapsed .sidebar-label {
+  display: none !important;
+}
+
+.app-shell--collapsed .workspace-switcher {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  margin-inline: 10px;
+  padding-inline: 6px;
+}
+
+.app-shell--collapsed .nav-list,
+.app-shell--collapsed .sidebar-section,
+.app-shell--collapsed .sidebar-footer {
+  padding-inline: 10px;
+}
+
+.app-shell--collapsed .nav-item {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.app-shell--collapsed .profile {
+  display: flex;
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.app-shell--collapsed .view-dot {
+  width: 9px;
+  height: 9px;
 }
 
 .topbar {
@@ -1695,6 +1783,56 @@ a.run-button {
     visibility: hidden;
     transform: translateX(-100%);
     transition: transform 180ms ease;
+  }
+
+  .sidebar-collapse {
+    display: none;
+  }
+
+  .app-shell--collapsed .sidebar {
+    width: 244px;
+  }
+
+  .app-shell--collapsed .sidebar-label {
+    display: revert !important;
+  }
+
+  .app-shell--collapsed .main {
+    margin-left: 0;
+  }
+
+  .app-shell--collapsed .brand {
+    justify-content: flex-start;
+    gap: 11px;
+    padding-inline: 20px;
+  }
+
+  .app-shell--collapsed .brand-home {
+    gap: 11px;
+  }
+
+  .app-shell--collapsed .workspace-switcher {
+    grid-template-columns: auto 1fr auto;
+    justify-items: initial;
+    margin-inline: 12px;
+    padding-inline: 10px;
+  }
+
+  .app-shell--collapsed .nav-list,
+  .app-shell--collapsed .sidebar-section,
+  .app-shell--collapsed .sidebar-footer {
+    padding-inline: 12px;
+  }
+
+  .app-shell--collapsed .nav-item {
+    justify-content: flex-start;
+    padding-inline: 10px;
+  }
+
+  .app-shell--collapsed .profile {
+    display: grid;
+    justify-content: initial;
+    padding-inline: 7px;
   }
 
   .sidebar--open {
@@ -3415,6 +3553,34 @@ a.run-button {
 .app-shell--activation .primary-button {
   color: #fff;
   background: #176b5b;
+}
+
+.app-shell--activation .profile-avatar {
+  border-color: #bfd2ca;
+  color: #174f43;
+  background: #e3ece7;
+}
+
+.app-shell--activation .kl-button.is-accent {
+  color: #fff;
+}
+
+.app-shell--activation .kl-badge.is-warning {
+  color: #70450b;
+  background: #fff2d8;
+}
+
+.app-shell--activation .mobile-bottom-nav {
+  border-color: #d9dfd8;
+  background: rgb(250 251 247 / 97%);
+}
+
+.app-shell--activation .mobile-bottom-nav a {
+  color: #52645e;
+}
+
+.app-shell--activation .mobile-bottom-nav a[aria-current="page"] {
+  color: #0f5b4d;
 }
 
 .app-shell--activation .nav-item {

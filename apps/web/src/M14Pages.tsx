@@ -2,7 +2,6 @@
 import { Badge, Button, Card, ErrorState, Skeleton } from "@knotline/ui";
 import {
   Bot,
-  Boxes,
   Braces,
   Check,
   Copy,
@@ -28,6 +27,7 @@ import {
   type AgentDetail,
   type AgentSummary
 } from "./api.js";
+import { WorkspaceShell } from "./WorkspaceShell.js";
 import "./M14Pages.css";
 
 const starter: AgentDefinition = {
@@ -86,23 +86,7 @@ const starter: AgentDefinition = {
 };
 
 function FoundryShell({ children }: { readonly children: React.ReactNode }) {
-  return (
-    <div className="foundry-shell">
-      <aside aria-label="Agent foundry navigation">
-        <Link className="foundry-brand" to="/app/workflows">
-          Knotline
-        </Link>
-        <Link to="/app/agents" aria-current="page">
-          <Bot aria-hidden="true" /> Agents
-        </Link>
-        <Link to="/app/workflows">
-          <Boxes aria-hidden="true" /> Workflows
-        </Link>
-        <Link to="/app/knowledge">Knowledge</Link>
-      </aside>
-      <main>{children}</main>
-    </div>
-  );
+  return <WorkspaceShell contentClassName="foundry-shell-content">{children}</WorkspaceShell>;
 }
 
 export function AgentCatalogPage() {

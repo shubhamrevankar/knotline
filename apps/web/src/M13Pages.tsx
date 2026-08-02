@@ -1,6 +1,6 @@
 /* eslint-disable knotline/no-hardcoded-user-visible-string -- M13 approval surface copy moves into the full locale catalog at M33. */
 import { Badge, Button, Card, ErrorState, Skeleton } from "@knotline/ui";
-import { AlertTriangle, ArrowLeft, Check, Clock3, ShieldCheck, X } from "lucide-react";
+import { AlertTriangle, ArrowLeft, Check, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -12,26 +12,11 @@ import {
   type ApprovalDetail,
   type ApprovalSummary
 } from "./api.js";
+import { WorkspaceShell } from "./WorkspaceShell.js";
 import "./M13Pages.css";
 
 function ApprovalShell({ children }: { readonly children: React.ReactNode }) {
-  return (
-    <div className="approval-shell">
-      <aside aria-label="Approval navigation">
-        <Link className="approval-brand" to="/app/workflows">
-          Knotline
-        </Link>
-        <Link to="/app/approvals" aria-current="page">
-          <ShieldCheck aria-hidden="true" /> Approvals
-        </Link>
-        <Link to="/app/inbox">
-          <Clock3 aria-hidden="true" /> Inbox
-        </Link>
-        <Link to="/app/runs">Runs</Link>
-      </aside>
-      <main>{children}</main>
-    </div>
-  );
+  return <WorkspaceShell contentClassName="approval-shell-content">{children}</WorkspaceShell>;
 }
 
 function stateTone(state: string): "accent" | "danger" | "warning" | "neutral" {

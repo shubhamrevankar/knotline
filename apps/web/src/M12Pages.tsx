@@ -1,34 +1,17 @@
 /* eslint-disable knotline/no-hardcoded-user-visible-string -- This operational surface now renders server-authored task data; localization follows the verified vertical journey. */
 import { Badge, Button, Card, ErrorState, Skeleton } from "@knotline/ui";
-import { CheckCircle2, Clock3, Inbox, Search } from "lucide-react";
+import { CheckCircle2, Search } from "lucide-react";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 
 import { fetchHumanTask, fetchHumanTasks, submitHumanTask } from "./api.js";
+import { WorkspaceShell } from "./WorkspaceShell.js";
 import "./M12Pages.css";
 
 type TaskView = Readonly<Record<string, unknown>>;
 
 function TaskShell({ children }: { readonly children: React.ReactNode }) {
-  return (
-    <div className="task-shell">
-      <aside aria-label="Task navigation">
-        <Link className="task-brand" to="/app/workflows">
-          Knotline
-        </Link>
-        <Link to="/app/inbox" aria-current="page">
-          <Inbox aria-hidden="true" /> Inbox
-        </Link>
-        <Link to="/app/approvals">
-          <CheckCircle2 aria-hidden="true" /> Approvals
-        </Link>
-        <Link to="/app/runs">
-          <Clock3 aria-hidden="true" /> Runs
-        </Link>
-      </aside>
-      <main>{children}</main>
-    </div>
-  );
+  return <WorkspaceShell contentClassName="task-shell-content">{children}</WorkspaceShell>;
 }
 
 const label = (value: unknown) =>

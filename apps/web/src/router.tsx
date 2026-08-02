@@ -24,6 +24,7 @@ import {
 } from "./AuthPages.js";
 import { msg } from "./i18n.js";
 import { WEB_ROUTE_MANIFEST, type WebRouteManifestEntry } from "./routes/manifest.js";
+import { WorkspaceShell } from "./WorkspaceShell.js";
 
 const WorkflowApp = lazy(async () => {
   const module = await import("./App.js");
@@ -645,7 +646,7 @@ function PublicContent({
   );
 }
 
-function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
+function CustomerRouteContent({ route }: { route: WebRouteManifestEntry }) {
   useMetadata(
     route.id === "route.app.workflows"
       ? msg("customer.nav.workflows")
@@ -1046,18 +1047,7 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
     );
   return (
     <AuthGate>
-      <div className="registered-shell">
-        <aside aria-label={msg("customer.nav.label")}>
-          <Link to="/app/workflows">
-            <Waypoints aria-hidden="true" />
-            {msg("brand.name")}
-          </Link>
-          <Link to="/app/workflows">
-            <Blocks aria-hidden="true" />
-            {msg("customer.nav.workflows")}
-          </Link>
-        </aside>
-        <main>
+      <div className="page-shell">
           <Badge tone="warning">
             {msg("public.page.planned", { milestone: route.ownerMilestone })}
           </Badge>
@@ -1067,10 +1057,19 @@ function CustomerRoute({ route }: { route: WebRouteManifestEntry }) {
             <Menu aria-hidden="true" />
             {msg("customer.nav.open")}
           </Button>
-        </main>
       </div>
     </AuthGate>
   );
+}
+
+function CustomerRoute({ route }: { readonly route: WebRouteManifestEntry }) {
+  const fullCanvas = [
+    "route.app.workflows.new",
+    "route.app.workflows.detail.studio",
+    "route.app.onboarding"
+  ].includes(route.id);
+  const content = <CustomerRouteContent route={route} />;
+  return fullCanvas ? content : <WorkspaceShell>{content}</WorkspaceShell>;
 }
 
 function OperatorRoute({ route }: { route: WebRouteManifestEntry }) {
