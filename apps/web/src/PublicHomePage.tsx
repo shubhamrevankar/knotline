@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
+import { KnotlineMark } from "./KnotlineLogo.js";
 import "./PublicHomePage.css";
 
 const operatingPrinciples = [
@@ -116,11 +117,7 @@ function RunRoomPreview() {
       aria-label="Product preview showing a live enterprise customer recovery run"
     >
       <div className="kh-app__rail" aria-hidden="true">
-        <span className="kh-app__brand">
-          <i />
-          <i />
-          <i />
-        </span>
+        <KnotlineMark className="kh-app__brand" size={24} />
         <span className="is-active">
           <Waypoints />
         </span>

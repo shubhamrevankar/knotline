@@ -23,6 +23,7 @@ import { Link, useLocation } from "react-router-dom";
 import { msg } from "./i18n.js";
 import { fetchMeBootstrap, type MeBootstrap } from "./api.js";
 import { WorkspaceSearch } from "./WorkspaceSearch.js";
+import { KnotlineMark } from "./KnotlineLogo.js";
 
 const collapsePreference = "knotline.workspace-sidebar-collapsed";
 const WorkspaceShellContext = createContext(false);
@@ -149,11 +150,7 @@ export function WorkspaceShell({
         >
           <div className="brand">
             <Link aria-label="Knotline home" className="brand-home" to="/app/workflows">
-              <span className="brand-mark" aria-hidden="true">
-                <i />
-                <i />
-                <i />
-              </span>
+              <KnotlineMark className="brand-mark" size={25} />
               <span className="sidebar-label">{msg("brand.name")}</span>
             </Link>
             <button

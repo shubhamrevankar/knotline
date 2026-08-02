@@ -236,30 +236,8 @@
   width: 15px;
 }
 .kh-app__brand {
-  position: relative;
-  width: 22px;
-  height: 22px;
   margin-bottom: 15px;
-}
-.kh-app__brand i {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border: 2px solid var(--kh-green);
-  border-radius: 2px;
-  transform: rotate(45deg);
-}
-.kh-app__brand i:first-child {
-  top: 0;
-  left: 7px;
-}
-.kh-app__brand i:nth-child(2) {
-  bottom: 0;
-  left: 1px;
-}
-.kh-app__brand i:nth-child(3) {
-  right: 1px;
-  bottom: 0;
+  color: var(--kh-green);
 }
 .kh-app__main {
   min-width: 0;

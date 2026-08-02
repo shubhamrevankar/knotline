@@ -907,28 +907,10 @@
 }
 
 .brand-mark {
-  position: relative;
-  display: grid;
   width: 23px;
   height: 23px;
-  place-items: center;
-  transform: rotate(-12deg);
-}
-
-.brand-mark i {
-  position: absolute;
-  width: 19px;
-  height: 6px;
-  border: 2px solid var(--lime);
-  border-radius: 50%;
-}
-
-.brand-mark i:nth-child(2) {
-  transform: rotate(60deg);
-}
-
-.brand-mark i:nth-child(3) {
-  transform: rotate(-60deg);
+  flex: 0 0 auto;
+  color: #79d9ae;
 }
 
 .workspace-switcher {
@@ -3947,8 +3929,8 @@ a.run-button {
   color: #142321;
 }
 
-.app-shell--activation .brand-mark i {
-  border-color: #176b5b;
+.app-shell--activation .brand-mark {
+  color: #176b5b;
 }
 
 .app-shell--activation .workspace-switcher,

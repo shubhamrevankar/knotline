@@ -4,26 +4,48 @@ test("public header links to complete product destinations", async ({ page }) =>
   await page.goto("/");
   const header = page.locator(".site-header");
   await expect(header.getByRole("link", { name: "Knotline home" })).toBeVisible();
-  await header.getByRole("button", { name: "Product" }).click();
-  await header.getByRole("link", { name: /Workflows/ }).click();
+  const chooseMenuLink = async (menu: string, link: RegExp) => {
+    const mobileButton = header.getByRole("button", { name: "Open navigation" });
+    if (await mobileButton.isVisible()) {
+      await mobileButton.click();
+      const mobileNavigation = header.locator("#public-mobile-navigation");
+      await mobileNavigation
+        .locator("summary")
+        .filter({ hasText: new RegExp(`^${menu}`) })
+        .click();
+      await mobileNavigation.getByRole("link", { name: link }).click();
+      return;
+    }
+    await header.getByRole("button", { name: menu }).click();
+    await header.getByRole("link", { name: link }).click();
+  };
+
+  await chooseMenuLink("Product", /Workflows/);
   await expect(page).toHaveURL(/\/product\/workflows$/u);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "Build operations that remain clear"
   );
 
-  await header.getByRole("button", { name: "Solutions" }).click();
-  await header.getByRole("link", { name: /Customer support/ }).click();
+  await chooseMenuLink("Solutions", /Customer support/);
   await expect(page).toHaveURL(/\/solutions\/support$/u);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "Resolve complex customer issues"
   );
 
-  await header.getByRole("button", { name: "Resources" }).click();
-  await header.getByRole("link", { name: /Documentation/ }).click();
+  await chooseMenuLink("Resources", /Documentation/);
   await expect(page).toHaveURL(/\/docs$/u);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Build, operate");
 
-  await header.getByRole("link", { name: "Pricing" }).click();
+  const mobileButton = header.getByRole("button", { name: "Open navigation" });
+  if (await mobileButton.isVisible()) {
+    await mobileButton.click();
+    await header
+      .locator("#public-mobile-navigation")
+      .getByRole("link", { name: "Pricing" })
+      .click();
+  } else {
+    await header.getByRole("link", { name: "Pricing" }).click();
+  }
   await expect(page).toHaveURL(/\/pricing$/u);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "Choose the operating foundation"

@@ -20,6 +20,7 @@ import {
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 
+import { KnotlineMark } from "./KnotlineLogo.js";
 import "./PublicSiteChrome.css";
 
 const productLinks = [
@@ -188,11 +189,7 @@ export function PublicHeader() {
     <header className="site-header">
       <div className="site-header__inner">
         <Link aria-label="Knotline home" className="site-brand" to="/">
-          <span aria-hidden="true" className="site-brand__mark">
-            <i />
-            <i />
-            <i />
-          </span>
+          <KnotlineMark className="site-brand__mark" size={27} />
           <span>Knotline</span>
         </Link>
         <nav aria-label="Primary navigation" className="site-header__desktop-nav">
@@ -330,11 +327,7 @@ export function PublicFooter() {
       <div className="site-footer__top">
         <div>
           <Link className="site-brand" to="/">
-            <span aria-hidden="true" className="site-brand__mark">
-              <i />
-              <i />
-              <i />
-            </span>
+            <KnotlineMark className="site-brand__mark" size={27} />
             <span>Knotline</span>
           </Link>
           <p>Accountable operations for people and governed agents.</p>
