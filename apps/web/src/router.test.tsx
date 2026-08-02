@@ -23,7 +23,7 @@ describe("canonical web router", () => {
           <AppRouter />
         </MemoryRouter>
       );
-    expect(render("/")).toContain("Operational work, made legible");
+    expect(render("/")).toContain("Move critical work forward. Keep every decision clear.");
     expect(render("/solutions/operations")).toContain("Operations operations");
     expect(render("/solutions/not-real")).toContain("Page not found");
   });

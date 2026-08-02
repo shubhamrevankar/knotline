@@ -5,11 +5,14 @@ import { expect, test } from "./fixtures.js";
 test("public home is accessible, responsive, and links to the lazy app", async ({ page }) => {
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { level: 1, name: "Operational work, made legible." })
+    page.getByRole("heading", {
+      level: 1,
+      name: "Move critical work forward. Keep every decision clear."
+    })
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: "Explore the demo" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "Enter the workspace" })).toHaveAttribute(
     "href",
-    "/app/workflows"
+    "/auth/sign-in"
   );
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
   expect(overflow).toBe(false);

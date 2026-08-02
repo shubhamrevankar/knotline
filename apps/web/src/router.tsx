@@ -1,5 +1,14 @@
 import { Badge, Button, Card, ErrorState, Skeleton } from "@knotline/ui";
-import { Blocks, Menu, Search, ShieldCheck, Waypoints } from "lucide-react";
+import {
+  ArrowRight,
+  Blocks,
+  Check,
+  CircleCheck,
+  Clock3,
+  Menu,
+  ShieldCheck,
+  Waypoints
+} from "lucide-react";
 import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import { Link, Route, Routes, useLocation, useParams, useSearchParams } from "react-router-dom";
 
@@ -278,9 +287,9 @@ function ConsentBanner() {
   );
 }
 
-function PublicLayout({ children }: { children: ReactNode }) {
+function PublicLayout({ children, home = false }: { children: ReactNode; home?: boolean }) {
   return (
-    <div className="public-shell">
+    <div className={home ? "public-shell public-shell--home" : "public-shell"}>
       <a className="skip-link" href="#main-content">
         {msg("public.skip")}
       </a>
@@ -317,34 +326,145 @@ function PublicLayout({ children }: { children: ReactNode }) {
 function PublicHome() {
   useMetadata(msg("public.title.home"));
   return (
-    <PublicLayout>
-      <section className="public-hero">
-        <Badge tone="accent">{msg("public.home.status")}</Badge>
-        <h1>{msg("public.home.heading")}</h1>
-        <p>{msg("public.home.body")}</p>
-        <div className="public-actions">
-          <Link className="public-primary" to="/app/workflows">
-            {msg("public.home.cta.demo")}
-          </Link>
-          <Link to="/product">{msg("public.home.cta.product")}</Link>
+    <PublicLayout home>
+      <section className="home-hero">
+        <div className="home-hero-copy">
+          <div className="home-kicker">
+            <span aria-hidden="true" />
+            {msg("public.home.status")}
+          </div>
+          <h1>{msg("public.home.heading")}</h1>
+          <p>{msg("public.home.body")}</p>
+          <div className="public-actions home-actions">
+            <Link className="public-primary" to="/auth/sign-in">
+              {msg("public.home.cta.demo")}
+              <ArrowRight aria-hidden="true" />
+            </Link>
+            <Link className="home-secondary" to="/product">
+              {msg("public.home.cta.product")}
+            </Link>
+          </div>
+          <div className="home-assurance" aria-label={msg("public.home.assurance.label")}>
+            <span>
+              <Check aria-hidden="true" />
+              {msg("public.home.assurance.approvals")}
+            </span>
+            <span>
+              <Check aria-hidden="true" />
+              {msg("public.home.assurance.history")}
+            </span>
+            <span>
+              <Check aria-hidden="true" />
+              {msg("public.home.assurance.permissions")}
+            </span>
+          </div>
+        </div>
+
+        <div className="home-product-stage" aria-label={msg("public.home.product.label")}>
+          <div className="home-product-window">
+            <div className="home-window-bar">
+              <div className="home-window-brand">
+                <Waypoints aria-hidden="true" />
+                <span>{msg("brand.name")}</span>
+              </div>
+              <span className="home-live-state">
+                <i aria-hidden="true" />
+                {msg("public.home.product.live")}
+              </span>
+            </div>
+            <div className="home-window-body">
+              <aside aria-label={msg("public.home.product.nav.label")}>
+                <span className="home-nav-active">
+                  <Blocks aria-hidden="true" />
+                  {msg("public.home.product.nav.runs")}
+                </span>
+                <span>
+                  <Waypoints aria-hidden="true" />
+                  {msg("public.home.product.nav.workflows")}
+                </span>
+                <span>
+                  <ShieldCheck aria-hidden="true" />
+                  {msg("public.home.product.nav.approvals")}
+                </span>
+              </aside>
+              <div className="home-run-panel">
+                <div className="home-run-heading">
+                  <div>
+                    <span className="home-product-eyebrow">{msg("public.home.product.run")}</span>
+                    <h2>{msg("public.home.product.title")}</h2>
+                  </div>
+                  <span className="home-on-track">{msg("public.home.product.ontrack")}</span>
+                </div>
+                <div className="home-progress" aria-hidden="true">
+                  <span />
+                </div>
+                <ol className="home-run-list">
+                  <li>
+                    <CircleCheck aria-hidden="true" />
+                    <div>
+                      <strong>{msg("public.home.product.step.evidence")}</strong>
+                      <small>{msg("public.home.product.step.evidence.detail")}</small>
+                    </div>
+                    <span className="home-step-done">{msg("public.home.product.done")}</span>
+                  </li>
+                  <li>
+                    <span className="home-step-running" aria-hidden="true" />
+                    <div>
+                      <strong>{msg("public.home.product.step.controls")}</strong>
+                      <small>{msg("public.home.product.step.controls.detail")}</small>
+                    </div>
+                    <span>{msg("public.home.product.running")}</span>
+                  </li>
+                  <li>
+                    <Clock3 aria-hidden="true" />
+                    <div>
+                      <strong>{msg("public.home.product.step.approval")}</strong>
+                      <small>{msg("public.home.product.step.approval.detail")}</small>
+                    </div>
+                    <span>{msg("public.home.product.waiting")}</span>
+                  </li>
+                </ol>
+                <div className="home-run-event">
+                  <span aria-hidden="true">{msg("public.home.product.event.initials")}</span>
+                  <p>
+                    <strong>{msg("public.home.product.event.actor")}</strong>{" "}
+                    {msg("public.home.product.event.body")}
+                  </p>
+                  <time>{msg("public.home.product.event.time")}</time>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
-      <section className="public-feature-grid" aria-label={msg("public.home.principles")}>
-        <Card>
-          <Blocks aria-hidden="true" />
+
+      <section className="home-trust-row" aria-label={msg("public.home.principles")}>
+        <p>{msg("public.home.trust.intro")}</p>
+        <article>
+          <span>{msg("public.home.principle.one")}</span>
           <h2>{msg("public.feature.workflow.title")}</h2>
           <p>{msg("public.feature.workflow.body")}</p>
-        </Card>
-        <Card>
-          <ShieldCheck aria-hidden="true" />
+        </article>
+        <article>
+          <span>{msg("public.home.principle.two")}</span>
           <h2>{msg("public.feature.governance.title")}</h2>
           <p>{msg("public.feature.governance.body")}</p>
-        </Card>
-        <Card>
-          <Search aria-hidden="true" />
+        </article>
+        <article>
+          <span>{msg("public.home.principle.three")}</span>
           <h2>{msg("public.feature.context.title")}</h2>
           <p>{msg("public.feature.context.body")}</p>
-        </Card>
+        </article>
+      </section>
+
+      <section className="home-promise">
+        <span>{msg("public.home.promise.eyebrow")}</span>
+        <h2>{msg("public.home.promise.heading")}</h2>
+        <p>{msg("public.home.promise.body")}</p>
+        <Link to="/product">
+          {msg("public.home.promise.cta")}
+          <ArrowRight aria-hidden="true" />
+        </Link>
       </section>
     </PublicLayout>
   );
