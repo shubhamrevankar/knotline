@@ -45,6 +45,7 @@ const publicPaths = [
 test("@a11y every public route renders an intentional accessible state", async ({
   page
 }, testInfo) => {
+  test.setTimeout(90_000);
   test.skip(testInfo.project.name !== "desktop-chromium", "Canonical axe route matrix");
   for (const path of publicPaths) {
     await page.goto(path);

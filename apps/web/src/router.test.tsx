@@ -24,7 +24,7 @@ describe("canonical web router", () => {
         </MemoryRouter>
       );
     expect(render("/")).toContain("Move critical work forward. Keep every decision clear.");
-    expect(render("/solutions/operations")).toContain("Operations operations");
+    expect(render("/solutions/operations")).toContain("Loading solution");
     expect(render("/solutions/not-real")).toContain("Page not found");
   });
 
@@ -64,15 +64,15 @@ describe("canonical web router", () => {
     }
   });
 
-  it("renders planned, dynamic, deep-link, and not-found branches truthfully", () => {
+  it("renders completed, dynamic, deep-link, and not-found branches truthfully", () => {
     const render = (path: string) =>
       renderToStaticMarkup(
         <MemoryRouter initialEntries={[path]}>
           <AppRouter />
         </MemoryRouter>
       );
-    expect(render("/pricing")).toContain("planned");
-    expect(render("/templates/incident-response")).toContain("Available preview");
+    expect(render("/pricing")).toContain("Loading pricing");
+    expect(render("/templates/incident-response")).toContain("Loading templates");
     expect(render("/templates/not-real")).toContain("Page not found");
     expect(render("/help/topic")).toContain("Loading information");
     expect(render("/help/topic")).not.toContain("Planned product surface");

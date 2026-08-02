@@ -606,10 +606,14 @@
 }
 
 .home-trust-row article > span {
-  color: #8a9893;
+  color: #5f7069;
   font-size: 0.65rem;
   font-weight: 750;
   letter-spacing: 0.08em;
+}
+
+.customer-system-state .kl-state a {
+  color: #315e50;
 }
 
 .home-trust-row h2 {
@@ -4008,6 +4012,11 @@ a.run-button {
 
 .auth-card label {
   color: #4f5f5b;
+}
+
+.auth-card a,
+.auth-page .kl-state a {
+  color: #315e50;
 }
 
 .auth-input {

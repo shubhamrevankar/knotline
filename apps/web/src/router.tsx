@@ -21,6 +21,7 @@ import {
   SignInPage
 } from "./AuthPages.js";
 import { msg } from "./i18n.js";
+import { PublicFooter, PublicHeader } from "./PublicSiteChrome.js";
 import { WEB_ROUTE_MANIFEST, type WebRouteManifestEntry } from "./routes/manifest.js";
 import { WorkspaceShell } from "./WorkspaceShell.js";
 
@@ -240,15 +241,34 @@ const SecurityAssurancePage = lazy(async () => ({
 }));
 const ReleasesPage = lazy(async () => ({ default: (await import("./M37Pages.js")).ReleasesPage }));
 
-const solutionNames: Readonly<Record<string, string>> = {
-  operations: msg("solution.operations"),
-  "go-to-market": msg("solution.gotomarket"),
-  product: msg("solution.product"),
-  support: msg("solution.support"),
-  finance: msg("solution.finance"),
-  hr: msg("solution.hr"),
-  it: msg("solution.it")
-};
+const ProductMarketingPage = lazy(async () => ({
+  default: (await import("./M02PublicSitePages.js")).ProductMarketingPage
+}));
+const SolutionMarketingPage = lazy(async () => ({
+  default: (await import("./M02PublicSitePages.js")).SolutionMarketingPage
+}));
+const PricingMarketingPage = lazy(async () => ({
+  default: (await import("./M02PublicSitePages.js")).PricingMarketingPage
+}));
+const TemplatesMarketingPage = lazy(async () => ({
+  default: (await import("./M02PublicSitePages.js")).TemplatesMarketingPage
+}));
+const DocsMarketingPage = lazy(async () => ({
+  default: (await import("./M02PublicSitePages.js")).DocsMarketingPage
+}));
+const SecurityMarketingPage = lazy(async () => ({
+  default: (await import("./M02PublicSitePages.js")).SecurityMarketingPage
+}));
+
+const solutionNames = new Set([
+  "operations",
+  "go-to-market",
+  "product",
+  "support",
+  "finance",
+  "hr",
+  "it"
+]);
 
 const ownedPublicTitles: Readonly<Record<string, string>> = {
   "route.public.home": msg("public.title.home"),
@@ -339,31 +359,9 @@ function PublicLayout({ children, home = false }: { children: ReactNode; home?: 
       <a className="skip-link" href="#main-content">
         {msg("public.skip")}
       </a>
-      <header className="public-header">
-        <Link className="public-brand" to="/">
-          <Waypoints aria-hidden="true" />
-          {msg("brand.name")}
-        </Link>
-        <nav aria-label={msg("public.nav.primary")}>
-          <Link to="/product">{msg("nav.product")}</Link>
-          <Link to="/solutions/operations">{msg("nav.solutions")}</Link>
-          <Link to="/templates">{msg("nav.templates")}</Link>
-          <Link to="/security">{msg("nav.security")}</Link>
-          <Link to="/docs">{msg("nav.docs")}</Link>
-        </nav>
-        <Link className="public-app-link" to="/app/workflows">
-          {msg("nav.open.demo")}
-        </Link>
-      </header>
+      <PublicHeader />
       <main id="main-content">{children}</main>
-      <footer className="public-footer">
-        <span>{msg("brand.name")}</span>
-        <nav aria-label={msg("public.footer.label")}>
-          <Link to="/legal/privacy">{msg("public.footer.privacy")}</Link>
-          <Link to="/accessibility">{msg("public.footer.accessibility")}</Link>
-          <Link to="/status">{msg("public.footer.status")}</Link>
-        </nav>
-      </footer>
+      <PublicFooter />
       <ConsentBanner />
     </div>
   );
@@ -535,6 +533,7 @@ function NotFound({ publicPage = true }: { publicPage?: boolean }) {
 
 function PublicRoute({ route }: { route: WebRouteManifestEntry }) {
   const params = useParams();
+  useMetadata(ownedPublicTitles[route.id] ?? msg("brand.name"));
   if (route.id === "route.public.home") return <PublicHome />;
   if (route.id === "route.contact")
     return (
@@ -584,16 +583,72 @@ function PublicRoute({ route }: { route: WebRouteManifestEntry }) {
       </PublicLayout>
     );
   }
+  const productPageByRoute: Readonly<
+    Record<string, "overview" | "workflows" | "agents" | "knowledge" | "integrations">
+  > = {
+    "route.product": "overview",
+    "route.product.workflows": "workflows",
+    "route.product.agents": "agents",
+    "route.product.knowledge": "knowledge",
+    "route.product.integrations": "integrations"
+  };
+  const productPage = productPageByRoute[route.id];
+  if (productPage)
+    return (
+      <PublicLayout>
+        <Suspense fallback={<Skeleton label="Loading product" />}>
+          <ProductMarketingPage page={productPage} />
+        </Suspense>
+      </PublicLayout>
+    );
   if (route.id === "route.solutions.detail") {
-    const name = params.solution ? solutionNames[params.solution] : undefined;
-    if (!name) return <NotFound />;
-    return <PublicContent route={route} title={msg("solution.title", { name })} />;
+    const solution = params.solution;
+    if (!solution || !solutionNames.has(solution)) return <NotFound />;
+    return (
+      <PublicLayout>
+        <Suspense fallback={<Skeleton label="Loading solution" />}>
+          <SolutionMarketingPage solution={solution} />
+        </Suspense>
+      </PublicLayout>
+    );
   }
   if (
     route.id === "route.templates.detail" &&
     !["incident-response", "customer-onboarding"].includes(params.slug ?? "")
   )
     return <NotFound />;
+  if (route.id === "route.templates" || route.id === "route.templates.detail")
+    return (
+      <PublicLayout>
+        <Suspense fallback={<Skeleton label="Loading templates" />}>
+          <TemplatesMarketingPage {...(params.slug ? { slug: params.slug } : {})} />
+        </Suspense>
+      </PublicLayout>
+    );
+  if (route.id === "route.docs" || route.id === "route.docs.wildcard")
+    return (
+      <PublicLayout>
+        <Suspense fallback={<Skeleton label="Loading documentation" />}>
+          <DocsMarketingPage {...(params["*"] ? { slug: params["*"] } : {})} />
+        </Suspense>
+      </PublicLayout>
+    );
+  if (route.id === "route.pricing")
+    return (
+      <PublicLayout>
+        <Suspense fallback={<Skeleton label="Loading pricing" />}>
+          <PricingMarketingPage />
+        </Suspense>
+      </PublicLayout>
+    );
+  if (route.id === "route.security")
+    return (
+      <PublicLayout>
+        <Suspense fallback={<Skeleton label="Loading security" />}>
+          <SecurityMarketingPage />
+        </Suspense>
+      </PublicLayout>
+    );
   return <PublicContent route={route} title={ownedPublicTitles[route.id]} />;
 }
 
