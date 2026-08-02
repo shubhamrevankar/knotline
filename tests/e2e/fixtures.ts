@@ -445,7 +445,14 @@ export const test = base.extend<{ consoleMessages: string[] }>({
         } else if (pathname.endsWith("/workflow-imports")) {
           body = { id: "90000000-0000-4000-8000-000000000003" };
         } else if (/^\/v1\/workflows\/[^/]+\/runs$/u.test(pathname)) {
-          body = { data: pathname.includes(demoWorkflow.id) ? [runtimeRun()] : [] };
+          body = {
+            data:
+              route.request().method() === "POST"
+                ? runtimeRun()
+                : pathname.includes(demoWorkflow.id)
+                  ? [runtimeRun()]
+                  : []
+          };
         } else if (pathname === `/v1/runs/${demoRunId}`) {
           body = { data: runtimeRun() };
         } else if (pathname === `/v1/runs/${demoRunId}/pauses`) {
@@ -495,7 +502,16 @@ export const test = base.extend<{ consoleMessages: string[] }>({
                 schemaVersion: 1,
                 name: demoWorkflow.name,
                 description: demoWorkflow.description,
-                inputSchema: {},
+                inputSchema: {
+                  type: "object",
+                  required: ["caseId", "summary"],
+                  properties: {
+                    caseId: { type: "string", title: "Case ID" },
+                    summary: { type: "string", title: "Incident summary" },
+                    estimatedImpact: { type: "number", title: "Estimated impact" }
+                  },
+                  additionalProperties: false
+                },
                 outputSchema: {},
                 nodes: [
                   {
@@ -565,7 +581,16 @@ export const test = base.extend<{ consoleMessages: string[] }>({
                 schemaVersion: 1,
                 name: demoWorkflow.name,
                 description: demoWorkflow.description,
-                inputSchema: {},
+                inputSchema: {
+                  type: "object",
+                  required: ["caseId", "summary"],
+                  properties: {
+                    caseId: { type: "string", title: "Case ID" },
+                    summary: { type: "string", title: "Incident summary" },
+                    estimatedImpact: { type: "number", title: "Estimated impact" }
+                  },
+                  additionalProperties: false
+                },
                 outputSchema: {},
                 nodes: [],
                 edges: []

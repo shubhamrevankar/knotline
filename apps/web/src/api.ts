@@ -1167,14 +1167,18 @@ export const fetchAllWorkflowRuns = async () => {
 export const fetchRuntimeRun = async (runId: string) =>
   (await request<{ readonly data: RuntimeRunView }>(`/v1/runs/${encodeURIComponent(runId)}`)).data;
 
-export const signalRuntimeRun = (runId: string, action: "pause" | "resume" | "cancel") =>
+export const signalRuntimeRun = (
+  runId: string,
+  action: "pause" | "resume" | "cancel",
+  reason = `Operator requested ${action} from the run room.`
+) =>
   mutate<{ readonly accepted: true }>(
     `/v1/runs/${encodeURIComponent(runId)}/${
       action === "pause" ? "pauses" : action === "resume" ? "resumptions" : "cancellations"
     }`,
     "POST",
     {
-      reason: `Operator requested ${action} from the run room.`,
+      reason,
       idempotencyKey: crypto.randomUUID()
     }
   );

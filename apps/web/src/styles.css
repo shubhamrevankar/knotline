@@ -3584,6 +3584,142 @@ a.run-button {
   color: #176b5b;
 }
 
+.run-launch-dialog {
+  display: grid;
+  gap: 20px;
+  color: #142321;
+}
+
+.run-launch-dialog > p[role="status"] {
+  margin: 0;
+  padding: 18px;
+  border-radius: 10px;
+  background: #f3f6f2;
+  color: #60706c;
+}
+
+.run-launch-context {
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid #d9dfd8;
+  border-radius: 12px;
+  background: #f7f9f5;
+}
+
+.run-launch-context span {
+  color: #176b5b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.run-launch-context p {
+  margin: 4px 0 0;
+  color: #60706c;
+  line-height: 1.5;
+}
+
+.run-launch-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.run-launch-fields label {
+  display: grid;
+  gap: 7px;
+  color: #33443f;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.run-launch-fields label:has(textarea),
+.run-launch-fields label:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
+.run-launch-fields label > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.run-launch-fields label b,
+.run-launch-fields label small {
+  color: #77847f;
+  font-size: 0.68rem;
+  font-weight: 650;
+}
+
+.run-launch-fields label b {
+  color: #176b5b;
+}
+
+.run-launch-fields input,
+.run-launch-fields select,
+.run-launch-fields textarea {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #cfd8d2;
+  border-radius: 9px;
+  padding: 10px 12px;
+  color: #142321;
+  background: #fff;
+  font: inherit;
+  resize: vertical;
+}
+
+.run-launch-fields input:focus,
+.run-launch-fields select:focus,
+.run-launch-fields textarea:focus {
+  border-color: #176b5b;
+  outline: 3px solid rgb(23 107 91 / 12%);
+}
+
+.run-launch-checks {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 9px 18px;
+  padding: 14px 0;
+  border-block: 1px solid #e2e7e2;
+  color: #60706c;
+  font-size: 0.8rem;
+}
+
+.run-launch-checks strong {
+  color: #176b5b;
+}
+
+.run-launch-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.run-launch-actions .run-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+@media (max-width: 560px) {
+  .run-launch-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .run-launch-fields label,
+  .run-launch-fields label:nth-child(3) {
+    grid-column: 1;
+  }
+
+  .run-launch-actions > * {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
 .app-shell--activation .operation-node p,
 .app-shell--activation .operation-node footer {
   color: #60706c;

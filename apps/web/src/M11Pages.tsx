@@ -1,9 +1,13 @@
 /* eslint-disable knotline/no-hardcoded-user-visible-string -- This operational surface now renders server-authored run data; localization follows the verified vertical journey. */
-import { Badge, Button, Card, ErrorState, Skeleton } from "@knotline/ui";
+import type { NodeStatus, Workflow } from "@knotline/contracts";
+import { AlertDialog, Badge, Button, Card, ErrorState, Skeleton } from "@knotline/ui";
 import {
   Activity,
   ArrowLeft,
+  CheckCircle2,
+  ChevronRight,
   Download,
+  ExternalLink,
   ListTree,
   Pause,
   Play,
@@ -16,6 +20,7 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import {
   fetchAllWorkflowRuns,
   fetchRuntimeRun,
+  fetchWorkflowVersion,
   fetchWorkflows,
   signalRuntimeRun,
   type RuntimeEventView,
@@ -23,6 +28,7 @@ import {
   type RuntimeTaskView
 } from "./api.js";
 import { msg } from "./i18n.js";
+import { WorkflowCanvas } from "./WorkflowCanvas.js";
 import "./M11Pages.css";
 
 const terminalStates = new Set(["cancelled", "succeeded", "failed", "policy_stopped"]);
@@ -35,6 +41,14 @@ const stateTone = (state: string): "accent" | "danger" | "success" | "warning" =
 };
 
 const stateLabel = (state: string) => state.replaceAll("_", " ");
+
+const nodeStatus = (state: string | undefined): NodeStatus => {
+  if (state === "succeeded") return "complete";
+  if (state === "failed" || state === "cancelled") return "failed";
+  if (state === "running") return "running";
+  if (state === "ready" || state === "waiting") return "waiting";
+  return "queued";
+};
 
 const duration = (run: RuntimeRunView) => {
   const start = Date.parse(run.started_at ?? run.created_at);
@@ -194,8 +208,12 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
   const { runId = "", taskRunId } = useParams();
   const [run, setRun] = useState<RuntimeRunView>();
   const [workflowName, setWorkflowName] = useState("Workflow run");
+  const [workflow, setWorkflow] = useState<Workflow>();
   const [error, setError] = useState<Error>();
   const [busy, setBusy] = useState(false);
+  const [signalError, setSignalError] = useState("");
+  const [pendingSignal, setPendingSignal] = useState<"pause" | "resume" | "cancel">();
+  const [controlReason, setControlReason] = useState("");
   const [mode, setMode] = useState<"outline" | "graph" | "timeline">(
     view === "timeline" ? "timeline" : "outline"
   );
@@ -208,9 +226,35 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
     const load = async () => {
       const [current, workflows] = await Promise.all([fetchRuntimeRun(runId), fetchWorkflows()]);
       setRun(current);
-      setWorkflowName(
-        workflows.find(({ id }) => id === current.workflow_id)?.name ?? "Workflow run"
-      );
+      const legacy = workflows.find(({ id }) => id === current.workflow_id);
+      setWorkflowName(legacy?.name ?? "Workflow run");
+      const version = await fetchWorkflowVersion(current.workflow_id, current.workflow_version);
+      const tasks = new Map((current.tasks ?? []).map((task) => [task.node_key, task]));
+      setWorkflow({
+        id: current.workflow_id,
+        teamId: legacy?.teamId ?? "workspace",
+        name: version.definition.name,
+        description: version.definition.description,
+        status: "active",
+        version: current.workflow_version,
+        updatedAt: current.updated_at,
+        nodes: version.definition.nodes.map((item) => ({
+          id: item.key,
+          title: item.name,
+          description: item.description,
+          kind: item.kind,
+          owner:
+            typeof item.configuration.owner === "string" ? item.configuration.owner : "Workflow",
+          status: nodeStatus(tasks.get(item.key)?.state),
+          x: item.position.x,
+          y: item.position.y
+        })),
+        edges: version.definition.edges.map((edge) => ({
+          id: edge.key,
+          source: edge.source,
+          target: edge.target
+        }))
+      });
     };
     void load().catch((cause: unknown) =>
       setError(cause instanceof Error ? cause : new Error("Unable to load run."))
@@ -226,12 +270,20 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
   }, [runId]);
   const signal = async (action: "pause" | "resume" | "cancel") => {
     setBusy(true);
+    setSignalError("");
     try {
-      await signalRuntimeRun(runId, action);
+      await signalRuntimeRun(runId, action, controlReason.trim());
       await refresh();
+      setPendingSignal(undefined);
+    } catch (cause) {
+      setSignalError(cause instanceof Error ? cause.message : `Unable to ${action} this run.`);
     } finally {
       setBusy(false);
     }
+  };
+  const requestSignal = (action: "pause" | "resume" | "cancel") => {
+    setControlReason(`Operator requested ${action} from the run room.`);
+    setPendingSignal(action);
   };
   if (error)
     return (
@@ -247,6 +299,20 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
         <Skeleton label="Loading durable run" />
       </RunShell>
     );
+  const completed = run.tasks?.filter(({ state }) => state === "succeeded").length ?? 0;
+  const total = run.tasks?.length ?? 0;
+  const waitingTask = run.tasks?.find(
+    ({ node_kind, state }) => ["approval", "human"].includes(node_kind) && state === "ready"
+  );
+  const liveWorkflow = workflow
+    ? {
+        ...workflow,
+        nodes: workflow.nodes.map((item) => ({
+          ...item,
+          status: nodeStatus(run.tasks?.find(({ node_key }) => node_key === item.id)?.state)
+        }))
+      }
+    : undefined;
   return (
     <RunShell>
       <Link className="run-back" to="/app/runs">
@@ -263,41 +329,77 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
         </div>
         <div className="run-actions">
           {run.state === "running" ? (
-            <Button disabled={busy} onClick={() => void signal("pause")}>
+            <Button disabled={busy} onClick={() => requestSignal("pause")}>
               <Pause aria-hidden="true" /> Pause
             </Button>
           ) : run.state === "paused" ? (
-            <Button disabled={busy} onClick={() => void signal("resume")}>
+            <Button disabled={busy} onClick={() => requestSignal("resume")}>
               <Play aria-hidden="true" /> Resume
             </Button>
           ) : null}
           {!terminalStates.has(run.state) && (
-            <Button disabled={busy} onClick={() => void signal("cancel")}>
+            <Button disabled={busy} onClick={() => requestSignal("cancel")}>
               <StopCircle aria-hidden="true" /> Cancel
             </Button>
           )}
         </div>
       </header>
+      {signalError ? <p className="run-signal-error" role="alert">{signalError}</p> : null}
+      <section className={`run-now run-now--${run.state}`} aria-label="Current run status">
+        <div className="run-now-icon" aria-hidden="true">
+          {run.state === "succeeded" ? <CheckCircle2 /> : <Activity />}
+        </div>
+        <div>
+          <span>{terminalStates.has(run.state) ? "Run result" : "Now"}</span>
+          <strong>
+            {run.state === "succeeded"
+              ? "Workflow completed successfully"
+              : waitingTask
+                ? `${waitingTask.node_kind === "approval" ? "Approval" : "Human input"} required to continue`
+                : run.state === "paused"
+                  ? "Execution is paused"
+                  : "Execution is progressing automatically"}
+          </strong>
+          <p>
+            {terminalStates.has(run.state)
+              ? `${completed} of ${total} steps completed in ${duration(run)}.`
+              : `${completed} of ${total} steps complete. This page updates automatically.`}
+          </p>
+        </div>
+        {waitingTask ? (
+          <Link to={waitingTask.node_kind === "human" ? `/app/tasks/${waitingTask.id}` : `/app/approvals`}>
+            Review now <ChevronRight aria-hidden="true" />
+          </Link>
+        ) : null}
+      </section>
       <section className="run-metrics" aria-label={msg("run.summary")}>
         <Card>
           <span>Elapsed</span>
           <strong>{duration(run)}</strong>
         </Card>
         <Card>
-          <span>Tasks</span>
-          <strong>{String(run.tasks?.length ?? 0)}</strong>
+          <span>Progress</span>
+          <strong>{completed} / {total}</strong>
         </Card>
         <Card>
           <span>Workflow</span>
           <strong>v{run.workflow_version}</strong>
         </Card>
         <Card>
-          <span>Connection</span>
-          <strong className="run-connected">Live database</strong>
+          <span>Execution</span>
+          <strong className="run-connected">Live updates</strong>
         </Card>
       </section>
+      <details className="run-input-summary">
+        <summary>Run input <span>Immutable</span></summary>
+        <pre>{JSON.stringify(run.input ?? {}, null, 2)}</pre>
+      </details>
       {view === "task" ? (
-        <TaskInspector task={run.tasks?.find(({ id }) => id === taskRunId)} />
+        <TaskInspector
+          task={run.tasks?.find(({ id }) => id === taskRunId)}
+          title={workflow?.nodes.find(({ id }) => id === run.tasks?.find(({ id: taskId }) => taskId === taskRunId)?.node_key)?.title}
+          runId={run.id}
+        />
       ) : (
         <>
           <nav className="run-view-tabs" aria-label={msg("run.views")}>
@@ -314,20 +416,47 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
           {mode === "timeline" ? (
             <Timeline events={run.events ?? []} />
           ) : (
-            <RunExecution mode={mode} run={run} />
+            <RunExecution mode={mode} run={run} workflow={liveWorkflow} />
           )}
         </>
       )}
+      <AlertDialog
+        open={pendingSignal !== undefined}
+        title={`${pendingSignal === "cancel" ? "Cancel" : pendingSignal === "pause" ? "Pause" : "Resume"} this run?`}
+        onDismiss={() => !busy && setPendingSignal(undefined)}
+      >
+        <div className="run-confirm-dialog">
+          <p>
+            {pendingSignal === "cancel"
+              ? "No new steps will start. Work already completed remains in the audit history, and cancellation cannot be undone."
+              : pendingSignal === "pause"
+                ? "No new steps will start until someone resumes the run. Steps already executing may finish safely."
+                : "The worker will continue from the last durable checkpoint."}
+          </p>
+          <label>
+            Reason
+            <input value={controlReason} maxLength={500} onChange={(event) => setControlReason(event.currentTarget.value)} />
+          </label>
+          <div>
+            <Button disabled={busy} onClick={() => setPendingSignal(undefined)}>Keep run unchanged</Button>
+            <Button disabled={busy || !controlReason.trim()} onClick={() => pendingSignal && void signal(pendingSignal)}>
+              {busy ? "Applying…" : `Confirm ${pendingSignal ?? "action"}`}
+            </Button>
+          </div>
+        </div>
+      </AlertDialog>
     </RunShell>
   );
 }
 
 function RunExecution({
   mode,
-  run
+  run,
+  workflow
 }: {
   readonly mode: "outline" | "graph";
   readonly run: RuntimeRunView;
+  readonly workflow: Workflow | undefined;
 }) {
   const approvals = new Map(
     (run.events ?? [])
@@ -336,8 +465,12 @@ function RunExecution({
   );
   return (
     <section className={`run-execution run-execution--${mode}`} aria-label="Run execution">
-      <div>
-        {(run.tasks ?? []).map((task, index) => {
+      <div className="run-execution-main">
+        {mode === "graph" && workflow ? (
+          <div className="run-live-graph"><WorkflowCanvas workflow={workflow} /></div>
+        ) : (
+          (run.tasks ?? []).map((task, index) => {
+          const definitionNode = workflow?.nodes.find(({ id }) => id === task.node_key);
           const approvalId = approvals.get(task.node_key);
           const target =
             task.node_kind === "human"
@@ -347,28 +480,32 @@ function RunExecution({
                 : `/app/runs/${run.id}/tasks/${task.id}`;
           return (
             <Link key={task.id} to={target} className={`run-node run-node--${task.state}`}>
-              <span>{index + 1}</span>
+              <span>{task.state === "succeeded" ? <CheckCircle2 aria-hidden="true" /> : index + 1}</span>
               <div>
-                <strong>{task.node_key.replaceAll("_", " ")}</strong>
+                <strong>{definitionNode?.title ?? task.node_key.replaceAll("_", " ")}</strong>
+                {definitionNode?.description ? <p>{definitionNode.description}</p> : null}
                 <small>
                   {stateLabel(task.state)} · {task.node_kind}
                 </small>
               </div>
+              <ChevronRight aria-hidden="true" />
             </Link>
           );
-        })}
+          })
+        )}
       </div>
       <aside>
-        <h2>Next action</h2>
+        <h2>What happens next</h2>
         <p>
           {run.tasks?.some(({ node_kind, state }) => node_kind === "approval" && state === "ready")
             ? "Leadership approval is ready. Open the approval node to decide."
             : run.tasks?.some(({ node_kind, state }) => node_kind === "human" && state === "ready")
               ? "The final publication task is ready for human submission."
               : terminalStates.has(run.state)
-                ? "The durable run has reached a terminal state."
-                : "The worker is advancing dependency-ready tasks."}
+                ? "Review any step to inspect its recorded input, output, timing, and execution state."
+                : "Ready steps advance automatically. This view refreshes as the durable worker records progress."}
         </p>
+        <Link to={`/app/runs/${run.id}/timeline`}>Open full audit timeline <ExternalLink aria-hidden="true" /></Link>
       </aside>
     </section>
   );
@@ -382,10 +519,15 @@ function Timeline({ events }: { readonly events: readonly RuntimeEventView[] }) 
           <span>{event.sequence}</span>
           <div>
             <strong>{event.event_type.replaceAll(".", " ")}</strong>
-            <p>{JSON.stringify(event.payload)}</p>
             <small>
               {event.actor_type} · {new Date(event.occurred_at).toLocaleString()}
             </small>
+            {Object.keys(event.payload).length ? (
+              <details>
+                <summary>Event details</summary>
+                <pre>{JSON.stringify(event.payload, null, 2)}</pre>
+              </details>
+            ) : null}
           </div>
         </li>
       ))}
@@ -393,7 +535,15 @@ function Timeline({ events }: { readonly events: readonly RuntimeEventView[] }) 
   );
 }
 
-function TaskInspector({ task }: { readonly task: RuntimeTaskView | undefined }) {
+function TaskInspector({
+  task,
+  title,
+  runId
+}: {
+  readonly task: RuntimeTaskView | undefined;
+  readonly title: string | undefined;
+  readonly runId: string;
+}) {
   if (!task)
     return (
       <ErrorState title="Task not found">
@@ -402,10 +552,11 @@ function TaskInspector({ task }: { readonly task: RuntimeTaskView | undefined })
     );
   return (
     <section className="task-inspector">
+      <Link className="run-back" to={`/app/runs/${runId}`}><ArrowLeft aria-hidden="true" /> Back to run</Link>
       <header>
         <div>
           <Badge tone={stateTone(task.state)}>{stateLabel(task.state)}</Badge>
-          <h2>{task.node_key.replaceAll("_", " ")}</h2>
+          <h2>{title ?? task.node_key.replaceAll("_", " ")}</h2>
           <p>
             {task.id} · {task.node_kind}
           </p>
