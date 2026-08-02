@@ -133,13 +133,14 @@ type StudioNodeData = {
   readonly kind: WorkflowDefinitionNode["kind"];
   readonly disabled: boolean;
   readonly onInsertAfter: () => void;
+  readonly recentlyAdded: boolean;
 };
 
 function StudioCanvasNode({ data, selected }: NodeProps<Node<StudioNodeData>>) {
   const Icon = studioIconByKind[data.kind];
   return (
     <article
-      className={`studio-operation-node${selected ? " is-selected" : ""}${data.disabled ? " is-disabled" : ""}`}
+      className={`studio-operation-node${selected ? " is-selected" : ""}${data.disabled ? " is-disabled" : ""}${data.recentlyAdded ? " is-new" : ""}`}
     >
       <Handle type="target" position={Position.Left} />
       <span className="studio-operation-kind">
@@ -269,11 +270,21 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
     "saved"
   );
   const [palette, setPalette] = useState("");
-  const [showPalette, setShowPalette] = useState(true);
+  const [showPalette, setShowPalette] = useState(false);
   const [insertAfterKey, setInsertAfterKey] = useState<string>();
   const [stepSearch, setStepSearch] = useState("");
   const [showHelp, setShowHelp] = useState(false);
-  const [showOutline, setShowOutline] = useState(true);
+  const [showOutline, setShowOutline] = useState(false);
+  const [inspectorOpen, setInspectorOpen] = useState(true);
+  const [recentlyAddedKey, setRecentlyAddedKey] = useState<string>();
+  const [isDragging, setIsDragging] = useState(false);
+  const [addAtPosition, setAddAtPosition] = useState<{ x: number; y: number }>();
+  const [contextMenu, setContextMenu] = useState<{
+    kind: "node" | "edge" | "pane";
+    key?: string;
+    x: number;
+    y: number;
+  }>();
   const [recoveryAvailable, setRecoveryAvailable] = useState(false);
   const [conflictServer, setConflictServer] = useState<WorkflowDraft>();
   const [conflictSections, setConflictSections] = useState<readonly string[]>([]);
@@ -298,6 +309,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
   const saveTimer = useRef<number | undefined>(undefined);
   const fitView = useRef<(() => void) | undefined>(undefined);
   const flowInstance = useRef<ReactFlowInstance<Node<StudioNodeData>, Edge> | undefined>(undefined);
+  const canvasRef = useRef<HTMLElement>(null);
   const savedSnapshot = useRef(JSON.stringify(initialDraft.definition));
   const baseDefinition = useRef(initialDraft.definition);
 
@@ -429,13 +441,25 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
         event.preventDefault();
         saveDraft();
       }
-      if (event.key === "Delete" || event.key === "Backspace")
-        dispatch({ type: "delete_nodes", keys: state.selectedNodeKeys });
+      if (event.key === "Delete" || event.key === "Backspace") {
+        if (state.selectedEdgeKey) dispatch({ type: "delete_edge", key: state.selectedEdgeKey });
+        else dispatch({ type: "delete_nodes", keys: state.selectedNodeKeys });
+      }
+      if (event.key.toLowerCase() === "a" && !command) {
+        setInsertAfterKey(undefined);
+        setShowPalette(true);
+      }
+      if (event.key.toLowerCase() === "f" && !command) fitView.current?.();
+      if (event.key === "Escape") {
+        setContextMenu(undefined);
+        setShowPalette(false);
+        setShowOutline(false);
+      }
       if (event.key === "?") setShowHelp(true);
     };
     window.addEventListener("keydown", keyboard);
     return () => window.removeEventListener("keydown", keyboard);
-  }, [saveDraft, state.selectedNodeKeys]);
+  }, [saveDraft, state.selectedEdgeKey, state.selectedNodeKeys]);
 
   const findings = useMemo(() => validateWorkflowDefinition(state.definition), [state.definition]);
   const displayedStatus =
@@ -453,6 +477,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
 
   const focusFinding = (finding: (typeof findings)[number]) => {
     if (finding.location.type === "node" && finding.location.key) {
+      setInspectorOpen(true);
       dispatch({ type: "select_node", key: finding.location.key });
       const node = state.definition.nodes.find(({ key }) => key === finding.location.key);
       if (node)
@@ -467,6 +492,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
     }
     if (finding.location.type === "edge" && finding.location.key)
       dispatch({ type: "select_edge", key: finding.location.key });
+    if (finding.location.type === "edge") setInspectorOpen(true);
     window.setTimeout(
       () =>
         document
@@ -519,11 +545,14 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
       state.definition.nodes.map((node) => ({
         id: node.key,
         type: "operation",
+        ariaLabel: node.name,
+        ariaRole: "button",
         position: node.position,
         data: {
           label: node.name,
           kind: node.kind,
           disabled: node.configuration.disabled === true,
+          recentlyAdded: node.key === recentlyAddedKey,
           onInsertAfter: () => {
             setInsertAfterKey(node.key);
             setPalette("");
@@ -533,7 +562,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
         selected: state.selectedNodeKeys.includes(node.key),
         className: `studio-node studio-node-${node.kind}`
       })),
-    [state.definition.nodes, state.selectedNodeKeys]
+    [recentlyAddedKey, state.definition.nodes, state.selectedNodeKeys]
   );
   const edges: Edge[] = useMemo(
     () =>
@@ -544,6 +573,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
         label: edge.condition,
         selected: edge.key === state.selectedEdgeKey,
         markerEnd: { type: MarkerType.ArrowClosed },
+        interactionWidth: 24,
         style: { stroke: "#80918c", strokeWidth: 1.5 }
       })),
     [state.definition.edges, state.selectedEdgeKey]
@@ -555,9 +585,18 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
     let suffix = 2;
     while (state.definition.nodes.some((node) => node.key === key)) key = `${base.key}_${suffix++}`;
     const source = state.definition.nodes.find(({ key: nodeKey }) => nodeKey === insertAfterKey);
+    const viewportCenter = (() => {
+      if (addAtPosition) return addAtPosition;
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (!rect || !flowInstance.current) return base.position;
+      return flowInstance.current.screenToFlowPosition({
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2
+      });
+    })();
     const node = source
       ? { ...base, key, position: { x: source.position.x + 285, y: source.position.y + 120 } }
-      : { ...base, key };
+      : { ...base, key, position: { x: viewportCenter.x - 109, y: viewportCenter.y - 45 } };
     dispatch({ type: "add_node", node });
     if (source) {
       const edgePrefix = `edge_${source.key}_${key}`;
@@ -577,8 +616,22 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
       });
     }
     dispatch({ type: "select_node", key });
+    setInspectorOpen(true);
+    setRecentlyAddedKey(key);
+    window.setTimeout(() => setRecentlyAddedKey((current) => (current === key ? undefined : current)), 2200);
+    window.setTimeout(
+      () =>
+        void flowInstance.current?.setCenter(node.position.x + 109, node.position.y + 45, {
+          zoom: Math.max(flowInstance.current?.getZoom() ?? 1, 0.9),
+          duration: 420
+        }),
+      0
+    );
     setInsertAfterKey(undefined);
+    setAddAtPosition(undefined);
     setPalette("");
+    setShowPalette(false);
+    setShowOutline(false);
   };
 
   const testSelectedStep = async () => {
@@ -664,7 +717,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
               </Button>
             </>
           ) : null}
-          <Button onClick={saveDraft} disabled={status === "saving"}>
+          <Button className="studio-save-button" onClick={saveDraft} disabled={status === "saving"}>
             <Save aria-hidden="true" />
             {msg("studio.save")}
           </Button>
@@ -728,6 +781,10 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             <ListTree aria-hidden="true" />
             {msg("studio.outline")}
           </Button>
+          <Button onClick={() => setInspectorOpen(true)}>
+            <PencilLine aria-hidden="true" />
+            {msg("studio.inspector.open")}
+          </Button>
           <Button
             onClick={() => autoLayout(state.direction === "horizontal" ? "vertical" : "horizontal")}
           >
@@ -782,6 +839,17 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
               </Button>
             </div>
           </>
+        ) : state.selectedEdgeKey ? (
+          <>
+            <span className="studio-toolbar-divider" aria-hidden="true" />
+            <div className="studio-toolbar-group studio-toolbar-selection">
+              <span>{msg("studio.connection.selected")}</span>
+              <Button onClick={() => dispatch({ type: "delete_edge", key: state.selectedEdgeKey! })}>
+                <Trash2 aria-hidden="true" />
+                {msg("studio.edge.delete")}
+              </Button>
+            </div>
+          </>
         ) : null}
         <div className="studio-toolbar-spacer" />
         <Button onClick={() => setShowHelp(true)}>
@@ -790,7 +858,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
         </Button>
       </div>
       <div
-        className={`studio-layout ${showOutline ? "studio-layout-outline" : ""} ${showPalette ? "" : "studio-layout-no-palette"}`}
+        className={`studio-layout ${showOutline ? "studio-layout-outline" : ""} ${showPalette ? "" : "studio-layout-no-palette"}${isDragging ? " is-dragging" : ""}`}
       >
         {showPalette ? (
           <aside className="studio-palette" aria-label={msg("studio.palette")}>
@@ -850,7 +918,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
               ))}
           </aside>
         ) : null}
-        <section className="studio-canvas" aria-label={msg("studio.canvas")}>
+        <section className="studio-canvas" aria-label={msg("studio.canvas")} ref={canvasRef}>
           <div className="studio-canvas-heading">
             <div>
               <span>{msg("studio.canvas.eyebrow")}</span>
@@ -883,6 +951,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
                         <button
                           key={node.key}
                           onClick={() => {
+                            setInspectorOpen(true);
                             dispatch({ type: "select_node", key: node.key });
                             setStepSearch("");
                             void flowInstance.current?.setCenter(
@@ -909,6 +978,8 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             onlyRenderVisibleElements
             minZoom={0.2}
             maxZoom={2}
+            nodeDragThreshold={1}
+            selectionOnDrag
             onInit={(instance) => {
               flowInstance.current = instance;
               fitView.current = () => void instance.fitView({ padding: 0.2 });
@@ -922,17 +993,64 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
                 else void instance.fitView({ padding: 0.2 });
               }, 0);
             }}
-            onNodeClick={(event, node) =>
+            onNodeClick={(event, node) => {
+              setContextMenu(undefined);
+              setInspectorOpen(true);
               dispatch({
                 type: "select_node",
                 key: node.id,
                 additive: event.metaKey || event.ctrlKey
-              })
-            }
-            onEdgeClick={(_event, edge) => dispatch({ type: "select_edge", key: edge.id })}
-            onNodeDragStop={(_event, node) =>
+              });
+            }}
+            onEdgeClick={(_event, edge) => {
+              setContextMenu(undefined);
+              setInspectorOpen(true);
+              dispatch({ type: "select_edge", key: edge.id });
+            }}
+            onNodeContextMenu={(event, node) => {
+              event.preventDefault();
+              setInspectorOpen(true);
+              dispatch({ type: "select_node", key: node.id });
+              setContextMenu({
+                kind: "node",
+                key: node.id,
+                x: Number.isFinite(event.clientX) ? event.clientX : window.innerWidth / 2,
+                y: Number.isFinite(event.clientY) ? event.clientY : window.innerHeight / 2
+              });
+            }}
+            onEdgeContextMenu={(event, edge) => {
+              event.preventDefault();
+              setInspectorOpen(true);
+              dispatch({ type: "select_edge", key: edge.id });
+              setContextMenu({
+                kind: "edge",
+                key: edge.id,
+                x: Number.isFinite(event.clientX) ? event.clientX : window.innerWidth / 2,
+                y: Number.isFinite(event.clientY) ? event.clientY : window.innerHeight / 2
+              });
+            }}
+            onPaneContextMenu={(event) => {
+              event.preventDefault();
+              setContextMenu({
+                kind: "pane",
+                x: Number.isFinite(event.clientX) ? event.clientX : window.innerWidth / 2,
+                y: Number.isFinite(event.clientY) ? event.clientY : window.innerHeight / 2
+              });
+              setAddAtPosition(flowInstance.current?.screenToFlowPosition({ x: event.clientX, y: event.clientY }));
+            }}
+            onPaneClick={(event) => {
+              setContextMenu(undefined);
+              if (event.detail === 2) {
+                setAddAtPosition(flowInstance.current?.screenToFlowPosition({ x: event.clientX, y: event.clientY }));
+                setInsertAfterKey(undefined);
+                setShowPalette(true);
+              }
+            }}
+            onNodeDragStart={() => setIsDragging(true)}
+            onNodeDragStop={(_event, node) => {
+              setIsDragging(false);
               dispatch({ type: "move_node", key: node.id, position: node.position })
-            }
+            }}
             onConnect={(connection: Connection) => {
               if (connection.source && connection.target)
                 dispatch({
@@ -955,6 +1073,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             <Controls />
             <MiniMap pannable zoomable />
           </ReactFlow>
+          <p className="studio-canvas-hint">{msg("studio.canvas.hint")}</p>
         </section>
         {showOutline ? (
           <section className="studio-outline" aria-labelledby="studio-outline-heading">
@@ -979,6 +1098,8 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
                     <td>
                       <button
                         onClick={() => {
+                          setInspectorOpen(true);
+                          setShowOutline(false);
                           dispatch({ type: "select_node", key: node.key });
                           window.setTimeout(
                             () =>
@@ -1017,21 +1138,35 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             <ul>
               {state.definition.edges.map((edge) => (
                 <li key={edge.key}>
-                  <button onClick={() => dispatch({ type: "select_edge", key: edge.key })}>
+                  <button
+                    onClick={() => {
+                      setInspectorOpen(true);
+                      setShowOutline(false);
+                      dispatch({ type: "select_edge", key: edge.key });
+                    }}
+                  >
                     {edge.source} → {edge.target}
                   </button>
+                  <Button
+                    aria-label={msg("studio.edge.delete")}
+                    onClick={() => dispatch({ type: "delete_edge", key: edge.key })}
+                  >
+                    <Trash2 aria-hidden="true" />
+                  </Button>
                 </li>
               ))}
             </ul>
           </section>
         ) : null}
-        <aside className="studio-inspector" aria-label={msg("studio.inspector")}>
+        {inspectorOpen ? <aside className="studio-inspector" aria-label={msg("studio.inspector")}>
           <div className="studio-panel-heading">
             <div>
               <span>{msg("studio.inspector.eyebrow")}</span>
               <h2>{msg("studio.inspector.heading")}</h2>
             </div>
-            <PencilLine aria-hidden="true" />
+            <Button aria-label={msg("studio.inspector.close")} onClick={() => setInspectorOpen(false)}>
+              <X aria-hidden="true" />
+            </Button>
           </div>
           <details className="studio-workflow-settings">
             <summary>{msg("studio.workflow.settings")}</summary>
@@ -1072,6 +1207,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             <EdgeInspector
               edge={selectedEdge}
               update={(patch) => dispatch({ type: "update_edge", key: selectedEdge.key, patch })}
+              remove={() => dispatch({ type: "delete_edge", key: selectedEdge.key })}
             />
           ) : (
             <Card>
@@ -1080,7 +1216,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
               <p>{msg("studio.inspector.empty.body")}</p>
             </Card>
           )}
-        </aside>
+        </aside> : null}
         <section className="studio-validation" aria-labelledby="studio-validation-heading">
           <div className="row-between">
             <h2 id="studio-validation-heading">{msg("studio.validation")}</h2>
@@ -1105,6 +1241,88 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
           )}
         </section>
       </div>
+      {contextMenu ? (
+        <div
+          className="studio-context-menu"
+          role="menu"
+          aria-label={msg(`studio.context.${contextMenu.kind}`)}
+          style={{
+            left: Math.max(8, Math.min(contextMenu.x, window.innerWidth - 226)),
+            top: Math.max(8, Math.min(contextMenu.y, window.innerHeight - (contextMenu.kind === "node" ? 190 : 112)))
+          }}
+        >
+          {contextMenu.kind === "node" && contextMenu.key ? (
+            <>
+              <button onClick={() => setContextMenu(undefined)} role="menuitem">
+                <PencilLine aria-hidden="true" /> {msg("studio.context.configure")}
+              </button>
+              <button
+                onClick={() => {
+                  setInsertAfterKey(contextMenu.key);
+                  setShowPalette(true);
+                  setContextMenu(undefined);
+                }}
+                role="menuitem"
+              >
+                <Plus aria-hidden="true" /> {msg("studio.context.insertafter")}
+              </button>
+              <button
+                onClick={() => {
+                  dispatch({ type: "duplicate_nodes", keys: [contextMenu.key!] });
+                  setContextMenu(undefined);
+                }}
+                role="menuitem"
+              >
+                <Copy aria-hidden="true" /> {msg("studio.duplicate")}
+              </button>
+              <button
+                className="is-danger"
+                onClick={() => {
+                  dispatch({ type: "delete_nodes", keys: [contextMenu.key!] });
+                  setContextMenu(undefined);
+                }}
+                role="menuitem"
+              >
+                <Trash2 aria-hidden="true" /> {msg("studio.context.deletestep")}
+              </button>
+            </>
+          ) : contextMenu.kind === "edge" && contextMenu.key ? (
+            <>
+              <button onClick={() => setContextMenu(undefined)} role="menuitem">
+                <PencilLine aria-hidden="true" /> {msg("studio.context.editconnection")}
+              </button>
+              <button
+                className="is-danger"
+                onClick={() => {
+                  dispatch({ type: "delete_edge", key: contextMenu.key! });
+                  setContextMenu(undefined);
+                }}
+                role="menuitem"
+              >
+                <Trash2 aria-hidden="true" /> {msg("studio.edge.delete")}
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => {
+                setInsertAfterKey(undefined);
+                setShowPalette(true);
+                setContextMenu(undefined);
+              }}
+              role="menuitem"
+            >
+              <Plus aria-hidden="true" /> {msg("studio.context.addhere")}
+            </button>
+          )}
+        </div>
+      ) : null}
+      {recentlyAddedKey ? (
+        <div className="studio-added-toast" role="status">
+          <CheckCircle2 aria-hidden="true" />
+          <span>{msg("studio.added")}</span>
+          <button onClick={() => dispatch({ type: "undo" })}>{msg("studio.added.undo")}</button>
+        </div>
+      ) : null}
       {showPublishReview ? (
         <div className="studio-review-backdrop" role="presentation">
           <section
@@ -1539,10 +1757,12 @@ function JsonConfigurationField({
 
 function EdgeInspector({
   edge,
-  update
+  update,
+  remove
 }: {
   edge: WorkflowDefinitionEdge;
   update: (patch: Partial<WorkflowDefinitionEdge>) => void;
+  remove: () => void;
 }) {
   return (
     <Card className="studio-inspector-card">
@@ -1584,6 +1804,10 @@ function EdgeInspector({
         update={(mapping) => update({ mapping: mapping as Record<string, string> })}
       />
       <p>{msg("studio.edge.condition.help")}</p>
+      <Button className="studio-delete-connection" onClick={remove}>
+        <Trash2 aria-hidden="true" />
+        {msg("studio.edge.delete")}
+      </Button>
     </Card>
   );
 }
