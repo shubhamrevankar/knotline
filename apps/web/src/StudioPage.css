@@ -209,6 +209,12 @@
   justify-content: flex-end;
 }
 
+.studio-header-actions .studio-canvas-tools {
+  margin-right: 0.25rem;
+  padding-right: 0.7rem;
+  border-right: 1px solid #d9dfd8;
+}
+
 .studio-header-actions button,
 .studio-toolbar button {
   min-height: 38px;
@@ -539,7 +545,7 @@
 }
 
 .studio-canvas > .react-flow {
-  height: calc(100% - 64px);
+  height: 100%;
   background: radial-gradient(circle at 48% 40%, rgb(23 107 91 / 6%), transparent 30rem), #f8faf7;
 }
 
@@ -550,6 +556,15 @@
   border-radius: 8px;
   background: #fff;
   box-shadow: 0 8px 20px rgb(20 35 33 / 8%);
+}
+
+.studio-canvas .react-flow__minimap {
+  width: 190px;
+  height: 120px;
+}
+
+.studio-canvas .react-flow__minimap svg {
+  display: block;
 }
 
 .studio-canvas .react-flow__controls button {

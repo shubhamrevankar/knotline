@@ -1,7 +1,7 @@
 .connection-shell {
   display: grid;
-  width: min(100%, 1236px);
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   padding: 36px 28px 64px;
   gap: 2rem;
 }

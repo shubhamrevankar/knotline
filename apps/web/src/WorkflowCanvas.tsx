@@ -114,6 +114,8 @@ export function WorkflowCanvas({ workflow }: { workflow: Workflow }) {
     }),
     id: node.id,
     type: "operation",
+    initialWidth: 230,
+    initialHeight: 126,
     position: { x: node.x, y: node.y },
     data: {
       title: node.title,
@@ -159,8 +161,10 @@ export function WorkflowCanvas({ workflow }: { workflow: Workflow }) {
         <MiniMap
           pannable
           zoomable
-          nodeColor={(node) => (node.data.status === "running" ? "#176b5b" : "#a9bbb4")}
-          maskColor="rgba(245, 246, 241, 0.72)"
+          nodeColor={(node) => (node.data.status === "running" ? "#176b5b" : "#6f9185")}
+          nodeStrokeColor="#ffffff"
+          nodeStrokeWidth={2}
+          maskColor="rgba(232, 238, 233, 0.58)"
         />
       </ReactFlow>
     </div>

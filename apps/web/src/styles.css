@@ -1344,9 +1344,10 @@ a.run-button {
 
 .run-button {
   padding: 0 14px;
-  border: 1px solid rgba(200, 255, 82, 0.4);
-  color: var(--lime);
-  background: rgba(200, 255, 82, 0.08);
+  border: 1px solid #176b5b;
+  color: #fff;
+  background: #176b5b;
+  box-shadow: 0 8px 18px rgb(23 107 91 / 16%);
   font-size: 11px;
   font-weight: 600;
 }
@@ -1355,8 +1356,8 @@ a.run-button {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--lime);
-  box-shadow: 0 0 9px rgba(200, 255, 82, 0.7);
+  background: #fff;
+  box-shadow: none;
 }
 
 .page {
@@ -1750,16 +1751,22 @@ a.run-button {
 }
 
 .react-flow__minimap {
+  width: 190px;
+  height: 120px;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #191d1f;
 }
 
+.react-flow__minimap svg {
+  display: block;
+}
+
 .canvas-legend {
   position: absolute;
-  right: 18px;
   bottom: 18px;
+  left: 76px;
   z-index: 10;
   display: flex;
   gap: 14px;
@@ -4125,7 +4132,7 @@ a.run-button {
 .workflow-onboarding {
   margin: 0;
   max-width: none;
-  padding: 0 max(1.25rem, calc((100vw - 1120px) / 2));
+  padding: 0 max(1.25rem, calc((100vw - 1120px) / 2)) 4rem;
   background:
     linear-gradient(rgb(20 35 33 / 2.5%) 1px, transparent 1px),
     linear-gradient(90deg, rgb(20 35 33 / 2.5%) 1px, transparent 1px), #f5f6f1;

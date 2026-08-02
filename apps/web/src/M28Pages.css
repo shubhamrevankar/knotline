@@ -6,6 +6,8 @@
 }
 .pulse-page {
   width: 100%;
+  max-width: none;
+  margin: 0;
   gap: 2rem;
   padding: 36px 28px 5rem;
 }

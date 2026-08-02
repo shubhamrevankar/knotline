@@ -12,6 +12,7 @@ const primaryPages = [
 test("the six primary workspace pages share one numbered heading system", async ({ page }) => {
   const titleStyles: string[] = [];
   const eyebrowStyles: string[] = [];
+  const primaryGutters: number[] = [];
 
   for (const item of primaryPages) {
     await page.goto(item.path);
@@ -30,8 +31,15 @@ test("the six primary workspace pages share one numbered heading system", async 
         return [style.fontFamily, style.fontSize, style.fontWeight, style.letterSpacing].join("|");
       })
     );
+    if (
+      ["/app", "/app/workflows", "/app/runs", "/app/settings/members", "/app/connections"].includes(
+        item.path
+      )
+    )
+      primaryGutters.push(await header.evaluate((element) => element.getBoundingClientRect().left));
   }
 
   expect(new Set(titleStyles).size).toBe(1);
   expect(new Set(eyebrowStyles).size).toBe(1);
+  expect(new Set(primaryGutters).size).toBe(1);
 });

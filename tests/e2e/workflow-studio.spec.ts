@@ -7,12 +7,28 @@ test("workflow library opens the complete edit, test, and publish journey", asyn
   await page.getByRole("link", { name: "Edit workflow" }).click();
   await expect(page).toHaveURL(`/app/workflows/${workflowId}/studio`);
   await expect(page.getByRole("heading", { name: "Launch intelligence brief" })).toBeVisible();
+  await expect(page.locator(".studio-header").getByPlaceholder("Find a step")).toBeVisible();
+  const health = page.locator(".studio-header .studio-health");
+  await expect(health).toBeVisible();
+  await expect(page.locator(".studio-canvas .studio-health")).toHaveCount(0);
+  const canvasNodeCount = await page.locator(".studio-canvas .react-flow__node").count();
+  expect(canvasNodeCount).toBeGreaterThan(0);
+  await expect(page.locator(".studio-canvas .react-flow__minimap-node")).toHaveCount(
+    canvasNodeCount
+  );
+  const healthText = (await health.textContent())?.trim();
+  await expect(page.locator(".studio-validation")).toHaveCount(
+    healthText === "Draft healthy" ? 0 : 1
+  );
 
   await page.getByText("Workflow details", { exact: true }).click();
   await page.getByLabel("Workflow description").fill("Coordinate a trusted launch review.");
   await page.getByRole("button", { name: "Close inspector" }).click();
   await page.getByRole("button", { name: "Capture signal", exact: true }).click();
   await page.getByLabel("Name", { exact: true }).fill("Receive launch signal");
+  await page.getByRole("button", { name: "Editorial gate", exact: true }).click();
+  await page.getByLabel("Approval policy").fill("security_owner");
+  await page.getByLabel("Assignment").fill("security_owner");
   await expect(page.locator(".studio-save-state")).toContainText("All changes saved", {
     timeout: 4_000
   });
@@ -65,7 +81,9 @@ test("@a11y keyboard and pointer users can construct and edit a workflow", async
 
 test("contextual editing keeps complex workflow changes fast and safe", async ({ page }) => {
   await page.goto(`/app/workflows/${workflowId}/studio`);
-  await page.getByRole("button", { name: "Capture signal", exact: true }).click({ button: "right" });
+  await page
+    .getByRole("button", { name: "Capture signal", exact: true })
+    .click({ button: "right" });
   await page.getByRole("menuitem", { name: "Insert step after" }).click();
   await expect(page.getByRole("heading", { name: "Choose next step" })).toBeVisible();
   await expect(
@@ -108,7 +126,9 @@ test("canvas-first editing exposes fast placement and connection actions", async
   const canvasBox = await canvas.boundingBox();
   expect(canvasBox?.width).toBeGreaterThan((page.viewportSize()?.width ?? 0) * 0.9);
 
-  await page.getByRole("button", { name: "Capture signal", exact: true }).click({ button: "right" });
+  await page
+    .getByRole("button", { name: "Capture signal", exact: true })
+    .click({ button: "right" });
   await expect(page.getByRole("menu", { name: "Step actions" })).toBeVisible();
   await expect(page.getByRole("menuitem", { name: "Insert step after" })).toBeVisible();
   await page.keyboard.press("Escape");
@@ -125,20 +145,13 @@ test("canvas-first editing exposes fast placement and connection actions", async
   const closeInspector = page.getByRole("button", { name: "Close inspector" });
   if (await closeInspector.isVisible()) await closeInspector.click();
 
-  if ((page.viewportSize()?.width ?? 0) <= 760) {
-    await page.getByRole("button", { name: "Add step" }).click();
-  } else {
-    await canvas.dblclick({
-      position: {
-        x: Math.min(520, (canvasBox?.width ?? 600) / 2),
-        y: Math.min(420, (canvasBox?.height ?? 600) / 2)
-      }
-    });
-  }
+  await page.getByRole("button", { name: "Add step" }).click();
   await expect(page.getByRole("heading", { name: "Add steps" })).toBeVisible();
 });
 
-test("studio contains page scrolling and makes executable step behavior editable", async ({ page }) => {
+test("studio contains page scrolling and makes executable step behavior editable", async ({
+  page
+}) => {
   await page.goto(`/app/workflows/${workflowId}/studio`);
   await page.mouse.move(4, 360);
   await page.mouse.wheel(0, 900);
@@ -151,7 +164,9 @@ test("studio contains page scrolling and makes executable step behavior editable
   await expect(page.getByRole("heading", { name: "Edit step" })).toBeVisible();
   await expect(page.getByText("Executable behavior")).toBeVisible();
   await expect(page.getByRole("heading", { name: "What this step does" })).toBeVisible();
-  await expect(page.getByText("The field mapping below is the transformation logic.")).toBeVisible();
+  await expect(
+    page.getByText("The field mapping below is the transformation logic.")
+  ).toBeVisible();
   await expect(page.getByText("No transformation rules are configured yet.")).toBeVisible();
   await page
     .getByLabel("Output field mapping (JSON)")
@@ -173,9 +188,9 @@ test("studio contains page scrolling and makes executable step behavior editable
     await expect(page.getByRole("button", { name: "Distribute selection" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Group selection" })).toBeVisible();
   }
-  expect(
-    await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
-  ).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true
+  );
 });
 
 test("optimistic concurrency never silently overwrites another editor", async ({ page }) => {

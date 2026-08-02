@@ -64,9 +64,17 @@
   padding: 0.65rem 0.9rem;
 }
 .kl-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   cursor: pointer;
   font: inherit;
   font-weight: 700;
+}
+
+.kl-button > svg {
+  flex: 0 0 auto;
 }
 .kl-button:disabled {
   cursor: not-allowed;

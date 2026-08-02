@@ -550,6 +550,8 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
       state.definition.nodes.map((node) => ({
         id: node.key,
         type: "operation",
+        initialWidth: 218,
+        initialHeight: 96,
         ariaLabel: node.name,
         ariaRole: "button",
         position: node.position,
@@ -624,7 +626,10 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
     setInspectorOpen(true);
     setInspectorMode("selection");
     setRecentlyAddedKey(key);
-    window.setTimeout(() => setRecentlyAddedKey((current) => (current === key ? undefined : current)), 2200);
+    window.setTimeout(
+      () => setRecentlyAddedKey((current) => (current === key ? undefined : current)),
+      2200
+    );
     window.setTimeout(
       () =>
         void flowInstance.current?.setCenter(node.position.x + 109, node.position.y + 45, {
@@ -712,6 +717,53 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
           </div>
         </div>
         <div className="studio-header-actions">
+          <div className="studio-canvas-tools">
+            <span
+              className={
+                findings.length ? "studio-health studio-health-attention" : "studio-health"
+              }
+            >
+              {findings.length
+                ? msg("studio.health.issues", { count: findings.length })
+                : msg("studio.health.ready")}
+            </span>
+            <label className="studio-step-search">
+              <Search aria-hidden="true" />
+              <span className="sr-only">{msg("studio.find")}</span>
+              <input
+                value={stepSearch}
+                onChange={(event) => setStepSearch(event.target.value)}
+                placeholder={msg("studio.find")}
+              />
+              {stepSearch ? (
+                <span className="studio-step-results">
+                  {state.definition.nodes
+                    .filter(({ name }) => name.toLowerCase().includes(stepSearch.toLowerCase()))
+                    .slice(0, 6)
+                    .map((node) => (
+                      <button
+                        key={node.key}
+                        onClick={() => {
+                          setInspectorOpen(true);
+                          setInspectorMode("selection");
+                          dispatch({ type: "select_node", key: node.key });
+                          setStepSearch("");
+                          void flowInstance.current?.setCenter(
+                            node.position.x + 109,
+                            node.position.y + 45,
+                            { zoom: 0.9, duration: 350 }
+                          );
+                        }}
+                        type="button"
+                      >
+                        {node.name}
+                        <small>{kindLabel(node.kind)}</small>
+                      </button>
+                    ))}
+                </span>
+              ) : null}
+            </label>
+          </div>
           {recoveryAvailable ? (
             <Button onClick={() => void recoverLocal()}>{msg("studio.recovery.available")}</Button>
           ) : null}
@@ -787,10 +839,12 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             <ListTree aria-hidden="true" />
             {msg("studio.outline")}
           </Button>
-          <Button onClick={() => {
-            setInspectorMode("workflow");
-            setInspectorOpen(true);
-          }}>
+          <Button
+            onClick={() => {
+              setInspectorMode("workflow");
+              setInspectorOpen(true);
+            }}
+          >
             <PencilLine aria-hidden="true" />
             {msg("studio.inspector.open")}
           </Button>
@@ -853,7 +907,9 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             <span className="studio-toolbar-divider" aria-hidden="true" />
             <div className="studio-toolbar-group studio-toolbar-selection">
               <span>{msg("studio.connection.selected")}</span>
-              <Button onClick={() => dispatch({ type: "delete_edge", key: state.selectedEdgeKey! })}>
+              <Button
+                onClick={() => dispatch({ type: "delete_edge", key: state.selectedEdgeKey! })}
+              >
                 <Trash2 aria-hidden="true" />
                 {msg("studio.edge.delete")}
               </Button>
@@ -928,59 +984,6 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
           </aside>
         ) : null}
         <section className="studio-canvas" aria-label={msg("studio.canvas")} ref={canvasRef}>
-          <div className="studio-canvas-heading">
-            <div>
-              <span>{msg("studio.canvas.eyebrow")}</span>
-              <strong>{msg("studio.canvas.heading")}</strong>
-            </div>
-            <div className="studio-canvas-tools">
-              <span
-                className={
-                  findings.length ? "studio-health studio-health-attention" : "studio-health"
-                }
-              >
-                {findings.length
-                  ? msg("studio.health.issues", { count: findings.length })
-                  : msg("studio.health.ready")}
-              </span>
-              <label className="studio-step-search">
-                <Search aria-hidden="true" />
-                <span className="sr-only">{msg("studio.find")}</span>
-                <input
-                  value={stepSearch}
-                  onChange={(event) => setStepSearch(event.target.value)}
-                  placeholder={msg("studio.find")}
-                />
-                {stepSearch ? (
-                  <span className="studio-step-results">
-                    {state.definition.nodes
-                      .filter(({ name }) => name.toLowerCase().includes(stepSearch.toLowerCase()))
-                      .slice(0, 6)
-                      .map((node) => (
-                        <button
-                          key={node.key}
-                          onClick={() => {
-                            setInspectorOpen(true);
-                            setInspectorMode("selection");
-                            dispatch({ type: "select_node", key: node.key });
-                            setStepSearch("");
-                            void flowInstance.current?.setCenter(
-                              node.position.x + 109,
-                              node.position.y + 45,
-                              { zoom: 0.9, duration: 350 }
-                            );
-                          }}
-                          type="button"
-                        >
-                          {node.name}
-                          <small>{kindLabel(node.kind)}</small>
-                        </button>
-                      ))}
-                  </span>
-                ) : null}
-              </label>
-            </div>
-          </div>
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -1050,12 +1053,16 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
                 x: Number.isFinite(event.clientX) ? event.clientX : window.innerWidth / 2,
                 y: Number.isFinite(event.clientY) ? event.clientY : window.innerHeight / 2
               });
-              setAddAtPosition(flowInstance.current?.screenToFlowPosition({ x: event.clientX, y: event.clientY }));
+              setAddAtPosition(
+                flowInstance.current?.screenToFlowPosition({ x: event.clientX, y: event.clientY })
+              );
             }}
             onPaneClick={(event) => {
               setContextMenu(undefined);
               if (event.detail === 2) {
-                setAddAtPosition(flowInstance.current?.screenToFlowPosition({ x: event.clientX, y: event.clientY }));
+                setAddAtPosition(
+                  flowInstance.current?.screenToFlowPosition({ x: event.clientX, y: event.clientY })
+                );
                 setInsertAfterKey(undefined);
                 setShowPalette(true);
               }
@@ -1063,7 +1070,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             onNodeDragStart={() => setIsDragging(true)}
             onNodeDragStop={(_event, node) => {
               setIsDragging(false);
-              dispatch({ type: "move_node", key: node.id, position: node.position })
+              dispatch({ type: "move_node", key: node.id, position: node.position });
             }}
             onConnect={(connection: Connection) => {
               if (connection.source && connection.target)
@@ -1085,7 +1092,14 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
           >
             <Background variant={BackgroundVariant.Dots} gap={24} size={1} />
             <Controls />
-            <MiniMap pannable zoomable />
+            <MiniMap
+              pannable
+              zoomable
+              nodeColor="#176b5b"
+              nodeStrokeColor="#ffffff"
+              nodeStrokeWidth={2}
+              maskColor="rgba(232, 238, 233, 0.58)"
+            />
           </ReactFlow>
           <p className="studio-canvas-hint">{msg("studio.canvas.hint")}</p>
         </section>
@@ -1174,90 +1188,95 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             </ul>
           </section>
         ) : null}
-        {inspectorOpen ? <aside className="studio-inspector" aria-label={msg("studio.inspector")}>
-          <div className="studio-panel-heading">
-            <div>
-              <span>
-                {inspectorMode === "workflow"
-                  ? msg("studio.workflow.eyebrow")
-                  : selectedEdge
-                    ? msg("studio.edge.eyebrow")
-                    : msg("studio.node.eyebrow")}
-              </span>
-              <h2>
-                {inspectorMode === "workflow"
-                  ? msg("studio.workflow.settings")
-                  : selectedEdge
-                    ? msg("studio.edge.edit")
-                    : msg("studio.node.edit")}
-              </h2>
+        {inspectorOpen ? (
+          <aside className="studio-inspector" aria-label={msg("studio.inspector")}>
+            <div className="studio-panel-heading">
+              <div>
+                <span>
+                  {inspectorMode === "workflow"
+                    ? msg("studio.workflow.eyebrow")
+                    : selectedEdge
+                      ? msg("studio.edge.eyebrow")
+                      : msg("studio.node.eyebrow")}
+                </span>
+                <h2>
+                  {inspectorMode === "workflow"
+                    ? msg("studio.workflow.settings")
+                    : selectedEdge
+                      ? msg("studio.edge.edit")
+                      : msg("studio.node.edit")}
+                </h2>
+              </div>
+              <Button
+                aria-label={msg("studio.inspector.close")}
+                onClick={() => setInspectorOpen(false)}
+              >
+                <X aria-hidden="true" />
+              </Button>
             </div>
-            <Button aria-label={msg("studio.inspector.close")} onClick={() => setInspectorOpen(false)}>
-              <X aria-hidden="true" />
-            </Button>
-          </div>
-          {inspectorMode === "workflow" ? <section className="studio-workflow-settings">
-            <p>{msg("studio.workflow.settings.body")}</p>
-            <label>
-              {msg("studio.workflow.name")}
-              <input
-                value={state.definition.name}
-                onChange={(event) =>
-                  dispatch({ type: "update_workflow", patch: { name: event.target.value } })
+            {inspectorMode === "workflow" ? (
+              <section className="studio-workflow-settings">
+                <p>{msg("studio.workflow.settings.body")}</p>
+                <label>
+                  {msg("studio.workflow.name")}
+                  <input
+                    value={state.definition.name}
+                    onChange={(event) =>
+                      dispatch({ type: "update_workflow", patch: { name: event.target.value } })
+                    }
+                  />
+                </label>
+                <label>
+                  {msg("studio.workflow.description")}
+                  <textarea
+                    value={state.definition.description}
+                    onChange={(event) =>
+                      dispatch({
+                        type: "update_workflow",
+                        patch: { description: event.target.value }
+                      })
+                    }
+                  />
+                </label>
+              </section>
+            ) : null}
+            {inspectorMode === "selection" && selectedNode ? (
+              <NodeInspector
+                key={selectedNode.key}
+                node={selectedNode}
+                update={(patch) => dispatch({ type: "update_node", key: selectedNode.key, patch })}
+                disable={(disabled) =>
+                  dispatch({ type: "disable", keys: [selectedNode.key], disabled })
                 }
+                testing={testingStep}
+                onTest={() => void testSelectedStep()}
+                {...(stepTest?.key === selectedNode.key ? { testResult: stepTest } : {})}
               />
-            </label>
-            <label>
-              {msg("studio.workflow.description")}
-              <textarea
-                value={state.definition.description}
-                onChange={(event) =>
-                  dispatch({
-                    type: "update_workflow",
-                    patch: { description: event.target.value }
-                  })
-                }
+            ) : inspectorMode === "selection" && selectedEdge ? (
+              <EdgeInspector
+                edge={selectedEdge}
+                update={(patch) => dispatch({ type: "update_edge", key: selectedEdge.key, patch })}
+                remove={() => dispatch({ type: "delete_edge", key: selectedEdge.key })}
               />
-            </label>
-          </section> : null}
-          {inspectorMode === "selection" && selectedNode ? (
-            <NodeInspector
-              key={selectedNode.key}
-              node={selectedNode}
-              update={(patch) => dispatch({ type: "update_node", key: selectedNode.key, patch })}
-              disable={(disabled) =>
-                dispatch({ type: "disable", keys: [selectedNode.key], disabled })
-              }
-              testing={testingStep}
-              onTest={() => void testSelectedStep()}
-              {...(stepTest?.key === selectedNode.key ? { testResult: stepTest } : {})}
-            />
-          ) : inspectorMode === "selection" && selectedEdge ? (
-            <EdgeInspector
-              edge={selectedEdge}
-              update={(patch) => dispatch({ type: "update_edge", key: selectedEdge.key, patch })}
-              remove={() => dispatch({ type: "delete_edge", key: selectedEdge.key })}
-            />
-          ) : inspectorMode === "selection" ? (
-            <Card>
-              <Braces aria-hidden="true" />
-              <h2>{msg("studio.inspector.empty")}</h2>
-              <p>{msg("studio.inspector.empty.body")}</p>
-            </Card>
-          ) : null}
-        </aside> : null}
-        <section className="studio-validation" aria-labelledby="studio-validation-heading">
-          <div className="row-between">
-            <h2 id="studio-validation-heading">{msg("studio.validation")}</h2>
-            <Badge
-              tone={findings.some(({ severity }) => severity === "error") ? "danger" : "neutral"}
-            >
-              {findings.length}
-            </Badge>
-          </div>
-          {findings.length === 0 ? (
-            <p>{msg("studio.validation.clear")}</p>
-          ) : (
+            ) : inspectorMode === "selection" ? (
+              <Card>
+                <Braces aria-hidden="true" />
+                <h2>{msg("studio.inspector.empty")}</h2>
+                <p>{msg("studio.inspector.empty.body")}</p>
+              </Card>
+            ) : null}
+          </aside>
+        ) : null}
+        {findings.length ? (
+          <section className="studio-validation" aria-labelledby="studio-validation-heading">
+            <div className="row-between">
+              <h2 id="studio-validation-heading">{msg("studio.validation")}</h2>
+              <Badge
+                tone={findings.some(({ severity }) => severity === "error") ? "danger" : "neutral"}
+              >
+                {findings.length}
+              </Badge>
+            </div>
             <ul>
               {findings.map((finding, index) => (
                 <li key={`${finding.code}-${index}`}>
@@ -1267,8 +1286,8 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
                 </li>
               ))}
             </ul>
-          )}
-        </section>
+          </section>
+        ) : null}
       </div>
       {contextMenu ? (
         <div
@@ -1277,7 +1296,13 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
           aria-label={msg(`studio.context.${contextMenu.kind}`)}
           style={{
             left: Math.max(8, Math.min(contextMenu.x, window.innerWidth - 226)),
-            top: Math.max(8, Math.min(contextMenu.y, window.innerHeight - (contextMenu.kind === "node" ? 190 : 112)))
+            top: Math.max(
+              8,
+              Math.min(
+                contextMenu.y,
+                window.innerHeight - (contextMenu.kind === "node" ? 190 : 112)
+              )
+            )
           }}
         >
           {contextMenu.kind === "node" && contextMenu.key ? (
@@ -1651,9 +1676,15 @@ function NodeInspector({
       <label>
         {msg("studio.node.assignment")}
         <input
-          value={typeof node.configuration.assignee === "string" ? node.configuration.assignee : ""}
+          value={
+            typeof node.configuration.assignment === "string"
+              ? node.configuration.assignment
+              : typeof node.configuration.assignee === "string"
+                ? node.configuration.assignee
+                : ""
+          }
           onChange={(event) =>
-            update({ configuration: { ...node.configuration, assignee: event.target.value } })
+            update({ configuration: { ...node.configuration, assignment: event.target.value } })
           }
         />
       </label>
@@ -1811,7 +1842,8 @@ function StepBehaviorEditor({
             value={configuration.mapping ?? {}}
             update={(mapping) => updateConfiguration({ mapping })}
           />
-          {Object.keys((configuration.mapping as Record<string, unknown> | undefined) ?? {}).length === 0 ? (
+          {Object.keys((configuration.mapping as Record<string, unknown> | undefined) ?? {})
+            .length === 0 ? (
             <p className="studio-behavior-warning">{msg("studio.transform.mapping.empty")}</p>
           ) : null}
           <label>
@@ -1877,7 +1909,9 @@ function StepBehaviorEditor({
           <label>
             {msg("studio.agent.instructions")}
             <textarea
-              value={typeof configuration.instructions === "string" ? configuration.instructions : ""}
+              value={
+                typeof configuration.instructions === "string" ? configuration.instructions : ""
+              }
               onChange={(event) => updateConfiguration({ instructions: event.target.value })}
               placeholder={msg("studio.agent.instructions.placeholder")}
             />
@@ -1887,7 +1921,9 @@ function StepBehaviorEditor({
         <label>
           {msg("studio.loop.exit")}
           <textarea
-            value={typeof configuration.exitCondition === "string" ? configuration.exitCondition : ""}
+            value={
+              typeof configuration.exitCondition === "string" ? configuration.exitCondition : ""
+            }
             onChange={(event) => updateConfiguration({ exitCondition: event.target.value })}
           />
         </label>
@@ -1898,7 +1934,9 @@ function StepBehaviorEditor({
             type="number"
             min="1"
             value={Math.max(1, Number(configuration.delayMs ?? 60000) / 60000)}
-            onChange={(event) => updateConfiguration({ delayMs: Number(event.target.value) * 60000 })}
+            onChange={(event) =>
+              updateConfiguration({ delayMs: Number(event.target.value) * 60000 })
+            }
           />
         </label>
       ) : node.kind === "subworkflow" ? (

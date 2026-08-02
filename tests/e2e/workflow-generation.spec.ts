@@ -6,12 +6,19 @@ test("@a11y guided generation reviews, safely tests, and publishes accepted outp
   await page.goto("/");
   await page.getByRole("link", { name: "Enter the workspace" }).click();
   await expect(page.getByRole("heading", { name: "Sign in to Knotline" })).toBeVisible();
+  const googleButton = page.getByRole("button", { name: "Continue with Google" });
+  await expect(googleButton).toHaveCSS("align-items", "center");
   await page.getByRole("button", { name: "Continue with Google" }).click();
   await expect(page.getByRole("heading", { name: "Workflows" })).toBeVisible();
   await page.getByRole("main").getByRole("link", { name: "New workflow" }).click();
   await expect(
     page.getByRole("heading", { name: "Build a workflow your team can trust" })
   ).toBeVisible();
+  expect(
+    await page
+      .locator(".workflow-onboarding")
+      .evaluate((element) => Number.parseFloat(getComputedStyle(element).paddingBottom))
+  ).toBeGreaterThanOrEqual(64);
   await expect(page.getByText("GOVERNED GATEWAY", { exact: true }).first()).toBeVisible();
   await page
     .getByLabel("Describe the workflow")

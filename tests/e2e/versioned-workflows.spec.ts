@@ -1,6 +1,7 @@
 import { test, expect } from "./fixtures.js";
 
 const workflowId = "wf_launch-campaign";
+const demoNodeCount = 5;
 
 test("builder creates a persisted workflow draft from the workflow library", async ({ page }) => {
   await page.goto("/app/workflows");
@@ -20,6 +21,16 @@ test("workflow library preview uses the trusted light product theme", async ({ p
   await expect(node).toBeVisible();
   await expect(node).toHaveCSS("background-color", "rgba(255, 255, 255, 0.97)");
   await expect(page.locator(".canvas-panel")).toHaveCSS("color", "rgb(20, 35, 33)");
+  await expect(page.locator(".canvas-panel .react-flow__minimap-node")).toHaveCount(demoNodeCount);
+  await expect(page.getByRole("button", { name: "Run workflow" })).toHaveCSS(
+    "background-color",
+    "rgb(23, 107, 91)"
+  );
+  await page.getByRole("button", { name: "Run workflow" }).click();
+  await expect(page.getByRole("button", { name: "Start run" })).toHaveCSS(
+    "background-color",
+    "rgb(23, 107, 91)"
+  );
 });
 
 test("a growing workflow library scrolls without pushing the map down", async ({ page }) => {
@@ -73,7 +84,9 @@ test("version history supports inspection, semantic diff, and restore-as-draft",
   await page.getByRole("button", { name: "Compare latest versions" }).click();
   await expect(page.getByText(/addedNodes/)).toBeVisible();
   await page.getByRole("button", { name: "Restore as new draft" }).last().click();
-  await expect(page.getByRole("status")).toContainText("restored into a new draft");
+  await expect(
+    page.getByRole("status").filter({ hasText: "restored into a new draft" })
+  ).toBeVisible();
   await page.getByRole("link", { name: "Inspect version" }).last().click();
   await expect(page.getByRole("heading", { name: "Version 8 definition" })).toBeVisible();
 });
@@ -83,7 +96,7 @@ test("workspace templates preview and instantiate a real draft", async ({ page }
   await expect(page.getByRole("heading", { name: "Workflow templates" })).toBeVisible();
   await expect(page.getByText("Reusable launch governance")).toBeVisible();
   await page.getByRole("button", { name: "Use template" }).click();
-  await expect(page.getByRole("status")).toContainText("new workflow draft");
+  await expect(page.getByRole("status").filter({ hasText: "new workflow draft" })).toBeVisible();
 });
 
 test("workflow lifecycle pages remain responsive on mobile", async ({ page }) => {

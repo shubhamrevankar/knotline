@@ -96,7 +96,7 @@ function AdminFrame({
   return (
     <AuthGate>
       <WorkspaceShell contentClassName="access-shell-content">
-        <main className="access-page">
+        <main className={title === "People" ? "access-page access-page--primary" : "access-page"}>
           <WorkspacePageHeader
             actions={
               <Link className="access-back-link" to="/app/workflows">

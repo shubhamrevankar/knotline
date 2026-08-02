@@ -11,6 +11,13 @@
   padding: clamp(1.25rem, 3vw, 3rem);
 }
 
+.access-page--primary {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 36px 28px 64px;
+}
+
 .access-heading,
 .access-section-heading,
 .access-card-topline,
@@ -471,6 +478,9 @@
 @media (max-width: 760px) {
   .access-page {
     padding: 1rem 0.85rem 5rem;
+  }
+  .access-page--primary {
+    padding: 24px 14px 5rem;
   }
   .access-heading {
     display: grid;
