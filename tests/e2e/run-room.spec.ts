@@ -26,6 +26,85 @@ test("@a11y operator filters runs and diagnoses live work across equivalent view
   await expect(page.getByRole("region", { name: "Run execution" })).toBeVisible();
   await page.getByRole("button", { name: "Timeline" }).click();
   await expect(page.getByText("run queued")).toBeVisible();
+  await expect(page.getByRole("link", { name: /Workflow definition/u })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Run again/u })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Human work/u })).toBeVisible();
+});
+
+test("failed execution explains the stopped step and offers recovery destinations", async ({
+  page
+}) => {
+  const runId = "ca67b16d-049d-4019-b538-1f00c23be76b";
+  await page.route(`**/v1/runs/${runId}`, async (route) => {
+    await route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        data: {
+          id: runId,
+          workflow_id: "wf_launch-campaign",
+          workflow_version: 8,
+          state: "failed",
+          created_by: "20000000-0000-4000-8000-000000000001",
+          input: { caseId: "CASE-0842" },
+          created_at: "2026-07-31T00:00:00.000Z",
+          started_at: "2026-07-31T00:00:00.000Z",
+          finished_at: "2026-07-31T00:00:03.000Z",
+          updated_at: "2026-07-31T00:00:03.000Z",
+          tasks: [
+            {
+              id: "task-1",
+              node_key: "launch_signal",
+              node_kind: "trigger",
+              instance_key: "root",
+              queue_class: "system",
+              state: "succeeded",
+              state_version: "3"
+            },
+            {
+              id: "task-2",
+              node_key: "research_brief",
+              node_kind: "agent",
+              instance_key: "root",
+              queue_class: "agent",
+              state: "failed",
+              state_version: "4"
+            }
+          ],
+          events: [
+            {
+              sequence: "1",
+              event_type: "run.running",
+              actor_type: "system",
+              actor_id: "system",
+              payload: {},
+              occurred_at: "2026-07-31T00:00:00.000Z"
+            },
+            {
+              sequence: "2",
+              event_type: "task.failed",
+              actor_type: "worker",
+              actor_id: "worker",
+              payload: { nodeKey: "research_brief", errorCode: "STEP_EXECUTION_FAILED" },
+              occurred_at: "2026-07-31T00:00:03.000Z"
+            },
+            {
+              sequence: "3",
+              event_type: "run.failed",
+              actor_type: "system",
+              actor_id: "system",
+              payload: { from: "running", to: "failed" },
+              occurred_at: "2026-07-31T00:00:03.000Z"
+            }
+          ]
+        }
+      })
+    });
+  });
+  await page.goto(`/app/runs/${runId}`);
+  await expect(page.getByText(/Execution stopped at research brief/u)).toBeVisible();
+  await expect(page.getByText("STEP_EXECUTION_FAILED")).toBeVisible();
+  await expect(page.getByRole("link", { name: /Inspect failure/u })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Version 8/u })).toBeVisible();
 });
 
 test("run room exposes safe controls and a redacted attempt inspector on mobile", async ({

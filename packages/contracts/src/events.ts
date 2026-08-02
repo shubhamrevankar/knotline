@@ -384,6 +384,7 @@ export const EVENT_SCHEMA_REGISTRY = [
     "run.policy_stopped",
     "task.started",
     "task.succeeded",
+    "task.failed",
     "task.claimed",
     "task.unclaimed",
     "task.reassigned",

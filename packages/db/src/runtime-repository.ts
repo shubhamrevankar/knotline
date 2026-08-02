@@ -84,6 +84,19 @@ export interface RuntimeRepository {
     workerIdentity: string,
     output: unknown
   ): Promise<void>;
+  startTask(
+    context: TenantContext,
+    runId: string,
+    nodeKey: string,
+    workerIdentity: string
+  ): Promise<void>;
+  failTask(
+    context: TenantContext,
+    runId: string,
+    nodeKey: string,
+    workerIdentity: string,
+    errorCode: string
+  ): Promise<void>;
 }
 
 export class PostgresRuntimeRepository implements RuntimeRepository {
@@ -515,30 +528,47 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
         [context.workspaceId, row.id]
       );
       if (blocked.rows[0]) throw new RuntimeConflictError("TASK_DEPENDENCIES_PENDING");
-      const attempt = await client.query<{ attempt: number }>(
-        `SELECT coalesce(max(attempt),0)+1 AS attempt FROM task_attempts WHERE workspace_id=$1 AND task_id=$2`,
-        [context.workspaceId, row.id]
-      );
-      const attemptNumber = attempt.rows[0]?.attempt ?? 1;
-      await client.query(
-        `UPDATE task_runs SET state='running',state_version=state_version+1,started_at=coalesce(started_at,clock_timestamp()),updated_at=clock_timestamp()
-         WHERE workspace_id=$1 AND id=$2`,
-        [context.workspaceId, row.id]
-      );
-      await client.query(
-        `INSERT INTO task_attempts(workspace_id,id,task_id,attempt,state,worker_identity,fencing_token)
-         VALUES ($1,$2,$3,$4,'started',$5,$6)`,
-        [context.workspaceId, createId(), row.id, attemptNumber, workerIdentity, row.fencing_token]
-      );
-      await this.appendEvent(
-        client,
-        context.workspaceId,
-        runId,
-        "task.started",
-        "worker",
-        workerIdentity,
-        { nodeKey, attempt: attemptNumber }
-      );
+      const activeAttempt =
+        row.state === "running"
+          ? await client.query<{ attempt: number }>(
+              `SELECT attempt FROM task_attempts WHERE workspace_id=$1 AND task_id=$2 AND state='started' ORDER BY attempt DESC LIMIT 1`,
+              [context.workspaceId, row.id]
+            )
+          : { rows: [] as { attempt: number }[] };
+      let attemptNumber = activeAttempt.rows[0]?.attempt;
+      if (!attemptNumber) {
+        const attempt = await client.query<{ attempt: number }>(
+          `SELECT coalesce(max(attempt),0)+1 AS attempt FROM task_attempts WHERE workspace_id=$1 AND task_id=$2`,
+          [context.workspaceId, row.id]
+        );
+        attemptNumber = attempt.rows[0]?.attempt ?? 1;
+        await client.query(
+          `UPDATE task_runs SET state='running',state_version=state_version+1,started_at=coalesce(started_at,clock_timestamp()),updated_at=clock_timestamp()
+           WHERE workspace_id=$1 AND id=$2`,
+          [context.workspaceId, row.id]
+        );
+        await client.query(
+          `INSERT INTO task_attempts(workspace_id,id,task_id,attempt,state,worker_identity,fencing_token)
+           VALUES ($1,$2,$3,$4,'started',$5,$6)`,
+          [
+            context.workspaceId,
+            createId(),
+            row.id,
+            attemptNumber,
+            workerIdentity,
+            row.fencing_token
+          ]
+        );
+        await this.appendEvent(
+          client,
+          context.workspaceId,
+          runId,
+          "task.started",
+          "worker",
+          workerIdentity,
+          { nodeKey, attempt: attemptNumber }
+        );
+      }
       await client.query(
         `UPDATE task_runs SET state='succeeded',state_version=state_version+1,output=$3,finished_at=clock_timestamp(),updated_at=clock_timestamp()
          WHERE workspace_id=$1 AND id=$2`,
@@ -568,6 +598,125 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
         "worker",
         workerIdentity,
         { nodeKey, attempt: attemptNumber }
+      );
+    });
+  }
+
+  async startTask(context: TenantContext, runId: string, nodeKey: string, workerIdentity: string) {
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const task = await client.query<{ id: string; state: string; fencing_token: string }>(
+        `SELECT id,state,fencing_token FROM task_runs
+         WHERE workspace_id=$1 AND run_id=$2 AND node_key=$3 FOR UPDATE`,
+        [context.workspaceId, runId, nodeKey]
+      );
+      const row = task.rows[0];
+      if (!row) throw new Error("TASK_NOT_FOUND");
+      if (["running", "succeeded"].includes(row.state)) return;
+      const blocked = await client.query(
+        `SELECT 1 FROM task_dependencies WHERE workspace_id=$1 AND task_id=$2 AND state!='satisfied' LIMIT 1`,
+        [context.workspaceId, row.id]
+      );
+      if (blocked.rows[0]) throw new RuntimeConflictError("TASK_DEPENDENCIES_PENDING");
+      const activeAttempt = await client.query<{ attempt: number }>(
+        `SELECT attempt FROM task_attempts WHERE workspace_id=$1 AND task_id=$2 AND state='started' ORDER BY attempt DESC LIMIT 1`,
+        [context.workspaceId, row.id]
+      );
+      const nextAttempt = activeAttempt.rows[0]
+        ? undefined
+        : await client.query<{ attempt: number }>(
+            `SELECT coalesce(max(attempt),0)+1 AS attempt FROM task_attempts WHERE workspace_id=$1 AND task_id=$2`,
+            [context.workspaceId, row.id]
+          );
+      const attemptNumber = activeAttempt.rows[0]?.attempt ?? nextAttempt?.rows[0]?.attempt ?? 1;
+      await client.query(
+        `UPDATE task_runs SET state='running',state_version=state_version+1,
+           started_at=coalesce(started_at,clock_timestamp()),updated_at=clock_timestamp()
+         WHERE workspace_id=$1 AND id=$2`,
+        [context.workspaceId, row.id]
+      );
+      await client.query(
+        `INSERT INTO task_attempts(workspace_id,id,task_id,attempt,state,worker_identity,fencing_token)
+         VALUES ($1,$2,$3,$4,'started',$5,$6)`,
+        [context.workspaceId, createId(), row.id, attemptNumber, workerIdentity, row.fencing_token]
+      );
+      await this.appendEvent(
+        client,
+        context.workspaceId,
+        runId,
+        "task.started",
+        "worker",
+        workerIdentity,
+        { nodeKey, attempt: attemptNumber }
+      );
+    });
+  }
+
+  async failTask(
+    context: TenantContext,
+    runId: string,
+    nodeKey: string,
+    workerIdentity: string,
+    errorCode: string
+  ) {
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const task = await client.query<{ id: string; state: string; fencing_token: string }>(
+        `SELECT id,state,fencing_token FROM task_runs
+         WHERE workspace_id=$1 AND run_id=$2 AND node_key=$3 FOR UPDATE`,
+        [context.workspaceId, runId, nodeKey]
+      );
+      const row = task.rows[0];
+      if (!row) throw new Error("TASK_NOT_FOUND");
+      if (row.state === "failed") return;
+      const activeAttempt = await client.query<{ attempt: number }>(
+        `SELECT attempt FROM task_attempts WHERE workspace_id=$1 AND task_id=$2 AND state='started' ORDER BY attempt DESC LIMIT 1`,
+        [context.workspaceId, row.id]
+      );
+      const nextAttempt = activeAttempt.rows[0]
+        ? undefined
+        : await client.query<{ attempt: number }>(
+            `SELECT coalesce(max(attempt),0)+1 AS attempt FROM task_attempts WHERE workspace_id=$1 AND task_id=$2`,
+            [context.workspaceId, row.id]
+          );
+      const attemptNumber = activeAttempt.rows[0]?.attempt ?? nextAttempt?.rows[0]?.attempt ?? 1;
+      await client.query(
+        `UPDATE task_runs SET state='failed',state_version=state_version+1,
+           started_at=coalesce(started_at,clock_timestamp()),finished_at=clock_timestamp(),updated_at=clock_timestamp()
+         WHERE workspace_id=$1 AND id=$2`,
+        [context.workspaceId, row.id]
+      );
+      if (activeAttempt.rows[0])
+        await client.query(
+          `UPDATE task_attempts SET state='failed',error_code=$4,finished_at=clock_timestamp()
+           WHERE workspace_id=$1 AND task_id=$2 AND attempt=$3`,
+          [context.workspaceId, row.id, attemptNumber, errorCode.slice(0, 160)]
+        );
+      else
+        await client.query(
+          `INSERT INTO task_attempts(workspace_id,id,task_id,attempt,state,worker_identity,fencing_token,error_code,finished_at)
+           VALUES ($1,$2,$3,$4,'failed',$5,$6,$7,clock_timestamp())`,
+          [
+            context.workspaceId,
+            createId(),
+            row.id,
+            attemptNumber,
+            workerIdentity,
+            row.fencing_token,
+            errorCode.slice(0, 160)
+          ]
+        );
+      await client.query(
+        `UPDATE task_dependencies SET state='failed'
+         WHERE workspace_id=$1 AND run_id=$2 AND depends_on_task_id=$3 AND state='pending'`,
+        [context.workspaceId, runId, row.id]
+      );
+      await this.appendEvent(
+        client,
+        context.workspaceId,
+        runId,
+        "task.failed",
+        "worker",
+        workerIdentity,
+        { nodeKey, attempt: attemptNumber, errorCode: errorCode.slice(0, 160) }
       );
     });
   }

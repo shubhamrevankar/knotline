@@ -4,18 +4,28 @@ import { AlertDialog, Badge, Button, Card, ErrorState, Skeleton } from "@knotlin
 import {
   Activity,
   ArrowLeft,
+  Bell,
+  Bot,
+  Cable,
   CheckCircle2,
   ChevronRight,
+  CircleHelp,
+  Command,
+  Copy,
   Download,
   ExternalLink,
+  Gauge,
   ListTree,
   Pause,
   Play,
+  RotateCcw,
   Search,
+  Settings2,
+  Share2,
   StopCircle
 } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useParams, useSearchParams } from "react-router-dom";
 
 import {
   fetchAllWorkflowRuns,
@@ -60,24 +70,97 @@ const duration = (run: RuntimeRunView) => {
 };
 
 function RunShell({ children }: { readonly children: ReactNode }) {
+  const location = useLocation();
+  const active = (prefix: string) => location.pathname.startsWith(prefix);
   return (
     <div className="run-shell">
       <aside aria-label={msg("run.nav.label")}>
         <Link className="run-brand" to="/app/workflows">
+          <span aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
           {msg("brand.name")}
         </Link>
-        <Link to="/app/runs" aria-current="page">
-          <Activity aria-hidden="true" />
-          {msg("run.nav.runs")}
+        <Link className="run-workspace-switcher" to="/app/settings/workspace">
+          <span>N</span>
+          <strong>Northstar Studio</strong>
+          <ChevronRight aria-hidden="true" />
         </Link>
-        <Link to="/app/workflows">
-          <ListTree aria-hidden="true" />
-          {msg("customer.nav.workflows")}
-        </Link>
-        <Link to="/app/approvals">Approvals</Link>
-        <Link to="/app/inbox">Human work</Link>
+        <nav aria-label="Workspace">
+          <Link to="/app">
+            <Gauge aria-hidden="true" /> Pulse
+          </Link>
+          <Link to="/app/workflows" aria-current={active("/app/workflows") ? "page" : undefined}>
+            <ListTree aria-hidden="true" /> {msg("customer.nav.workflows")}
+          </Link>
+          <Link to="/app/runs" aria-current={active("/app/runs") ? "page" : undefined}>
+            <Activity aria-hidden="true" /> {msg("run.nav.runs")}
+          </Link>
+          <Link to="/app/agents">
+            <Bot aria-hidden="true" /> Agents
+          </Link>
+          <Link to="/app/connections">
+            <Cable aria-hidden="true" /> Connections
+          </Link>
+        </nav>
+        <div className="run-saved-views">
+          <span>Saved views</span>
+          <Link to="/app/inbox">
+            <i className="run-view-dot run-view-dot--lime" /> Needs attention
+          </Link>
+          <Link to="/app/runs?status=running">
+            <i className="run-view-dot run-view-dot--blue" /> Running now
+          </Link>
+          <Link to="/app/approvals">
+            <i className="run-view-dot run-view-dot--amber" /> Approvals
+          </Link>
+        </div>
+        <footer>
+          <Link to="/help">
+            <CircleHelp aria-hidden="true" /> Help and docs
+          </Link>
+          <Link to="/app/settings/workspace">
+            <Settings2 aria-hidden="true" /> Workspace settings
+          </Link>
+          <Link className="run-profile" to="/app/profile/sessions">
+            <span>MC</span>
+            <strong>Maya Chen</strong>
+          </Link>
+        </footer>
       </aside>
-      <main>{children}</main>
+      <div className="run-workspace">
+        <header className="run-topbar">
+          <Link to="/app/search">
+            <Search aria-hidden="true" />
+            <span>Find anything…</span>
+            <kbd>
+              <Command aria-hidden="true" /> K
+            </kbd>
+          </Link>
+          <div>
+            <span className="run-api-status">
+              <i /> Database connected
+            </span>
+            <Link aria-label="Notifications" to="/app/notifications">
+              <Bell aria-hidden="true" />
+            </Link>
+          </div>
+        </header>
+        <main>{children}</main>
+      </div>
+      <nav className="run-mobile-nav" aria-label="Mobile navigation">
+        <Link to="/app/workflows">
+          <ListTree aria-hidden="true" /> Workflows
+        </Link>
+        <Link to="/app/runs" aria-current="page">
+          <Activity aria-hidden="true" /> Runs
+        </Link>
+        <Link to="/app/inbox">
+          <Bell aria-hidden="true" /> Inbox
+        </Link>
+      </nav>
     </div>
   );
 }
@@ -127,14 +210,40 @@ export function RunsPage() {
     <RunShell>
       <header className="run-page-header">
         <div>
-          <Badge tone="accent">Persisted execution</Badge>
+          <span className="run-section-index">03 / Execution</span>
           <h1>{msg("run.list.heading")}</h1>
-          <p>Every row is an admitted database run controlled by the durable worker.</p>
+          <p>Follow live work, resolve anything blocked, and inspect every decision.</p>
         </div>
         <Button onClick={exportCsv} disabled={!visible.length}>
           <Download aria-hidden="true" /> {msg("run.export")}
         </Button>
       </header>
+      {runs ? (
+        <section className="run-list-metrics" aria-label="Run summary">
+          <article>
+            <span>Total runs</span>
+            <strong>{runs.length}</strong>
+            <small>Across this workspace</small>
+          </article>
+          <article>
+            <span>In progress</span>
+            <strong>{runs.filter(({ state }) => state === "running").length}</strong>
+            <small>Advancing automatically</small>
+          </article>
+          <article>
+            <span>Needs attention</span>
+            <strong>
+              {runs.filter(({ state }) => ["failed", "policy_stopped"].includes(state)).length}
+            </strong>
+            <small>Review or follow up</small>
+          </article>
+          <article>
+            <span>Completed</span>
+            <strong>{runs.filter(({ state }) => state === "succeeded").length}</strong>
+            <small>Successful outcomes</small>
+          </article>
+        </section>
+      ) : null}
       <section className="run-filters" aria-label={msg("run.filters.label")}>
         <label>
           <span>{msg("run.search")}</span>
@@ -152,6 +261,8 @@ export function RunsPage() {
             <option value="paused">Paused</option>
             <option value="succeeded">Succeeded</option>
             <option value="failed">Failed</option>
+            <option value="policy_stopped">Policy stopped</option>
+            <option value="cancelled">Cancelled</option>
           </select>
         </label>
       </section>
@@ -212,6 +323,7 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
   const [error, setError] = useState<Error>();
   const [busy, setBusy] = useState(false);
   const [signalError, setSignalError] = useState("");
+  const [copied, setCopied] = useState(false);
   const [pendingSignal, setPendingSignal] = useState<"pause" | "resume" | "cancel">();
   const [controlReason, setControlReason] = useState("");
   const [mode, setMode] = useState<"outline" | "graph" | "timeline">(
@@ -285,6 +397,26 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
     setControlReason(`Operator requested ${action} from the run room.`);
     setPendingSignal(action);
   };
+  const copyRunLink = async () => {
+    try {
+      await navigator.clipboard.writeText(globalThis.location.href);
+      setCopied(true);
+      setSignalError("");
+      globalThis.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      setSignalError("The link could not be copied. Copy it directly from the address bar.");
+    }
+  };
+  const exportRun = () => {
+    if (!run) return;
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(
+      new Blob([JSON.stringify(run, null, 2)], { type: "application/json" })
+    );
+    link.download = `run-${run.id}.json`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  };
   if (error)
     return (
       <RunShell>
@@ -304,6 +436,20 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
   const waitingTask = run.tasks?.find(
     ({ node_kind, state }) => ["approval", "human"].includes(node_kind) && state === "ready"
   );
+  const failedTask = run.tasks?.find(({ state }) => state === "failed");
+  const activeTask =
+    run.tasks?.find(({ state }) => state === "running") ??
+    run.tasks?.find(({ state }) => state === "ready");
+  const focusTask = failedTask ?? waitingTask ?? activeTask;
+  const focusNode = workflow?.nodes.find(({ id }) => id === focusTask?.node_key);
+  const taskFailure = run.events?.find(
+    ({ event_type, payload }) =>
+      event_type === "task.failed" && String(payload.nodeKey) === failedTask?.node_key
+  );
+  const failureCode =
+    typeof taskFailure?.payload.errorCode === "string"
+      ? taskFailure.payload.errorCode
+      : "No later steps were started.";
   const liveWorkflow = workflow
     ? {
         ...workflow,
@@ -315,9 +461,15 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
     : undefined;
   return (
     <RunShell>
-      <Link className="run-back" to="/app/runs">
-        <ArrowLeft aria-hidden="true" /> {msg("run.back")}
-      </Link>
+      <nav className="run-breadcrumbs" aria-label="Breadcrumb">
+        <Link to="/app/workflows">Workflows</Link>
+        <ChevronRight aria-hidden="true" />
+        <Link to={`/app/workflows/${run.workflow_id}`}>{workflowName}</Link>
+        <ChevronRight aria-hidden="true" />
+        <Link to="/app/runs">Runs</Link>
+        <ChevronRight aria-hidden="true" />
+        <span>{run.id.slice(0, 8)}</span>
+      </nav>
       <header className="run-room-header">
         <div>
           <Badge tone={stateTone(run.state)}>{stateLabel(run.state)}</Badge>
@@ -328,6 +480,13 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
           </p>
         </div>
         <div className="run-actions">
+          <Button onClick={() => void copyRunLink()}>
+            {copied ? <CheckCircle2 aria-hidden="true" /> : <Share2 aria-hidden="true" />}{" "}
+            {copied ? "Copied" : "Share"}
+          </Button>
+          <Button onClick={exportRun}>
+            <Download aria-hidden="true" /> Export
+          </Button>
           {run.state === "running" ? (
             <Button disabled={busy} onClick={() => requestSignal("pause")}>
               <Pause aria-hidden="true" /> Pause
@@ -344,7 +503,11 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
           )}
         </div>
       </header>
-      {signalError ? <p className="run-signal-error" role="alert">{signalError}</p> : null}
+      {signalError ? (
+        <p className="run-signal-error" role="alert">
+          {signalError}
+        </p>
+      ) : null}
       <section className={`run-now run-now--${run.state}`} aria-label="Current run status">
         <div className="run-now-icon" aria-hidden="true">
           {run.state === "succeeded" ? <CheckCircle2 /> : <Activity />}
@@ -352,22 +515,36 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
         <div>
           <span>{terminalStates.has(run.state) ? "Run result" : "Now"}</span>
           <strong>
-            {run.state === "succeeded"
-              ? "Workflow completed successfully"
-              : waitingTask
-                ? `${waitingTask.node_kind === "approval" ? "Approval" : "Human input"} required to continue`
-                : run.state === "paused"
-                  ? "Execution is paused"
-                  : "Execution is progressing automatically"}
+            {run.state === "failed"
+              ? `Execution stopped at ${focusNode?.title ?? failedTask?.node_key.replaceAll("_", " ") ?? "a workflow step"}`
+              : run.state === "succeeded"
+                ? "Workflow completed successfully"
+                : waitingTask
+                  ? `${waitingTask.node_kind === "approval" ? "Approval" : "Human input"} required to continue`
+                  : run.state === "paused"
+                    ? "Execution is paused"
+                    : "Execution is progressing automatically"}
           </strong>
           <p>
-            {terminalStates.has(run.state)
-              ? `${completed} of ${total} steps completed in ${duration(run)}.`
-              : `${completed} of ${total} steps complete. This page updates automatically.`}
+            {run.state === "failed"
+              ? `The step could not complete after its configured retries. ${failureCode}`
+              : terminalStates.has(run.state)
+                ? `${completed} of ${total} steps completed in ${duration(run)}.`
+                : focusNode
+                  ? `${focusNode.title} · ${completed} of ${total} steps complete. This page updates automatically.`
+                  : `${completed} of ${total} steps complete. This page updates automatically.`}
           </p>
         </div>
-        {waitingTask ? (
-          <Link to={waitingTask.node_kind === "human" ? `/app/tasks/${waitingTask.id}` : `/app/approvals`}>
+        {failedTask ? (
+          <Link to={`/app/runs/${run.id}/tasks/${failedTask.id}`}>
+            Inspect failure <ChevronRight aria-hidden="true" />
+          </Link>
+        ) : waitingTask ? (
+          <Link
+            to={
+              waitingTask.node_kind === "human" ? `/app/tasks/${waitingTask.id}` : `/app/approvals`
+            }
+          >
             Review now <ChevronRight aria-hidden="true" />
           </Link>
         ) : null}
@@ -379,7 +556,9 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
         </Card>
         <Card>
           <span>Progress</span>
-          <strong>{completed} / {total}</strong>
+          <strong>
+            {completed} / {total}
+          </strong>
         </Card>
         <Card>
           <span>Workflow</span>
@@ -389,15 +568,83 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
           <span>Execution</span>
           <strong className="run-connected">Live updates</strong>
         </Card>
+        <Card>
+          <span>Started by</span>
+          <strong title={run.created_by}>Workspace member</strong>
+        </Card>
+        <Card>
+          <span>Last update</span>
+          <strong>{new Date(run.updated_at).toLocaleTimeString()}</strong>
+        </Card>
+      </section>
+      <section className="run-progress-detail" aria-label="Step status breakdown">
+        <div>
+          <span style={{ width: total ? `${String((completed / total) * 100)}%` : "0%" }} />
+        </div>
+        <p>
+          <strong>{completed} complete</strong>
+          <span>{run.tasks?.filter(({ state }) => state === "running").length ?? 0} running</span>
+          <span>{run.tasks?.filter(({ state }) => state === "ready").length ?? 0} ready</span>
+          <span>{run.tasks?.filter(({ state }) => state === "pending").length ?? 0} upcoming</span>
+          <span>{run.tasks?.filter(({ state }) => state === "failed").length ?? 0} failed</span>
+        </p>
+      </section>
+      <section className="run-destinations" aria-label="Related destinations">
+        <Link to={`/app/workflows/${run.workflow_id}`}>
+          <RotateCcw aria-hidden="true" />
+          <span>
+            <strong>Run again</strong>
+            <small>Review input and start a new run</small>
+          </span>
+          <ChevronRight aria-hidden="true" />
+        </Link>
+        <Link to={`/app/workflows/${run.workflow_id}`}>
+          <ListTree aria-hidden="true" />
+          <span>
+            <strong>Workflow definition</strong>
+            <small>See the published design</small>
+          </span>
+          <ChevronRight aria-hidden="true" />
+        </Link>
+        <Link to={`/app/workflows/${run.workflow_id}/versions`}>
+          <Copy aria-hidden="true" />
+          <span>
+            <strong>Version {run.workflow_version}</strong>
+            <small>Inspect immutable history</small>
+          </span>
+          <ChevronRight aria-hidden="true" />
+        </Link>
+        <Link to="/app/approvals">
+          <CheckCircle2 aria-hidden="true" />
+          <span>
+            <strong>Approvals</strong>
+            <small>Review pending decisions</small>
+          </span>
+          <ChevronRight aria-hidden="true" />
+        </Link>
+        <Link to="/app/inbox">
+          <Bell aria-hidden="true" />
+          <span>
+            <strong>Human work</strong>
+            <small>Open assigned tasks</small>
+          </span>
+          <ChevronRight aria-hidden="true" />
+        </Link>
       </section>
       <details className="run-input-summary">
-        <summary>Run input <span>Immutable</span></summary>
+        <summary>
+          Run input <span>Immutable</span>
+        </summary>
         <pre>{JSON.stringify(run.input ?? {}, null, 2)}</pre>
       </details>
       {view === "task" ? (
         <TaskInspector
           task={run.tasks?.find(({ id }) => id === taskRunId)}
-          title={workflow?.nodes.find(({ id }) => id === run.tasks?.find(({ id: taskId }) => taskId === taskRunId)?.node_key)?.title}
+          title={
+            workflow?.nodes.find(
+              ({ id }) => id === run.tasks?.find(({ id: taskId }) => taskId === taskRunId)?.node_key
+            )?.title
+          }
           runId={run.id}
         />
       ) : (
@@ -435,11 +682,20 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
           </p>
           <label>
             Reason
-            <input value={controlReason} maxLength={500} onChange={(event) => setControlReason(event.currentTarget.value)} />
+            <input
+              value={controlReason}
+              maxLength={500}
+              onChange={(event) => setControlReason(event.currentTarget.value)}
+            />
           </label>
           <div>
-            <Button disabled={busy} onClick={() => setPendingSignal(undefined)}>Keep run unchanged</Button>
-            <Button disabled={busy || !controlReason.trim()} onClick={() => pendingSignal && void signal(pendingSignal)}>
+            <Button disabled={busy} onClick={() => setPendingSignal(undefined)}>
+              Keep run unchanged
+            </Button>
+            <Button
+              disabled={busy || !controlReason.trim()}
+              onClick={() => pendingSignal && void signal(pendingSignal)}
+            >
               {busy ? "Applying…" : `Confirm ${pendingSignal ?? "action"}`}
             </Button>
           </div>
@@ -467,30 +723,34 @@ function RunExecution({
     <section className={`run-execution run-execution--${mode}`} aria-label="Run execution">
       <div className="run-execution-main">
         {mode === "graph" && workflow ? (
-          <div className="run-live-graph"><WorkflowCanvas workflow={workflow} /></div>
+          <div className="run-live-graph">
+            <WorkflowCanvas workflow={workflow} />
+          </div>
         ) : (
           (run.tasks ?? []).map((task, index) => {
-          const definitionNode = workflow?.nodes.find(({ id }) => id === task.node_key);
-          const approvalId = approvals.get(task.node_key);
-          const target =
-            task.node_kind === "human"
-              ? `/app/tasks/${task.id}`
-              : approvalId
-                ? `/app/approvals/${approvalId}`
-                : `/app/runs/${run.id}/tasks/${task.id}`;
-          return (
-            <Link key={task.id} to={target} className={`run-node run-node--${task.state}`}>
-              <span>{task.state === "succeeded" ? <CheckCircle2 aria-hidden="true" /> : index + 1}</span>
-              <div>
-                <strong>{definitionNode?.title ?? task.node_key.replaceAll("_", " ")}</strong>
-                {definitionNode?.description ? <p>{definitionNode.description}</p> : null}
-                <small>
-                  {stateLabel(task.state)} · {task.node_kind}
-                </small>
-              </div>
-              <ChevronRight aria-hidden="true" />
-            </Link>
-          );
+            const definitionNode = workflow?.nodes.find(({ id }) => id === task.node_key);
+            const approvalId = approvals.get(task.node_key);
+            const target =
+              task.node_kind === "human"
+                ? `/app/tasks/${task.id}`
+                : approvalId
+                  ? `/app/approvals/${approvalId}`
+                  : `/app/runs/${run.id}/tasks/${task.id}`;
+            return (
+              <Link key={task.id} to={target} className={`run-node run-node--${task.state}`}>
+                <span>
+                  {task.state === "succeeded" ? <CheckCircle2 aria-hidden="true" /> : index + 1}
+                </span>
+                <div>
+                  <strong>{definitionNode?.title ?? task.node_key.replaceAll("_", " ")}</strong>
+                  {definitionNode?.description ? <p>{definitionNode.description}</p> : null}
+                  <small>
+                    {stateLabel(task.state)} · {task.node_kind}
+                  </small>
+                </div>
+                <ChevronRight aria-hidden="true" />
+              </Link>
+            );
           })
         )}
       </div>
@@ -505,7 +765,9 @@ function RunExecution({
                 ? "Review any step to inspect its recorded input, output, timing, and execution state."
                 : "Ready steps advance automatically. This view refreshes as the durable worker records progress."}
         </p>
-        <Link to={`/app/runs/${run.id}/timeline`}>Open full audit timeline <ExternalLink aria-hidden="true" /></Link>
+        <Link to={`/app/runs/${run.id}/timeline`}>
+          Open full audit timeline <ExternalLink aria-hidden="true" />
+        </Link>
       </aside>
     </section>
   );
@@ -552,7 +814,9 @@ function TaskInspector({
     );
   return (
     <section className="task-inspector">
-      <Link className="run-back" to={`/app/runs/${runId}`}><ArrowLeft aria-hidden="true" /> Back to run</Link>
+      <Link className="run-back" to={`/app/runs/${runId}`}>
+        <ArrowLeft aria-hidden="true" /> Back to run
+      </Link>
       <header>
         <div>
           <Badge tone={stateTone(task.state)}>{stateLabel(task.state)}</Badge>
@@ -575,6 +839,19 @@ function TaskInspector({
           <h3>Execution</h3>
           <p>Queue: {task.queue_class}</p>
           <p>State version: {String(task.state_version)}</p>
+          <p>
+            Started: {task.started_at ? new Date(task.started_at).toLocaleString() : "Not started"}
+          </p>
+          <p>
+            Finished: {task.finished_at ? new Date(task.finished_at).toLocaleString() : "Not finished"}
+          </p>
+          <p>
+            Duration: {task.started_at && task.finished_at
+              ? `${String(Math.max(0, Math.round((Date.parse(task.finished_at) - Date.parse(task.started_at)) / 1000)))}s`
+              : task.started_at
+                ? "In progress"
+                : "—"}
+          </p>
         </Card>
       </div>
     </section>

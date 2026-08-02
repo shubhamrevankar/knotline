@@ -1137,7 +1137,7 @@ export const startWorkflowRun = async (
         input,
         idempotencyKey: crypto.randomUUID(),
         maximumQuantity: "1000",
-        policyVersion: "demo-v1"
+        policyVersion: "default-v1"
       }
     )
   ).data;

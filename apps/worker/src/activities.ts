@@ -90,7 +90,7 @@ export async function recordRunTransition(
   input: DurableRunInput & {
     readonly expected: "queued" | "running" | "paused" | "cancelling";
     readonly next:
-      "running" | "paused" | "cancelling" | "cancelled" | "succeeded" | "policy_stopped";
+      "running" | "paused" | "cancelling" | "cancelled" | "succeeded" | "failed" | "policy_stopped";
     readonly expectedVersion: number;
   }
 ) {
@@ -107,6 +107,23 @@ export async function recordRunTransition(
     1,
     input.next,
     `run.${input.next}`
+  );
+}
+
+export async function recordTaskFailure(
+  input: DurableRunInput & { readonly nodeKey: string; readonly errorCode: string }
+) {
+  if (!repository) throw new Error("DATABASE_URL_REQUIRED");
+  return repository.failTask(
+    {
+      workspaceId: input.workspaceId,
+      principalId: input.principalId,
+      requestId: `activity-${activityInfo().activityId}`
+    },
+    input.runId,
+    input.nodeKey,
+    activityInfo().activityId,
+    input.errorCode
   );
 }
 
@@ -171,7 +188,7 @@ export async function executeSyntheticTask(
           ),
           input.node.configuration.dropEmpty === true
         )
-      : input.node.configuration.fixtureOutput ?? {};
+      : (input.node.configuration.fixtureOutput ?? {});
   const result = {
     nodeKey: input.node.key,
     attempt: info.attempt,
@@ -196,6 +213,16 @@ export async function executeGovernedAgent(
   input: DurableRunInput & { readonly node: DurableRunInput["plan"][number] }
 ) {
   if (!repository || !agentExecutions || !memories) throw new Error("DATABASE_URL_REQUIRED");
+  await repository.startTask(
+    {
+      workspaceId: input.workspaceId,
+      principalId: input.principalId,
+      requestId: `activity-${activityInfo().activityId}`
+    },
+    input.runId,
+    input.node.key,
+    activityInfo().activityId
+  );
   const configuredRequest = input.node.configuration.agentExecutionRequest as
     AgentExecutionRequest | undefined;
   const executionId = randomUUID();
@@ -220,8 +247,12 @@ export async function executeGovernedAgent(
           ? input.node.configuration.agentId
           : "33000000-0000-4000-8000-000000000001",
       agentVersion: Number(input.node.configuration.agentVersion ?? 1),
-      modelPolicyVersionId: "local-recorded-v1",
-      promptVersionId: "market-intelligence-v1",
+      modelPolicyVersionId: process.env.MODEL_GATEWAY_POLICY_VERSION ?? "default-v1",
+      promptVersionId: `${
+        typeof input.node.configuration.agentRole === "string"
+          ? input.node.configuration.agentRole
+          : "workflow-agent"
+      }-v1`,
       outputSchema: { type: "object", additionalProperties: true },
       contextManifest: {
         manifestId: randomUUID(),

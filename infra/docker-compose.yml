@@ -271,12 +271,21 @@ services:
         condition: service_healthy
       temporal:
         condition: service_healthy
+      model-gateway:
+        condition: service_healthy
+      tool-broker:
+        condition: service_healthy
     environment:
       DATABASE_URL: postgresql://knotline_runtime:local-only-runtime-password@postgres:5432/knotline
       TEMPORAL_ADDRESS: temporal:7233
       TEMPORAL_NAMESPACE: default
       TEMPORAL_TASK_QUEUE: knotline-system-v1
       WORKER_IDENTITY: knotline-local-worker-v1
+      MODEL_GATEWAY_URL: http://model-gateway:4200
+      MODEL_GATEWAY_INTERNAL_TOKEN: local-only-model-gateway-token
+      MODEL_GATEWAY_POLICY_VERSION: default-v1
+      TOOL_BROKER_URL: http://tool-broker:4400
+      TOOL_BROKER_INTERNAL_TOKEN: local-only-tool-broker-token
     restart: unless-stopped
 
   web:

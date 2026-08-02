@@ -13,6 +13,7 @@ const {
   recordRunTransition,
   executeSyntheticTask,
   executeGovernedAgent,
+  recordTaskFailure,
   consumeApproval,
   expireApproval
 } = proxyActivities<typeof activities>({
@@ -58,92 +59,111 @@ export async function durableWorkflowRun(input: DurableRunInput) {
   setHandler(completeApprovalSignal, (nodeKey, operationId) => {
     approvedOperations.set(nodeKey, operationId);
   });
-  execution: while (complete.size < input.plan.length && !cancelled) {
-    if (paused && currentState === "running") {
-      await recordRunTransition({
-        ...input,
-        expected: "running",
-        next: "paused",
-        expectedVersion: stateVersion++
-      });
-      currentState = "paused";
-    }
-    await condition(() => !paused || cancelled);
-    if (!cancelled && currentState === "paused") {
-      await recordRunTransition({
-        ...input,
-        expected: "paused",
-        next: "running",
-        expectedVersion: stateVersion++
-      });
-      currentState = "running";
-    }
-    const ready = input.plan.filter(
-      (node) => !complete.has(node.key) && node.dependencies.every((key) => complete.has(key))
-    );
-    if (ready.length === 0) throw new Error("RUNTIME_GRAPH_STALLED");
-    for (const node of ready) {
-      if (node.kind === "human") {
-        await condition(() => completedHumanTasks.has(node.key) || paused || cancelled);
-        if (cancelled) break;
-        if (paused) continue execution;
-      } else if (node.kind === "approval") {
-        const authorized = await condition(
-          () => approvedOperations.has(node.key) || paused || cancelled,
-          node.timeoutMs
-        );
-        if (cancelled) break;
-        if (paused) continue execution;
-        if (!authorized) {
-          await expireApproval({ ...input, node });
-          policyStopped = true;
-          break;
-        }
-        await consumeApproval({
+  let activeNodeKey: string | undefined;
+  try {
+    execution: while (complete.size < input.plan.length && !cancelled) {
+      if (paused && currentState === "running") {
+        await recordRunTransition({
           ...input,
-          node,
-          operationId: approvedOperations.get(node.key)!,
-          fencingToken: 1
+          expected: "running",
+          next: "paused",
+          expectedVersion: stateVersion++
         });
-        await executeSyntheticTask({ ...input, node });
-      } else if (node.kind === "delay") {
-        await sleep(Math.min(Number(node.configuration.delayMs ?? 1), 86_400_000));
-        await executeSyntheticTask({ ...input, node });
-      } else if (node.kind === "agent") await executeGovernedAgent({ ...input, node });
-      else await executeSyntheticTask({ ...input, node });
-      complete.add(node.key);
+        currentState = "paused";
+      }
+      await condition(() => !paused || cancelled);
+      if (!cancelled && currentState === "paused") {
+        await recordRunTransition({
+          ...input,
+          expected: "paused",
+          next: "running",
+          expectedVersion: stateVersion++
+        });
+        currentState = "running";
+      }
+      const ready = input.plan.filter(
+        (node) => !complete.has(node.key) && node.dependencies.every((key) => complete.has(key))
+      );
+      if (ready.length === 0) throw new Error("RUNTIME_GRAPH_STALLED");
+      for (const node of ready) {
+        activeNodeKey = node.key;
+        if (node.kind === "human") {
+          await condition(() => completedHumanTasks.has(node.key) || paused || cancelled);
+          if (cancelled) break;
+          if (paused) continue execution;
+        } else if (node.kind === "approval") {
+          const authorized = await condition(
+            () => approvedOperations.has(node.key) || paused || cancelled,
+            node.timeoutMs
+          );
+          if (cancelled) break;
+          if (paused) continue execution;
+          if (!authorized) {
+            await expireApproval({ ...input, node });
+            policyStopped = true;
+            break;
+          }
+          await consumeApproval({
+            ...input,
+            node,
+            operationId: approvedOperations.get(node.key)!,
+            fencingToken: 1
+          });
+          await executeSyntheticTask({ ...input, node });
+        } else if (node.kind === "delay") {
+          await sleep(Math.min(Number(node.configuration.delayMs ?? 1), 86_400_000));
+          await executeSyntheticTask({ ...input, node });
+        } else if (node.kind === "agent") await executeGovernedAgent({ ...input, node });
+        else await executeSyntheticTask({ ...input, node });
+        complete.add(node.key);
+        activeNodeKey = undefined;
+      }
+      if (policyStopped) break;
     }
-    if (policyStopped) break;
-  }
-  if (cancelled) {
+    if (cancelled) {
+      await recordRunTransition({
+        ...input,
+        expected: currentState,
+        next: "cancelling",
+        expectedVersion: stateVersion++
+      });
+      await recordRunTransition({
+        ...input,
+        expected: "cancelling",
+        next: "cancelled",
+        expectedVersion: stateVersion++
+      });
+      return { state: "cancelled", completed: [...complete] };
+    }
+    if (policyStopped) {
+      await recordRunTransition({
+        ...input,
+        expected: currentState,
+        next: "policy_stopped",
+        expectedVersion: stateVersion++
+      });
+      return { state: "policy_stopped", completed: [...complete] };
+    }
     await recordRunTransition({
       ...input,
       expected: currentState,
-      next: "cancelling",
+      next: "succeeded",
       expectedVersion: stateVersion++
     });
-    await recordRunTransition({
-      ...input,
-      expected: "cancelling",
-      next: "cancelled",
-      expectedVersion: stateVersion++
-    });
-    return { state: "cancelled", completed: [...complete] };
-  }
-  if (policyStopped) {
+    return { state: "succeeded", completed: [...complete] };
+  } catch (cause) {
+    if (activeNodeKey)
+      await recordTaskFailure({
+        ...input,
+        nodeKey: activeNodeKey,
+        errorCode: "STEP_EXECUTION_FAILED"
+      });
     await recordRunTransition({
       ...input,
       expected: currentState,
-      next: "policy_stopped",
+      next: "failed",
       expectedVersion: stateVersion++
     });
-    return { state: "policy_stopped", completed: [...complete] };
+    throw cause;
   }
-  await recordRunTransition({
-    ...input,
-    expected: currentState,
-    next: "succeeded",
-    expectedVersion: stateVersion++
-  });
-  return { state: "succeeded", completed: [...complete] };
 }

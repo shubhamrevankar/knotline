@@ -426,6 +426,24 @@ const recordedWorkflowFixture = {
   ]
 } as const;
 
+const recordedAgentFixture = (promptVersionId: string) => {
+  const role = promptVersionId.replace(/-v\d+$/u, "");
+  return {
+    summary: `Completed the ${role.replaceAll("_", " ")} analysis with governed local evidence.`,
+    severity: role === "impact_analyst" ? "critical" : "high",
+    contractExposure: "high",
+    confidence: 0.94,
+    evidence: [
+      {
+        source: "workflow_input",
+        finding: "The submitted case meets the configured escalation and review criteria."
+      }
+    ],
+    recommendation: "Continue through the governed human and approval path.",
+    requiresHumanReview: true
+  };
+};
+
 export function buildGatewayFromEnvironment() {
   const provider = process.env.MODEL_GATEWAY_PROVIDER === "openai" ? "openai" : "recorded";
   const common = {
@@ -463,7 +481,12 @@ export function buildGatewayFromEnvironment() {
   const adapter: ModelAdapter =
     provider === "openai"
       ? new OpenAIResponsesAdapter({ apiKey: required("OPENAI_API_KEY") })
-      : new RecordedContractAdapter(recordedWorkflowFixture);
+      : new RecordedContractAdapter((request) => {
+          if (request.kind !== "generation") return {};
+          return request.promptVersionId === "workflow-generation.v1"
+            ? recordedWorkflowFixture
+            : recordedAgentFixture(request.promptVersionId);
+        });
   return new GovernedModelGateway(
     mappings,
     new Map([[policy.versionId, policy]]),
