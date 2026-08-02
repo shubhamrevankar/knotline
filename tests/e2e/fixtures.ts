@@ -43,6 +43,96 @@ export const test = base.extend<{ consoleMessages: string[] }>({
         ]
       };
       let collaborationFollowed = false;
+      let demoRunState = "running";
+      let demoHumanTaskState = "ready";
+      const demoRunId = "ca67b16d-049d-4019-b538-1f00c23be76b";
+      const demoTaskId = "bf608083-2663-4759-a162-37ce5457220d";
+      const runtimeRun = () => ({
+        workspace_id: "10000000-0000-4000-8000-000000000001",
+        id: demoRunId,
+        workflow_id: demoWorkflow.id,
+        workflow_version: 10,
+        state: demoRunState,
+        state_version: demoRunState === "running" ? "2" : "3",
+        fencing_token: "1",
+        temporal_workflow_id: `knotline-run-${demoRunId}`,
+        temporal_run_id: null,
+        idempotency_key: "browser-demo-run",
+        input: { audience: "Operations leaders" },
+        policy_snapshot: { policyVersion: "demo-v1" },
+        parent_run_id: null,
+        forked_from_event_sequence: null,
+        created_by: "20000000-0000-4000-8000-000000000001",
+        started_at: "2026-07-31T00:00:00.000Z",
+        finished_at: null,
+        created_at: "2026-07-31T00:00:00.000Z",
+        updated_at: "2026-07-31T00:00:05.000Z",
+        tasks: [
+          {
+            id: "11a8db56-e4c1-436a-a974-ce76cd4754f6",
+            node_key: "launch_signal",
+            node_kind: "trigger",
+            instance_key: "root",
+            queue_class: "system",
+            state: "succeeded",
+            state_version: "3",
+            fencing_token: "1",
+            input: {},
+            output: {},
+            started_at: "2026-07-31T00:00:00.000Z",
+            finished_at: "2026-07-31T00:00:01.000Z"
+          },
+          {
+            id: "38bb176e-86ff-4e5b-9d8d-1b2dd3c634ba",
+            node_key: "research_brief",
+            node_kind: "agent",
+            instance_key: "root",
+            queue_class: "agent",
+            state: "succeeded",
+            state_version: "4",
+            fencing_token: "1",
+            input: {},
+            output: { recommendation: "Lead with bounded agent authority." },
+            started_at: "2026-07-31T00:00:01.000Z",
+            finished_at: "2026-07-31T00:00:02.000Z"
+          },
+          {
+            id: demoTaskId,
+            node_key: "publish_brief",
+            node_kind: "human",
+            instance_key: "root",
+            queue_class: "human",
+            state: demoHumanTaskState,
+            state_version: demoHumanTaskState === "ready" ? "2" : "3",
+            fencing_token: "1",
+            input: {},
+            output:
+              demoHumanTaskState === "succeeded"
+                ? { publication_note: "Approved launch brief published." }
+                : null,
+            started_at: null,
+            finished_at: demoHumanTaskState === "succeeded" ? "2026-07-31T00:00:05.000Z" : null
+          }
+        ],
+        events: [
+          {
+            sequence: "1",
+            event_type: "run.queued",
+            actor_type: "user",
+            actor_id: "20000000-0000-4000-8000-000000000001",
+            payload: {},
+            occurred_at: "2026-07-31T00:00:00.000Z"
+          },
+          {
+            sequence: "2",
+            event_type: "run.running",
+            actor_type: "system",
+            actor_id: "system",
+            payload: { from: "queued", to: "running" },
+            occurred_at: "2026-07-31T00:00:01.000Z"
+          }
+        ]
+      });
       let collaborationComment:
         | {
             id: string;
@@ -354,6 +444,43 @@ export const test = base.extend<{ consoleMessages: string[] }>({
           };
         } else if (pathname.endsWith("/workflow-imports")) {
           body = { id: "90000000-0000-4000-8000-000000000003" };
+        } else if (/^\/v1\/workflows\/[^/]+\/runs$/u.test(pathname)) {
+          body = { data: pathname.includes(demoWorkflow.id) ? [runtimeRun()] : [] };
+        } else if (pathname === `/v1/runs/${demoRunId}`) {
+          body = { data: runtimeRun() };
+        } else if (pathname === `/v1/runs/${demoRunId}/pauses`) {
+          demoRunState = "paused";
+          body = { accepted: true };
+        } else if (pathname === `/v1/runs/${demoRunId}/resumptions`) {
+          demoRunState = "running";
+          body = { accepted: true };
+        } else if (pathname === `/v1/runs/${demoRunId}/cancellations`) {
+          demoRunState = "cancelled";
+          body = { accepted: true };
+        } else if (pathname === "/v1/task-runs") {
+          body = {
+            data: [
+              {
+                ...runtimeRun().tasks.at(-1),
+                run_id: demoRunId,
+                priority: "normal",
+                assignee_user_id: "20000000-0000-4000-8000-000000000001"
+              }
+            ]
+          };
+        } else if (pathname === `/v1/task-runs/${demoTaskId}`) {
+          body = {
+            data: {
+              ...runtimeRun().tasks.at(-1),
+              run_id: demoRunId,
+              priority: "normal",
+              assignee_user_id: "20000000-0000-4000-8000-000000000001"
+            }
+          };
+        } else if (pathname === `/v1/task-runs/${demoTaskId}/submissions`) {
+          demoHumanTaskState = "succeeded";
+          demoRunState = "succeeded";
+          body = { data: { id: "aa5348f4-d788-465a-86f5-dc4b1ada3fc2" } };
         } else if (pathname.endsWith("/workflows") && pathname.includes("/workspaces/")) {
           body = method === "GET" ? { data: demoWorkflows } : { data: demoWorkflow };
         } else if (pathname.endsWith("/draft")) {

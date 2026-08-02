@@ -1,5 +1,9 @@
 # Documentation
 
+## Product demo
+
+- [Complete local product demo](./demo/knotline/2026-08-02-complete-product-demo.md)
+
 This directory is the canonical location for Markdown artifacts created for this
 workspace.
 
@@ -18,6 +22,9 @@ workspace.
 ```text
 docs/
 ├── README.md
+├── demo/
+│   └── knotline/
+│       └── 2026-08-02-complete-product-demo.md
 ├── implementation/
 │   └── knotline/
 │       └── 2026-07-31-complete-end-to-end-implementation-plan.md
@@ -38,6 +45,7 @@ docs/
   authoritative scope, architecture, milestones, test gates, commits, and GA
   acceptance
 - [Knotline product build blueprint](product/knotline/2026-07-31-product-build-blueprint.md)
+- [Knotline complete product demo](demo/knotline/2026-08-02-complete-product-demo.md)
 - [Trace.so technical analysis](research/trace-so/2026-07-29-trace-so-technical-analysis.md)
 - [Trace end-to-end system design](system-design/trace/2026-07-29-trace-end-to-end-system-design.md)
 
@@ -47,7 +55,7 @@ From the repository root, start the complete local dependency and application
 stack with one command:
 
 ```sh
-pnpm local:up
+pnpm local:preview
 ```
 
 Run the complete currently activated engineering gate with:

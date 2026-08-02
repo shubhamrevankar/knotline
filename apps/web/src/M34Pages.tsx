@@ -11,8 +11,8 @@ const services = [
   { name: "Workflow runtime", state: "healthy", detail: "Queue lag within objective" },
   {
     name: "Notifications",
-    state: "degraded",
-    detail: "Fixture provider latency elevated; email remains queued"
+    state: "healthy",
+    detail: "Local notification delivery and retry queue available"
   },
   { name: "Public API", state: "healthy", detail: "Error budget available" }
 ];
@@ -70,8 +70,7 @@ export function OperatorConsole() {
             Active incidents
           </h2>
           <p>
-            No declared production incident. Deterministic staging game-day fixtures remain
-            available.
+            No declared incident. Local game-day scenarios remain available for operator drills.
           </p>
           <Button>Start incident record</Button>
         </Card>
@@ -85,7 +84,7 @@ export function OperatorConsole() {
         </Card>
         <Card>
           <h2>Repair queue</h2>
-          <p>Two stuck-work fixtures await a scoped, idempotent preview. No action has executed.</p>
+          <p>No stuck work requires repair. Scoped, idempotent previews remain available.</p>
           <Button>Open repair preview</Button>
         </Card>
       </section>
@@ -112,8 +111,8 @@ export function FeatureAccessPage() {
         </Card>
         <Card>
           <h2>External provider writes</h2>
-          <Badge tone="warning">Fixture only</Badge>
-          <p>Real provider credentials remain externally gated.</p>
+          <Badge tone="success">Enabled by policy</Badge>
+          <p>Provider writes require an approved connection and explicit workspace policy.</p>
         </Card>
       </section>
     </main>
