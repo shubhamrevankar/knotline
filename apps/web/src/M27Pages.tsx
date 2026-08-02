@@ -22,6 +22,7 @@ import {
   type NotificationPreference
 } from "./api.js";
 import { msg } from "./i18n.js";
+import { ProfileShell } from "./M04ProfilePages.js";
 import "./M27Pages.css";
 
 export function NotificationCenterPage() {
@@ -255,128 +256,133 @@ export function NotificationSettingsPage() {
     }
   };
   return (
-    <main className="page-shell notification-shell">
-      <header>
-        <Badge tone="accent">
-          <Bell aria-hidden />
-          {msg("notification.settings.badge")}
-        </Badge>
-        <h1>{msg("notification.settings.heading")}</h1>
-        <p>{msg("notification.settings.body")}</p>
-      </header>
-      {busy ? <Skeleton label={msg("notification.settings.loading")} /> : null}
-      {error ? <ErrorState title={msg("notification.settings.error")}>{error}</ErrorState> : null}
-      {status ? (
-        <p role="status" className="notification-status">
-          {status}
-        </p>
-      ) : null}
-      <form className="preference-layout" onSubmit={(event) => void save(event)}>
-        <section>
-          <Card>
-            <h2>{msg("notification.settings.schedule")}</h2>
-            <div className="preference-fields">
-              <label>
-                {msg("notification.settings.timezone")}
-                <input name="timeZone" defaultValue={preferences[0]?.timeZone ?? "Asia/Kolkata"} />
-              </label>
-              <label>
-                {msg("notification.settings.quiet.start")}
-                <input
-                  name="quietStart"
-                  type="time"
-                  defaultValue={preferences[0]?.quietStart ?? "22:00"}
-                />
-              </label>
-              <label>
-                {msg("notification.settings.quiet.end")}
-                <input
-                  name="quietEnd"
-                  type="time"
-                  defaultValue={preferences[0]?.quietEnd ?? "07:00"}
-                />
-              </label>
-            </div>
-          </Card>
-          <Card>
-            <h2>{msg("notification.settings.events")}</h2>
-            <div className="preference-table">
-              {preferences.map((item) => (
-                <div key={item.eventType} className="preference-row">
+    <ProfileShell>
+      <main className="page-shell notification-shell">
+        <header>
+          <Badge tone="accent">
+            <Bell aria-hidden />
+            {msg("notification.settings.badge")}
+          </Badge>
+          <h1>{msg("notification.settings.heading")}</h1>
+          <p>{msg("notification.settings.body")}</p>
+        </header>
+        {busy ? <Skeleton label={msg("notification.settings.loading")} /> : null}
+        {error ? <ErrorState title={msg("notification.settings.error")}>{error}</ErrorState> : null}
+        {status ? (
+          <p role="status" className="notification-status">
+            {status}
+          </p>
+        ) : null}
+        <form className="preference-layout" onSubmit={(event) => void save(event)}>
+          <section>
+            <Card>
+              <h2>{msg("notification.settings.schedule")}</h2>
+              <div className="preference-fields">
+                <label>
+                  {msg("notification.settings.timezone")}
+                  <input
+                    name="timeZone"
+                    defaultValue={preferences[0]?.timeZone ?? "Asia/Kolkata"}
+                  />
+                </label>
+                <label>
+                  {msg("notification.settings.quiet.start")}
+                  <input
+                    name="quietStart"
+                    type="time"
+                    defaultValue={preferences[0]?.quietStart ?? "22:00"}
+                  />
+                </label>
+                <label>
+                  {msg("notification.settings.quiet.end")}
+                  <input
+                    name="quietEnd"
+                    type="time"
+                    defaultValue={preferences[0]?.quietEnd ?? "07:00"}
+                  />
+                </label>
+              </div>
+            </Card>
+            <Card>
+              <h2>{msg("notification.settings.events")}</h2>
+              <div className="preference-table">
+                {preferences.map((item) => (
+                  <div key={item.eventType} className="preference-row">
+                    <span>
+                      <strong>{item.eventType}</strong>
+                      {item.eventType.startsWith("security.") ? (
+                        <small>
+                          <LockKeyhole aria-hidden />
+                          {msg("notification.settings.mandatory")}
+                        </small>
+                      ) : null}
+                    </span>
+                    <label>
+                      {msg("notification.settings.email")}
+                      <select
+                        name={`email:${item.eventType}`}
+                        defaultValue={item.channels.email ?? "off"}
+                        disabled={item.eventType.startsWith("security.")}
+                      >
+                        <option value="immediate">{msg("notification.cadence.immediate")}</option>
+                        <option value="daily_digest">{msg("notification.cadence.daily")}</option>
+                        <option value="weekly_digest">{msg("notification.cadence.weekly")}</option>
+                        <option value="off">{msg("notification.cadence.off")}</option>
+                      </select>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </Card>
+            <Button tone="accent" type="submit">
+              {msg("notification.settings.save")}
+            </Button>
+          </section>
+          <aside>
+            <Card>
+              <h2>{msg("notification.settings.health")}</h2>
+              <ul className="channel-health">
+                <li>
+                  <Bell aria-hidden />
                   <span>
-                    <strong>{item.eventType}</strong>
-                    {item.eventType.startsWith("security.") ? (
-                      <small>
-                        <LockKeyhole aria-hidden />
-                        {msg("notification.settings.mandatory")}
-                      </small>
-                    ) : null}
+                    <strong>{msg("notification.channel.inapp")}</strong>
+                    <small>{msg("notification.channel.ready")}</small>
                   </span>
-                  <label>
-                    {msg("notification.settings.email")}
-                    <select
-                      name={`email:${item.eventType}`}
-                      defaultValue={item.channels.email ?? "off"}
-                      disabled={item.eventType.startsWith("security.")}
-                    >
-                      <option value="immediate">{msg("notification.cadence.immediate")}</option>
-                      <option value="daily_digest">{msg("notification.cadence.daily")}</option>
-                      <option value="weekly_digest">{msg("notification.cadence.weekly")}</option>
-                      <option value="off">{msg("notification.cadence.off")}</option>
-                    </select>
-                  </label>
-                </div>
-              ))}
-            </div>
-          </Card>
-          <Button tone="accent" type="submit">
-            {msg("notification.settings.save")}
-          </Button>
-        </section>
-        <aside>
-          <Card>
-            <h2>{msg("notification.settings.health")}</h2>
-            <ul className="channel-health">
-              <li>
-                <Bell aria-hidden />
-                <span>
-                  <strong>{msg("notification.channel.inapp")}</strong>
-                  <small>{msg("notification.channel.ready")}</small>
-                </span>
-                <Badge tone="success">{msg("notification.channel.live")}</Badge>
-              </li>
-              <li>
-                <Mail aria-hidden />
-                <span>
-                  <strong>{msg("notification.channel.email")}</strong>
-                  <small>{msg("notification.channel.email.gate")}</small>
-                </span>
-                <Badge tone="warning">{msg("notification.channel.recorded")}</Badge>
-              </li>
-              <li>
-                <MessageSquare aria-hidden />
-                <span>
-                  <strong>{msg("notification.channel.chat")}</strong>
-                  <small>{msg("notification.channel.chat.gates")}</small>
-                </span>
-                <Badge tone="warning">{msg("notification.channel.recorded")}</Badge>
-              </li>
-              <li>
-                <Webhook aria-hidden />
-                <span>
-                  <strong>{msg("notification.channel.webhook")}</strong>
-                  <small>{msg("notification.channel.signed")}</small>
-                </span>
-                <Badge tone="neutral">{msg("notification.channel.demo")}</Badge>
-              </li>
-            </ul>
-          </Card>
-          <Card>
-            <h2>{msg("notification.settings.escalation")}</h2>
-            <p>{msg("notification.settings.escalation.body")}</p>
-          </Card>
-        </aside>
-      </form>
-    </main>
+                  <Badge tone="success">{msg("notification.channel.live")}</Badge>
+                </li>
+                <li>
+                  <Mail aria-hidden />
+                  <span>
+                    <strong>{msg("notification.channel.email")}</strong>
+                    <small>{msg("notification.channel.email.gate")}</small>
+                  </span>
+                  <Badge tone="warning">{msg("notification.channel.recorded")}</Badge>
+                </li>
+                <li>
+                  <MessageSquare aria-hidden />
+                  <span>
+                    <strong>{msg("notification.channel.chat")}</strong>
+                    <small>{msg("notification.channel.chat.gates")}</small>
+                  </span>
+                  <Badge tone="warning">{msg("notification.channel.recorded")}</Badge>
+                </li>
+                <li>
+                  <Webhook aria-hidden />
+                  <span>
+                    <strong>{msg("notification.channel.webhook")}</strong>
+                    <small>{msg("notification.channel.signed")}</small>
+                  </span>
+                  <Badge tone="neutral">{msg("notification.channel.demo")}</Badge>
+                </li>
+              </ul>
+            </Card>
+            <Card>
+              <h2>{msg("notification.settings.escalation")}</h2>
+              <p>{msg("notification.settings.escalation.body")}</p>
+            </Card>
+          </aside>
+        </form>
+      </main>
+    </ProfileShell>
   );
 }

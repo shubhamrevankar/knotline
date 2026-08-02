@@ -21,6 +21,7 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode 
 import { Link, useLocation } from "react-router-dom";
 
 import { msg } from "./i18n.js";
+import { fetchMeBootstrap, type MeBootstrap } from "./api.js";
 
 const collapsePreference = "knotline.workspace-sidebar-collapsed";
 const WorkspaceShellContext = createContext(false);
@@ -71,6 +72,7 @@ export function WorkspaceShell({
   const nested = useContext(WorkspaceShellContext);
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [identity, setIdentity] = useState<MeBootstrap>();
   const [collapsed, setCollapsed] = useState(() => {
     try {
       return globalThis.localStorage.getItem(collapsePreference) === "true";
@@ -88,6 +90,16 @@ export function WorkspaceShell({
       // The shell remains usable when storage is unavailable.
     }
   }, [collapsed]);
+
+  useEffect(() => {
+    const loadIdentity = () =>
+      void fetchMeBootstrap()
+        .then(setIdentity)
+        .catch(() => undefined);
+    loadIdentity();
+    globalThis.addEventListener("knotline:profile-updated", loadIdentity);
+    return () => globalThis.removeEventListener("knotline:profile-updated", loadIdentity);
+  }, []);
 
   useEffect(() => {
     if (!sidebarOpen) return;
@@ -113,158 +125,207 @@ export function WorkspaceShell({
 
   return (
     <WorkspaceShellContext.Provider value>
-      <div
-        className={`app-shell app-shell--activation${collapsed ? " app-shell--collapsed" : ""}`}
-      >
-      <aside
-        aria-label="Workspace navigation"
-        className={sidebarOpen ? "sidebar sidebar--open" : "sidebar"}
-        id="workspace-navigation"
-      >
-        <div className="brand">
-          <Link aria-label="Knotline home" className="brand-home" to="/app/workflows">
-            <span className="brand-mark" aria-hidden="true">
-              <i />
-              <i />
-              <i />
-            </span>
-            <span className="sidebar-label">{msg("brand.name")}</span>
-          </Link>
-          <button
-            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-            aria-pressed={collapsed}
-            className="sidebar-collapse"
-            onClick={() => setCollapsed((current) => !current)}
-            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-            type="button"
-          >
-            {collapsed ? <PanelLeftOpen aria-hidden="true" /> : <PanelLeftClose aria-hidden="true" />}
-          </button>
-          <button
-            ref={closeButtonRef}
-            aria-label="Close navigation"
-            className="icon-button mobile-only"
-            onClick={closeMobileSidebar}
-            type="button"
-          >
-            ×
-          </button>
-        </div>
-
-        <Link className="workspace-switcher" title="Northstar Studio" to="/app/settings/workspace">
-          <span aria-hidden="true" className="workspace-avatar">N</span>
-          <span className="sidebar-label"><strong>Northstar Studio</strong></span>
-          <ChevronDown className="sidebar-label" aria-hidden="true" size={15} />
-        </Link>
-
-        <nav className="nav-list" aria-label="Workspace">
-          {primaryNavigation.map(({ label, icon: Icon, to, matches }) => {
-            const active = matches(location.pathname);
-            return (
-              <Link
-                aria-current={active ? "page" : undefined}
-                className={active ? "nav-item nav-item--active" : "nav-item"}
-                key={label}
-                onClick={closeMobileSidebar}
-                title={collapsed ? label : undefined}
-                to={to}
-              >
-                <Icon aria-hidden="true" size={17} />
-                <span className="sidebar-label">{label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="sidebar-section">
-          <span className="eyebrow sidebar-label">Saved views</span>
-          <Link
-            aria-current={activeUtility === "inbox" ? "page" : undefined}
-            className={activeUtility === "inbox" ? "nav-item nav-item--active" : "nav-item"}
-            title={collapsed ? "Needs attention" : undefined}
-            to="/app/inbox"
-          >
-            <span aria-hidden="true" className="view-dot view-dot--lime" />
-            <span className="sidebar-label">Needs attention</span>
-            <b className="sidebar-label">4</b>
-          </Link>
-          <Link className="nav-item" title={collapsed ? "Running now" : undefined} to="/app/runs?status=running">
-            <span aria-hidden="true" className="view-dot view-dot--blue" />
-            <span className="sidebar-label">Running now</span>
-          </Link>
-          <Link
-            aria-current={activeUtility === "approvals" ? "page" : undefined}
-            className={activeUtility === "approvals" ? "nav-item nav-item--active" : "nav-item"}
-            title={collapsed ? "Approvals" : undefined}
-            to="/app/approvals"
-          >
-            <span aria-hidden="true" className="view-dot view-dot--amber" />
-            <span className="sidebar-label">Approvals</span>
-          </Link>
-        </div>
-
-        <div className="sidebar-footer">
-          <Link className="nav-item" title={collapsed ? "Help and docs" : undefined} to="/help">
-            <CircleHelp aria-hidden="true" size={17} />
-            <span className="sidebar-label">Help and docs</span>
-          </Link>
-          <Link className="nav-item" title={collapsed ? "Workspace settings" : undefined} to="/app/settings/workspace">
-            <Settings2 aria-hidden="true" size={17} />
-            <span className="sidebar-label">Workspace settings</span>
-          </Link>
-          <Link className="profile" title={collapsed ? "Maya Chen" : undefined} to="/app/profile/sessions">
-            <span aria-hidden="true" className="profile-avatar">MC</span>
-            <span className="sidebar-label"><strong>Maya Chen</strong><small>maya@northstar</small></span>
-            <ChevronDown className="sidebar-label" aria-hidden="true" size={14} />
-          </Link>
-        </div>
-      </aside>
-
-      <main className="main">
-        <header className="topbar">
-          <button
-            ref={menuButtonRef}
-            aria-controls="workspace-navigation"
-            aria-expanded={sidebarOpen}
-            aria-label="Open navigation"
-            className="icon-button mobile-only"
-            onClick={() => setSidebarOpen(true)}
-            type="button"
-          >
-            <Menu aria-hidden="true" size={19} />
-          </button>
-          <Link aria-label="Search workspace" className="command-search" to="/app/search">
-            <Search aria-hidden="true" size={16} />
-            <span>Find anything…</span>
-            <kbd><Command aria-hidden="true" size={12} /> K</kbd>
-          </Link>
-          <div className="top-actions">
-            <span className={connected ? "connection connection--live" : "connection"} role="status">
-              <i aria-hidden="true" />
-              {connected ? "Workspace connected" : "Connecting…"}
-            </span>
-            <Link aria-label="Notifications" className="icon-button" to="/app/notifications">
-              <Bell aria-hidden="true" size={18} />
+      <div className={`app-shell app-shell--activation${collapsed ? " app-shell--collapsed" : ""}`}>
+        <aside
+          aria-label="Workspace navigation"
+          className={sidebarOpen ? "sidebar sidebar--open" : "sidebar"}
+          id="workspace-navigation"
+        >
+          <div className="brand">
+            <Link aria-label="Knotline home" className="brand-home" to="/app/workflows">
+              <span className="brand-mark" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
+              <span className="sidebar-label">{msg("brand.name")}</span>
             </Link>
-            <Link className="primary-button" to="/app/workflows/new">
-              <Plus aria-hidden="true" size={16} /> New workflow
+            <button
+              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-pressed={collapsed}
+              className="sidebar-collapse"
+              onClick={() => setCollapsed((current) => !current)}
+              title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+              type="button"
+            >
+              {collapsed ? (
+                <PanelLeftOpen aria-hidden="true" />
+              ) : (
+                <PanelLeftClose aria-hidden="true" />
+              )}
+            </button>
+            <button
+              ref={closeButtonRef}
+              aria-label="Close navigation"
+              className="icon-button mobile-only"
+              onClick={closeMobileSidebar}
+              type="button"
+            >
+              ×
+            </button>
+          </div>
+
+          <Link
+            className="workspace-switcher"
+            title={
+              identity?.workspaces.find((item) => item.id === identity.activeWorkspaceId)?.name ??
+              "Workspace"
+            }
+            to="/app/settings/workspace"
+          >
+            <span aria-hidden="true" className="workspace-avatar">
+              {(identity?.workspaces.find((item) => item.id === identity.activeWorkspaceId)?.name ??
+                "Workspace")[0]?.toUpperCase()}
+            </span>
+            <span className="sidebar-label">
+              <strong>
+                {identity?.workspaces.find((item) => item.id === identity.activeWorkspaceId)
+                  ?.name ?? "Workspace"}
+              </strong>
+            </span>
+            <ChevronDown className="sidebar-label" aria-hidden="true" size={15} />
+          </Link>
+
+          <nav className="nav-list" aria-label="Workspace">
+            {primaryNavigation.map(({ label, icon: Icon, to, matches }) => {
+              const active = matches(location.pathname);
+              return (
+                <Link
+                  aria-current={active ? "page" : undefined}
+                  className={active ? "nav-item nav-item--active" : "nav-item"}
+                  key={label}
+                  onClick={closeMobileSidebar}
+                  title={collapsed ? label : undefined}
+                  to={to}
+                >
+                  <Icon aria-hidden="true" size={17} />
+                  <span className="sidebar-label">{label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="sidebar-section">
+            <span className="eyebrow sidebar-label">Saved views</span>
+            <Link
+              aria-current={activeUtility === "inbox" ? "page" : undefined}
+              className={activeUtility === "inbox" ? "nav-item nav-item--active" : "nav-item"}
+              title={collapsed ? "Needs attention" : undefined}
+              to="/app/inbox"
+            >
+              <span aria-hidden="true" className="view-dot view-dot--lime" />
+              <span className="sidebar-label">Needs attention</span>
+              <b className="sidebar-label">4</b>
+            </Link>
+            <Link
+              className="nav-item"
+              title={collapsed ? "Running now" : undefined}
+              to="/app/runs?status=running"
+            >
+              <span aria-hidden="true" className="view-dot view-dot--blue" />
+              <span className="sidebar-label">Running now</span>
+            </Link>
+            <Link
+              aria-current={activeUtility === "approvals" ? "page" : undefined}
+              className={activeUtility === "approvals" ? "nav-item nav-item--active" : "nav-item"}
+              title={collapsed ? "Approvals" : undefined}
+              to="/app/approvals"
+            >
+              <span aria-hidden="true" className="view-dot view-dot--amber" />
+              <span className="sidebar-label">Approvals</span>
             </Link>
           </div>
-        </header>
-        <div className={contentClassName}>{children}</div>
-      </main>
 
-      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
-        <Link aria-current={location.pathname.startsWith("/app/workflows") ? "page" : undefined} to="/app/workflows">
-          <Blocks aria-hidden="true" size={18} /> Workflows
-        </Link>
-        <Link aria-current={location.pathname.startsWith("/app/runs") ? "page" : undefined} to="/app/runs">
-          <Activity aria-hidden="true" size={18} /> Runs
-        </Link>
-        <Link aria-current={activeUtility ? "page" : undefined} to="/app/inbox">
-          <Bell aria-hidden="true" size={18} /> Inbox
-        </Link>
-      </nav>
+          <div className="sidebar-footer">
+            <Link className="nav-item" title={collapsed ? "Help and docs" : undefined} to="/help">
+              <CircleHelp aria-hidden="true" size={17} />
+              <span className="sidebar-label">Help and docs</span>
+            </Link>
+            <Link
+              className="nav-item"
+              title={collapsed ? "Workspace settings" : undefined}
+              to="/app/settings/workspace"
+            >
+              <Settings2 aria-hidden="true" size={17} />
+              <span className="sidebar-label">Workspace settings</span>
+            </Link>
+            <Link
+              className="profile"
+              title={collapsed ? (identity?.user.displayName ?? "Profile") : undefined}
+              to="/app/profile"
+            >
+              <span aria-hidden="true" className="profile-avatar">
+                {(identity?.user.displayName ?? "User")
+                  .split(/\s+/u)
+                  .slice(0, 2)
+                  .map((part) => part[0]?.toUpperCase())
+                  .join("")}
+              </span>
+              <span className="sidebar-label">
+                <strong>{identity?.user.displayName ?? "Your profile"}</strong>
+                <small>{identity?.user.email ?? "Account settings"}</small>
+              </span>
+              <ChevronDown className="sidebar-label" aria-hidden="true" size={14} />
+            </Link>
+          </div>
+        </aside>
+
+        <main className="main">
+          <header className="topbar">
+            <button
+              ref={menuButtonRef}
+              aria-controls="workspace-navigation"
+              aria-expanded={sidebarOpen}
+              aria-label="Open navigation"
+              className="icon-button mobile-only"
+              onClick={() => setSidebarOpen(true)}
+              type="button"
+            >
+              <Menu aria-hidden="true" size={19} />
+            </button>
+            <Link aria-label="Search workspace" className="command-search" to="/app/search">
+              <Search aria-hidden="true" size={16} />
+              <span>Find anything…</span>
+              <kbd>
+                <Command aria-hidden="true" size={12} /> K
+              </kbd>
+            </Link>
+            <div className="top-actions">
+              <span
+                className={connected ? "connection connection--live" : "connection"}
+                role="status"
+              >
+                <i aria-hidden="true" />
+                {connected ? "Workspace connected" : "Connecting…"}
+              </span>
+              <Link aria-label="Notifications" className="icon-button" to="/app/notifications">
+                <Bell aria-hidden="true" size={18} />
+              </Link>
+              <Link className="primary-button" to="/app/workflows/new">
+                <Plus aria-hidden="true" size={16} /> New workflow
+              </Link>
+            </div>
+          </header>
+          <div className={contentClassName}>{children}</div>
+        </main>
+
+        <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
+          <Link
+            aria-current={location.pathname.startsWith("/app/workflows") ? "page" : undefined}
+            to="/app/workflows"
+          >
+            <Blocks aria-hidden="true" size={18} /> Workflows
+          </Link>
+          <Link
+            aria-current={location.pathname.startsWith("/app/runs") ? "page" : undefined}
+            to="/app/runs"
+          >
+            <Activity aria-hidden="true" size={18} /> Runs
+          </Link>
+          <Link aria-current={activeUtility ? "page" : undefined} to="/app/inbox">
+            <Bell aria-hidden="true" size={18} /> Inbox
+          </Link>
+        </nav>
       </div>
     </WorkspaceShellContext.Provider>
   );

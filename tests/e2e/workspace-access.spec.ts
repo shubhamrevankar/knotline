@@ -18,7 +18,7 @@ test("workspace settings expose switching, preferences, sandbox labels, and crea
 test("members page supports invitations and guarded access actions", async ({ page }) => {
   await page.goto("/app/settings/members");
   await expect(page.getByRole("heading", { name: "People", exact: true })).toBeVisible();
-  await expect(page.getByText("Ava North")).toBeVisible();
+  await expect(page.getByText("Ava North (you)", { exact: true })).toBeVisible();
   await expect(page.getByText("Sam Rivers")).toBeVisible();
   await expect(page.getByRole("button", { name: "Transfer ownership" })).toBeVisible();
   await page.getByLabel("Work email").fill("new@northstar.example");

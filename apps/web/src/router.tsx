@@ -18,8 +18,6 @@ import {
   CheckEmailPage,
   GoogleCallbackPage,
   MagicCallbackPage,
-  ProfilePage,
-  SessionsPage,
   SignInPage
 } from "./AuthPages.js";
 import { msg } from "./i18n.js";
@@ -72,6 +70,14 @@ const MembersPage = lazy(async () => ({
 
 const OnboardingPage = lazy(async () => ({
   default: (await import("./M05OnboardingPage.js")).OnboardingPage
+}));
+
+const ProfilePage = lazy(async () => ({
+  default: (await import("./M04ProfilePages.js")).ProfilePage
+}));
+
+const SessionsPage = lazy(async () => ({
+  default: (await import("./M04ProfilePages.js")).SessionsPage
 }));
 
 const RolesPage = lazy(async () => ({
@@ -663,8 +669,22 @@ function CustomerRouteContent({ route }: { route: WebRouteManifestEntry }) {
         </Suspense>
       </AuthGate>
     );
-  if (route.id === "route.app.profile.sessions") return <SessionsPage />;
-  if (route.id === "route.app.profile") return <ProfilePage />;
+  if (route.id === "route.app.profile.sessions")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading session security" />}>
+          <SessionsPage />
+        </Suspense>
+      </AuthGate>
+    );
+  if (route.id === "route.app.profile")
+    return (
+      <AuthGate>
+        <Suspense fallback={<Skeleton label="Loading profile" />}>
+          <ProfilePage />
+        </Suspense>
+      </AuthGate>
+    );
   if (route.id === "route.app.onboarding")
     return (
       <Suspense fallback={<Skeleton label={msg("app.loading.workspace")} />}>

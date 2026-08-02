@@ -132,6 +132,9 @@
     align-items: stretch;
     flex-direction: column;
   }
+  .notification-actions {
+    flex-direction: column-reverse;
+  }
   .preference-layout {
     grid-template-columns: 1fr;
   }

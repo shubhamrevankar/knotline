@@ -52,6 +52,15 @@ export const test = base.extend<{ consoleMessages: string[] }>({
       let onboardingProfile: Record<string, unknown> = {};
       let onboardingRevision = 1;
       let onboardingCompletedAt: string | undefined;
+      let currentProfile = {
+        id: "20000000-0000-4000-8000-000000000001",
+        email: "ava@northstar.example",
+        displayName: "Ava North",
+        status: "active",
+        locale: "en",
+        timezone: "UTC"
+      };
+      let otherSessionActive = true;
       const demoRunId = "ca67b16d-049d-4019-b538-1f00c23be76b";
       const demoTaskId = "bf608083-2663-4759-a162-37ce5457220d";
       const unassignedTaskId = "e57ac45a-1756-4929-a90e-383523f92e27";
@@ -176,14 +185,7 @@ export const test = base.extend<{ consoleMessages: string[] }>({
         let body: unknown;
         if (pathname === "/v1/me/bootstrap") {
           body = {
-            user: {
-              id: "20000000-0000-4000-8000-000000000001",
-              email: "ava@northstar.example",
-              displayName: "Ava North",
-              status: "active",
-              locale: "en",
-              timezone: "UTC"
-            },
+            user: currentProfile,
             workspaces: [
               {
                 id: "10000000-0000-4000-8000-000000000001",
@@ -756,15 +758,12 @@ export const test = base.extend<{ consoleMessages: string[] }>({
             ]
           };
         } else if (pathname === "/v1/me") {
+          if (method === "PATCH") {
+            const next = route.request().postDataJSON() as Partial<typeof currentProfile>;
+            currentProfile = { ...currentProfile, ...next };
+          }
           body = {
-            data: {
-              id: "20000000-0000-4000-8000-000000000001",
-              email: "ava@northstar.example",
-              displayName: "Ava North",
-              status: "active",
-              locale: "en",
-              timezone: "UTC"
-            }
+            data: currentProfile
           };
         } else if (pathname === "/edge/v1/auth/magic-links") {
           body = { accepted: true };
@@ -787,6 +786,13 @@ export const test = base.extend<{ consoleMessages: string[] }>({
             }
           });
           return;
+        } else if (pathname === "/v1/auth/sessions/revoke-others") {
+          const revoked = otherSessionActive ? 1 : 0;
+          otherSessionActive = false;
+          body = { revoked };
+        } else if (pathname === "/v1/auth/sessions/30000000-0000-4000-8000-000000000002") {
+          otherSessionActive = false;
+          body = undefined;
         } else if (pathname === "/v1/auth/sessions") {
           body = {
             data: [
@@ -798,7 +804,20 @@ export const test = base.extend<{ consoleMessages: string[] }>({
                 lastUsedAt: "2026-07-31T00:05:00.000Z",
                 idleExpiresAt: "2026-07-31T12:05:00.000Z",
                 absoluteExpiresAt: "2026-08-30T00:00:00.000Z"
-              }
+              },
+              ...(otherSessionActive
+                ? [
+                    {
+                      id: "30000000-0000-4000-8000-000000000002",
+                      current: false,
+                      deviceSummary: "Safari on MacBook Pro",
+                      issuedAt: "2026-07-30T08:00:00.000Z",
+                      lastUsedAt: "2026-07-30T12:05:00.000Z",
+                      idleExpiresAt: "2026-07-31T00:05:00.000Z",
+                      absoluteExpiresAt: "2026-08-29T08:00:00.000Z"
+                    }
+                  ]
+                : [])
             ]
           };
         } else {

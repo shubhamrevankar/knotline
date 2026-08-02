@@ -8,6 +8,9 @@ import "./styles.css";
 import { AppRouter } from "./router.js";
 import { AppErrorBoundary } from "./AppErrorBoundary.js";
 import { mayRetry } from "./query/errors.js";
+import { applyInterfacePreferences, readInterfacePreferences } from "./profilePreferences.js";
+
+applyInterfacePreferences(readInterfacePreferences());
 
 if ("serviceWorker" in navigator && import.meta.env.PROD)
   window.addEventListener("load", () => void navigator.serviceWorker.register("/sw.js"));

@@ -14,6 +14,7 @@ import {
   type MemoryRecordView
 } from "./api.js";
 import { msg } from "./i18n.js";
+import { ProfileShell } from "./M04ProfilePages.js";
 import "./M17Pages.css";
 
 export function ProfileMemoryPage() {
@@ -28,119 +29,121 @@ export function ProfileMemoryPage() {
   useEffect(() => void load(), [load]);
   if (!records) return <Skeleton label={msg("memory.private.loading")} />;
   return (
-    <main className="memory-page">
-      <header>
-        <Badge tone="accent">{msg("memory.private.badge")}</Badge>
-        <h1>{msg("memory.private.heading")}</h1>
-        <p>{msg("memory.private.body")}</p>
-      </header>
-      <div className="memory-toolbar">
-        <label>
-          <span>{msg("memory.search")}</span>
-          <input value={query} onChange={(event) => setQuery(event.currentTarget.value)} />
-        </label>
-        <Button
-          onClick={() =>
-            void exportMyMemory().then((items) => {
-              setNotice(msg("memory.export.notice", { count: items.length }));
-            })
-          }
-        >
-          {msg("memory.export")}
-        </Button>
-      </div>
-      {records.length === 0 ? (
-        <EmptyState title={msg("memory.private.empty")}>
-          <p>{msg("memory.private.empty.body")}</p>
-        </EmptyState>
-      ) : (
-        <div className="memory-grid">
-          <section aria-label={msg("memory.records")}>
-            {records.map((record) => (
-              <button
-                type="button"
-                className="memory-row"
-                key={record.id}
-                onClick={() => void fetchMyMemoryRecord(record.id).then(setSelected)}
-              >
-                <strong>{record.purpose}</strong>
-                <span>{record.subject_id}</span>
-                <Badge tone={record.state === "active" ? "accent" : "warning"}>
-                  {record.state}
-                </Badge>
-              </button>
-            ))}
-          </section>
-          <Card>
-            {selected ? (
-              <>
-                <h2>{msg("memory.provenance")}</h2>
-                <dl>
-                  <dt>{msg("memory.purpose")}</dt>
-                  <dd>{selected.purpose}</dd>
-                  <dt>{msg("memory.sensitivity")}</dt>
-                  <dd>{selected.sensitivity}</dd>
-                  <dt>{msg("memory.retention")}</dt>
-                  <dd>{selected.retention_expires_at ?? msg("memory.retention.default")}</dd>
-                  <dt>{msg("memory.value.hash")}</dt>
-                  <dd className="mono">{selected.value_hash}</dd>
-                </dl>
-                <details>
-                  <summary>{msg("memory.current.value")}</summary>
-                  <pre>{JSON.stringify(selected.value, null, 2)}</pre>
-                </details>
-                <Button
-                  onClick={() =>
-                    void correctMyMemoryRecord(selected.id, {
-                      expectedVersion: selected.current_version,
-                      value: selected.value,
-                      reason: "User-confirmed correction"
-                    }).then(async ({ version }) => {
-                      setNotice(msg("memory.correct.notice", { version }));
-                      await load();
-                    })
-                  }
-                >
-                  {msg("memory.correct")}
-                </Button>
-                <Button
-                  onClick={() =>
-                    void correctMyMemoryRecord(selected.id, {
-                      expectedVersion: selected.current_version,
-                      value: selected.value,
-                      reason: "User-approved scope change",
-                      scope: "workspace_shared"
-                    }).then(async ({ version }) => {
-                      setSelected(undefined);
-                      setNotice(msg("memory.scope.notice", { version }));
-                      await load();
-                    })
-                  }
-                >
-                  {msg("memory.scope.shared")}
-                </Button>
-                <Button
-                  tone="danger"
-                  onClick={() => {
-                    if (!globalThis.confirm(msg("memory.delete.confirm"))) return;
-                    void deleteMyMemoryRecord(selected.id).then(async () => {
-                      setSelected(undefined);
-                      setNotice(msg("memory.delete.notice"));
-                      await load();
-                    });
-                  }}
-                >
-                  {msg("memory.delete")}
-                </Button>
-              </>
-            ) : (
-              <p>{msg("memory.select")}</p>
-            )}
-          </Card>
+    <ProfileShell>
+      <main className="memory-page">
+        <header>
+          <Badge tone="accent">{msg("memory.private.badge")}</Badge>
+          <h1>{msg("memory.private.heading")}</h1>
+          <p>{msg("memory.private.body")}</p>
+        </header>
+        <div className="memory-toolbar">
+          <label>
+            <span>{msg("memory.search")}</span>
+            <input value={query} onChange={(event) => setQuery(event.currentTarget.value)} />
+          </label>
+          <Button
+            onClick={() =>
+              void exportMyMemory().then((items) => {
+                setNotice(msg("memory.export.notice", { count: items.length }));
+              })
+            }
+          >
+            {msg("memory.export")}
+          </Button>
         </div>
-      )}
-      <p aria-live="polite">{notice}</p>
-    </main>
+        {records.length === 0 ? (
+          <EmptyState title={msg("memory.private.empty")}>
+            <p>{msg("memory.private.empty.body")}</p>
+          </EmptyState>
+        ) : (
+          <div className="memory-grid">
+            <section aria-label={msg("memory.records")}>
+              {records.map((record) => (
+                <button
+                  type="button"
+                  className="memory-row"
+                  key={record.id}
+                  onClick={() => void fetchMyMemoryRecord(record.id).then(setSelected)}
+                >
+                  <strong>{record.purpose}</strong>
+                  <span>{record.subject_id}</span>
+                  <Badge tone={record.state === "active" ? "accent" : "warning"}>
+                    {record.state}
+                  </Badge>
+                </button>
+              ))}
+            </section>
+            <Card>
+              {selected ? (
+                <>
+                  <h2>{msg("memory.provenance")}</h2>
+                  <dl>
+                    <dt>{msg("memory.purpose")}</dt>
+                    <dd>{selected.purpose}</dd>
+                    <dt>{msg("memory.sensitivity")}</dt>
+                    <dd>{selected.sensitivity}</dd>
+                    <dt>{msg("memory.retention")}</dt>
+                    <dd>{selected.retention_expires_at ?? msg("memory.retention.default")}</dd>
+                    <dt>{msg("memory.value.hash")}</dt>
+                    <dd className="mono">{selected.value_hash}</dd>
+                  </dl>
+                  <details>
+                    <summary>{msg("memory.current.value")}</summary>
+                    <pre>{JSON.stringify(selected.value, null, 2)}</pre>
+                  </details>
+                  <Button
+                    onClick={() =>
+                      void correctMyMemoryRecord(selected.id, {
+                        expectedVersion: selected.current_version,
+                        value: selected.value,
+                        reason: "User-confirmed correction"
+                      }).then(async ({ version }) => {
+                        setNotice(msg("memory.correct.notice", { version }));
+                        await load();
+                      })
+                    }
+                  >
+                    {msg("memory.correct")}
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      void correctMyMemoryRecord(selected.id, {
+                        expectedVersion: selected.current_version,
+                        value: selected.value,
+                        reason: "User-approved scope change",
+                        scope: "workspace_shared"
+                      }).then(async ({ version }) => {
+                        setSelected(undefined);
+                        setNotice(msg("memory.scope.notice", { version }));
+                        await load();
+                      })
+                    }
+                  >
+                    {msg("memory.scope.shared")}
+                  </Button>
+                  <Button
+                    tone="danger"
+                    onClick={() => {
+                      if (!globalThis.confirm(msg("memory.delete.confirm"))) return;
+                      void deleteMyMemoryRecord(selected.id).then(async () => {
+                        setSelected(undefined);
+                        setNotice(msg("memory.delete.notice"));
+                        await load();
+                      });
+                    }}
+                  >
+                    {msg("memory.delete")}
+                  </Button>
+                </>
+              ) : (
+                <p>{msg("memory.select")}</p>
+              )}
+            </Card>
+          </div>
+        )}
+        <p aria-live="polite">{notice}</p>
+      </main>
+    </ProfileShell>
   );
 }
 

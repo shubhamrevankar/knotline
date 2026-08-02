@@ -37,20 +37,51 @@ test("Google sandbox flow exchanges a browser-bound result and lands cleanly", a
 
 test("session inventory is usable on desktop and mobile", async ({ page }) => {
   await page.goto("/app/profile/sessions");
-  await expect(page.getByRole("heading", { name: "Active sessions" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sessions & security" })).toBeVisible();
   await expect(page.getByText("Chromium on local test device")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Revoke other sessions" })).toBeVisible();
+  await expect(page.getByText("Safari on MacBook Pro")).toBeVisible();
+  await page.getByRole("button", { name: "Revoke", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Confirm revoke" })).toBeVisible();
+  await page.getByRole("button", { name: "Confirm revoke" }).click();
+  await expect(page.getByText("Safari on MacBook Pro has been signed out.")).toBeVisible();
+  await expect(page.getByText("Safari on MacBook Pro", { exact: true })).toHaveCount(0);
+});
+
+test("session security supports bulk revocation and an intentional current-device sign out", async ({
+  page
+}) => {
+  await page.goto("/app/profile/sessions");
+  await page.getByRole("button", { name: "Sign out all other sessions" }).click();
+  await expect(page.getByText("Sign out 1 other session?")).toBeVisible();
+  await page.getByRole("button", { name: "Confirm" }).click();
+  await expect(page.getByText("1 other session signed out.")).toBeVisible();
+  await expect(page.getByText("Chromium on local test device")).toBeVisible();
+
+  await page.getByRole("button", { name: "Sign out", exact: true }).click();
+  await expect(page.getByText("Sign out of this device?")).toBeVisible();
+  await page.getByRole("button", { name: "Yes, sign out" }).click();
+  await expect(page).toHaveURL("/auth/sign-in");
+  await expect(page.getByRole("heading", { name: "Sign in to Knotline" })).toBeVisible();
 });
 
 test("profile preferences load and save without exposing identity credentials", async ({
   page
 }) => {
   await page.goto("/app/profile");
-  await expect(page.getByRole("heading", { name: "Profile preferences" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Ava North" })).toBeVisible();
   await page.getByLabel("Display name").fill("Ava Northstar");
-  await page.getByRole("button", { name: "Save preferences" }).click();
-  await expect(page.getByRole("status")).toContainText("Profile preferences saved");
-  await expect(page.getByLabel("Verified email")).toBeDisabled();
+  await page.getByLabel("Timezone").fill("Asia/Kolkata");
+  await expect(page.getByText("Unsaved changes")).toBeVisible();
+  await page.getByRole("button", { name: "Save changes" }).click();
+  await expect(page.getByText("Your profile has been updated.")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Ava Northstar" })).toBeVisible();
+  await expect(page.getByLabel("Email address")).toHaveAttribute("readonly", "");
+  await page.getByRole("button", { name: "High contrast Stronger boundaries" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-contrast", "high");
+  await page.reload();
+  await expect(page.getByLabel("Display name")).toHaveValue("Ava Northstar");
+  await expect(page.getByLabel("Timezone")).toHaveValue("Asia/Kolkata");
+  await expect(page.locator("html")).toHaveAttribute("data-contrast", "high");
 });
 
 test("an XSS fixture cannot read an HttpOnly session credential", async ({ page, context }) => {
