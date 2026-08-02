@@ -2,14 +2,14 @@
 
 ## Master idea
 
-The Knotline symbol is a **threaded K**. A stable vertical stroke represents the accountable operating line. A second, continuous stroke leaves that line, forms the upper and lower arms of the K, and returns through the center.
+The Knotline symbol is a **handoff knot**. Two opposing routes wrap around one protected center, pass beyond one another, and remain open to the wider operating environment.
 
 The shape is intentionally tied to the product rather than to generic “AI” imagery:
 
-- the stable line represents one shared operational state;
-- the returning thread represents a workflow that can branch, recover, and close the loop;
-- the central join represents a governed handoff between people, agents, and systems;
-- the silhouette reads as the initial **K** without relying on the wordmark.
+- the opposing routes represent people and governed agents moving with equal clarity;
+- the protected center represents the shared operational state and accountable decision point;
+- the rounded turns represent controlled handoffs without loss of context;
+- the open ends show that Knotline coordinates systems rather than enclosing or replacing them.
 
 The mark replaces the previous three-diamond public symbol and three-loop workspace symbol. Knotline now has one identity across every surface.
 
