@@ -134,6 +134,12 @@ async function installFoundryApi(page: Page) {
         findings: [],
         output: { summary: "Deterministic fixture output" }
       };
+    } else if (url.pathname.endsWith("/validations")) {
+      data = { findings: [] };
+    } else if (url.pathname.endsWith("/disables")) {
+      data = { state: "disabled" };
+    } else if (url.pathname.endsWith("/enables")) {
+      data = { state: "active" };
     } else if (url.pathname.endsWith("/forks")) {
       status = 201;
       data = { id: "a1400000-0000-4000-8000-000000000002" };
@@ -185,12 +191,30 @@ test("@a11y builder creates, configures, safely previews, publishes, and forks a
   await expect(page.getByText("SIMULATED").last()).toBeVisible();
   await expect(page.getByText(/<data name="request">/u)).toBeVisible();
   await page.getByRole("button", { name: "Publish version" }).click();
+  await page.getByLabel("What changed?").fill("Add a governed record tool");
+  await page.getByRole("button", { name: "Publish version" }).last().click();
   await expect(page.getByText(/Immutable version 1 published/u)).toBeVisible();
 
   const results = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
     .analyze();
   expect(results.violations).toEqual([]);
+});
+
+test("agent lifecycle supports metadata edits, validation, disable, enable, and guarded archive", async ({
+  page
+}) => {
+  await installFoundryApi(page);
+  await page.goto(`/app/agents/${agentId}/builder`);
+  await page.getByRole("button", { name: "General" }).click();
+  await page.getByLabel("Name").fill("Operations response advisor");
+  await page.getByLabel("Tags").fill("operations, response");
+  await page.getByRole("button", { name: "Save draft" }).click();
+  await expect(page.getByText(/Draft revision 2 saved/u)).toBeVisible();
+  await page.getByRole("button", { name: "Validate draft" }).click();
+  await expect(page.getByText(/Validation passed/u)).toBeVisible();
+  await page.goto(`/app/agents/${agentId}`);
+  await expect(page.getByRole("button", { name: "Archive" })).toBeVisible();
 });
 
 test("agent creation and catalog remain usable at 320 pixels", async ({ page }) => {

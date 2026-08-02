@@ -1173,6 +1173,30 @@ const AGENT_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
         200
       ],
       [
+        "POST",
+        "/v1/agents/{agentId}/validations",
+        "validateAgentDraft",
+        "Validate the current editable agent draft",
+        undefined,
+        200
+      ],
+      [
+        "POST",
+        "/v1/agents/{agentId}/disables",
+        "disableAgent",
+        "Disable a published agent without deleting its history",
+        undefined,
+        200
+      ],
+      [
+        "POST",
+        "/v1/agents/{agentId}/enables",
+        "enableAgent",
+        "Enable a previously disabled published agent",
+        undefined,
+        200
+      ],
+      [
         "DELETE",
         "/v1/agents/{agentId}",
         "archiveAgent",

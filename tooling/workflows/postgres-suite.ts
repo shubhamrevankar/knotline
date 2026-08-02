@@ -341,6 +341,10 @@ async function runSuite(pool: DatabasePool) {
     "Clarify uncertainty"
   );
   assert(secondAgentVersion.version === 2, "Agent version two was not published");
+  const disabledAgent = await agentRepository.setEnabled(contextA, agent.id, false);
+  assert(disabledAgent.state === "disabled", "Published agent was not disabled");
+  const enabledAgent = await agentRepository.setEnabled(contextA, agent.id, true);
+  assert(enabledAgent.state === "active", "Disabled agent was not re-enabled");
   const executionId = randomUUID();
   const manifestId = randomUUID();
   const agentExecutionRequest = {
@@ -1312,6 +1316,17 @@ async function runSuite(pool: DatabasePool) {
   );
   const unsafeArchive = await Promise.allSettled([agentRepository.archive(contextA, agent.id)]);
   assert(unsafeArchive[0]?.status === "rejected", "Referenced agent was destructively archived");
+  await agentRepository.archive(contextA, forked.id);
+  assert(
+    !(await agentRepository.list(contextA)).some(({ id }) => id === forked.id),
+    "Archived agent remained in the current catalog"
+  );
+  assert(
+    (await agentRepository.list(contextA, { state: "archived" })).some(
+      ({ id }) => id === forked.id
+    ),
+    "Archived agent was not available through the archive filter"
+  );
   await withTenantTransaction(pool, contextA, async (client) => {
     await client.query(
       `INSERT INTO model_providers(workspace_id,provider_key,endpoint_class,region,state)

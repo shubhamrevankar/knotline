@@ -52,6 +52,7 @@ export interface AgentRepository {
     version: number,
     name: string
   ): Promise<{ id: string }>;
+  setEnabled(context: TenantContext, agentId: string, enabled: boolean): Promise<{ state: string }>;
   archive(context: TenantContext, agentId: string): Promise<void>;
 }
 
@@ -76,7 +77,7 @@ export class PostgresAgentRepository implements AgentRepository {
         (
           await client.query<Record<string, unknown>>(
             `SELECT agent.id,agent.stable_key,agent.name,agent.description,agent.owner_id,agent.visibility,
-            agent.state,agent.current_version,agent.updated_at,
+            agent.state,agent.current_version,agent.updated_at,(agent.owner_id=$2) can_manage,
             coalesce(array_agg(DISTINCT tag.display_name) FILTER (WHERE tag.id IS NOT NULL),'{}') tags,
             coalesce((SELECT count(*) FROM agent_version_references reference WHERE reference.workspace_id=agent.workspace_id AND reference.agent_id=agent.id),0)::integer usage_references,
             channel.version stable_version
@@ -86,7 +87,8 @@ export class PostgresAgentRepository implements AgentRepository {
            LEFT JOIN agent_release_channels channel ON channel.workspace_id=agent.workspace_id AND channel.agent_id=agent.id AND channel.channel='stable'
            WHERE agent.workspace_id=$1 AND (agent.visibility='workspace' OR agent.owner_id=$2)
              AND ($3='' OR agent.name ILIKE '%'||$3||'%' OR agent.description ILIKE '%'||$3||'%')
-             AND ($4::text IS NULL OR agent.state=$4) AND ($5::text IS NULL OR agent.visibility=$5)
+             AND (($4::text IS NULL AND agent.state<>'archived') OR agent.state=$4)
+             AND ($5::text IS NULL OR agent.visibility=$5)
              AND ($6='' OR EXISTS(SELECT 1 FROM agent_tag_assignments a JOIN agent_tags t ON t.workspace_id=a.workspace_id AND t.id=a.tag_id WHERE a.workspace_id=agent.workspace_id AND a.agent_id=agent.id AND t.normalized_name=$6))
            GROUP BY agent.workspace_id,agent.id,channel.version ORDER BY agent.updated_at DESC,agent.id LIMIT 100`,
             [context.workspaceId, context.principalId, search, state, visibility, tag]
@@ -102,7 +104,7 @@ export class PostgresAgentRepository implements AgentRepository {
       async (client) =>
         (
           await client.query<Record<string, unknown>>(
-            `SELECT agent.*,draft.revision,draft.definition,draft.content_hash,draft.validation_findings,
+            `SELECT agent.*,(agent.owner_id=$3) can_manage,draft.revision,draft.definition,draft.content_hash,draft.validation_findings,
             coalesce((SELECT jsonb_agg(channel ORDER BY channel.channel) FROM agent_release_channels channel WHERE channel.workspace_id=agent.workspace_id AND channel.agent_id=agent.id),'[]'::jsonb) release_channels,
             coalesce((SELECT jsonb_agg(activity ORDER BY activity.sequence DESC) FROM (SELECT * FROM agent_activity_events event WHERE event.workspace_id=agent.workspace_id AND event.agent_id=agent.id ORDER BY sequence DESC LIMIT 50) activity),'[]'::jsonb) activity
            FROM agent_definitions agent LEFT JOIN agent_drafts draft ON draft.workspace_id=agent.workspace_id AND draft.agent_id=agent.id
@@ -386,6 +388,24 @@ export class PostgresAgentRepository implements AgentRepository {
     return { id: created.id };
   }
 
+  async setEnabled(context: TenantContext, agentId: string, enabled: boolean) {
+    return withTenantTransaction(this.pool, context, async (client) => {
+      await this.requireOwner(client, context, agentId);
+      const result = await client.query<{ state: string }>(
+        `UPDATE agent_definitions
+         SET state=CASE WHEN $3 THEN 'active' ELSE 'disabled' END,updated_at=clock_timestamp()
+         WHERE workspace_id=$1 AND id=$2 AND ($3=false OR current_version IS NOT NULL)
+         RETURNING state`,
+        [context.workspaceId, agentId, enabled]
+      );
+      if (!result.rows[0]) throw new HumanTaskConflictError("AGENT_VERSION_REQUIRED");
+      const eventType = enabled ? "agent.enabled" : "agent.disabled";
+      await this.event(client, context, agentId, eventType, {});
+      await this.audit(client, context, agentId, eventType, {});
+      return { state: result.rows[0].state };
+    });
+  }
+
   async archive(context: TenantContext, agentId: string) {
     return withTenantTransaction(this.pool, context, async (client) => {
       await this.requireOwner(client, context, agentId);
@@ -399,6 +419,7 @@ export class PostgresAgentRepository implements AgentRepository {
         [context.workspaceId, agentId]
       );
       await this.event(client, context, agentId, "agent.archived", {});
+      await this.audit(client, context, agentId, "agent.archived", {});
     });
   }
 

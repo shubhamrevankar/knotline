@@ -212,6 +212,14 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
       [SEED.workspaceA, SEED.agent, agentDefinition, contentHash(agentDefinition), SEED.userA]
     );
     await client.query(
+      `INSERT INTO agent_drafts(
+       workspace_id,agent_id,revision,definition,content_hash,validation_findings,updated_by
+       ) VALUES
+       ($1,$2,1,$3,$4,'[]'::jsonb,$5)
+       ON CONFLICT (workspace_id,agent_id) DO NOTHING`,
+      [SEED.workspaceA, SEED.agent, agentDefinition, contentHash(agentDefinition), SEED.userA]
+    );
+    await client.query(
       `INSERT INTO workflow_versions(
          workspace_id, workflow_id, version, state, definition, content_hash, published_at
        ) VALUES

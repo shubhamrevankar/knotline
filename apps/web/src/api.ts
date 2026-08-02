@@ -504,6 +504,8 @@ export interface AgentSummary {
   readonly stable_version?: number;
   readonly tags: readonly string[];
   readonly usage_references: number;
+  readonly owner_id?: string;
+  readonly can_manage?: boolean;
 }
 
 export interface AgentDetail extends AgentSummary {
@@ -519,10 +521,17 @@ export interface AgentDetail extends AgentSummary {
   readonly activity: readonly Readonly<Record<string, unknown>>[];
 }
 
-export const fetchAgents = async (search = "") =>
+export const fetchAgents = async (
+  search = "",
+  filters: { readonly state?: string; readonly visibility?: string } = {}
+) =>
   (
     await request<{ readonly data: readonly AgentSummary[] }>(
-      `/v1/workspaces/${workspaceId}/agents?search=${encodeURIComponent(search)}`
+      `/v1/workspaces/${workspaceId}/agents?${new URLSearchParams({
+        search,
+        ...(filters.state ? { state: filters.state } : {}),
+        ...(filters.visibility ? { visibility: filters.visibility } : {})
+      }).toString()}`
     )
   ).data;
 
@@ -549,6 +558,13 @@ export const saveAgentDraft = async (
       "PATCH",
       { expectedRevision, definition }
     )
+  ).data;
+
+export const validateAgentDraft = async (agentId: string) =>
+  (
+    await mutate<{
+      readonly data: { readonly findings: AgentDetail["validation_findings"] };
+    }>(`/v1/agents/${encodeURIComponent(agentId)}/validations`, "POST")
   ).data;
 
 export const publishAgent = async (
@@ -584,6 +600,17 @@ export const forkAgent = async (agentId: string, version: number, name: string) 
       { version, name }
     )
   ).data;
+
+export const setAgentEnabled = async (agentId: string, enabled: boolean) =>
+  (
+    await mutate<{ readonly data: { readonly state: string } }>(
+      `/v1/agents/${encodeURIComponent(agentId)}/${enabled ? "enables" : "disables"}`,
+      "POST"
+    )
+  ).data;
+
+export const archiveAgent = (agentId: string) =>
+  mutate<void>(`/v1/agents/${encodeURIComponent(agentId)}`, "DELETE");
 
 export const fetchAgentVersions = async (agentId: string) =>
   (

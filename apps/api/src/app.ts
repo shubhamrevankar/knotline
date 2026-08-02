@@ -2303,6 +2303,11 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     const { agentId } = agentParams.parse(request.params);
     return { data: await agentRepository().saveDraft(context, agentId, request.body) };
   });
+  app.post("/v1/agents/:agentId/validations", async (request) => {
+    const context = await agentAccess(request, true);
+    const { agentId } = agentParams.parse(request.params);
+    return { data: await agentRepository().validate(context, agentId) };
+  });
   app.get("/v1/agents/:agentId/versions", async (request) => {
     const context = await agentAccess(request);
     const { agentId } = agentParams.parse(request.params);
@@ -2373,6 +2378,16 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     return reply
       .code(201)
       .send({ data: await agentRepository().fork(context, agentId, body.version, body.name) });
+  });
+  app.post("/v1/agents/:agentId/disables", async (request) => {
+    const context = await agentAccess(request, true);
+    const { agentId } = agentParams.parse(request.params);
+    return { data: await agentRepository().setEnabled(context, agentId, false) };
+  });
+  app.post("/v1/agents/:agentId/enables", async (request) => {
+    const context = await agentAccess(request, true);
+    const { agentId } = agentParams.parse(request.params);
+    return { data: await agentRepository().setEnabled(context, agentId, true) };
   });
   app.delete("/v1/agents/:agentId", async (request, reply) => {
     const context = await agentAccess(request, true);
@@ -4493,15 +4508,37 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   });
 
   app.setErrorHandler((error, request, reply) => {
-    if (error instanceof HumanTaskConflictError)
-      return reply
-        .code(409)
-        .send({ error: { code: "TASK_CONFLICT", message: error.message, requestId: request.id } });
+    if (error instanceof HumanTaskConflictError) {
+      const agentConflicts: Record<string, string> = {
+        AGENT_HAS_ACTIVE_REFERENCES:
+          "This agent is still used by a workflow or template. Remove those references before archiving it.",
+        AGENT_VERSION_REQUIRED: "Publish a version before enabling this agent.",
+        STALE_AGENT_DRAFT:
+          "This draft changed in another session. Reload it before saving or publishing."
+      };
+      const code = error.message.startsWith("AGENT_VALIDATION_FAILED")
+        ? "AGENT_VALIDATION_FAILED"
+        : error.message;
+      return reply.code(409).send({
+        error: {
+          code,
+          message:
+            agentConflicts[code] ??
+            (code === "AGENT_VALIDATION_FAILED"
+              ? "Resolve the draft validation findings before publishing."
+              : error.message),
+          requestId: request.id
+        }
+      });
+    }
     if (error instanceof HumanTaskAuthorizationError)
       return reply.code(403).send({
         error: {
-          code: "TASK_FORBIDDEN",
-          message: "The task cannot be changed by this identity.",
+          code: error.message === "AGENT_OWNER_REQUIRED" ? error.message : "TASK_FORBIDDEN",
+          message:
+            error.message === "AGENT_OWNER_REQUIRED"
+              ? "Only this agent's owner can change its configuration or lifecycle."
+              : "The task cannot be changed by this identity.",
           requestId: request.id
         }
       });
