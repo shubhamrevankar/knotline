@@ -12,6 +12,7 @@ const completeApprovalSignal = defineSignal<[string, string]>("completeApproval"
 const {
   recordRunTransition,
   executeSyntheticTask,
+  executeConnectorTask,
   executeGovernedAgent,
   recordTaskFailure,
   consumeApproval,
@@ -114,6 +115,7 @@ export async function durableWorkflowRun(input: DurableRunInput) {
           await sleep(Math.min(Number(node.configuration.delayMs ?? 1), 86_400_000));
           await executeSyntheticTask({ ...input, node });
         } else if (node.kind === "agent") await executeGovernedAgent({ ...input, node });
+        else if (node.kind === "integration_action") await executeConnectorTask({ ...input, node });
         else await executeSyntheticTask({ ...input, node });
         complete.add(node.key);
         activeNodeKey = undefined;

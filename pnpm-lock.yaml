@@ -320,6 +320,9 @@ importers:
       '@knotline/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@knotline/connector-sdk':
+        specifier: workspace:*
+        version: link:../../packages/connector-sdk
       '@knotline/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -460,6 +463,9 @@ importers:
       '@knotline/agent-runtime':
         specifier: workspace:*
         version: link:../../packages/agent-runtime
+      '@knotline/connector-sdk':
+        specifier: workspace:*
+        version: link:../../packages/connector-sdk
       '@knotline/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts

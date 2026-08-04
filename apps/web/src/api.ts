@@ -1676,6 +1676,11 @@ export interface ConnectionSummary {
   readonly objectCount: number;
   readonly errorCount: number;
   readonly errorSummary?: Readonly<Record<string, unknown>>;
+  readonly endpoint?: string;
+  readonly method?: string;
+  readonly authorizationConfigured?: boolean;
+  readonly healthCheckedAt?: string;
+  readonly healthLatencyMs?: number;
 }
 export interface ConnectorCatalogItem {
   readonly id: string;
@@ -1728,7 +1733,12 @@ export const fetchConnections = async (workspace?: string) =>
 export const fetchConnection = async (id: string) =>
   (
     await request<
-      ApiEnvelope<ConnectionSummary & { runs: readonly Readonly<Record<string, unknown>>[] }>
+      ApiEnvelope<
+        ConnectionSummary & {
+          runs: readonly Readonly<Record<string, unknown>>[];
+          receipts: readonly Readonly<Record<string, unknown>>[];
+        }
+      >
     >(`/v1/connections/${id}`)
   ).data;
 export const fetchConnectionSources = async (id: string) =>
@@ -1760,6 +1770,23 @@ export const startConnectionAuthorization = async (input: Readonly<Record<string
       `/v1/workspaces/${workspaceId}/connection-authorizations`,
       "POST",
       input
+    )
+  ).data;
+export const createHttpConnection = async (input: Readonly<Record<string, unknown>>) =>
+  (
+    await mutate<
+      ApiEnvelope<{
+        connectionId: string;
+        test: Readonly<Record<string, unknown>>;
+      }>
+    >(`/v1/workspaces/${workspaceId}/http-connections`, "POST", input)
+  ).data;
+export const testHttpConnection = async (id: string) =>
+  (
+    await mutate<ApiEnvelope<Readonly<Record<string, unknown>>>>(
+      `/v1/connections/${encodeURIComponent(id)}/tests`,
+      "POST",
+      {}
     )
   ).data;
 export const requestConnectionSync = async (id: string, mode = "incremental") =>

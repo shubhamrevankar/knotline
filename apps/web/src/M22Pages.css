@@ -119,6 +119,32 @@
 .provider-limitation {
   color: var(--color-text-muted);
 }
+.live-http-form,
+.live-http-form label,
+.receipt-list {
+  display: grid;
+  gap: 0.75rem;
+}
+.live-http-target {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.25fr) minmax(0, 1fr);
+  gap: 0.75rem;
+}
+.live-http-form input,
+.live-http-form select {
+  width: 100%;
+}
+.connection-test-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.8rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-success, #1f7a5a) 8%, transparent);
+}
+.connection-endpoint {
+  overflow-wrap: anywhere;
+}
 @media (max-width: 640px) {
   .connection-shell {
     padding: 24px 14px 5rem;
@@ -130,7 +156,8 @@
     grid-template-columns: 1fr;
   }
   .provider-sources fieldset,
-  .source-rules {
+  .source-rules,
+  .live-http-target {
     grid-template-columns: 1fr;
   }
 }

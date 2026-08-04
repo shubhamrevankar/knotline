@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@knotline/agent-runtime": "workspace:*",
+    "@knotline/connector-sdk": "workspace:*",
     "@knotline/contracts": "workspace:*",
     "@knotline/db": "workspace:*",
     "@temporalio/activity": "1.21.1",

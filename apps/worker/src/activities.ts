@@ -2,6 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 
 import { Context, activityInfo } from "@temporalio/activity";
 import { GovernedAgentRuntime, type AgentModelStep } from "@knotline/agent-runtime";
+import { executeLiveHttpRequest } from "@knotline/connector-sdk";
 import {
   agentDefinitionSchema,
   generationResultSchema,
@@ -18,6 +19,7 @@ import {
   PostgresAgentRepository,
   PostgresAgentExecutionRepository,
   PostgresApprovalRepository,
+  PostgresConnectorRepository,
   PostgresMemoryRepository,
   PostgresRuntimeRepository
 } from "@knotline/db";
@@ -33,6 +35,10 @@ const approvals = pool ? new PostgresApprovalRepository(pool) : undefined;
 const agents = pool ? new PostgresAgentRepository(pool) : undefined;
 const agentExecutions = pool ? new PostgresAgentExecutionRepository(pool) : undefined;
 const memories = pool ? new PostgresMemoryRepository(pool) : undefined;
+const connectorKey = process.env.CONNECTOR_STATE_SIGNING_KEY
+  ? Buffer.from(process.env.CONNECTOR_STATE_SIGNING_KEY, "base64")
+  : createHash("sha256").update("knotline-local-connector-state").digest();
+const connectors = pool ? new PostgresConnectorRepository(pool, connectorKey) : undefined;
 
 type TransformScope = {
   readonly input: Record<string, unknown>;
@@ -334,6 +340,96 @@ export async function executeSyntheticTask(
     result.output
   );
   return result;
+}
+
+export async function executeConnectorTask(
+  input: DurableRunInput & { readonly node: DurableRunInput["plan"][number] }
+) {
+  if (!repository || !connectors) throw new Error("DATABASE_URL_REQUIRED");
+  const info = activityInfo();
+  const context = {
+    workspaceId: input.workspaceId,
+    principalId: input.principalId,
+    requestId: `activity-${info.activityId}`
+  };
+  const connectionId = input.node.configuration.connectionRef;
+  if (
+    typeof connectionId !== "string" ||
+    !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(
+      connectionId
+    )
+  )
+    throw new Error("HTTP_CONNECTION_ID_INVALID");
+  const configuration = await connectors.httpConfiguration(context, connectionId);
+  if (!configuration) throw new Error("HTTP_CONNECTION_NOT_CONFIGURED");
+  const scope = await repository.taskExecutionContext(context, input.runId, input.node.key);
+  const configuredBody = input.node.configuration.body ??
+    input.node.configuration.payloadMapping ?? {
+      workflowInput: "${input}",
+      completedSteps: "${nodes}"
+    };
+  const body = executeTransformMapping(configuredBody, scope, false);
+  const operationId = `${input.runId}:${input.node.key}`;
+  const bodyText = JSON.stringify(body);
+  const requestUrlHash = createHash("sha256").update(configuration.endpoint).digest("hex");
+  const requestBodyHash = createHash("sha256").update(bodyText).digest("hex");
+  await repository.startTask(context, input.runId, input.node.key, info.activityId);
+  const started = Date.now();
+  try {
+    const response = await executeLiveHttpRequest({
+      ...configuration,
+      operationId,
+      body
+    });
+    await connectors.recordHttpReceipt(context, {
+      connectionId,
+      runId: input.runId,
+      nodeKey: input.node.key,
+      operationId,
+      requestMethod: configuration.method,
+      requestUrlHash,
+      requestBodyHash,
+      responseStatus: response.status,
+      responseBodyHash: createHash("sha256").update(JSON.stringify(response.body)).digest("hex"),
+      responseExcerpt: response.body,
+      durationMs: response.durationMs,
+      state: response.ok ? "succeeded" : "failed",
+      ...(response.ok ? {} : { errorCode: `HTTP_${String(response.status)}` })
+    });
+    if (!response.ok) throw new Error(`CONNECTOR_HTTP_${String(response.status)}`);
+    const output = {
+      delivered: true,
+      connectionId,
+      operationId,
+      status: response.status,
+      durationMs: response.durationMs,
+      response: response.body
+    };
+    await repository.completeSyntheticTask(
+      context,
+      input.runId,
+      input.node.key,
+      info.activityId,
+      output
+    );
+    return { nodeKey: input.node.key, attempt: info.attempt, queue: input.node.queue, output };
+  } catch (cause) {
+    const errorCode = cause instanceof Error ? cause.message : "CONNECTOR_EXECUTION_FAILED";
+    if (!errorCode.startsWith("CONNECTOR_HTTP_"))
+      await connectors.recordHttpReceipt(context, {
+        connectionId,
+        runId: input.runId,
+        nodeKey: input.node.key,
+        operationId,
+        requestMethod: configuration.method,
+        requestUrlHash,
+        requestBodyHash,
+        durationMs: Date.now() - started,
+        state: "failed",
+        errorCode
+      });
+    throw cause;
+  }
 }
 
 export async function executeGovernedAgent(

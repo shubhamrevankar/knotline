@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { createCipheriv, createDecipheriv, createHash, randomBytes } from "node:crypto";
 import {
   authorizationStartSchema,
   connectorSyncRequestSchema,
@@ -19,6 +19,40 @@ import { createId } from "./values.js";
 
 const sha = (value: string) => createHash("sha256").update(value).digest("hex");
 const connectorId = z.string().uuid();
+
+const liveHttpConfigurationSchema = z
+  .object({
+    endpoint: z.url(),
+    method: z.enum(["POST", "PUT", "PATCH"]),
+    authorization: z.string().trim().max(4096).optional(),
+    timeoutMs: z.number().int().min(1000).max(30000).default(10000)
+  })
+  .strict();
+
+const encryptCredential = (value: string, key: Buffer) => {
+  const nonce = randomBytes(12);
+  const cipher = createCipheriv("aes-256-gcm", key, nonce);
+  const ciphertext = Buffer.concat([cipher.update(value, "utf8"), cipher.final()]);
+  return Buffer.concat([nonce, cipher.getAuthTag(), ciphertext]).toString("base64");
+};
+
+const decryptCredential = (value: string, key: Buffer) => {
+  const encrypted = Buffer.from(value, "base64");
+  const decipher = createDecipheriv("aes-256-gcm", key, encrypted.subarray(0, 12));
+  decipher.setAuthTag(encrypted.subarray(12, 28));
+  return Buffer.concat([decipher.update(encrypted.subarray(28)), decipher.final()]).toString(
+    "utf8"
+  );
+};
+
+export interface LiveHttpConnectionConfiguration {
+  readonly connectionId: string;
+  readonly connectorKey: "generic-rest" | "signed-webhook";
+  readonly endpoint: string;
+  readonly method: "POST" | "PUT" | "PATCH";
+  readonly authorization?: string;
+  readonly timeoutMs: number;
+}
 
 const recordedSources = (connectorKey: string): readonly ProviderSource[] =>
   connectorKey === "google-workspace-knowledge"
@@ -132,15 +166,35 @@ export interface ConnectorRepository {
     connectionId: string,
     input: unknown
   ): Promise<Record<string, unknown>>;
+  configureHttp(
+    context: TenantContext,
+    connectionId: string,
+    input: unknown
+  ): Promise<Record<string, unknown>>;
+  httpConfiguration(
+    context: TenantContext,
+    connectionId: string
+  ): Promise<LiveHttpConnectionConfiguration | undefined>;
+  recordHttpReceipt(
+    context: TenantContext,
+    input: Readonly<Record<string, unknown>>
+  ): Promise<Record<string, unknown>>;
+  httpReceipts(
+    context: TenantContext,
+    connectionId: string
+  ): Promise<readonly Record<string, unknown>[]>;
 }
 
 export class PostgresConnectorRepository implements ConnectorRepository {
   readonly #oauth: OAuthTransactionStore;
+  readonly #credentialKey: Buffer;
   constructor(
     private readonly pool: Pool,
     signingKey: Buffer
   ) {
     this.#oauth = new OAuthTransactionStore(signingKey);
+    if (signingKey.byteLength !== 32) throw new Error("CONNECTOR_KEY_MUST_BE_32_BYTES");
+    this.#credentialKey = signingKey;
   }
 
   async catalog(context: TenantContext, connectorKey?: string) {
@@ -168,7 +222,7 @@ export class PostgresConnectorRepository implements ConnectorRepository {
       async (client) =>
         (
           await client.query<Record<string, unknown>>(
-            `SELECT id,connector_key "connectorKey",display_name "displayName",state,external_account_label "accountLabel",granted_scopes "grantedScopes",requested_scopes "requestedScopes",permission_fidelity "permissionFidelity",last_success_at "lastSuccessAt",freshness_lag_seconds "freshnessLagSeconds",next_retry_at "nextRetryAt",current_operation "currentOperation",object_count "objectCount",error_count "errorCount",error_summary "errorSummary",updated_at "updatedAt" FROM connections WHERE workspace_id=$1 AND state<>'deleted' ORDER BY updated_at DESC,id`,
+            `SELECT id,connector_key "connectorKey",display_name "displayName",state,external_account_label "accountLabel",granted_scopes "grantedScopes",requested_scopes "requestedScopes",permission_fidelity "permissionFidelity",last_success_at "lastSuccessAt",freshness_lag_seconds "freshnessLagSeconds",next_retry_at "nextRetryAt",current_operation "currentOperation",object_count "objectCount",error_count "errorCount",error_summary "errorSummary",runtime_configuration->>'endpoint' "endpoint",health_checked_at "healthCheckedAt",health_latency_ms "healthLatencyMs",updated_at "updatedAt" FROM connections WHERE workspace_id=$1 AND state<>'deleted' ORDER BY updated_at DESC,id`,
             [context.workspaceId]
           )
         ).rows
@@ -213,7 +267,7 @@ export class PostgresConnectorRepository implements ConnectorRepository {
     return withTenantTransaction(this.pool, context, async (client) => {
       const connection = (
         await client.query<Record<string, unknown>>(
-          `SELECT id,connector_key "connectorKey",display_name "displayName",state,auth_method "authMethod",external_account_id "accountId",external_account_label "accountLabel",granted_scopes "grantedScopes",requested_scopes "requestedScopes",permission_fidelity "permissionFidelity",last_success_at "lastSuccessAt",freshness_lag_seconds "freshnessLagSeconds",next_retry_at "nextRetryAt",current_operation "currentOperation",object_count "objectCount",error_count "errorCount",error_summary "errorSummary",updated_at "updatedAt" FROM connections WHERE workspace_id=$1 AND id=$2`,
+          `SELECT id,connector_key "connectorKey",display_name "displayName",state,auth_method "authMethod",external_account_id "accountId",external_account_label "accountLabel",granted_scopes "grantedScopes",requested_scopes "requestedScopes",permission_fidelity "permissionFidelity",last_success_at "lastSuccessAt",freshness_lag_seconds "freshnessLagSeconds",next_retry_at "nextRetryAt",current_operation "currentOperation",object_count "objectCount",error_count "errorCount",error_summary "errorSummary",runtime_configuration->>'endpoint' "endpoint",runtime_configuration->>'method' "method",encrypted_credential IS NOT NULL "authorizationConfigured",health_checked_at "healthCheckedAt",health_latency_ms "healthLatencyMs",updated_at "updatedAt" FROM connections WHERE workspace_id=$1 AND id=$2`,
           [context.workspaceId, connectionId]
         )
       ).rows[0];
@@ -224,7 +278,13 @@ export class PostgresConnectorRepository implements ConnectorRepository {
           [context.workspaceId, connectionId]
         )
       ).rows;
-      return { ...connection, runs };
+      const receipts = (
+        await client.query<Record<string, unknown>>(
+          `SELECT id,run_id "runId",node_key "nodeKey",operation_id "operationId",request_method "requestMethod",response_status "responseStatus",response_excerpt "responseExcerpt",duration_ms "durationMs",state,error_code "errorCode",created_at "createdAt" FROM connection_action_receipts WHERE workspace_id=$1 AND connection_id=$2 ORDER BY created_at DESC LIMIT 50`,
+          [context.workspaceId, connectionId]
+        )
+      ).rows;
+      return { ...connection, runs, receipts };
     });
   }
   async patch(context: TenantContext, connectionId: string, input: unknown) {
@@ -471,7 +531,7 @@ export class PostgresConnectorRepository implements ConnectorRepository {
     return withTenantTransaction(this.pool, context, async (client) => {
       const row = (
         await client.query<Record<string, unknown>>(
-          `UPDATE connections SET state='deleting',credential_reference=NULL,current_operation='revoke_and_delete',deleted_at=clock_timestamp(),updated_at=clock_timestamp() WHERE workspace_id=$1 AND id=$2 AND state<>'deleted' RETURNING id,state,deleted_at "deletionStartedAt"`,
+          `UPDATE connections SET state='deleting',credential_reference=NULL,encrypted_credential=NULL,current_operation='revoke_and_delete',deleted_at=clock_timestamp(),updated_at=clock_timestamp() WHERE workspace_id=$1 AND id=$2 AND state<>'deleted' RETURNING id,state,deleted_at "deletionStartedAt"`,
           [context.workspaceId, connectorId.parse(connectionId)]
         )
       ).rows[0];
@@ -570,5 +630,141 @@ export class PostgresConnectorRepository implements ConnectorRepository {
       if (!result.rows[0]) throw new HumanTaskConflictError("SOURCE_SELECTION_REVISION_CONFLICT");
       return result.rows[0];
     });
+  }
+
+  async configureHttp(context: TenantContext, connectionId: string, input: unknown) {
+    const value = liveHttpConfigurationSchema.parse(input);
+    const endpoint = new URL(value.endpoint);
+    endpoint.username = "";
+    endpoint.password = "";
+    endpoint.hash = "";
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const credential = value.authorization
+        ? encryptCredential(value.authorization, this.#credentialKey)
+        : null;
+      const row = (
+        await client.query<Record<string, unknown>>(
+          `UPDATE connections
+           SET runtime_configuration=jsonb_build_object('endpoint',$3::text,'method',$4::text,'timeoutMs',$5::integer),
+               encrypted_credential=$6,credential_reference=CASE WHEN $6::text IS NULL THEN NULL ELSE 'credential://connections/'||id::text END,
+               state='draft',external_account_label=$7,current_operation='connection_test',updated_at=clock_timestamp()
+           WHERE workspace_id=$1 AND id=$2 AND connector_key IN ('generic-rest','signed-webhook') AND state NOT IN ('deleting','deleted')
+           RETURNING id,connector_key "connectorKey",display_name "displayName",state,runtime_configuration->>'endpoint' endpoint,runtime_configuration->>'method' method,encrypted_credential IS NOT NULL "authorizationConfigured"`,
+          [
+            context.workspaceId,
+            connectorId.parse(connectionId),
+            endpoint.toString(),
+            value.method,
+            value.timeoutMs,
+            credential,
+            endpoint.host
+          ]
+        )
+      ).rows[0];
+      if (!row) throw new HumanTaskAuthorizationError("HTTP_CONNECTION_NOT_FOUND");
+      return row;
+    });
+  }
+
+  async httpConfiguration(context: TenantContext, connectionId: string) {
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const row = (
+        await client.query<{
+          id: string;
+          connector_key: "generic-rest" | "signed-webhook";
+          runtime_configuration: { endpoint?: string; method?: string; timeoutMs?: number };
+          encrypted_credential?: string;
+        }>(
+          `SELECT id,connector_key,runtime_configuration,encrypted_credential FROM connections WHERE workspace_id=$1 AND id=$2 AND connector_key IN ('generic-rest','signed-webhook') AND state NOT IN ('deleting','deleted')`,
+          [context.workspaceId, connectorId.parse(connectionId)]
+        )
+      ).rows[0];
+      if (!row?.runtime_configuration.endpoint) return undefined;
+      return {
+        connectionId: row.id,
+        connectorKey: row.connector_key,
+        endpoint: row.runtime_configuration.endpoint,
+        method: (row.runtime_configuration.method ?? "POST") as "POST" | "PUT" | "PATCH",
+        timeoutMs: Number(row.runtime_configuration.timeoutMs ?? 10000),
+        ...(row.encrypted_credential
+          ? { authorization: decryptCredential(row.encrypted_credential, this.#credentialKey) }
+          : {})
+      };
+    });
+  }
+
+  async recordHttpReceipt(context: TenantContext, input: Readonly<Record<string, unknown>>) {
+    const value = z
+      .object({
+        connectionId: z.string().uuid(),
+        runId: z.string().uuid().optional(),
+        nodeKey: z.string().min(1).max(200).optional(),
+        operationId: z.string().min(1).max(300),
+        requestMethod: z.string().min(1).max(12),
+        requestUrlHash: z.string().length(64),
+        requestBodyHash: z.string().length(64),
+        responseStatus: z.number().int().min(100).max(599).optional(),
+        responseBodyHash: z.string().length(64).optional(),
+        responseExcerpt: z.unknown().optional(),
+        durationMs: z.number().int().nonnegative(),
+        state: z.enum(["succeeded", "failed", "uncertain"]),
+        errorCode: z.string().max(200).optional()
+      })
+      .strict()
+      .parse(input);
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const id = createId();
+      const row = (
+        await client.query<Record<string, unknown>>(
+          `INSERT INTO connection_action_receipts(workspace_id,id,connection_id,run_id,node_key,operation_id,request_method,request_url_hash,request_body_hash,response_status,response_body_hash,response_excerpt,duration_ms,state,error_code)
+           VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+           ON CONFLICT(workspace_id,connection_id,operation_id) DO NOTHING
+           RETURNING id,connection_id "connectionId",run_id "runId",node_key "nodeKey",operation_id "operationId",response_status "responseStatus",response_excerpt "responseExcerpt",duration_ms "durationMs",state,error_code "errorCode",created_at "createdAt"`,
+          [
+            context.workspaceId,
+            id,
+            value.connectionId,
+            value.runId ?? null,
+            value.nodeKey ?? null,
+            value.operationId,
+            value.requestMethod,
+            value.requestUrlHash,
+            value.requestBodyHash,
+            value.responseStatus ?? null,
+            value.responseBodyHash ?? null,
+            value.responseExcerpt ?? null,
+            value.durationMs,
+            value.state,
+            value.errorCode ?? null
+          ]
+        )
+      ).rows[0];
+      if (value.operationId.startsWith("connection-test:"))
+        await client.query(
+          `UPDATE connections SET state=$3,last_success_at=CASE WHEN $3='active' THEN clock_timestamp() ELSE last_success_at END,health_checked_at=clock_timestamp(),health_latency_ms=$4,current_operation=NULL,error_count=CASE WHEN $3='active' THEN 0 ELSE error_count+1 END,error_summary=CASE WHEN $3='active' THEN NULL ELSE jsonb_build_object('code',$5::text) END,updated_at=clock_timestamp() WHERE workspace_id=$1 AND id=$2`,
+          [
+            context.workspaceId,
+            value.connectionId,
+            value.state === "succeeded" ? "active" : "degraded",
+            value.durationMs,
+            value.errorCode ?? null
+          ]
+        );
+      return row ?? { duplicate: true, operationId: value.operationId };
+    });
+  }
+
+  async httpReceipts(context: TenantContext, connectionId: string) {
+    return withTenantTransaction(
+      this.pool,
+      context,
+      async (client) =>
+        (
+          await client.query<Record<string, unknown>>(
+            `SELECT id,run_id "runId",node_key "nodeKey",operation_id "operationId",request_method "requestMethod",response_status "responseStatus",response_excerpt "responseExcerpt",duration_ms "durationMs",state,error_code "errorCode",created_at "createdAt" FROM connection_action_receipts WHERE workspace_id=$1 AND connection_id=$2 ORDER BY created_at DESC LIMIT 50`,
+            [context.workspaceId, connectorId.parse(connectionId)]
+          )
+        ).rows
+    );
   }
 }

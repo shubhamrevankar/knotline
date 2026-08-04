@@ -3,12 +3,14 @@ import { Activity, Cable, KeyRound, RefreshCw, ShieldCheck, Trash2 } from "lucid
 import { useCallback, useEffect, useState } from "react";
 import {
   deleteConnection,
+  createHttpConnection,
   fetchConnection,
   fetchConnectionSources,
   fetchConnections,
   fetchConnectorCatalog,
   requestConnectionSync,
   startConnectionAuthorization,
+  testHttpConnection,
   transitionConnection,
   updateConnectionSources,
   type ConnectionSummary,
@@ -109,6 +111,10 @@ export function ConnectionSetupPage() {
   const [scopes, setScopes] = useState<string[]>([]);
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [endpoint, setEndpoint] = useState("");
+  const [authorization, setAuthorization] = useState("");
+  const [method, setMethod] = useState<"POST" | "PUT" | "PATCH">("POST");
   const provider = lastSegment();
   useEffect(() => {
     void fetchConnectorCatalog()
@@ -116,6 +122,7 @@ export function ConnectionSetupPage() {
         const item = items.find((value) => value.key === provider);
         setCatalog(item);
         setScopes((item?.manifest.requiredScopes as string[] | undefined) ?? []);
+        setDisplayName(manifestText(item?.manifest.displayName, provider));
       })
       .catch((cause: unknown) =>
         setError(cause instanceof Error ? cause.message : msg("connections.error"))
@@ -142,6 +149,27 @@ export function ConnectionSetupPage() {
       setError(cause instanceof Error ? cause.message : msg("connections.error"));
     }
   };
+  const isLiveHttp = provider === "generic-rest" || provider === "signed-webhook";
+  const connectHttp = async () => {
+    if (!catalog) return;
+    try {
+      setError("");
+      setStatus(msg("connections.http.testing"));
+      const created = await createHttpConnection({
+        connectorKey: catalog.key,
+        manifestVersion: catalog.version,
+        displayName,
+        region: (catalog.manifest.regions as string[] | undefined)?.[0] ?? "global",
+        endpoint,
+        method,
+        ...(authorization.trim() ? { authorization: authorization.trim() } : {})
+      });
+      location.assign(`/app/connections/${created.connectionId}`);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : msg("connections.error"));
+      setStatus("");
+    }
+  };
   if (error)
     return (
       <main className="page-shell">
@@ -164,51 +192,120 @@ export function ConnectionSetupPage() {
         <p>{msg("connections.setup.body")}</p>
       </header>
       <Card>
-        <h2>{msg("connections.scopes")}</h2>
-        <ul>
-          {scopes.map((scope) => (
-            <li key={scope}>
-              <ShieldCheck aria-hidden size={16} />
-              <code>{scope}</code>
-            </li>
-          ))}
-        </ul>
-        <p>
-          {msg("connections.permission", { fidelity: String(catalog.manifest.permissionFidelity) })}
-        </p>
-        <dl className="connection-capabilities">
-          <div>
-            <dt>{msg("connections.capabilities.objects")}</dt>
-            <dd>{(catalog.manifest.objectTypes as string[] | undefined)?.join(", ")}</dd>
+        {isLiveHttp ? (
+          <div className="live-http-form">
+            <div>
+              <Badge tone="success">{msg("connections.http.live")}</Badge>
+              <h2>{msg("connections.http.heading")}</h2>
+              <p>{msg("connections.http.body")}</p>
+            </div>
+            <label>
+              {msg("connections.http.name")}
+              <input
+                maxLength={120}
+                onChange={(event) => setDisplayName(event.target.value)}
+                required
+                value={displayName}
+              />
+            </label>
+            <div className="live-http-target">
+              <label>
+                {msg("connections.http.method")}
+                <select
+                  onChange={(event) => setMethod(event.target.value as typeof method)}
+                  value={method}
+                >
+                  <option>POST</option>
+                  <option>PUT</option>
+                  <option>PATCH</option>
+                </select>
+              </label>
+              <label>
+                {msg("connections.http.endpoint")}
+                <input
+                  inputMode="url"
+                  onChange={(event) => setEndpoint(event.target.value)}
+                  placeholder="https://hooks.example.com/events"
+                  required
+                  type="url"
+                  value={endpoint}
+                />
+              </label>
+            </div>
+            <label>
+              {msg("connections.http.authorization")}
+              <input
+                autoComplete="off"
+                onChange={(event) => setAuthorization(event.target.value)}
+                placeholder="Bearer …"
+                type="password"
+                value={authorization}
+              />
+              <small>{msg("connections.http.authorization.help")}</small>
+            </label>
+            <div className="connection-test-note">
+              <ShieldCheck aria-hidden size={18} />
+              <span>{msg("connections.http.test.note")}</span>
+            </div>
+            <Button
+              disabled={!endpoint.trim() || !displayName.trim() || Boolean(status)}
+              onClick={() => void connectHttp()}
+            >
+              <Activity aria-hidden size={16} />
+              {status || msg("connections.http.connect")}
+            </Button>
           </div>
-          <div>
-            <dt>{msg("connections.capabilities.actions")}</dt>
-            <dd>
-              {(catalog.manifest.actions as string[] | undefined)?.join(", ") ||
-                msg("connections.capabilities.none")}
-            </dd>
-          </div>
-          <div>
-            <dt>{msg("connections.capabilities.gate")}</dt>
-            <dd>
-              {catalog.certification?.externalGate ?? msg("connections.capabilities.fixture")}
-            </dd>
-          </div>
-        </dl>
-        {catalog.certification?.limitations.map((limitation) => (
-          <p className="connection-limitation" key={limitation}>
-            {limitation}
-          </p>
-        ))}
-        <Button
-          disabled={catalog.certification?.liveStatus === "BLOCKED_EXTERNAL"}
-          onClick={() => void connect()}
-        >
-          {catalog.certification?.liveStatus === "BLOCKED_EXTERNAL"
-            ? msg("connections.authorize.blocked")
-            : msg("connections.authorize")}
-        </Button>
-        {status ? <p role="status">{status}</p> : null}
+        ) : (
+          <>
+            <h2>{msg("connections.scopes")}</h2>
+            <ul>
+              {scopes.map((scope) => (
+                <li key={scope}>
+                  <ShieldCheck aria-hidden size={16} />
+                  <code>{scope}</code>
+                </li>
+              ))}
+            </ul>
+            <p>
+              {msg("connections.permission", {
+                fidelity: String(catalog.manifest.permissionFidelity)
+              })}
+            </p>
+            <dl className="connection-capabilities">
+              <div>
+                <dt>{msg("connections.capabilities.objects")}</dt>
+                <dd>{(catalog.manifest.objectTypes as string[] | undefined)?.join(", ")}</dd>
+              </div>
+              <div>
+                <dt>{msg("connections.capabilities.actions")}</dt>
+                <dd>
+                  {(catalog.manifest.actions as string[] | undefined)?.join(", ") ||
+                    msg("connections.capabilities.none")}
+                </dd>
+              </div>
+              <div>
+                <dt>{msg("connections.capabilities.gate")}</dt>
+                <dd>
+                  {catalog.certification?.externalGate ?? msg("connections.capabilities.fixture")}
+                </dd>
+              </div>
+            </dl>
+            {catalog.certification?.limitations.map((limitation) => (
+              <p className="connection-limitation" key={limitation}>
+                {limitation}
+              </p>
+            ))}
+            <Button
+              disabled={catalog.certification?.liveStatus === "BLOCKED_EXTERNAL"}
+              onClick={() => void connect()}
+            >
+              {catalog.certification?.liveStatus === "BLOCKED_EXTERNAL"
+                ? msg("connections.authorize.blocked")
+                : msg("connections.authorize")}
+            </Button>
+            {status ? <p role="status">{status}</p> : null}
+          </>
+        )}
       </Card>
     </main>
   );
@@ -354,7 +451,10 @@ function ProviderSourcesPanel({ connectionId }: { readonly connectionId: string 
 
 export function ConnectionDetailPage() {
   const [item, setItem] = useState<
-    ConnectionSummary & { runs: readonly Readonly<Record<string, unknown>>[] }
+    ConnectionSummary & {
+      runs: readonly Readonly<Record<string, unknown>>[];
+      receipts: readonly Readonly<Record<string, unknown>>[];
+    }
   >();
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
@@ -407,6 +507,17 @@ export function ConnectionDetailPage() {
             <RefreshCw aria-hidden size={16} />
             {msg("connections.sync")}
           </Button>
+          {item.connectorKey === "generic-rest" || item.connectorKey === "signed-webhook" ? (
+            <Button
+              tone="neutral"
+              onClick={() =>
+                void act(() => testHttpConnection(id), msg("connections.http.retested"))
+              }
+            >
+              <Activity aria-hidden size={16} />
+              {msg("connections.http.test")}
+            </Button>
+          ) : null}
           <Button
             tone="neutral"
             onClick={() =>
@@ -462,6 +573,12 @@ export function ConnectionDetailPage() {
               <dt>{msg("connections.errors")}</dt>
               <dd>{item.errorCount}</dd>
             </div>
+            {item.healthLatencyMs !== undefined ? (
+              <div>
+                <dt>{msg("connections.http.latency")}</dt>
+                <dd>{item.healthLatencyMs} ms</dd>
+              </div>
+            ) : null}
           </dl>
         </Card>
         <Card>
@@ -476,6 +593,35 @@ export function ConnectionDetailPage() {
           </ul>
         </Card>
       </section>
+      {item.endpoint ? (
+        <section>
+          <h2>{msg("connections.http.delivery.history")}</h2>
+          <p className="connection-endpoint">
+            <code>{item.method ?? "POST"}</code> {item.endpoint}
+          </p>
+          {item.receipts.length ? (
+            <div className="receipt-list">
+              {item.receipts.map((receipt) => (
+                <Card key={String(receipt.id)}>
+                  <div className="connection-title">
+                    <Badge tone={receipt.state === "succeeded" ? "success" : "danger"}>
+                      {String(receipt.state)}
+                    </Badge>
+                    <strong>
+                      {String(receipt.responseStatus ?? receipt.errorCode ?? "No response")}
+                    </strong>
+                    <small>{Number(receipt.durationMs)} ms</small>
+                  </div>
+                  <p>{new Date(String(receipt.createdAt)).toLocaleString()}</p>
+                  <code>{String(receipt.operationId)}</code>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <EmptyState title={msg("connections.http.delivery.empty")} />
+          )}
+        </section>
+      ) : null}
       {item.connectorKey === "fixture-cloud" ? null : <ProviderSourcesPanel connectionId={id} />}
       <section>
         <h2>{msg("connections.sync.history")}</h2>

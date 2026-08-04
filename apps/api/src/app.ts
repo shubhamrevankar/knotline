@@ -1,5 +1,6 @@
 import cors from "@fastify/cors";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
+import { executeLiveHttpRequest } from "@knotline/connector-sdk";
 import {
   createWorkflowRequestSchema,
   validateAgentDefinition,
@@ -3834,6 +3835,111 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
         requestedScopes: body.requestedScopes
       })
     });
+  });
+  const testLiveHttpConnection = async (connectionId: string, context: TenantContext) => {
+    const configuration = await connectorRepository().httpConfiguration(context, connectionId);
+    if (!configuration) throw new HumanTaskConflictError("HTTP_CONNECTION_NOT_CONFIGURED");
+    const operationId = `connection-test:${randomUUID()}`;
+    const payload = {
+      type: "knotline.connection.test",
+      operationId,
+      sentAt: new Date().toISOString(),
+      message: "This test proves that Knotline can reach this endpoint. No workflow was executed."
+    };
+    const bodyText = JSON.stringify(payload);
+    const started = Date.now();
+    try {
+      const result = await executeLiveHttpRequest({
+        ...configuration,
+        operationId,
+        body: payload
+      });
+      const state = result.ok ? "succeeded" : "failed";
+      await connectorRepository().recordHttpReceipt(context, {
+        connectionId,
+        operationId,
+        requestMethod: configuration.method,
+        requestUrlHash: createHash("sha256").update(configuration.endpoint).digest("hex"),
+        requestBodyHash: createHash("sha256").update(bodyText).digest("hex"),
+        responseStatus: result.status,
+        responseBodyHash: createHash("sha256").update(JSON.stringify(result.body)).digest("hex"),
+        responseExcerpt: result.body,
+        durationMs: result.durationMs,
+        state,
+        ...(result.ok ? {} : { errorCode: `HTTP_${String(result.status)}` })
+      });
+      return {
+        connectionId,
+        operationId,
+        state,
+        status: result.status,
+        durationMs: result.durationMs
+      };
+    } catch (cause) {
+      const errorCode = cause instanceof Error ? cause.message : "CONNECTOR_TEST_FAILED";
+      await connectorRepository().recordHttpReceipt(context, {
+        connectionId,
+        operationId,
+        requestMethod: configuration.method,
+        requestUrlHash: createHash("sha256").update(configuration.endpoint).digest("hex"),
+        requestBodyHash: createHash("sha256").update(bodyText).digest("hex"),
+        durationMs: Date.now() - started,
+        state: "failed",
+        errorCode
+      });
+      return { connectionId, operationId, state: "failed", errorCode };
+    }
+  };
+  app.post("/v1/workspaces/:workspaceId/http-connections", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const body = z
+      .object({
+        connectorKey: z.enum(["generic-rest", "signed-webhook"]),
+        manifestVersion: z.string().min(1),
+        displayName: z.string().trim().min(1).max(120),
+        region: z.string().min(1),
+        endpoint: z.url(),
+        method: z.enum(["POST", "PUT", "PATCH"]).default("POST"),
+        authorization: z.string().trim().max(4096).optional(),
+        timeoutMs: z.number().int().min(1000).max(30000).default(10000)
+      })
+      .strict()
+      .parse(request.body);
+    const context = await agentAccess(request, true);
+    const connection = await connectorRepository().create(context, {
+      connectorKey: body.connectorKey,
+      manifestVersion: body.manifestVersion,
+      displayName: body.displayName,
+      requestedScopes: [],
+      region: body.region,
+      authMethod: "api_key"
+    });
+    await connectorRepository().configureHttp(context, String(connection.id), {
+      endpoint: body.endpoint,
+      method: body.method,
+      authorization: body.authorization,
+      timeoutMs: body.timeoutMs
+    });
+    const test = await testLiveHttpConnection(String(connection.id), context);
+    return reply.code(201).send({ data: { connectionId: connection.id, test } });
+  });
+  app.put("/v1/connections/:connectionId/http-configuration", async (request) => {
+    const { connectionId } = connectionParams.parse(request.params);
+    return {
+      data: await connectorRepository().configureHttp(
+        await agentAccess(request, true),
+        connectionId,
+        request.body
+      )
+    };
+  });
+  app.post("/v1/connections/:connectionId/tests", async (request) => {
+    await protectMutation(request);
+    const { connectionId } = connectionParams.parse(request.params);
+    const context = await agentAccess(request, true);
+    return { data: await testLiveHttpConnection(connectionId, context) };
   });
   app.get("/v1/connection-authorizations/:authorizationId", async (request, reply) => {
     const { authorizationId } = z
