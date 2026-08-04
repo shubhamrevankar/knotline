@@ -3,14 +3,19 @@ import { createHash, randomUUID } from "node:crypto";
 import { Context, activityInfo } from "@temporalio/activity";
 import { GovernedAgentRuntime, type AgentModelStep } from "@knotline/agent-runtime";
 import {
+  agentDefinitionSchema,
   generationResultSchema,
+  renderAgentPrompts,
   toolExecutionReceiptSchema,
+  type AgentDefinition,
   type AgentExecutionRequest,
   type GenerationResult,
+  type ModelRole,
   type ToolExecutionReceipt
 } from "@knotline/contracts";
 import {
   createPool,
+  PostgresAgentRepository,
   PostgresAgentExecutionRepository,
   PostgresApprovalRepository,
   PostgresMemoryRepository,
@@ -25,6 +30,7 @@ const pool = databaseUrl
   : undefined;
 const repository = pool ? new PostgresRuntimeRepository(pool) : undefined;
 const approvals = pool ? new PostgresApprovalRepository(pool) : undefined;
+const agents = pool ? new PostgresAgentRepository(pool) : undefined;
 const agentExecutions = pool ? new PostgresAgentExecutionRepository(pool) : undefined;
 const memories = pool ? new PostgresMemoryRepository(pool) : undefined;
 
@@ -32,6 +38,127 @@ type TransformScope = {
   readonly input: Record<string, unknown>;
   readonly nodes: Record<string, { readonly output: unknown }>;
 };
+
+type AgentPromptMessage = {
+  readonly role: "system" | "developer" | "user";
+  readonly content: string;
+};
+
+type StrictTool = {
+  readonly name: string;
+  readonly description: string;
+  readonly parameters: Readonly<Record<string, unknown>>;
+  readonly strict: true;
+};
+
+export interface PreparedPublishedAgent {
+  readonly prompts: readonly AgentPromptMessage[];
+  readonly role: Exclude<ModelRole, "embedding" | "moderation">;
+  readonly outputSchema: Readonly<Record<string, unknown>>;
+  readonly maxTurns: number;
+  readonly maxModelCalls: number;
+  readonly maxToolCalls: number;
+  readonly maxInputTokens: number;
+  readonly maxOutputTokens: number;
+  readonly maxWallTimeMs: number;
+  readonly maxCostDecimal: string;
+  readonly reviewMode: AgentExecutionRequest["reviewMode"];
+  readonly contextText: string;
+  readonly tools: readonly StrictTool[];
+  readonly toolAliases: Readonly<
+    Record<string, { readonly name: string; readonly version: string }>
+  >;
+}
+
+const modelRole = (role: AgentDefinition["modelPolicy"]["role"]): PreparedPublishedAgent["role"] =>
+  role === "reasoning" || role === "vision" ? "quality" : role;
+
+const decimalFromMinor = (minor: number) =>
+  `${Math.floor(minor / 100)}.${String(minor % 100).padStart(2, "0")}0000000000`;
+
+export function preparePublishedAgent(
+  definitionInput: unknown,
+  scope: TransformScope,
+  configuration: Readonly<Record<string, unknown>> = {}
+): PreparedPublishedAgent {
+  const definition = agentDefinitionSchema.parse(definitionInput);
+  const configuredVariables =
+    configuration.variables &&
+    typeof configuration.variables === "object" &&
+    !Array.isArray(configuration.variables)
+      ? (configuration.variables as Record<string, unknown>)
+      : {};
+  const fixture = Object.fromEntries(
+    definition.prompts.variables.map((variable) => {
+      const value =
+        configuredVariables[variable.key] ??
+        scope.input[variable.key] ??
+        scope.nodes[variable.key]?.output ??
+        (["input", "workflow_input", "context"].includes(variable.key)
+          ? { input: scope.input, nodes: scope.nodes }
+          : undefined);
+      return [variable.key, value];
+    })
+  );
+  const rendered = renderAgentPrompts(definition, fixture);
+  if (rendered.findings.some(({ severity }) => severity === "error"))
+    throw new Error(
+      `AGENT_VARIABLES_INVALID:${rendered.findings.map(({ code, path }) => `${code}:${path}`).join(",")}`
+    );
+  const rawContext = JSON.stringify({ workflowInput: scope.input, completedNodes: scope.nodes });
+  const contextText = rawContext.slice(0, Math.min(definition.limits.maxInputTokens * 4, 50_000));
+  const toolSchemas =
+    configuration.toolSchemas &&
+    typeof configuration.toolSchemas === "object" &&
+    !Array.isArray(configuration.toolSchemas)
+      ? (configuration.toolSchemas as Record<
+          string,
+          { description?: string; parameters?: Record<string, unknown> }
+        >)
+      : {};
+  const aliases: Record<string, { name: string; version: string }> = {};
+  const tools = definition.tools.flatMap((tool): StrictTool[] => {
+    const schema = toolSchemas[tool.toolKey];
+    if (!schema?.parameters) return [];
+    const alias = tool.toolKey.replaceAll(/[^a-zA-Z0-9_-]/gu, "_").slice(0, 64);
+    aliases[alias] = { name: tool.toolKey, version: String(tool.version) };
+    return [
+      {
+        name: alias,
+        description: schema.description ?? `Execute the approved ${tool.toolKey} capability.`,
+        parameters: schema.parameters,
+        strict: true
+      }
+    ];
+  });
+  return {
+    prompts: [
+      {
+        role: "system",
+        content: `${rendered.prompts.system}\n\n<AUTHORIZED_WORKFLOW_CONTEXT>\n${contextText}\n</AUTHORIZED_WORKFLOW_CONTEXT>`
+      },
+      ...(rendered.prompts.developer
+        ? [{ role: "developer" as const, content: rendered.prompts.developer }]
+        : []),
+      { role: "user", content: rendered.prompts.user }
+    ],
+    role: modelRole(definition.modelPolicy.role),
+    outputSchema: definition.outputSchema,
+    maxTurns: Math.min(100, definition.limits.maxModelCalls + definition.limits.maxToolCalls + 1),
+    maxModelCalls: definition.limits.maxModelCalls,
+    maxToolCalls: definition.limits.maxToolCalls,
+    maxInputTokens: definition.limits.maxInputTokens,
+    maxOutputTokens: definition.limits.maxOutputTokens,
+    maxWallTimeMs: definition.limits.maxDurationMs,
+    maxCostDecimal: decimalFromMinor(definition.limits.maxCostMinor),
+    reviewMode: definition.tools.some(({ approvalRequired }) => approvalRequired)
+      ? "selected_tools"
+      : "none",
+    contextText,
+    tools,
+    toolAliases: aliases
+  };
+}
 
 const readTransformPath = (scope: TransformScope, path: string): unknown => {
   const segments = path.split(".");
@@ -212,7 +339,13 @@ export async function executeSyntheticTask(
 export async function executeGovernedAgent(
   input: DurableRunInput & { readonly node: DurableRunInput["plan"][number] }
 ) {
-  if (!repository || !agentExecutions || !memories) throw new Error("DATABASE_URL_REQUIRED");
+  if (!repository || !agents || !agentExecutions || !memories)
+    throw new Error("DATABASE_URL_REQUIRED");
+  const context = {
+    workspaceId: input.workspaceId,
+    principalId: input.principalId,
+    requestId: `activity-${activityInfo().activityId}`
+  };
   await repository.startTask(
     {
       workspaceId: input.workspaceId,
@@ -228,11 +361,38 @@ export async function executeGovernedAgent(
   const executionId = randomUUID();
   const taskId = randomUUID();
   const now = new Date();
-  const contextText = JSON.stringify({
-    objective: "Prepare a governed launch intelligence brief",
-    workflowRunId: input.runId,
-    node: input.node.key
-  });
+  const executionScope = await repository.taskExecutionContext(
+    context,
+    input.runId,
+    input.node.key
+  );
+  const requestedAgentId =
+    typeof input.node.configuration.agentId === "string"
+      ? input.node.configuration.agentId
+      : undefined;
+  let requestedAgentVersion = Number(input.node.configuration.agentVersion ?? 0);
+  let publishedDefinition: AgentDefinition | undefined;
+  if (!configuredRequest && requestedAgentId) {
+    if (!requestedAgentVersion) {
+      const current = await agents.get(context, requestedAgentId);
+      requestedAgentVersion = Number(current?.current_version ?? current?.currentVersion ?? 0);
+    }
+    if (!requestedAgentVersion) throw new Error("AGENT_PUBLISHED_VERSION_REQUIRED");
+    const version = await agents.version(context, requestedAgentId, requestedAgentVersion);
+    if (!version) throw new Error("AGENT_VERSION_NOT_FOUND");
+    publishedDefinition = agentDefinitionSchema.parse(version.definition);
+  }
+  const prepared = publishedDefinition
+    ? preparePublishedAgent(publishedDefinition, executionScope, input.node.configuration)
+    : undefined;
+  const contextText =
+    prepared?.contextText ??
+    JSON.stringify({
+      workflowInput: executionScope.input,
+      completedNodes: executionScope.nodes,
+      workflowRunId: input.runId,
+      node: input.node.key
+    });
   const request: AgentExecutionRequest =
     configuredRequest ??
     ({
@@ -242,18 +402,15 @@ export async function executeGovernedAgent(
       taskId,
       attemptId: randomUUID(),
       principalId: input.principalId,
-      agentId:
-        typeof input.node.configuration.agentId === "string"
-          ? input.node.configuration.agentId
-          : "33000000-0000-4000-8000-000000000001",
-      agentVersion: Number(input.node.configuration.agentVersion ?? 1),
+      agentId: requestedAgentId ?? "33000000-0000-4000-8000-000000000001",
+      agentVersion: requestedAgentVersion || 1,
       modelPolicyVersionId: process.env.MODEL_GATEWAY_POLICY_VERSION ?? "default-v1",
       promptVersionId: `${
         typeof input.node.configuration.agentRole === "string"
           ? input.node.configuration.agentRole
           : "workflow-agent"
       }-v1`,
-      outputSchema: { type: "object", additionalProperties: true },
+      outputSchema: prepared?.outputSchema ?? { type: "object", additionalProperties: true },
       contextManifest: {
         manifestId: randomUUID(),
         workspaceId: input.workspaceId,
@@ -278,24 +435,19 @@ export async function executeGovernedAgent(
         dispatchProofExpiresAt: new Date(now.getTime() + 60 * 60 * 1000).toISOString()
       },
       limits: {
-        maxTurns: 3,
-        maxModelCalls: 3,
-        maxToolCalls: 0,
-        maxInputTokens: 4000,
-        maxOutputTokens: 2000,
-        maxCostDecimal: "1.000000000000",
-        maxWallTimeMs: 120000,
+        maxTurns: prepared?.maxTurns ?? 3,
+        maxModelCalls: prepared?.maxModelCalls ?? 3,
+        maxToolCalls: prepared?.maxToolCalls ?? 0,
+        maxInputTokens: prepared?.maxInputTokens ?? 4000,
+        maxOutputTokens: prepared?.maxOutputTokens ?? 2000,
+        maxCostDecimal: prepared?.maxCostDecimal ?? "1.000000000000",
+        maxWallTimeMs: prepared?.maxWallTimeMs ?? 120000,
         maxOutputBytes: 50000,
         maxContextBytes: 50000
       },
-      reviewMode: "none",
-      deadlineAt: new Date(now.getTime() + 5 * 60 * 1000).toISOString()
+      reviewMode: prepared?.reviewMode ?? "none",
+      deadlineAt: new Date(now.getTime() + (prepared?.maxWallTimeMs ?? 5 * 60 * 1000)).toISOString()
     } satisfies AgentExecutionRequest);
-  const context = {
-    workspaceId: input.workspaceId,
-    principalId: input.principalId,
-    requestId: `activity-${activityInfo().activityId}`
-  };
   await agentExecutions.create(context, request);
   let journalTurn = 0;
   const runtime = new GovernedAgentRuntime(
@@ -308,8 +460,14 @@ export async function executeGovernedAgent(
           if (!next) throw new Error("AGENT_FIXTURE_EXHAUSTED");
           return structuredClone(next);
         }
-        const result = await invokeModelGateway(agentRequest, transcript, signal, journalTurn);
-        return modelResultToStep(result, input.node.configuration);
+        const result = await invokeModelGateway(
+          agentRequest,
+          transcript,
+          signal,
+          journalTurn,
+          prepared
+        );
+        return modelResultToStep(result, input.node.configuration, prepared?.toolAliases ?? {});
       }
     },
     {
@@ -380,7 +538,8 @@ async function invokeModelGateway(
   request: AgentExecutionRequest,
   transcript: readonly Readonly<Record<string, unknown>>[],
   signal: AbortSignal,
-  turn: number
+  turn: number,
+  prepared?: PreparedPublishedAgent
 ): Promise<GenerationResult> {
   const url = process.env.MODEL_GATEWAY_URL ?? "http://127.0.0.1:4200";
   const token = process.env.MODEL_GATEWAY_INTERNAL_TOKEN;
@@ -400,14 +559,21 @@ async function invokeModelGateway(
       deadlineAt: request.deadlineAt,
       safetyIdentifier: request.principalId,
       retention: "no-store",
-      role: "balanced",
+      role: prepared?.role ?? "balanced",
       promptVersionId: request.promptVersionId,
-      messages: [
-        { role: "system", content: context },
-        { role: "user", content: JSON.stringify(transcript) }
-      ],
+      messages: prepared
+        ? [
+            ...prepared.prompts,
+            ...(transcript.length
+              ? [{ role: "user", content: `Prior tool results:\n${JSON.stringify(transcript)}` }]
+              : [])
+          ]
+        : [
+            { role: "system", content: context },
+            { role: "user", content: JSON.stringify(transcript) }
+          ],
       outputSchema: request.outputSchema,
-      tools: [],
+      tools: prepared?.tools ?? [],
       maxOutputTokens: request.limits.maxOutputTokens,
       maxToolCalls: request.limits.maxToolCalls
     }),
@@ -420,7 +586,8 @@ async function invokeModelGateway(
 
 function modelResultToStep(
   result: GenerationResult,
-  configuration: Readonly<Record<string, unknown>>
+  configuration: Readonly<Record<string, unknown>>,
+  toolAliases: Readonly<Record<string, { readonly name: string; readonly version: string }>> = {}
 ): AgentModelStep {
   const usage = {
     inputTokens: result.usage.inputTokens,
@@ -431,8 +598,10 @@ function modelResultToStep(
   if (tool?.type === "tool_call")
     return {
       type: "tool_call",
-      name: tool.name,
-      version: typeof configuration.toolVersion === "string" ? configuration.toolVersion : "1.0.0",
+      name: toolAliases[tool.name]?.name ?? tool.name,
+      version:
+        toolAliases[tool.name]?.version ??
+        (typeof configuration.toolVersion === "string" ? configuration.toolVersion : "1.0.0"),
       input: JSON.parse(tool.arguments),
       requiresApproval: Boolean(configuration.toolRequiresApproval),
       usage
