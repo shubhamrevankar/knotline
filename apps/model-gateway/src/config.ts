@@ -469,10 +469,10 @@ export function buildGatewayFromEnvironment() {
     enabled: true
   } as const;
   const roles = [
-    ["fast", "gpt-5.6-luna"],
-    ["balanced", "gpt-5.6-terra"],
-    ["quality", "gpt-5.6-sol"],
-    ["judge", "gpt-5.6-sol"]
+    ["fast", process.env.OPENAI_FAST_MODEL ?? "gpt-5.6-luna"],
+    ["balanced", process.env.OPENAI_BALANCED_MODEL ?? "gpt-5.6-terra"],
+    ["quality", process.env.OPENAI_QUALITY_MODEL ?? "gpt-5.6-sol"],
+    ["judge", process.env.OPENAI_JUDGE_MODEL ?? "gpt-5.6-sol"]
   ] as const;
   const mappings: ModelMapping[] = roles.map(([role, openAIModel]) => ({
     ...common,

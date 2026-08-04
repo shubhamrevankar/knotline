@@ -1730,6 +1730,35 @@ const fetchConnectionSurface = async (workspace = workspaceId) =>
 export const fetchConnectorCatalog = async () => (await fetchConnectionSurface()).catalog;
 export const fetchConnections = async (workspace?: string) =>
   (await fetchConnectionSurface(workspace)).items;
+export interface RuntimeReadiness {
+  readonly mode: "live" | "recorded";
+  readonly model: {
+    readonly reachable: boolean;
+    readonly provider: "openai" | "recorded";
+    readonly keyConfigured: boolean;
+    readonly disabled: boolean;
+    readonly mappings: readonly { readonly role: string; readonly model: string }[];
+    readonly errorCode?: string;
+  };
+  readonly counts: {
+    readonly activeHttpConnections: number;
+    readonly publishedAgents: number;
+    readonly workflows: number;
+    readonly publishedWorkflows: number;
+  };
+  readonly checks: readonly {
+    readonly key: string;
+    readonly ready: boolean;
+    readonly label: string;
+    readonly detail: string;
+  }[];
+}
+export const fetchRuntimeReadiness = async (workspace = workspaceId) =>
+  (
+    await request<ApiEnvelope<RuntimeReadiness>>(
+      `/v1/workspaces/${encodeURIComponent(workspace)}/runtime-readiness`
+    )
+  ).data;
 export const fetchConnection = async (id: string) =>
   (
     await request<

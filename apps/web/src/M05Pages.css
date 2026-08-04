@@ -769,6 +769,21 @@
   display: grid;
   gap: 0.65rem;
 }
+.onboarding-runtime-mode {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+  padding: 0.9rem;
+  border-radius: 0.75rem;
+  background: #f2f5f1;
+}
+.onboarding-runtime-mode p {
+  margin: 0;
+  color: #59675f;
+  font-size: 0.86rem;
+}
 .onboarding-readiness > div {
   display: flex;
   align-items: center;

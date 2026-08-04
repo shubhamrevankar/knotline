@@ -255,6 +255,39 @@ const runStarter = {
       .signal("completeApproval", nodeKey, operationId);
   }
 };
+const modelRuntime = async () => {
+  const provider: "openai" | "recorded" =
+    process.env.MODEL_GATEWAY_PROVIDER === "openai" ? "openai" : "recorded";
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 2500);
+  let reachable = false;
+  let errorCode: string | undefined;
+  try {
+    const response = await fetch(
+      `${process.env.MODEL_GATEWAY_URL ?? "http://127.0.0.1:4200"}/healthz`,
+      { signal: controller.signal }
+    );
+    reachable = response.ok;
+    if (!response.ok) errorCode = `HTTP_${String(response.status)}`;
+  } catch (cause) {
+    errorCode = cause instanceof Error ? cause.name : "MODEL_GATEWAY_UNREACHABLE";
+  } finally {
+    clearTimeout(timer);
+  }
+  return {
+    reachable,
+    provider,
+    keyConfigured: provider === "openai" && reachable,
+    disabled: process.env.MODEL_GATEWAY_DISABLED === "true",
+    mappings: [
+      { role: "fast", model: process.env.OPENAI_FAST_MODEL ?? "gpt-5.6-luna" },
+      { role: "balanced", model: process.env.OPENAI_BALANCED_MODEL ?? "gpt-5.6-terra" },
+      { role: "quality", model: process.env.OPENAI_QUALITY_MODEL ?? "gpt-5.6-sol" },
+      { role: "judge", model: process.env.OPENAI_JUDGE_MODEL ?? "gpt-5.6-sol" }
+    ],
+    ...(errorCode ? { errorCode } : {})
+  };
+};
 const isLocal = environment.environment === "local" || environment.environment === "ci";
 const googleIssuer = isLocal
   ? `${environment.api.publicOrigin.origin}/__local/oidc`
@@ -357,6 +390,7 @@ const app = await buildApp({
   enterprise,
   support,
   runStarter,
+  modelRuntime,
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),
   ...(process.env.KNOTLINE_TRUSTED_PROXY

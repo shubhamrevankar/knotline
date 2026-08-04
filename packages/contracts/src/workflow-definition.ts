@@ -190,7 +190,10 @@ export function validateWorkflowDefinition(input: unknown): readonly ValidationF
         );
     }
     if (node.kind === "integration_action") {
-      if (typeof node.configuration.connectionRef !== "string")
+      if (
+        typeof node.configuration.connectionRef !== "string" ||
+        !node.configuration.connectionRef.trim()
+      )
         findings.push(
           finding("WF_CONNECTION_REQUIRED", "Integration actions require a connection reference.", {
             type: "node",

@@ -113,6 +113,14 @@ export interface BuildAppOptions {
   readonly governance?: GovernanceRepository;
   readonly enterprise?: EnterpriseRepository;
   readonly support?: SupportRepository;
+  readonly modelRuntime?: () => Promise<{
+    readonly reachable: boolean;
+    readonly provider: "openai" | "recorded";
+    readonly keyConfigured: boolean;
+    readonly disabled: boolean;
+    readonly mappings: readonly { readonly role: string; readonly model: string }[];
+    readonly errorCode?: string;
+  }>;
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -3940,6 +3948,83 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     const { connectionId } = connectionParams.parse(request.params);
     const context = await agentAccess(request, true);
     return { data: await testLiveHttpConnection(connectionId, context) };
+  });
+  app.get("/v1/workspaces/:workspaceId/runtime-readiness", async (request) => {
+    const authenticated = await authenticate(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const context = await agentAccess(request);
+    const [model, connections, agents, workflows] = await Promise.all([
+      options.modelRuntime?.() ??
+        Promise.resolve({
+          reachable: false,
+          provider: "recorded" as const,
+          keyConfigured: false,
+          disabled: false,
+          mappings: [],
+          errorCode: "MODEL_RUNTIME_STATUS_UNAVAILABLE"
+        }),
+      connectorRepository().connections(context),
+      agentRepository().list(context),
+      options.repository.list(context)
+    ]);
+    const activeHttpConnections = connections.filter(
+      (connection) =>
+        connection.state === "active" &&
+        (connection.connectorKey === "generic-rest" || connection.connectorKey === "signed-webhook")
+    );
+    const publishedAgents = agents.filter(
+      (agent) => Number(agent.current_version ?? agent.currentVersion ?? 0) > 0
+    );
+    const publishedWorkflows = workflows.filter(
+      (workflow) => workflow.status === "active" || Number(workflow.version ?? 0) > 0
+    );
+    return {
+      data: {
+        mode:
+          model.provider === "openai" && model.reachable && !model.disabled ? "live" : "recorded",
+        model,
+        counts: {
+          activeHttpConnections: activeHttpConnections.length,
+          publishedAgents: publishedAgents.length,
+          workflows: workflows.length,
+          publishedWorkflows: publishedWorkflows.length
+        },
+        checks: [
+          {
+            key: "model",
+            ready: model.provider === "openai" && model.reachable && !model.disabled,
+            label: "Live AI provider",
+            detail:
+              model.provider === "openai"
+                ? model.reachable
+                  ? "OpenAI is configured and the isolated model gateway is reachable."
+                  : "OpenAI is configured, but the model gateway is not reachable."
+                : "Recorded responses are active. Configure the deployment OpenAI key to enable live generation."
+          },
+          {
+            key: "agent",
+            ready: publishedAgents.length > 0,
+            label: "Published agent",
+            detail: `${String(publishedAgents.length)} published agent${publishedAgents.length === 1 ? "" : "s"} available to workflows.`
+          },
+          {
+            key: "connection",
+            ready: activeHttpConnections.length > 0,
+            label: "Tested live connection",
+            detail: activeHttpConnections.length
+              ? `${String(activeHttpConnections.length)} HTTPS connection${activeHttpConnections.length === 1 ? "" : "s"} passed a live delivery test.`
+              : "Add a REST API or signed webhook connection and pass its delivery test."
+          },
+          {
+            key: "workflow",
+            ready: publishedWorkflows.length > 0,
+            label: "Runnable workflow",
+            detail: `${String(publishedWorkflows.length)} workflow${publishedWorkflows.length === 1 ? " is" : "s are"} available to run.`
+          }
+        ]
+      }
+    };
   });
   app.get("/v1/connection-authorizations/:authorizationId", async (request, reply) => {
     const { authorizationId } = z

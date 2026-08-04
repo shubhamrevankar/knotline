@@ -25,12 +25,14 @@ import {
   fetchMembers,
   fetchOnboarding,
   fetchRoles,
+  fetchRuntimeReadiness,
   fetchWorkflows,
   inviteMember,
   removeSampleWorkspace,
   saveOnboarding,
   type MeBootstrap,
   type OnboardingProgress,
+  type RuntimeReadiness,
   type WorkspaceInvitation,
   type WorkspaceMember,
   type WorkspaceRole
@@ -124,6 +126,7 @@ export function OnboardingPage() {
   const [roles, setRoles] = useState<readonly WorkspaceRole[]>([]);
   const [connectionCount, setConnectionCount] = useState(0);
   const [workflowCount, setWorkflowCount] = useState(0);
+  const [runtimeReadiness, setRuntimeReadiness] = useState<RuntimeReadiness>();
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
@@ -145,10 +148,17 @@ export function OnboardingPage() {
         fetchInvitations(workspace),
         fetchRoles(workspace),
         fetchConnections(workspace),
-        fetchWorkflows(workspace)
+        fetchWorkflows(workspace),
+        fetchRuntimeReadiness(workspace)
       ]);
-      const [memberResult, invitationResult, roleResult, connectionResult, workflowResult] =
-        results;
+      const [
+        memberResult,
+        invitationResult,
+        roleResult,
+        connectionResult,
+        workflowResult,
+        runtimeResult
+      ] = results;
       if (memberResult.status === "fulfilled") setMembers(memberResult.value);
       if (invitationResult.status === "fulfilled") setInvitations(invitationResult.value);
       if (roleResult.status === "fulfilled") setRoles(roleResult.value);
@@ -156,6 +166,7 @@ export function OnboardingPage() {
         setConnectionCount(connectionResult.value.length);
       if (workflowResult.status === "fulfilled" && Array.isArray(workflowResult.value))
         setWorkflowCount(workflowResult.value.length);
+      if (runtimeResult.status === "fulfilled") setRuntimeReadiness(runtimeResult.value);
     } catch (reason) {
       setError(readableError(reason));
     }
@@ -277,7 +288,8 @@ export function OnboardingPage() {
               ? "Invitation pending"
               : "Starting solo is fine",
         ready: true
-      }
+      },
+      ...(runtimeReadiness?.checks ?? [])
     ],
     [
       bootstrap,
@@ -288,7 +300,8 @@ export function OnboardingPage() {
       role,
       useCase,
       workflowCount,
-      workflowSource
+      workflowSource,
+      runtimeReadiness
     ]
   );
 
@@ -526,18 +539,30 @@ export function OnboardingPage() {
               </div>
             ) : null}
             {currentKey === "readiness" ? (
-              <div className="onboarding-readiness">
-                {readiness.map((item) => (
-                  <div key={item.label}>
-                    <span className={item.ready ? "is-ready" : ""}>
-                      {item.ready ? <Check aria-hidden="true" /> : <Circle aria-hidden="true" />}
-                    </span>
-                    <div>
-                      <strong>{item.label}</strong>
-                      <small>{item.detail}</small>
+              <div>
+                <div className="onboarding-runtime-mode">
+                  <Badge tone={runtimeReadiness?.mode === "live" ? "success" : "warning"}>
+                    {runtimeReadiness?.mode === "live" ? "Live runtime" : "Recorded runtime"}
+                  </Badge>
+                  <p>
+                    {runtimeReadiness?.mode === "live"
+                      ? "AI generation and agent execution are using the configured live provider."
+                      : "Core product flows work, but AI responses remain deterministic until the deployment OpenAI key is configured."}
+                  </p>
+                </div>
+                <div className="onboarding-readiness">
+                  {readiness.map((item) => (
+                    <div key={item.label}>
+                      <span className={item.ready ? "is-ready" : ""}>
+                        {item.ready ? <Check aria-hidden="true" /> : <Circle aria-hidden="true" />}
+                      </span>
+                      <div>
+                        <strong>{item.label}</strong>
+                        <small>{item.detail}</small>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             ) : null}
             {currentKey === "first_real_run" ? (

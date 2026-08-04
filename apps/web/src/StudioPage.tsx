@@ -61,10 +61,12 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 
 import {
   dryRunWorkflowDefinition,
+  fetchConnections,
   fetchWorkflowDraft,
   publishWorkflowDraft,
   saveWorkflowDraft,
   validateWorkflowDraft,
+  type ConnectionSummary,
   type WorkflowDraft
 } from "./api.js";
 import { AuthGate } from "./AuthPages.js";
@@ -210,8 +212,8 @@ function createNode(kind: WorkflowDefinitionNode["kind"], index: number): Workfl
         ? { policy: "workspace_owner" }
         : kind === "integration_action"
           ? {
-              connectionRef: "conn_configure_me",
-              idempotencyKey: "${nodes.start.output.id}",
+              connectionRef: "",
+              idempotencyKey: "${input.operationId}",
               risk: "medium"
             }
           : kind === "subworkflow"
@@ -265,6 +267,10 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
     studioReducer,
     initialStudioState(initialDraft.definition, initialDraft.revision)
   );
+  const connectionsQuery = useQuery({
+    queryKey: ["workflow-studio-connections"],
+    queryFn: () => fetchConnections()
+  });
   const [serverDraft, setServerDraft] = useState(initialDraft);
   const [status, setStatus] = useState<"saved" | "saving" | "offline" | "conflict" | "invalid">(
     "saved"
@@ -1250,6 +1256,7 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
                 }
                 testing={testingStep}
                 onTest={() => void testSelectedStep()}
+                connections={connectionsQuery.data ?? []}
                 {...(stepTest?.key === selectedNode.key ? { testResult: stepTest } : {})}
               />
             ) : inspectorMode === "selection" && selectedEdge ? (
@@ -1593,7 +1600,8 @@ function NodeInspector({
   disable,
   testing,
   testResult,
-  onTest
+  onTest,
+  connections
 }: {
   node: WorkflowDefinitionNode;
   update: (patch: Partial<WorkflowDefinitionNode>) => void;
@@ -1601,6 +1609,7 @@ function NodeInspector({
   testing: boolean;
   testResult?: { steps: number; writes: number };
   onTest: () => void;
+  connections: readonly ConnectionSummary[];
 }) {
   return (
     <Card className="studio-inspector-card">
@@ -1739,7 +1748,7 @@ function NodeInspector({
           </label>
           <label>
             {msg("studio.node.connection")}
-            <input
+            <select
               value={
                 typeof node.configuration.connectionRef === "string"
                   ? node.configuration.connectionRef
@@ -1750,7 +1759,27 @@ function NodeInspector({
                   configuration: { ...node.configuration, connectionRef: event.target.value }
                 })
               }
-            />
+            >
+              <option value="">Choose a tested connection</option>
+              {connections.map((connection) => (
+                <option
+                  disabled={connection.state !== "active"}
+                  key={connection.id}
+                  value={connection.id}
+                >
+                  {connection.displayName} · {connection.state}
+                </option>
+              ))}
+            </select>
+            <small>
+              {connections.some(({ state }) => state === "active") ? (
+                "Only active connections can receive workflow deliveries."
+              ) : (
+                <>
+                  No tested connection yet. <Link to="/app/connections">Create one</Link>
+                </>
+              )}
+            </small>
           </label>
         </>
       ) : null}

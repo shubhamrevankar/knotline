@@ -120,12 +120,26 @@ services:
       context: ..
       dockerfile: apps/model-gateway/Dockerfile
     environment:
-      MODEL_GATEWAY_PROVIDER: recorded
+      MODEL_GATEWAY_PROVIDER: ${MODEL_GATEWAY_PROVIDER:-recorded}
       MODEL_GATEWAY_HOST: 0.0.0.0
       MODEL_GATEWAY_PORT: "4200"
       MODEL_GATEWAY_RESIDENCY: local
       MODEL_GATEWAY_SAFETY_SALT: local-only-model-safety-salt
       MODEL_GATEWAY_INTERNAL_TOKEN: local-only-model-gateway-token
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_FAST_MODEL: ${OPENAI_FAST_MODEL:-gpt-5.6-luna}
+      OPENAI_BALANCED_MODEL: ${OPENAI_BALANCED_MODEL:-gpt-5.6-terra}
+      OPENAI_QUALITY_MODEL: ${OPENAI_QUALITY_MODEL:-gpt-5.6-sol}
+      OPENAI_JUDGE_MODEL: ${OPENAI_JUDGE_MODEL:-gpt-5.6-sol}
+      OPENAI_FAST_INPUT_PRICE: ${OPENAI_FAST_INPUT_PRICE:-0}
+      OPENAI_FAST_OUTPUT_PRICE: ${OPENAI_FAST_OUTPUT_PRICE:-0}
+      OPENAI_BALANCED_INPUT_PRICE: ${OPENAI_BALANCED_INPUT_PRICE:-0}
+      OPENAI_BALANCED_OUTPUT_PRICE: ${OPENAI_BALANCED_OUTPUT_PRICE:-0}
+      OPENAI_QUALITY_INPUT_PRICE: ${OPENAI_QUALITY_INPUT_PRICE:-0}
+      OPENAI_QUALITY_OUTPUT_PRICE: ${OPENAI_QUALITY_OUTPUT_PRICE:-0}
+      OPENAI_JUDGE_INPUT_PRICE: ${OPENAI_JUDGE_INPUT_PRICE:-0}
+      OPENAI_JUDGE_OUTPUT_PRICE: ${OPENAI_JUDGE_OUTPUT_PRICE:-0}
+      OPENAI_PRICE_VERSION: ${OPENAI_PRICE_VERSION:-resume-demo-unpriced}
     ports:
       - "127.0.0.1:4200:4200"
     healthcheck:
@@ -238,6 +252,7 @@ services:
       S3_SECRET_KEY_REFERENCE: local-only:local-only-minio-password
       LOG_LEVEL: info
       MODEL_GATEWAY_URL: http://model-gateway:4200
+      MODEL_GATEWAY_PROVIDER: ${MODEL_GATEWAY_PROVIDER:-recorded}
       MODEL_GATEWAY_INTERNAL_TOKEN: local-only-model-gateway-token
       SANDBOX_URL: http://sandbox:4300
       SANDBOX_INTERNAL_TOKEN: local-only-sandbox-token
