@@ -292,6 +292,35 @@ export class SesAuthMailer implements AuthMailer {
   }
 }
 
+export class ResendAuthMailer implements AuthMailer {
+  constructor(
+    private readonly apiKey: string,
+    private readonly fromAddress: string
+  ) {}
+
+  async deliverMagicLink(
+    delivery: MagicLinkDelivery
+  ): Promise<{ readonly providerMessageId?: string }> {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${this.apiKey}`,
+        "content-type": "application/json",
+        "idempotency-key": `magic-${secretHash(delivery.callbackUrl).slice(0, 40)}`
+      },
+      body: JSON.stringify({
+        from: this.fromAddress,
+        to: [delivery.email],
+        subject: "Sign in to Knotline",
+        text: `Open this single-use sign-in link before ${delivery.expiresAt}:\n\n${delivery.callbackUrl}\n\nIf you did not request this, you can ignore this email.`
+      })
+    });
+    const body = (await response.json()) as { id?: string; message?: string };
+    if (!response.ok || !body.id) throw new Error(body.message ?? "RESEND_DELIVERY_FAILED");
+    return { providerMessageId: body.id };
+  }
+}
+
 export class LocalOidcClient implements OidcClient {
   constructor(
     private readonly issuer: string,

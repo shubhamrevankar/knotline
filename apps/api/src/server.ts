@@ -38,12 +38,20 @@ import { Client, Connection, WorkflowExecutionAlreadyStartedError } from "@tempo
 import { buildApp } from "./app.js";
 import {
   AuthService,
+  type AuthMailer,
   CaptureAuthMailer,
   LocalOidcClient,
   RemoteGoogleOidcClient,
+  ResendAuthMailer,
   SesAuthMailer
 } from "./auth.js";
-import { CaptureInvitationMailer, SesInvitationMailer, WorkspaceService } from "./workspace.js";
+import {
+  CaptureInvitationMailer,
+  type InvitationMailer,
+  ResendInvitationMailer,
+  SesInvitationMailer,
+  WorkspaceService
+} from "./workspace.js";
 import {
   GatewayWorkflowGenerationWorker,
   WorkflowGenerationService
@@ -289,6 +297,10 @@ const modelRuntime = async () => {
   };
 };
 const isLocal = environment.environment === "local" || environment.environment === "ci";
+const emailProvider = isLocal
+  ? "capture"
+  : (process.env.KNOTLINE_EMAIL_PROVIDER ?? "ses").toLowerCase();
+const emailEnabled = emailProvider !== "disabled";
 const googleIssuer = isLocal
   ? `${environment.api.publicOrigin.origin}/__local/oidc`
   : (process.env.GOOGLE_OIDC_ISSUER ?? "https://accounts.google.com");
@@ -304,12 +316,16 @@ if (!isLocal && (process.env.AUTH_TRANSACTION_ENCRYPTION_KEY?.length ?? 0) < 32)
     "AUTH_TRANSACTION_ENCRYPTION_KEY must be at least 32 characters outside local mode"
   );
 }
-if (!isLocal && !process.env.AWS_SES_REGION) {
+if (!isLocal && emailProvider === "ses" && !process.env.AWS_SES_REGION) {
   throw new Error("AWS_SES_REGION is required outside local mode");
 }
-if (!isLocal && !process.env.AUTH_EMAIL_FROM) {
+if (!isLocal && emailEnabled && !process.env.AUTH_EMAIL_FROM) {
   throw new Error("AUTH_EMAIL_FROM is required outside local mode");
 }
+if (!isLocal && emailProvider === "resend" && !process.env.RESEND_API_KEY)
+  throw new Error("RESEND_API_KEY is required when KNOTLINE_EMAIL_PROVIDER=resend");
+if (!new Set(["capture", "ses", "resend", "disabled"]).has(emailProvider))
+  throw new Error("KNOTLINE_EMAIL_PROVIDER must be ses, resend, or disabled");
 if (!isLocal && !process.env.KNOTLINE_TRUSTED_PROXY) {
   throw new Error("KNOTLINE_TRUSTED_PROXY is required outside local mode");
 }
@@ -319,12 +335,22 @@ const googleAuthorizationEndpoint = isLocal
     "https://accounts.google.com/o/oauth2/v2/auth");
 const captureMailer = isLocal ? new CaptureAuthMailer() : undefined;
 const captureInvitationMailer = isLocal ? new CaptureInvitationMailer() : undefined;
-const mailer =
-  captureMailer ??
-  new SesAuthMailer(
-    process.env.AWS_SES_REGION ?? "us-east-1",
-    process.env.AUTH_EMAIL_FROM ?? "signin@localhost.invalid"
-  );
+const disabledAuthMailer: AuthMailer = {
+  deliverMagicLink: () => Promise.reject(new Error("EMAIL_AUTH_DISABLED"))
+};
+const mailer = captureMailer
+  ? captureMailer
+  : emailProvider === "resend"
+    ? new ResendAuthMailer(
+        process.env.RESEND_API_KEY ?? "",
+        process.env.AUTH_EMAIL_FROM ?? "signin@localhost.invalid"
+      )
+    : emailProvider === "ses"
+      ? new SesAuthMailer(
+          process.env.AWS_SES_REGION ?? "us-east-1",
+          process.env.AUTH_EMAIL_FROM ?? "signin@localhost.invalid"
+        )
+      : disabledAuthMailer;
 const oidc = isLocal
   ? new LocalOidcClient(googleIssuer, googleClientId)
   : new RemoteGoogleOidcClient(
@@ -346,12 +372,22 @@ const auth = new AuthService(authRepository, mailer, oidc, {
     authorizationEndpoint: googleAuthorizationEndpoint
   }
 });
-const invitationMailer =
-  captureInvitationMailer ??
-  new SesInvitationMailer(
-    process.env.AWS_SES_REGION ?? "us-east-1",
-    process.env.AUTH_EMAIL_FROM ?? "signin@localhost.invalid"
-  );
+const disabledInvitationMailer: InvitationMailer = {
+  deliverInvitation: () => Promise.reject(new Error("INVITATION_EMAIL_DISABLED"))
+};
+const invitationMailer = captureInvitationMailer
+  ? captureInvitationMailer
+  : emailProvider === "resend"
+    ? new ResendInvitationMailer(
+        process.env.RESEND_API_KEY ?? "",
+        process.env.AUTH_EMAIL_FROM ?? "signin@localhost.invalid"
+      )
+    : emailProvider === "ses"
+      ? new SesInvitationMailer(
+          process.env.AWS_SES_REGION ?? "us-east-1",
+          process.env.AUTH_EMAIL_FROM ?? "signin@localhost.invalid"
+        )
+      : disabledInvitationMailer;
 const workspace = new WorkspaceService(
   workspaceRepository,
   invitationMailer,
@@ -391,6 +427,7 @@ const app = await buildApp({
   support,
   runStarter,
   modelRuntime,
+  authCapabilities: { google: true, email: emailEnabled, invitations: emailEnabled },
   ...(captureMailer ? { captureMailer } : {}),
   ...(captureInvitationMailer ? { captureInvitationMailer } : {}),
   ...(process.env.KNOTLINE_TRUSTED_PROXY

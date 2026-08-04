@@ -80,6 +80,31 @@ export class SesInvitationMailer implements InvitationMailer {
   }
 }
 
+export class ResendInvitationMailer implements InvitationMailer {
+  constructor(
+    private readonly apiKey: string,
+    private readonly from: string
+  ) {}
+
+  async deliverInvitation(delivery: InvitationDelivery): Promise<void> {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${this.apiKey}`,
+        "content-type": "application/json",
+        "idempotency-key": `invite-${secretHash(delivery.acceptanceUrl).slice(0, 40)}`
+      },
+      body: JSON.stringify({
+        from: this.from,
+        to: [delivery.email],
+        subject: `Join ${delivery.workspaceName} on Knotline`,
+        text: `You were invited to ${delivery.workspaceName}. Open this private link before ${delivery.expiresAt}:\n\n${delivery.acceptanceUrl}`
+      })
+    });
+    if (!response.ok) throw new Error("RESEND_INVITATION_FAILED");
+  }
+}
+
 export class WorkspaceService {
   constructor(
     private readonly repository: WorkspaceRepository,

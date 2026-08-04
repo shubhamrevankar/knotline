@@ -9,6 +9,7 @@ services:
       POSTGRES_DB: knotline
       POSTGRES_USER: knotline_local
       POSTGRES_PASSWORD: local-only-postgres-password
+      KNOTLINE_RUNTIME_DB_PASSWORD: ${KNOTLINE_RUNTIME_DB_PASSWORD:-local-only-runtime-password}
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
@@ -241,7 +242,7 @@ services:
       KNOTLINE_API_PORT: "4100"
       KNOTLINE_API_ORIGIN: http://localhost:4100
       KNOTLINE_WEB_ORIGIN: http://localhost:5173
-      DATABASE_URL: postgresql://knotline_runtime:local-only-runtime-password@postgres:5432/knotline
+      DATABASE_URL: postgresql://knotline_runtime:${KNOTLINE_RUNTIME_DB_PASSWORD:-local-only-runtime-password}@postgres:5432/knotline
       DB_MIGRATION_URL: postgresql://knotline_local:local-only-postgres-password@postgres:5432/knotline
       REDIS_URL: redis://redis:6379
       TEMPORAL_ADDRESS: temporal:7233
@@ -291,7 +292,7 @@ services:
       tool-broker:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://knotline_runtime:local-only-runtime-password@postgres:5432/knotline
+      DATABASE_URL: postgresql://knotline_runtime:${KNOTLINE_RUNTIME_DB_PASSWORD:-local-only-runtime-password}@postgres:5432/knotline
       TEMPORAL_ADDRESS: temporal:7233
       TEMPORAL_NAMESPACE: default
       TEMPORAL_TASK_QUEUE: knotline-system-v1

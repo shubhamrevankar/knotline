@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   exchangeGoogle,
   exchangeMagicLink,
+  fetchAuthCapabilities,
   fetchMeBootstrap,
   fetchProfile,
   fetchSessions,
@@ -87,6 +88,12 @@ export function SignInPage() {
   const [email, setEmail] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>();
+  const [emailEnabled, setEmailEnabled] = useState(true);
+  useEffect(() => {
+    void fetchAuthCapabilities()
+      .then((capabilities) => setEmailEnabled(capabilities.email))
+      .catch(() => setEmailEnabled(true));
+  }, []);
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -124,29 +131,33 @@ export function SignInPage() {
           <ShieldCheck aria-hidden="true" />
           {busy ? msg("auth.working") : msg("auth.google.submit")}
         </Button>
-        <div className="auth-divider">
-          <span>{msg("auth.or.email")}</span>
-        </div>
-        <form onSubmit={(event) => void submit(event)}>
-          <label htmlFor="auth-email">{msg("auth.email.label")}</label>
-          <div className="auth-input">
-            <Mail aria-hidden="true" />
-            <input
-              id="auth-email"
-              autoComplete="email"
-              inputMode="email"
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder={msg("auth.email.placeholder")}
-              required
-              type="email"
-              value={email}
-            />
-          </div>
-          <Button disabled={busy} tone="accent" type="submit">
-            <KeyRound aria-hidden="true" />
-            {busy ? msg("auth.working") : msg("auth.magic.submit")}
-          </Button>
-        </form>
+        {emailEnabled ? (
+          <>
+            <div className="auth-divider">
+              <span>{msg("auth.or.email")}</span>
+            </div>
+            <form onSubmit={(event) => void submit(event)}>
+              <label htmlFor="auth-email">{msg("auth.email.label")}</label>
+              <div className="auth-input">
+                <Mail aria-hidden="true" />
+                <input
+                  id="auth-email"
+                  autoComplete="email"
+                  inputMode="email"
+                  onChange={(event) => setEmail(event.target.value)}
+                  placeholder={msg("auth.email.placeholder")}
+                  required
+                  type="email"
+                  value={email}
+                />
+              </div>
+              <Button disabled={busy} tone="accent" type="submit">
+                <KeyRound aria-hidden="true" />
+                {busy ? msg("auth.working") : msg("auth.magic.submit")}
+              </Button>
+            </form>
+          </>
+        ) : null}
         <p className="auth-assurance">
           <LockKeyhole aria-hidden="true" />
           {msg("auth.assurance")}

@@ -121,6 +121,11 @@ export interface BuildAppOptions {
     readonly mappings: readonly { readonly role: string; readonly model: string }[];
     readonly errorCode?: string;
   }>;
+  readonly authCapabilities?: {
+    readonly google: boolean;
+    readonly email: boolean;
+    readonly invitations: boolean;
+  };
   readonly runStarter?: {
     start(input: {
       readonly workspaceId: string;
@@ -556,7 +561,12 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       returnTargetId: z.string().min(1).max(40).default("workflows")
     })
     .strict();
+  app.get("/edge/v1/auth/capabilities", async () => ({
+    data: options.authCapabilities ?? { google: true, email: true, invitations: true }
+  }));
   app.post("/edge/v1/auth/magic-links", async (request, reply) => {
+    if (options.authCapabilities?.email === false)
+      throw new AuthFailure("EMAIL_AUTH_DISABLED", 404, "Email sign-in is not enabled.");
     const body = magicRequestSchema.parse(request.body);
     await options.auth.requestMagicLink({ ...body, context: context(request) });
     return reply.code(202).send({ accepted: true });

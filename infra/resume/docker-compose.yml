@@ -1,0 +1,149 @@
+name: knotline-resume
+
+# Apply after infra/docker-compose.yml. This keeps all application services and
+# data local to one personal server while replacing localhost identity, secrets,
+# routing, and the recorded model adapter with the real résumé-demo path.
+services:
+  postgres:
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.resume}
+      KNOTLINE_RUNTIME_DB_PASSWORD: ${KNOTLINE_RUNTIME_DB_PASSWORD:?Set KNOTLINE_RUNTIME_DB_PASSWORD in .env.resume}
+    ports: !reset []
+
+  redis:
+    ports: !reset []
+
+  minio:
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-knotline}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD in .env.resume}
+    ports: !reset []
+
+  mailpit:
+    profiles: [local-email-debug]
+
+  temporal:
+    environment:
+      POSTGRES_PWD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.resume}
+    ports: !reset []
+
+  temporal-ui:
+    profiles: [runtime-debug]
+
+  model-gateway:
+    environment:
+      MODEL_GATEWAY_PROVIDER: openai
+      MODEL_GATEWAY_RESIDENCY: ${MODEL_GATEWAY_RESIDENCY:-global}
+      MODEL_GATEWAY_SAFETY_SALT: ${MODEL_GATEWAY_SAFETY_SALT:?Set MODEL_GATEWAY_SAFETY_SALT in .env.resume}
+      MODEL_GATEWAY_INTERNAL_TOKEN: ${MODEL_GATEWAY_INTERNAL_TOKEN:?Set MODEL_GATEWAY_INTERNAL_TOKEN in .env.resume}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?Set OPENAI_API_KEY in .env.resume}
+      OPENAI_FAST_MODEL: ${OPENAI_FAST_MODEL:-gpt-5.6-luna}
+      OPENAI_BALANCED_MODEL: ${OPENAI_BALANCED_MODEL:-gpt-5.6-terra}
+      OPENAI_QUALITY_MODEL: ${OPENAI_QUALITY_MODEL:-gpt-5.6-sol}
+      OPENAI_JUDGE_MODEL: ${OPENAI_JUDGE_MODEL:-gpt-5.6-sol}
+      OPENAI_FAST_INPUT_PRICE: ${OPENAI_FAST_INPUT_PRICE:-0}
+      OPENAI_FAST_OUTPUT_PRICE: ${OPENAI_FAST_OUTPUT_PRICE:-0}
+      OPENAI_BALANCED_INPUT_PRICE: ${OPENAI_BALANCED_INPUT_PRICE:-0}
+      OPENAI_BALANCED_OUTPUT_PRICE: ${OPENAI_BALANCED_OUTPUT_PRICE:-0}
+      OPENAI_QUALITY_INPUT_PRICE: ${OPENAI_QUALITY_INPUT_PRICE:-0}
+      OPENAI_QUALITY_OUTPUT_PRICE: ${OPENAI_QUALITY_OUTPUT_PRICE:-0}
+      OPENAI_JUDGE_INPUT_PRICE: ${OPENAI_JUDGE_INPUT_PRICE:-0}
+      OPENAI_JUDGE_OUTPUT_PRICE: ${OPENAI_JUDGE_OUTPUT_PRICE:-0}
+      OPENAI_PRICE_VERSION: ${OPENAI_PRICE_VERSION:-resume-demo-unpriced}
+    ports: !reset []
+
+  sandbox:
+    environment:
+      SANDBOX_INTERNAL_TOKEN: ${SANDBOX_INTERNAL_TOKEN:?Set SANDBOX_INTERNAL_TOKEN in .env.resume}
+    ports: !reset []
+
+  tool-broker:
+    environment:
+      TOOL_BROKER_INTERNAL_TOKEN: ${TOOL_BROKER_INTERNAL_TOKEN:?Set TOOL_BROKER_INTERNAL_TOKEN in .env.resume}
+      TOOL_BROKER_LOCAL_KEY: ${TOOL_BROKER_LOCAL_KEY:?Set TOOL_BROKER_LOCAL_KEY in .env.resume}
+      TOOL_BROKER_RECORDED_CREDENTIAL: ${TOOL_BROKER_RECORDED_CREDENTIAL:?Set TOOL_BROKER_RECORDED_CREDENTIAL in .env.resume}
+    ports: !reset []
+
+  migrate:
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
+    command: ["node", "node_modules/@knotline/db/dist/cli.js", "migrate"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://knotline_local:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.resume}@postgres:5432/knotline
+    restart: "no"
+
+  api:
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      model-gateway:
+        condition: service_healthy
+      temporal:
+        condition: service_healthy
+    environment:
+      KNOTLINE_ENV: staging
+      KNOTLINE_API_ORIGIN: https://${KNOTLINE_DOMAIN:?Set KNOTLINE_DOMAIN in .env.resume}
+      KNOTLINE_WEB_ORIGIN: https://${KNOTLINE_DOMAIN:?Set KNOTLINE_DOMAIN in .env.resume}
+      DATABASE_URL: postgresql://knotline_runtime:${KNOTLINE_RUNTIME_DB_PASSWORD:?Set KNOTLINE_RUNTIME_DB_PASSWORD in .env.resume}@postgres:5432/knotline
+      DB_MIGRATION_URL: postgresql://knotline_local:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.resume}@postgres:5432/knotline
+      S3_ACCESS_KEY_REFERENCE: ${MINIO_ROOT_USER:-knotline}
+      S3_SECRET_KEY_REFERENCE: ${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD in .env.resume}
+      MODEL_GATEWAY_PROVIDER: openai
+      MODEL_GATEWAY_INTERNAL_TOKEN: ${MODEL_GATEWAY_INTERNAL_TOKEN:?Set MODEL_GATEWAY_INTERNAL_TOKEN in .env.resume}
+      TOOL_BROKER_INTERNAL_TOKEN: ${TOOL_BROKER_INTERNAL_TOKEN:?Set TOOL_BROKER_INTERNAL_TOKEN in .env.resume}
+      SANDBOX_INTERNAL_TOKEN: ${SANDBOX_INTERNAL_TOKEN:?Set SANDBOX_INTERNAL_TOKEN in .env.resume}
+      GOOGLE_OIDC_CLIENT_ID: ${GOOGLE_OIDC_CLIENT_ID:?Set GOOGLE_OIDC_CLIENT_ID in .env.resume}
+      GOOGLE_OIDC_CLIENT_SECRET: ${GOOGLE_OIDC_CLIENT_SECRET:?Set GOOGLE_OIDC_CLIENT_SECRET in .env.resume}
+      AUTH_TRANSACTION_ENCRYPTION_KEY: ${AUTH_TRANSACTION_ENCRYPTION_KEY:?Set AUTH_TRANSACTION_ENCRYPTION_KEY in .env.resume}
+      EVALUATION_FIXTURE_KEY: ${EVALUATION_FIXTURE_KEY:?Set EVALUATION_FIXTURE_KEY in .env.resume}
+      FILE_SCANNER_ATTESTATION_KEY: ${FILE_SCANNER_ATTESTATION_KEY:?Set FILE_SCANNER_ATTESTATION_KEY in .env.resume}
+      AUTHORIZATION_PROOF_SIGNING_KEY: ${AUTHORIZATION_PROOF_SIGNING_KEY:?Set AUTHORIZATION_PROOF_SIGNING_KEY in .env.resume}
+      CONNECTOR_STATE_SIGNING_KEY: ${CONNECTOR_STATE_SIGNING_KEY:?Set CONNECTOR_STATE_SIGNING_KEY in .env.resume}
+      KNOTLINE_TRUSTED_PROXY: 172.16.0.0/12
+      KNOTLINE_EMAIL_PROVIDER: ${KNOTLINE_EMAIL_PROVIDER:-resend}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      AUTH_EMAIL_FROM: ${AUTH_EMAIL_FROM:-}
+    ports: !reset []
+
+  worker:
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      temporal:
+        condition: service_healthy
+      model-gateway:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://knotline_runtime:${KNOTLINE_RUNTIME_DB_PASSWORD:?Set KNOTLINE_RUNTIME_DB_PASSWORD in .env.resume}@postgres:5432/knotline
+      MODEL_GATEWAY_INTERNAL_TOKEN: ${MODEL_GATEWAY_INTERNAL_TOKEN:?Set MODEL_GATEWAY_INTERNAL_TOKEN in .env.resume}
+      TOOL_BROKER_INTERNAL_TOKEN: ${TOOL_BROKER_INTERNAL_TOKEN:?Set TOOL_BROKER_INTERNAL_TOKEN in .env.resume}
+      CONNECTOR_STATE_SIGNING_KEY: ${CONNECTOR_STATE_SIGNING_KEY:?Set CONNECTOR_STATE_SIGNING_KEY in .env.resume}
+
+  web:
+    ports: !reset []
+
+  caddy:
+    image: caddy:2.10.2-alpine
+    depends_on:
+      web:
+        condition: service_healthy
+    environment:
+      ACME_EMAIL: ${ACME_EMAIL:?Set ACME_EMAIL in .env.resume}
+      KNOTLINE_DOMAIN: ${KNOTLINE_DOMAIN:?Set KNOTLINE_DOMAIN in .env.resume}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./resume/Caddyfile:/etc/caddy/Caddyfile:ro
+      - knotline-caddy-data:/data
+      - knotline-caddy-config:/config
+    restart: unless-stopped
+
+volumes:
+  knotline-caddy-data:
+  knotline-caddy-config:

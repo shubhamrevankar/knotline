@@ -15,6 +15,7 @@ artifacts/verification/*/manifest.json
 .env
 .env.*
 !.env.example
+!infra/resume/.env.resume.example
 *.log
 *.tsbuildinfo
 .DS_Store

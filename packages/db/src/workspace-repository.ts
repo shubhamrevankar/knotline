@@ -1,4 +1,15 @@
 import type { Pool, PoolClient } from "pg";
+import {
+  COLLABORATION_EXTERNAL_GATES,
+  COLLABORATION_PROVIDER_MANIFESTS,
+  DATA_PROVIDER_EXTERNAL_GATES,
+  DATA_PROVIDER_MANIFESTS,
+  KNOWLEDGE_PROVIDER_MANIFESTS,
+  PROVIDER_CAPABILITY_STATUS,
+  certifyCollaborationProvider,
+  certifyDataProvider,
+  certifyKnowledgeProvider
+} from "@knotline/connector-sdk";
 
 import { withTenantTransaction, type TenantContext } from "./context.js";
 import { contentHash, createId } from "./values.js";
@@ -222,6 +233,83 @@ function slugBase(name: string) {
   );
 }
 
+async function provisionConnectorCatalog(client: PoolClient, workspaceId: string, userId: string) {
+  const entries = [
+    ...Object.entries(KNOWLEDGE_PROVIDER_MANIFESTS).map(([provider, manifest]) => ({
+      manifest,
+      certification: certifyKnowledgeProvider(
+        provider as keyof typeof KNOWLEDGE_PROVIDER_MANIFESTS
+      ),
+      externalGate:
+        PROVIDER_CAPABILITY_STATUS[provider as keyof typeof PROVIDER_CAPABILITY_STATUS]
+          .externalGate,
+      limitations:
+        PROVIDER_CAPABILITY_STATUS[provider as keyof typeof PROVIDER_CAPABILITY_STATUS].limitations
+    })),
+    ...Object.entries(COLLABORATION_PROVIDER_MANIFESTS).map(([provider, manifest]) => ({
+      manifest,
+      certification: certifyCollaborationProvider(
+        provider as keyof typeof COLLABORATION_PROVIDER_MANIFESTS
+      ),
+      externalGate:
+        COLLABORATION_EXTERNAL_GATES[provider as keyof typeof COLLABORATION_EXTERNAL_GATES],
+      limitations: ["Provider OAuth certification is required before live activation."]
+    })),
+    ...Object.entries(DATA_PROVIDER_MANIFESTS).map(([provider, manifest]) => {
+      const liveHttp = provider === "generic-rest" || provider === "signed-webhook";
+      return {
+        manifest,
+        certification: liveHttp
+          ? {
+              engineeringStatus: "LIVE" as const,
+              liveStatus: "LIVE" as const,
+              capabilities: manifest.capabilities
+            }
+          : certifyDataProvider(provider as keyof typeof DATA_PROVIDER_MANIFESTS),
+        externalGate: liveHttp
+          ? "SELF_SERVICE_HTTPS"
+          : DATA_PROVIDER_EXTERNAL_GATES[provider as keyof typeof DATA_PROVIDER_EXTERNAL_GATES],
+        limitations: liveHttp
+          ? ["Public HTTPS endpoints only; private networks and redirects are blocked."]
+          : ["Provider certification is required before live activation."]
+      };
+    })
+  ];
+  for (const entry of entries) {
+    await client.query(
+      `INSERT INTO connector_manifest_versions(workspace_id,id,connector_key,semantic_version,manifest,content_hash,state,rollout_percent,created_by)
+       VALUES($1,$2,$3,$4,$5,$6,'active',100,$7)
+       ON CONFLICT(workspace_id,connector_key,semantic_version) DO NOTHING`,
+      [
+        workspaceId,
+        createId(),
+        entry.manifest.key,
+        entry.manifest.version,
+        entry.manifest,
+        contentHash(entry.manifest),
+        userId
+      ]
+    );
+    await client.query(
+      `INSERT INTO provider_connector_certifications(workspace_id,id,connector_key,manifest_version,engineering_status,live_status,external_gate,fixture_digest,capabilities,limitations,certified_at)
+       VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,clock_timestamp())
+       ON CONFLICT(workspace_id,connector_key,manifest_version) DO NOTHING`,
+      [
+        workspaceId,
+        createId(),
+        entry.manifest.key,
+        entry.manifest.version,
+        entry.certification.engineeringStatus,
+        entry.certification.liveStatus,
+        entry.externalGate,
+        contentHash(entry.certification),
+        entry.certification,
+        JSON.stringify(entry.limitations)
+      ]
+    );
+  }
+}
+
 export class PostgresWorkspaceRepository {
   constructor(private readonly pool: Pool) {}
 
@@ -294,6 +382,7 @@ export class PostgresWorkspaceRepository {
          VALUES ($1,$2,'role_use_case')`,
         [workspaceId, input.userId]
       );
+      await provisionConnectorCatalog(client, workspaceId, input.userId);
       await client.query(
         `UPDATE sessions SET active_workspace_id=$1
          WHERE user_id=$2 AND revoked_at IS NULL AND active_workspace_id IS NULL`,

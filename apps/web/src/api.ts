@@ -637,6 +637,16 @@ export const requestMagicLink = (email: string) =>
     intent: "login",
     returnTargetId: "workflows"
   });
+export const fetchAuthCapabilities = async () =>
+  (
+    await request<{
+      readonly data: {
+        readonly google: boolean;
+        readonly email: boolean;
+        readonly invitations: boolean;
+      };
+    }>("/edge/v1/auth/capabilities")
+  ).data;
 
 export const exchangeMagicLink = (token: string, intent = "login") =>
   mutate<{ readonly returnTarget: string }>("/edge/v1/auth/magic-links/exchange", "POST", {
