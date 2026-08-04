@@ -133,7 +133,23 @@ describe("WorkflowGenerationService", () => {
     const worker = new GatewayWorkflowGenerationWorker(
       "http://127.0.0.1:4200",
       "internal-test-token",
-      fetcher
+      fetcher,
+      () =>
+        Promise.resolve({
+          workspace: { name: "Launch operations" },
+          agents: [
+            {
+              id: "33000000-0000-4000-8000-000000000001",
+              version: 2,
+              name: "Launch analyst",
+              description: "Assesses launch readiness",
+              purpose: "Produce an evidence-backed readiness assessment",
+              outputSchema: { type: "object" }
+            }
+          ],
+          connections: [],
+          roles: ["operations_lead"]
+        })
     );
     const result = await worker.generate(
       { prompt: "Create a detailed launch request approval workflow.", fixture: "standard" },
@@ -153,6 +169,8 @@ describe("WorkflowGenerationService", () => {
       unknown
     >;
     expect(sent).toMatchObject({ retention: "no-store", role: "balanced" });
+    expect(JSON.stringify(sent)).toContain("Launch operations");
+    expect(JSON.stringify(sent)).toContain("Launch analyst");
     expect(JSON.stringify(fetcher.mock.calls)).not.toContain("OPENAI_API_KEY");
   });
 });

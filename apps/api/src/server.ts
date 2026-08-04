@@ -30,6 +30,7 @@ import {
   createPool,
   migrate,
   PostgresWorkflowRepository,
+  withTenantTransaction,
   seedSyntheticTenants
 } from "@knotline/db";
 import { Client, Connection, WorkflowExecutionAlreadyStartedError } from "@temporalio/client";
@@ -69,7 +70,88 @@ const workspaceRepository = new PostgresWorkspaceRepository(pool);
 const workflowDefinitions = new PostgresVersionedWorkflowRepository(pool);
 const gatewayUrl = process.env.MODEL_GATEWAY_URL;
 const gatewayWorker = gatewayUrl
-  ? new GatewayWorkflowGenerationWorker(gatewayUrl, process.env.MODEL_GATEWAY_INTERNAL_TOKEN ?? "")
+  ? new GatewayWorkflowGenerationWorker(
+      gatewayUrl,
+      process.env.MODEL_GATEWAY_INTERNAL_TOKEN ?? "",
+      globalThis.fetch,
+      (context) =>
+        withTenantTransaction(pool, context, async (client) => {
+          const [workspace, agents, connections, roles] = await Promise.all([
+            client.query<{ name: string; description: string | null }>(
+              `SELECT name,description FROM workspaces WHERE id=$1`,
+              [context.workspaceId]
+            ),
+            client.query<{
+              id: string;
+              version: number;
+              name: string;
+              description: string;
+              purpose: string;
+              output_schema: Record<string, unknown>;
+            }>(
+              `SELECT agent.id,version.version,agent.name,agent.description,
+                      version.definition->>'purpose' purpose,
+                      version.definition->'outputSchema' output_schema
+                 FROM agent_definitions agent
+                 JOIN agent_versions version ON version.workspace_id=agent.workspace_id
+                                            AND version.agent_id=agent.id
+                                            AND version.version=agent.current_version
+                WHERE agent.workspace_id=$1 AND agent.state='active'
+                ORDER BY agent.name LIMIT 50`,
+              [context.workspaceId]
+            ),
+            client.query<{
+              id: string;
+              name: string;
+              provider: string;
+              state: string;
+              scopes: string[];
+              actions: string[];
+            }>(
+              `SELECT connection.id,connection.display_name name,
+                      manifest.manifest->>'provider' provider,connection.state,
+                      connection.granted_scopes scopes,
+                      coalesce(ARRAY(SELECT jsonb_array_elements_text(manifest.manifest->'actions')),'{}') actions
+                 FROM connections connection
+                 JOIN connector_manifest_versions manifest
+                   ON manifest.workspace_id=connection.workspace_id
+                  AND manifest.id=connection.connector_manifest_id
+                WHERE connection.workspace_id=$1
+                  AND connection.state IN ('active','degraded')
+                ORDER BY connection.display_name LIMIT 50`,
+              [context.workspaceId]
+            ),
+            client.query<{ key: string }>(
+              `SELECT role_key key FROM workspace_roles WHERE workspace_id=$1 ORDER BY role_key LIMIT 50`,
+              [context.workspaceId]
+            )
+          ]);
+          const workspaceRow = workspace.rows[0];
+          return {
+            workspace: {
+              name: workspaceRow?.name ?? "Current workspace",
+              ...(workspaceRow?.description ? { description: workspaceRow.description } : {})
+            },
+            agents: agents.rows.map((agent) => ({
+              id: agent.id,
+              version: agent.version,
+              name: agent.name,
+              description: agent.description,
+              purpose: agent.purpose,
+              outputSchema: agent.output_schema
+            })),
+            connections: connections.rows.map((connection) => ({
+              id: connection.id,
+              name: connection.name,
+              provider: connection.provider,
+              state: connection.state,
+              scopes: connection.scopes,
+              actions: connection.actions
+            })),
+            roles: roles.rows.map(({ key }) => key)
+          };
+        })
+    )
   : undefined;
 if (gatewayUrl && !process.env.MODEL_GATEWAY_INTERNAL_TOKEN)
   throw new Error("MODEL_GATEWAY_INTERNAL_TOKEN is required when MODEL_GATEWAY_URL is configured");
