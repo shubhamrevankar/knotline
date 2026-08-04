@@ -357,7 +357,7 @@ export function importWorkflowCsv(csv: string): WorkflowDefinition {
       position: { x: 100 + index * 260, y: 120 },
       configuration:
         kind === "approval"
-          ? { policy: "workspace_owner" }
+          ? { policy: "workspace_owner", assignment: "workspace_owner" }
           : kind === "loop"
             ? { maxIterations: 10 }
             : {}

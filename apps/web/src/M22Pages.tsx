@@ -30,6 +30,11 @@ const healthTone = (state: string) =>
     : state === "degraded" || state === "reauthorization_required"
       ? "warning"
       : "neutral";
+const receiptStatus = (receipt: Readonly<Record<string, unknown>>) => {
+  if (typeof receipt.responseStatus === "number") return String(receipt.responseStatus);
+  if (typeof receipt.errorCode === "string") return receipt.errorCode;
+  return msg("connections.http.no.response");
+};
 
 export function ConnectionsPage() {
   const [items, setItems] = useState<ConnectionSummary[]>([]);
@@ -215,9 +220,9 @@ export function ConnectionSetupPage() {
                   onChange={(event) => setMethod(event.target.value as typeof method)}
                   value={method}
                 >
-                  <option>POST</option>
-                  <option>PUT</option>
-                  <option>PATCH</option>
+                  <option value="POST">{msg("connections.http.method.post")}</option>
+                  <option value="PUT">{msg("connections.http.method.put")}</option>
+                  <option value="PATCH">{msg("connections.http.method.patch")}</option>
                 </select>
               </label>
               <label>
@@ -225,7 +230,7 @@ export function ConnectionSetupPage() {
                 <input
                   inputMode="url"
                   onChange={(event) => setEndpoint(event.target.value)}
-                  placeholder="https://hooks.example.com/events"
+                  placeholder={msg("connections.http.endpoint.placeholder")}
                   required
                   type="url"
                   value={endpoint}
@@ -237,7 +242,7 @@ export function ConnectionSetupPage() {
               <input
                 autoComplete="off"
                 onChange={(event) => setAuthorization(event.target.value)}
-                placeholder="Bearer …"
+                placeholder={msg("connections.http.authorization.placeholder")}
                 type="password"
                 value={authorization}
               />
@@ -576,7 +581,7 @@ export function ConnectionDetailPage() {
             {item.healthLatencyMs !== undefined ? (
               <div>
                 <dt>{msg("connections.http.latency")}</dt>
-                <dd>{item.healthLatencyMs} ms</dd>
+                <dd>{msg("connections.http.milliseconds", { value: item.healthLatencyMs })}</dd>
               </div>
             ) : null}
           </dl>
@@ -607,10 +612,12 @@ export function ConnectionDetailPage() {
                     <Badge tone={receipt.state === "succeeded" ? "success" : "danger"}>
                       {String(receipt.state)}
                     </Badge>
-                    <strong>
-                      {String(receipt.responseStatus ?? receipt.errorCode ?? "No response")}
-                    </strong>
-                    <small>{Number(receipt.durationMs)} ms</small>
+                    <strong>{receiptStatus(receipt)}</strong>
+                    <small>
+                      {msg("connections.http.milliseconds", {
+                        value: Number(receipt.durationMs)
+                      })}
+                    </small>
                   </div>
                   <p>{new Date(String(receipt.createdAt)).toLocaleString()}</p>
                   <code>{String(receipt.operationId)}</code>

@@ -7,20 +7,22 @@ describe("live HTTP connector", () => {
       "ENDPOINT_HTTPS_REQUIRED"
     );
     await expect(
-      assertSafeLiveHttpEndpoint("https://service.example/hook", async () => [
-        { address: "10.1.2.3", family: 4 }
-      ])
+      assertSafeLiveHttpEndpoint("https://service.example/hook", () =>
+        Promise.resolve([{ address: "10.1.2.3", family: 4 }])
+      )
     ).rejects.toThrow("ENDPOINT_PRIVATE_NETWORK");
   });
 
   it("sends bounded JSON with a stable operation key", async () => {
-    const fetcher = vi.fn(async (_url: URL | RequestInfo, init?: RequestInit) => {
+    const fetcher = vi.fn((_url: URL | RequestInfo, init?: RequestInit) => {
       expect(init?.redirect).toBe("manual");
       expect((init?.headers as Record<string, string>)["idempotency-key"]).toBe("run:node");
-      return new Response(JSON.stringify({ accepted: true }), {
-        status: 202,
-        headers: { "content-type": "application/json" }
-      });
+      return Promise.resolve(
+        new Response(JSON.stringify({ accepted: true }), {
+          status: 202,
+          headers: { "content-type": "application/json" }
+        })
+      );
     });
     const result = await executeLiveHttpRequest(
       {
@@ -32,7 +34,7 @@ describe("live HTTP connector", () => {
       },
       {
         fetch: fetcher,
-        resolve: async () => [{ address: "203.0.113.5", family: 4 }],
+        resolve: () => Promise.resolve([{ address: "203.0.113.5", family: 4 }]),
         now: () => 100
       }
     );

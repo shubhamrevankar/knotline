@@ -1760,7 +1760,7 @@ function NodeInspector({
                 })
               }
             >
-              <option value="">Choose a tested connection</option>
+              <option value="">{msg("studio.node.connection.choose")}</option>
               {connections.map((connection) => (
                 <option
                   disabled={connection.state !== "active"}
@@ -1773,10 +1773,11 @@ function NodeInspector({
             </select>
             <small>
               {connections.some(({ state }) => state === "active") ? (
-                "Only active connections can receive workflow deliveries."
+                msg("studio.node.connection.active.help")
               ) : (
                 <>
-                  No tested connection yet. <Link to="/app/connections">Create one</Link>
+                  {msg("studio.node.connection.empty")}{" "}
+                  <Link to="/app/connections">{msg("studio.node.connection.create")}</Link>
                 </>
               )}
             </small>

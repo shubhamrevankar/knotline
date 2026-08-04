@@ -561,7 +561,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       returnTargetId: z.string().min(1).max(40).default("workflows")
     })
     .strict();
-  app.get("/edge/v1/auth/capabilities", async () => ({
+  app.get("/edge/v1/auth/capabilities", () => ({
     data: options.authCapabilities ?? { google: true, email: true, invitations: true }
   }));
   app.post("/edge/v1/auth/magic-links", async (request, reply) => {

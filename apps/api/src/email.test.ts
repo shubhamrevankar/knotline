@@ -6,19 +6,20 @@ afterEach(() => vi.unstubAllGlobals());
 
 describe("Resend email adapters", () => {
   it("delivers magic links with a stable idempotency key", async () => {
-    const fetcher = vi.fn(async (_url: string | URL | Request, init?: RequestInit) => {
+    const fetcher = vi.fn((_url: string | URL | Request, init?: RequestInit) => {
       expect(init?.headers).toMatchObject({
         authorization: "Bearer re_test",
         "content-type": "application/json"
       });
       expect((init?.headers as Record<string, string>)["idempotency-key"]).toMatch(/^magic-/u);
-      const payload = JSON.parse(String(init?.body)) as Record<string, unknown>;
+      if (typeof init?.body !== "string") throw new Error("Expected a string request body");
+      const payload = JSON.parse(init.body) as Record<string, unknown>;
       expect(payload).toMatchObject({
         from: "Knotline <hello@example.com>",
         to: ["person@example.com"],
         subject: "Sign in to Knotline"
       });
-      return new Response(JSON.stringify({ id: "email_123" }), { status: 200 });
+      return Promise.resolve(new Response(JSON.stringify({ id: "email_123" }), { status: 200 }));
     });
     vi.stubGlobal("fetch", fetcher);
     const result = await new ResendAuthMailer(
@@ -33,9 +34,9 @@ describe("Resend email adapters", () => {
   });
 
   it("delivers invitations without an SDK or local mail capture", async () => {
-    const fetcher = vi.fn(async (_url: string | URL | Request, init?: RequestInit) => {
+    const fetcher = vi.fn((_url: string | URL | Request, init?: RequestInit) => {
       expect((init?.headers as Record<string, string>)["idempotency-key"]).toMatch(/^invite-/u);
-      return new Response(JSON.stringify({ id: "email_456" }), { status: 200 });
+      return Promise.resolve(new Response(JSON.stringify({ id: "email_456" }), { status: 200 }));
     });
     vi.stubGlobal("fetch", fetcher);
     await expect(
