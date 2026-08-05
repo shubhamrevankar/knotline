@@ -674,19 +674,70 @@ export function compileWorkflowGeneration(input: {
   const definition: WorkflowDefinition = {
     ...input.definition,
     nodes: input.definition.nodes.map((node) => {
+      const configuration = { ...node.configuration };
+      if (node.kind === "human") {
+        if (Array.isArray(configuration.manualFallbackFor))
+          configuration.manualFallbackFor = configuration.manualFallbackFor
+            .filter((value): value is string => typeof value === "string" && Boolean(value.trim()))
+            .join("; ");
+        const outputs = configuration.outputs;
+        if (outputs && typeof outputs === "object" && !Array.isArray(outputs)) {
+          const fields = Object.entries(outputs)
+            .slice(0, 200)
+            .map(([rawKey, value], index) => {
+              const specification =
+                value && typeof value === "object" && !Array.isArray(value)
+                  ? (value as Record<string, unknown>)
+                  : {};
+              const key =
+                rawKey
+                  .replace(/([a-z0-9])([A-Z])/gu, "$1_$2")
+                  .toLowerCase()
+                  .replace(/[^a-z0-9_]/gu, "_")
+                  .replace(/^[^a-z]+/u, "")
+                  .slice(0, 64) || `field_${String(index + 1)}`;
+              const declaredType = specification.type;
+              const type =
+                declaredType === "number" || declaredType === "integer"
+                  ? "number"
+                  : declaredType === "boolean"
+                    ? "boolean"
+                    : declaredType === "object" || declaredType === "array"
+                      ? "json"
+                      : "text";
+              const label = rawKey
+                .replace(/([a-z0-9])([A-Z])/gu, "$1 $2")
+                .replace(/[_-]+/gu, " ")
+                .replace(/^./u, (character) => character.toUpperCase())
+                .slice(0, 160);
+              return {
+                key,
+                label,
+                type,
+                required: true,
+                ...(typeof specification.description === "string"
+                  ? { help: specification.description.slice(0, 500) }
+                  : {})
+              };
+            });
+          if (fields.length > 0)
+            configuration.formSchema = { schemaVersion: 1, title: node.name, fields };
+        }
+      }
       let executionMode: string;
       if (node.kind === "agent") executionMode = "bounded_agent";
       else if (node.kind === "integration_action") executionMode = "connected_action";
       else if (node.kind === "human")
         executionMode =
-          typeof node.configuration.manualFallbackFor === "string"
+          typeof configuration.manualFallbackFor === "string" &&
+          configuration.manualFallbackFor.length > 0
             ? "manual_fallback"
             : "human_judgment";
       else if (node.kind === "approval") executionMode = "governance_gate";
       else executionMode = "deterministic";
       return {
         ...node,
-        configuration: { ...node.configuration, executionMode }
+        configuration: { ...configuration, executionMode }
       };
     })
   };

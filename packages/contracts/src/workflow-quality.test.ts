@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { WorkflowDefinition } from "./workflow-definition.js";
-import { analyzeWorkflowQuality } from "./workflow-quality.js";
+import { analyzeWorkflowQuality, compileWorkflowGeneration } from "./workflow-quality.js";
 
 const node = (
   key: string,
@@ -191,6 +191,48 @@ describe("workflow generation quality", () => {
     expect(quality.findings.map(({ code }) => code)).not.toContain("WF_EXCESSIVE_MANUAL_GATES");
     expect(quality.draftAcceptable).toBe(true);
     expect(quality.publishable).toBe(false);
+  });
+
+  it("compiles typed model outputs and fallback lists into executable human configuration", () => {
+    const workflow = definition(
+      [
+        node("start", "trigger", "Incident received", { triggerType: "manual" }),
+        node("recover", "human", "Recover access and record evidence", {
+          assignment: "workflow_initiator",
+          justification: "Required systems are not connected.",
+          manualFallbackFor: ["Identity provider", "Customer messaging"],
+          outputs: {
+            recoveryEvidence: { type: "string", description: "Evidence of restored access." },
+            customerNotified: { type: "boolean" },
+            auditRecord: { type: "object" }
+          }
+        }),
+        terminal
+      ],
+      [
+        { key: "to_recover", source: "start", target: "recover", pathType: "success" },
+        { key: "to_outcome", source: "recover", target: "outcome", pathType: "success" }
+      ]
+    );
+    const compiled = compileWorkflowGeneration({
+      definition: workflow,
+      sourcePrompt: "Recover critical customer access.",
+      missingIntegrations: []
+    });
+    const recover = compiled.definition.nodes.find(({ key }) => key === "recover");
+    expect(recover?.configuration).toMatchObject({
+      executionMode: "manual_fallback",
+      manualFallbackFor: "Identity provider; Customer messaging",
+      formSchema: {
+        schemaVersion: 1,
+        fields: [
+          { key: "recovery_evidence", type: "text" },
+          { key: "customer_notified", type: "boolean" },
+          { key: "audit_record", type: "json" }
+        ]
+      }
+    });
+    expect(compiled.quality.draftAcceptable).toBe(true);
   });
 
   it("rejects an unjustified standard-risk approval", () => {
