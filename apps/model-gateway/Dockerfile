@@ -4,6 +4,7 @@ FROM ${NODE_IMAGE} AS build
 WORKDIR /workspace
 RUN corepack enable && corepack prepare pnpm@11.9.0 --activate
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
+RUN pnpm config set registry https://registry.npmmirror.com/
 COPY apps/model-gateway/package.json apps/model-gateway/package.json
 COPY packages/model-gateway/package.json packages/model-gateway/package.json
 COPY packages/contracts/package.json packages/contracts/package.json
