@@ -349,6 +349,54 @@
   align-items: center;
   gap: 0.5rem;
 }
+.agent-knowledge-picker {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.8rem;
+}
+.agent-knowledge-source {
+  display: grid;
+  gap: 0.55rem;
+  border: 1px solid #dce4df;
+  border-radius: 0.75rem;
+  padding: 0.8rem;
+  background: #f8faf8;
+}
+.agent-knowledge-select {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.7rem;
+  align-items: center;
+}
+.agent-knowledge-source input,
+.agent-knowledge-required input {
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  accent-color: #176b54;
+}
+.agent-knowledge-source .agent-knowledge-select span {
+  display: grid;
+  gap: 0.15rem;
+}
+.agent-knowledge-required {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: 1.7rem;
+  color: #53645b;
+  font-size: 0.82rem;
+}
+.agent-knowledge-empty {
+  border-radius: 0.7rem;
+  padding: 0.8rem;
+  background: #f4f7f5;
+  color: #53645b;
+}
+.agent-knowledge-empty a {
+  color: #176b54;
+  font-weight: 700;
+}
 .schema-cards {
   display: grid;
   grid-template-columns: 1fr 1fr;

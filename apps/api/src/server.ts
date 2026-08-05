@@ -83,9 +83,9 @@ const gatewayWorker = gatewayUrl
       gatewayUrl,
       process.env.MODEL_GATEWAY_INTERNAL_TOKEN ?? "",
       globalThis.fetch,
-      (context) =>
+      (context, prompt) =>
         withTenantTransaction(pool, context, async (client) => {
-          const [workspace, agents, connections, roles] = await Promise.all([
+          const [workspace, agents, connections, roles, knowledge] = await Promise.all([
             client.query<{ name: string; description: string | null }>(
               `SELECT name,description FROM workspaces WHERE id=$1`,
               [context.workspaceId]
@@ -137,6 +137,38 @@ const gatewayWorker = gatewayUrl
             client.query<{ key: string }>(
               `SELECT role_key key FROM workspace_roles WHERE workspace_id=$1 ORDER BY role_key LIMIT 50`,
               [context.workspaceId]
+            ),
+            client.query<{
+              source_id: string;
+              title: string;
+              classification: "public" | "internal" | "confidential" | "restricted";
+              snippet: string;
+            }>(
+              `SELECT source.id source_id,source.title,source.classification,
+                      left(string_agg(chunk.text_content,E'\n\n' ORDER BY chunk.rank DESC,chunk.ordinal),4000) snippet
+                 FROM knowledge_sources source
+                 JOIN knowledge_acl_projections acl
+                   ON acl.workspace_id=source.workspace_id AND acl.source_id=source.id
+                  AND acl.authoritative AND acl.complete
+                 JOIN LATERAL (
+                   SELECT candidate.text_content,candidate.ordinal,
+                          ts_rank(candidate.search_vector,plainto_tsquery('simple',$3)) rank
+                     FROM knowledge_chunks candidate
+                    WHERE candidate.workspace_id=source.workspace_id AND candidate.source_id=source.id
+                    ORDER BY (candidate.search_vector @@ plainto_tsquery('simple',$3)) DESC,
+                             rank DESC,candidate.ordinal
+                    LIMIT 3
+                 ) chunk ON true
+                WHERE source.workspace_id=$1 AND source.state='ready'
+                  AND EXISTS(
+                    SELECT 1 FROM knowledge_acl_members member
+                     WHERE member.workspace_id=acl.workspace_id AND member.source_id=acl.source_id
+                       AND member.epoch=acl.epoch AND member.subject_kind='user' AND member.subject_id=$2
+                  )
+                GROUP BY source.id,source.title,source.classification,source.indexed_at
+                ORDER BY max(chunk.rank) DESC,source.indexed_at DESC
+                LIMIT 12`,
+              [context.workspaceId, context.principalId, prompt]
             )
           ]);
           const workspaceRow = workspace.rows[0];
@@ -162,6 +194,12 @@ const gatewayWorker = gatewayUrl
               state: connection.state,
               scopes: connection.scopes,
               actions: connection.actions
+            })),
+            knowledge: knowledge.rows.map((source) => ({
+              sourceId: source.source_id,
+              title: source.title,
+              classification: source.classification,
+              snippet: source.snippet
             })),
             roles: roles.rows.map(({ key }) => key)
           };
@@ -221,7 +259,10 @@ const knowledgeObjects = new S3KnowledgeObjectStore(
     secretAccessKey: resolveLocalReference(
       process.env.S3_SECRET_KEY_REFERENCE,
       "local-only-minio-password"
-    )
+    ),
+    ...(["local", "ci"].includes(environment.environment)
+      ? {}
+      : { serverSideEncryption: "AES256" as const })
   }
 );
 await knowledgeObjects.ensureReady();

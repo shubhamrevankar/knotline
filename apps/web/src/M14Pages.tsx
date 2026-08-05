@@ -24,6 +24,7 @@ import {
   fetchAgent,
   fetchAgents,
   fetchAgentVersions,
+  fetchKnowledgeAdministration,
   forkAgent,
   publishAgent,
   saveAgentDraft,
@@ -590,6 +591,9 @@ export function AgentBuilderPage() {
   const [changeSummary, setChangeSummary] = useState("");
   const [busy, setBusy] = useState(false);
   const [schemaText, setSchemaText] = useState({ input: "", output: "" });
+  const [knowledgeSources, setKnowledgeSources] = useState<
+    readonly { readonly id: string; readonly title: string }[]
+  >([]);
   const dirty = useMemo(
     () => agent && draft && JSON.stringify(agent.definition) !== JSON.stringify(draft),
     [agent, draft]
@@ -609,6 +613,21 @@ export function AgentBuilderPage() {
   useEffect(() => {
     void load();
   }, [load]);
+  useEffect(() => {
+    void fetchKnowledgeAdministration()
+      .then(({ sources }) =>
+        setKnowledgeSources(
+          sources.flatMap((source) =>
+            typeof source.id === "string" &&
+            typeof source.title === "string" &&
+            source.state === "ready"
+              ? [{ id: source.id, title: source.title }]
+              : []
+          )
+        )
+      )
+      .catch(() => setKnowledgeSources([]));
+  }, []);
   if (!agent || !draft)
     return (
       <FoundryShell>
@@ -974,6 +993,68 @@ export function AgentBuilderPage() {
                     ? `${draft.knowledge.length} permission-aware sources selected`
                     : "No knowledge sources selected."}
                 </p>
+                {knowledgeSources.length ? (
+                  <div className="agent-knowledge-picker">
+                    {knowledgeSources.map((source) => {
+                      const selected = draft.knowledge.find(
+                        ({ sourceId }) => sourceId === source.id
+                      );
+                      return (
+                        <div className="agent-knowledge-source" key={source.id}>
+                          <div className="agent-knowledge-select">
+                            <input
+                              aria-label={`Use ${source.title}`}
+                              checked={Boolean(selected)}
+                              onChange={(event) =>
+                                change(
+                                  "knowledge",
+                                  event.currentTarget.checked
+                                    ? [
+                                        ...draft.knowledge,
+                                        { sourceId: source.id, permission: "read", required: false }
+                                      ]
+                                    : draft.knowledge.filter(
+                                        ({ sourceId }) => sourceId !== source.id
+                                      )
+                                )
+                              }
+                              type="checkbox"
+                            />
+                            <span>
+                              <strong>{source.title}</strong>
+                              <small>Authorized company source</small>
+                            </span>
+                          </div>
+                          {selected ? (
+                            <label className="agent-knowledge-required">
+                              <input
+                                checked={selected.required === true}
+                                onChange={(event) =>
+                                  change(
+                                    "knowledge",
+                                    draft.knowledge.map((item) =>
+                                      item.sourceId === source.id
+                                        ? { ...item, required: event.currentTarget.checked }
+                                        : item
+                                    )
+                                  )
+                                }
+                                type="checkbox"
+                              />
+                              Required for every run
+                            </label>
+                          ) : null}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="agent-knowledge-empty">
+                    Add documents or websites in{" "}
+                    <Link to="/app/knowledge/sources">Company knowledge</Link>, then return here to
+                    attach them.
+                  </p>
+                )}
               </Card>
               <Card>
                 <h3>Memory</h3>

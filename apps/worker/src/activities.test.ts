@@ -101,13 +101,17 @@ describe("published agent execution preparation", () => {
             }
           }
         }
-      }
+      },
+      "SOURCE: Incident policy\nCritical incidents require customer updates every 30 minutes."
     );
     expect(prepared.role).toBe("quality");
     expect(prepared.reviewMode).toBe("selected_tools");
     expect(prepared.maxToolCalls).toBe(1);
     expect(prepared.maxCostDecimal).toBe("0.250000000000");
     expect(prepared.prompts.map(({ content }) => content).join("\n")).toContain("inc-42");
+    expect(prepared.prompts.map(({ content }) => content).join("\n")).toContain(
+      "customer updates every 30 minutes"
+    );
     expect(prepared.toolAliases.records_create).toEqual({ name: "records.create", version: "1" });
   });
 });

@@ -32,6 +32,7 @@ export interface KnowledgeObjectStore {
 
 export class S3KnowledgeObjectStore implements KnowledgeObjectStore {
   readonly #client: S3Client;
+  readonly #serverSideEncryption: "AES256" | undefined;
 
   constructor(
     private readonly bucket: string,
@@ -40,6 +41,7 @@ export class S3KnowledgeObjectStore implements KnowledgeObjectStore {
       readonly region: string;
       readonly accessKeyId: string;
       readonly secretAccessKey: string;
+      readonly serverSideEncryption?: "AES256";
     }
   ) {
     this.#client = new S3Client({
@@ -50,6 +52,7 @@ export class S3KnowledgeObjectStore implements KnowledgeObjectStore {
         secretAccessKey: input.secretAccessKey
       }
     });
+    this.#serverSideEncryption = input.serverSideEncryption;
   }
 
   async ensureReady() {
@@ -67,7 +70,7 @@ export class S3KnowledgeObjectStore implements KnowledgeObjectStore {
         Key: key,
         Body: body,
         ContentType: mediaType,
-        ServerSideEncryption: "AES256"
+        ...(this.#serverSideEncryption ? { ServerSideEncryption: this.#serverSideEncryption } : {})
       })
     );
   }

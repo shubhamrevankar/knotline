@@ -163,6 +163,14 @@ describe("WorkflowGenerationService", () => {
             }
           ],
           connections: [],
+          knowledge: [
+            {
+              sourceId: "55000000-0000-4000-8000-000000000001",
+              title: "Launch policy",
+              classification: "internal",
+              snippet: "Production launches require a named rollback owner."
+            }
+          ],
           roles: ["operations_lead"]
         })
     );
@@ -202,6 +210,7 @@ describe("WorkflowGenerationService", () => {
       }
     });
     expect(JSON.stringify(sent)).toContain("Launch operations");
+    expect(JSON.stringify(sent)).toContain("Production launches require a named rollback owner");
     expect(JSON.stringify(sent)).toContain("Launch analyst");
     expect(JSON.stringify(fetcher.mock.calls)).not.toContain("OPENAI_API_KEY");
   });
