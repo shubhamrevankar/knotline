@@ -189,15 +189,124 @@ export class PostgresAnalyticsRepository implements AnalyticsRepository {
   }
   async dashboard(context: TenantContext) {
     return withTenantTransaction(this.pool, context, async (client) => {
-      const rows = (
+      const bucketRows = (
         await client.query<Record<string, unknown>>(
-          `SELECT metric_key "metricKey",value::float8,contributing_count "contributingCount",source_watermark "freshThrough",dimensions FROM metric_buckets WHERE workspace_id=$1 AND bucket_end>clock_timestamp()-interval '30 days' ORDER BY bucket_start DESC LIMIT 100`,
+          `SELECT DISTINCT ON(metric_key) metric_key "metricKey",value::float8,
+                  contributing_count::int "contributingCount",source_watermark "freshThrough",
+                  dimensions||jsonb_build_object('source','metric_bucket') dimensions
+             FROM metric_buckets
+            WHERE workspace_id=$1 AND bucket_end>clock_timestamp()-interval '30 days'
+            ORDER BY metric_key,bucket_start DESC`,
           [context.workspaceId]
         )
       ).rows;
+      const liveRows = (
+        await client.query<Record<string, unknown>>(
+          `WITH recent_runs AS (
+             SELECT state,started_at,finished_at,updated_at
+               FROM workflow_runs
+              WHERE workspace_id=$1 AND created_at>clock_timestamp()-interval '30 days'
+           ),run_stats AS (
+             SELECT count(*)::int total,
+                    count(*) FILTER(WHERE state IN('queued','running','paused','cancelling'))::int in_progress,
+                    count(*) FILTER(WHERE state IN('cancelled','succeeded','failed','policy_stopped'))::int terminal,
+                    count(*) FILTER(WHERE state='succeeded')::int succeeded,
+                    percentile_cont(0.5) WITHIN GROUP(
+                      ORDER BY extract(epoch FROM(finished_at-started_at))/60
+                    ) FILTER(WHERE started_at IS NOT NULL AND finished_at IS NOT NULL) median_minutes,
+                    max(updated_at) watermark
+               FROM recent_runs
+           ),recent_tasks AS (
+             SELECT task.queue_class,task.state,task.started_at,task.finished_at,task.updated_at
+               FROM task_runs task
+               JOIN workflow_runs run
+                 ON run.workspace_id=task.workspace_id AND run.id=task.run_id
+              WHERE task.workspace_id=$1 AND run.created_at>clock_timestamp()-interval '30 days'
+           ),agent_stats AS (
+             SELECT count(*) FILTER(WHERE queue_class='agent' AND state IN('succeeded','failed','cancelled'))::int terminal,
+                    count(*) FILTER(WHERE queue_class='agent' AND state='succeeded')::int succeeded,
+                    max(updated_at) FILTER(WHERE queue_class='agent') watermark
+               FROM recent_tasks
+           ),task_sla AS (
+             SELECT count(*) FILTER(WHERE detail.due_at IS NOT NULL)::int eligible,
+                    count(*) FILTER(
+                      WHERE detail.due_at IS NOT NULL
+                        AND CASE
+                          WHEN task.finished_at IS NOT NULL THEN task.finished_at<=detail.due_at
+                          ELSE clock_timestamp()<=detail.due_at
+                        END
+                    )::int on_track,
+                    max(task.updated_at) FILTER(WHERE detail.due_at IS NOT NULL) watermark
+               FROM human_task_details detail
+               JOIN task_runs task
+                 ON task.workspace_id=detail.workspace_id AND task.id=detail.task_id
+               JOIN workflow_runs run
+                 ON run.workspace_id=task.workspace_id AND run.id=task.run_id
+              WHERE detail.workspace_id=$1 AND run.created_at>clock_timestamp()-interval '30 days'
+           ),approval_stats AS (
+             SELECT count(*)::int waiting,max(approval.updated_at) watermark
+               FROM approvals approval
+               JOIN task_runs task
+                 ON task.workspace_id=approval.workspace_id AND task.id=approval.task_id
+               JOIN workflow_runs run
+                 ON run.workspace_id=task.workspace_id AND run.id=task.run_id
+              WHERE approval.workspace_id=$1
+                AND approval.state IN('PENDING','IN_REVIEW')
+                AND run.state IN('queued','running','paused')
+           ),workflow_stats AS (
+             SELECT count(*) FILTER(WHERE state='active')::int active,max(updated_at) watermark
+               FROM workflows WHERE workspace_id=$1
+           ),metrics AS (
+             SELECT 'workflow.success_rate'::text "metricKey",
+                    CASE WHEN terminal>0 THEN succeeded*100.0/terminal END::float8 value,
+                    terminal "contributingCount",watermark "freshThrough",
+                    jsonb_build_object('source','live_operational','window','30d','calculation','successful terminal runs / all terminal runs') dimensions
+               FROM run_stats
+             UNION ALL
+             SELECT 'runs.in_progress',in_progress::float8,total,watermark,
+                    jsonb_build_object('source','live_operational','window','current','calculation','queued, running, paused, or cancelling runs')
+               FROM run_stats
+             UNION ALL
+             SELECT 'run.median_duration_minutes',median_minutes::float8,terminal,watermark,
+                    jsonb_build_object('source','live_operational','window','30d','calculation','median elapsed time of completed runs')
+               FROM run_stats
+             UNION ALL
+             SELECT 'task.sla_on_track',
+                    CASE WHEN eligible>0 THEN on_track*100.0/eligible END::float8,
+                    eligible,watermark,
+                    jsonb_build_object('source','live_operational','window','30d','calculation','human tasks completed or currently progressing before due time')
+               FROM task_sla
+             UNION ALL
+             SELECT 'approvals.waiting',waiting::float8,waiting,watermark,
+                    jsonb_build_object('source','live_operational','window','current','calculation','pending approvals belonging to active runs')
+               FROM approval_stats
+             UNION ALL
+             SELECT 'agent.success_rate',
+                    CASE WHEN terminal>0 THEN succeeded*100.0/terminal END::float8,
+                    terminal,watermark,
+                    jsonb_build_object('source','live_operational','window','30d','calculation','successful terminal agent tasks / all terminal agent tasks')
+               FROM agent_stats
+             UNION ALL
+             SELECT 'workflow.active',active::float8,active,watermark,
+                    jsonb_build_object('source','live_operational','window','current','calculation','active published workflows')
+               FROM workflow_stats
+           )
+           SELECT "metricKey",value,"contributingCount",
+                  coalesce("freshThrough",clock_timestamp()) "freshThrough",dimensions
+             FROM metrics WHERE value IS NOT NULL`,
+          [context.workspaceId]
+        )
+      ).rows;
+      const liveKeys = new Set(liveRows.map((row) => row.metricKey));
+      const rows = [...liveRows, ...bucketRows.filter((row) => !liveKeys.has(row.metricKey))];
+      const freshThrough = rows.reduce<string | null>((latest, row) => {
+        if (!row.freshThrough) return latest;
+        const candidate = new Date(row.freshThrough as string | Date).toISOString();
+        return !latest || candidate > latest ? candidate : latest;
+      }, null);
       return {
         metrics: rows,
-        freshThrough: rows[0]?.freshThrough ?? null,
+        freshThrough,
         partial: rows.length === 0,
         demoExcluded: true
       };

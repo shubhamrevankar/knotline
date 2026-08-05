@@ -1400,6 +1400,8 @@
   "analytics.empty.body": "Metrics will appear after authoritative domain events reach the published watermark.",
   "analytics.reports.eyebrow": "REUSABLE VIEWS",
   "analytics.reports": "Reports your team follows",
+  "analytics.reports.empty": "No reports saved yet",
+  "analytics.reports.empty.body": "Create a report to preserve this operational view for your team.",
   "analytics.report.default": "Operations health — 30 days",
   "analytics.report.create": "Create report",
   "analytics.report.open": "Open report",

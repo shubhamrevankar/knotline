@@ -407,36 +407,42 @@ export function AnalyticsPage() {
             {msg("analytics.report.create")}
           </Button>
         </div>
-        <div className="report-list">
-          {reports.map((report) => (
-            <Card className="pulse-report" key={report.id}>
-              <div>
-                <span>
-                  <Share2 aria-hidden />
-                </span>
-                <Badge tone="neutral">{report.visibility}</Badge>
-              </div>
-              <h3>{report.name}</h3>
-              <p>{visibleText(report.definition.summary, msg("analytics.report.summary"))}</p>
-              <footer>
-                <span>
-                  {report.updatedAt
-                    ? msg("analytics.report.updated", {
-                        date: new Date(report.updatedAt).toLocaleDateString()
-                      })
-                    : msg("analytics.report.meta", {
-                        visibility: report.visibility,
-                        state: report.state
-                      })}
-                </span>
-                <Link to={`/app/analytics/reports/${report.id}`}>
-                  {msg("analytics.report.open")}
-                  <ArrowRight aria-hidden />
-                </Link>
-              </footer>
-            </Card>
-          ))}
-        </div>
+        {reports.length ? (
+          <div className="report-list">
+            {reports.map((report) => (
+              <Card className="pulse-report" key={report.id}>
+                <div>
+                  <span>
+                    <Share2 aria-hidden />
+                  </span>
+                  <Badge tone="neutral">{report.visibility}</Badge>
+                </div>
+                <h3>{report.name}</h3>
+                <p>{visibleText(report.definition.summary, msg("analytics.report.summary"))}</p>
+                <footer>
+                  <span>
+                    {report.updatedAt
+                      ? msg("analytics.report.updated", {
+                          date: new Date(report.updatedAt).toLocaleDateString()
+                        })
+                      : msg("analytics.report.meta", {
+                          visibility: report.visibility,
+                          state: report.state
+                        })}
+                  </span>
+                  <Link to={`/app/analytics/reports/${report.id}`}>
+                    {msg("analytics.report.open")}
+                    <ArrowRight aria-hidden />
+                  </Link>
+                </footer>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <EmptyState title={msg("analytics.reports.empty")}>
+            <p>{msg("analytics.reports.empty.body")}</p>
+          </EmptyState>
+        )}
       </section>
     </main>
   );
