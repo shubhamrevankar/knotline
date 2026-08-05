@@ -469,7 +469,8 @@ export const test = base.extend<{ consoleMessages: string[] }>({
               lifecycle: "SUCCEEDED",
               phase: "READY_TO_ACCEPT",
               result: {
-                promptVersion: "workflow-generation.v1",
+                promptVersion: "workflow-generation.v2",
+                compilerVersion: "workflow-compiler.v1",
                 provider: "fixture-v1",
                 simulated: true,
                 environmentStatus: "RECORDED_CONTRACT",
@@ -478,6 +479,48 @@ export const test = base.extend<{ consoleMessages: string[] }>({
                 assumptions: ["The workflow starts manually."],
                 assignments: ["Prepare request → workflow initiator"],
                 missingIntegrations: [],
+                missingAgentCapabilities: [],
+                quality: {
+                  score: 100,
+                  draftAcceptable: true,
+                  publishable: true,
+                  summary: {
+                    automatedSteps: 1,
+                    agentSteps: 0,
+                    agentCapabilityGaps: 0,
+                    humanSteps: 1,
+                    approvalSteps: 1,
+                    conditionalApprovals: 0,
+                    connectedActions: 0,
+                    manualFallbacks: 0,
+                    automationOpportunities: 0,
+                    scenariosPassed: 1,
+                    scenariosTotal: 1
+                  },
+                  agents: [],
+                  agentGaps: [],
+                  integrations: [],
+                  approvals: [
+                    {
+                      nodeKey: "review_request",
+                      nodeName: "Review request",
+                      riskLevel: "medium",
+                      required: false,
+                      reason: "The request explicitly requires owner approval."
+                    }
+                  ],
+                  scenarios: [
+                    {
+                      id: "scenario_1",
+                      name: "Owner-approved request",
+                      path: ["request_received", "prepare_request", "review_request"],
+                      terminalNodeKey: "review_request",
+                      status: "passed",
+                      assertions: ["Exactly one terminal outcome is reachable on this path."]
+                    }
+                  ],
+                  findings: []
+                },
                 findings: [],
                 repairAttempts: 0,
                 usage: { inputUnits: 56, outputUnits: 900, costMinor: 0, currency: "USD" },

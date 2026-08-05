@@ -2530,14 +2530,26 @@ async function runSuite(pool: DatabasePool) {
         dryRunResponse.json<{ data: { externalWrites: number } }>().data.externalWrites === 0,
       "Dry run did not prove zero external writes"
     );
-    const acceptanceResponse = await app.inject({
+    const blockedPublication = await app.inject({
       method: "POST",
       url: `/v1/workflow-generations/${generationId}/acceptances`,
       payload: { publish: true }
     });
     assert(
-      acceptanceResponse.statusCode === 201,
-      "Generated workflow was not accepted and published"
+      blockedPublication.statusCode === 422 &&
+        blockedPublication.json<{ error: { code: string } }>().error.code ===
+          "WORKFLOW_AUTOMATION_NOT_READY",
+      "Generation published despite a missing notification connection"
+    );
+    const acceptanceResponse = await app.inject({
+      method: "POST",
+      url: `/v1/workflow-generations/${generationId}/acceptances`,
+      payload: { publish: false }
+    });
+    assert(
+      acceptanceResponse.statusCode === 201 &&
+        acceptanceResponse.json<{ published: boolean }>().published === false,
+      "Valid generation was not accepted as a draft"
     );
     const commentResponse = await app.inject({
       method: "POST",

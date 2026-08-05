@@ -6,8 +6,13 @@ import {
   type ValidationFinding,
   type WorkflowDefinition
 } from "./workflow-definition.js";
+import {
+  compileWorkflowGeneration,
+  WORKFLOW_COMPILER_VERSION,
+  workflowQualityReportSchema
+} from "./workflow-quality.js";
 
-export const WORKFLOW_GENERATION_PROMPT_VERSION = "workflow-generation.v1" as const;
+export const WORKFLOW_GENERATION_PROMPT_VERSION = "workflow-generation.v2" as const;
 export const DETERMINISTIC_GENERATION_PROVIDER = "fixture-v1" as const;
 
 export const workflowGenerationLifecycleSchema = z.enum([
@@ -36,6 +41,7 @@ export const workflowGenerationRequestSchema = z
 export const workflowGenerationResultSchema = z
   .object({
     promptVersion: z.literal(WORKFLOW_GENERATION_PROMPT_VERSION),
+    compilerVersion: z.literal(WORKFLOW_COMPILER_VERSION),
     provider: z.string().min(1),
     simulated: z.boolean(),
     environmentStatus: z
@@ -47,6 +53,8 @@ export const workflowGenerationResultSchema = z
     assumptions: z.array(z.string().min(1).max(500)).max(50),
     assignments: z.array(z.string().min(1).max(500)).max(50),
     missingIntegrations: z.array(z.string().min(1).max(160)).max(50),
+    missingAgentCapabilities: z.array(z.string().min(1).max(500)).max(50),
+    quality: workflowQualityReportSchema,
     findings: z.array(
       z.object({
         code: z.string(),
@@ -99,6 +107,7 @@ function generatedDefinition(prompt: string): WorkflowDefinition {
     node("request_received", "trigger", "Request received", 80, { triggerType: "manual" }),
     node("prepare_request", "human", "Prepare request", 360, {
       assignment: "workflow_initiator",
+      justification: "The workflow initiator must supply and attest to the request evidence.",
       outputs: ["request_summary", "supporting_evidence", "request_confirmed"]
     })
   ];
@@ -108,6 +117,7 @@ function generatedDefinition(prompt: string): WorkflowDefinition {
         policy: "workspace_owner",
         allowSelfApproval: true,
         riskLevel: "medium",
+        justification: "The request explicitly requires workspace-owner approval.",
         dueInMinutes: 30
       })
     );
@@ -169,22 +179,32 @@ export async function runDeterministicGeneration(
     }
   }
   const findings = validateWorkflowDefinition(definition);
+  const missingIntegrations = /notify|message|email|slack/iu.test(request.prompt)
+    ? ["A production notification connection must be selected before activation."]
+    : [];
+  const compiled = compileWorkflowGeneration({
+    definition,
+    sourcePrompt: request.prompt,
+    missingIntegrations,
+    missingAgentCapabilities: []
+  });
   return workflowGenerationResultSchema.parse({
     promptVersion: WORKFLOW_GENERATION_PROMPT_VERSION,
+    compilerVersion: WORKFLOW_COMPILER_VERSION,
     provider: DETERMINISTIC_GENERATION_PROVIDER,
     simulated: true,
     environmentStatus: "RECORDED_CONTRACT",
-    definition,
+    definition: compiled.definition,
     assumptions: [
       "The workflow starts manually.",
       "The workflow initiator supplies the request data.",
       "All generated actions are review-only until accepted."
     ],
     assignments: ["Prepare request → workflow initiator"],
-    missingIntegrations: /notify|message|email|slack/iu.test(request.prompt)
-      ? ["A production notification connection must be selected before activation."]
-      : [],
-    findings,
+    missingIntegrations,
+    missingAgentCapabilities: [],
+    quality: compiled.quality,
+    findings: compiled.quality.findings.length ? compiled.quality.findings : findings,
     repairAttempts,
     usage: {
       inputUnits: request.prompt.length,

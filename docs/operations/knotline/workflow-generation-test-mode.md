@@ -20,7 +20,7 @@ The authoritative lifecycle is `QUEUED`, `RUNNING`, `SUCCEEDED`, `FAILED`,
 phase is `GENERATING`, `VALIDATING`, `REPAIRING`, or `READY_TO_ACCEPT`.
 `READY_TO_ACCEPT` is review state, not permission to create a workflow.
 
-The worker uses prompt contract `workflow-generation.v1` and provider
+The worker uses prompt contract `workflow-generation.v2` and provider
 `fixture-v1`. User text is passed only as data to deterministic parsing. The
 fixture implementation has no instruction interpreter. Invalid output receives
 at most two repairs; refusal, truncation, timeout, schema exhaustion, and

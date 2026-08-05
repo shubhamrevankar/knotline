@@ -95,10 +95,14 @@ const gatewayWorker = gatewayUrl
               name: string;
               description: string;
               purpose: string;
+              tags: string[];
+              tools: string[];
               output_schema: Record<string, unknown>;
             }>(
               `SELECT agent.id,version.version,agent.name,agent.description,
                       version.definition->>'purpose' purpose,
+                      coalesce(ARRAY(SELECT jsonb_array_elements_text(version.definition->'tags')),'{}') tags,
+                      coalesce(ARRAY(SELECT tool->>'toolKey' FROM jsonb_array_elements(version.definition->'tools') tool),'{}') tools,
                       version.definition->'outputSchema' output_schema
                  FROM agent_definitions agent
                  JOIN agent_versions version ON version.workspace_id=agent.workspace_id
@@ -146,6 +150,8 @@ const gatewayWorker = gatewayUrl
               name: agent.name,
               description: agent.description,
               purpose: agent.purpose,
+              tags: agent.tags,
+              tools: agent.tools,
               outputSchema: agent.output_schema
             })),
             connections: connections.rows.map((connection) => ({

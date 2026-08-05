@@ -185,6 +185,38 @@ export function validateWorkflowDefinition(input: unknown): readonly ValidationF
           )
         );
     }
+    if (node.kind === "agent") {
+      if (typeof node.configuration.agentId !== "string" || !node.configuration.agentId.trim())
+        findings.push(
+          finding("WF_AGENT_REFERENCE_REQUIRED", "Agent tasks require an available agent id.", {
+            type: "node",
+            key: node.key,
+            path: "configuration.agentId"
+          })
+        );
+      if (
+        !Number.isInteger(node.configuration.agentVersion) ||
+        Number(node.configuration.agentVersion) < 1
+      )
+        findings.push(
+          finding(
+            "WF_AGENT_VERSION_REQUIRED",
+            "Agent tasks require an immutable positive agent version.",
+            { type: "node", key: node.key, path: "configuration.agentVersion" }
+          )
+        );
+      if (
+        typeof node.configuration.requiredCapability !== "string" ||
+        !node.configuration.requiredCapability.trim()
+      )
+        findings.push(
+          finding(
+            "WF_AGENT_CAPABILITY_REQUIRED",
+            "Agent tasks must declare the capability required by the assigned work.",
+            { type: "node", key: node.key, path: "configuration.requiredCapability" }
+          )
+        );
+    }
     if (node.kind === "transform") {
       const mapping = node.configuration.mapping;
       if (
@@ -277,6 +309,14 @@ export function validateWorkflowDefinition(input: unknown): readonly ValidationF
             key: node.key,
             path: "configuration.idempotencyKey"
           })
+        );
+      if (typeof node.configuration.action !== "string" || !node.configuration.action.trim())
+        findings.push(
+          finding(
+            "WF_INTEGRATION_ACTION_REQUIRED",
+            "Integration actions require an action declared by the selected connection.",
+            { type: "node", key: node.key, path: "configuration.action" }
+          )
         );
       if (!(["low", "medium", "high"] as const).includes(node.configuration.risk as never))
         findings.push(

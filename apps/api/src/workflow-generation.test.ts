@@ -8,6 +8,7 @@ import {
 
 import {
   GatewayWorkflowGenerationWorker,
+  generationAcceptanceBlock,
   WorkflowGenerationService,
   type WorkflowGenerationWorker
 } from "./workflow-generation.js";
@@ -19,6 +20,17 @@ const context = { workspaceId, principalId, requestId: "request-generation-test"
 const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 describe("WorkflowGenerationService", () => {
+  it("allows a valid design as a draft but blocks publication until automation is ready", async () => {
+    const result = await runDeterministicGeneration({
+      prompt: "Collect a launch request, require approval, and notify the requester.",
+      fixture: "standard"
+    });
+    expect(result.quality.draftAcceptable).toBe(true);
+    expect(result.quality.publishable).toBe(false);
+    expect(generationAcceptanceBlock(result, false)).toBeUndefined();
+    expect(generationAcceptanceBlock(result, true)).toBe("WORKFLOW_AUTOMATION_NOT_READY");
+  });
+
   it("runs asynchronously, records deterministic usage, and accepts idempotently", async () => {
     const service = new WorkflowGenerationService();
     const created = await service.start(context, {
@@ -118,7 +130,8 @@ describe("WorkflowGenerationService", () => {
             definition: fixture.definition,
             assumptions: fixture.assumptions,
             assignments: fixture.assignments,
-            missingIntegrations: fixture.missingIntegrations
+            missingIntegrations: fixture.missingIntegrations,
+            missingAgentCapabilities: fixture.missingAgentCapabilities
           },
           usage: { inputTokens: 100, cachedInputTokens: 0, outputTokens: 200 }
         }
@@ -144,6 +157,8 @@ describe("WorkflowGenerationService", () => {
               name: "Launch analyst",
               description: "Assesses launch readiness",
               purpose: "Produce an evidence-backed readiness assessment",
+              tags: ["launch", "readiness"],
+              tools: [],
               outputSchema: { type: "object" }
             }
           ],
@@ -229,7 +244,8 @@ describe("WorkflowGenerationService", () => {
           definition: invalidDefinition,
           assumptions: fixture.assumptions,
           assignments: fixture.assignments,
-          missingIntegrations: fixture.missingIntegrations
+          missingIntegrations: fixture.missingIntegrations,
+          missingAgentCapabilities: fixture.missingAgentCapabilities
         },
         "resp_invalid"
       ),
@@ -238,7 +254,8 @@ describe("WorkflowGenerationService", () => {
           definition: fixture.definition,
           assumptions: fixture.assumptions,
           assignments: fixture.assignments,
-          missingIntegrations: fixture.missingIntegrations
+          missingIntegrations: fixture.missingIntegrations,
+          missingAgentCapabilities: fixture.missingAgentCapabilities
         },
         "resp_repaired"
       )

@@ -24,7 +24,7 @@ describe("gateway process configuration", () => {
       safetyIdentifier: "user-1",
       retention: "no-store",
       residency: "local",
-      promptVersionId: "workflow-generation.v1",
+      promptVersionId: "workflow-generation.v2",
       messages: [{ role: "user", content: "Return a result" }],
       tools: [],
       maxOutputTokens: 100,

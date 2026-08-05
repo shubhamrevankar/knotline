@@ -164,6 +164,7 @@ export function GuidedWorkflowCreate({
   const [working, setWorking] = useState(false);
   const [dryRun, setDryRun] = useState<Awaited<ReturnType<typeof dryRunWorkflowDefinition>>>();
   const [publishedWorkflowId, setPublishedWorkflowId] = useState("");
+  const [acceptedAsDraft, setAcceptedAsDraft] = useState(false);
   const [importFormat, setImportFormat] = useState<"json" | "csv">("json");
   const [importContent, setImportContent] = useState("");
   const [importPreview, setImportPreview] = useState<{
@@ -253,8 +254,10 @@ export function GuidedWorkflowCreate({
     setWorking(true);
     setError("");
     try {
-      const accepted = await acceptWorkflowGeneration(generation.id, true);
+      const publish = generation.result?.quality.publishable === true;
+      const accepted = await acceptWorkflowGeneration(generation.id, publish);
       setPublishedWorkflowId(accepted.workflowId);
+      setAcceptedAsDraft(!accepted.published);
       onStageChange(4);
     } catch (reason) {
       setError(String(reason));
@@ -297,9 +300,21 @@ export function GuidedWorkflowCreate({
         <span className="publish-success-icon" aria-hidden="true">
           <CheckCircle2 />
         </span>
-        <Badge tone="accent">{msg("generation.publish.success.badge")}</Badge>
-        <h2>{msg("generation.publish.success.heading")}</h2>
-        <p>{msg("generation.publish.success.body")}</p>
+        <Badge tone="accent">
+          {acceptedAsDraft
+            ? msg("generation.draft.success.badge")
+            : msg("generation.publish.success.badge")}
+        </Badge>
+        <h2>
+          {acceptedAsDraft
+            ? msg("generation.draft.success.heading")
+            : msg("generation.publish.success.heading")}
+        </h2>
+        <p>
+          {acceptedAsDraft
+            ? msg("generation.draft.success.body")
+            : msg("generation.publish.success.body")}
+        </p>
         <div className="action-row">
           <Link className="primary-button" to={`/app/workflows/${publishedWorkflowId}`}>
             {msg("generation.publish.success.view")}
@@ -413,6 +428,171 @@ export function GuidedWorkflowCreate({
                     ))}
                   </div>
                 </div>
+                <section
+                  className={`generation-quality ${
+                    generation.result.quality.publishable
+                      ? "is-ready"
+                      : generation.result.quality.draftAcceptable
+                        ? "needs-connections"
+                        : "is-blocked"
+                  }`}
+                >
+                  <div className="generation-quality-heading">
+                    <div>
+                      <span>{msg("generation.quality.heading")}</span>
+                      <strong>
+                        {msg("generation.quality.score", {
+                          score: generation.result.quality.score
+                        })}
+                      </strong>
+                    </div>
+                    <Badge tone={generation.result.quality.publishable ? "accent" : "warning"}>
+                      {generation.result.quality.publishable
+                        ? msg("generation.quality.publishable")
+                        : generation.result.quality.draftAcceptable
+                          ? msg("generation.quality.draft")
+                          : msg("generation.quality.blocked")}
+                    </Badge>
+                  </div>
+                  <div className="generation-quality-metrics">
+                    <span>
+                      <strong>{generation.result.quality.summary.automatedSteps}</strong>
+                      {msg("generation.quality.automated")}
+                    </span>
+                    <span>
+                      <strong>{generation.result.quality.summary.humanSteps}</strong>
+                      {msg("generation.quality.human")}
+                    </span>
+                    <span>
+                      <strong>{generation.result.quality.summary.conditionalApprovals}</strong>
+                      {msg("generation.quality.approvals")}
+                    </span>
+                    <span>
+                      <strong>{generation.result.quality.summary.connectedActions}</strong>
+                      {msg("generation.quality.connected")}
+                    </span>
+                    <span>
+                      <strong>{generation.result.quality.summary.automationOpportunities}</strong>
+                      {msg("generation.quality.opportunities")}
+                    </span>
+                    <span>
+                      <strong>{generation.result.quality.summary.agentCapabilityGaps}</strong>
+                      {msg("generation.quality.agent.gaps")}
+                    </span>
+                    <span>
+                      <strong>
+                        {generation.result.quality.summary.scenariosPassed}/
+                        {generation.result.quality.summary.scenariosTotal}
+                      </strong>
+                      {msg("generation.quality.scenarios")}
+                    </span>
+                  </div>
+                  {generation.result.quality.summary.automationOpportunities > 0 ? (
+                    <div className="quality-explanation">
+                      <p>
+                        {msg("generation.quality.connection.explanation", {
+                          count: generation.result.quality.summary.automationOpportunities
+                        })}
+                      </p>
+                      <Link to="/app/connections">
+                        {msg("generation.quality.connections.open")}
+                      </Link>
+                    </div>
+                  ) : (
+                    <p className="quality-explanation">
+                      {msg("generation.quality.automation.ready")}
+                    </p>
+                  )}
+                  {generation.result.quality.agentGaps.length > 0 ? (
+                    <div className="quality-explanation">
+                      <p>{msg("generation.quality.agent.explanation")}</p>
+                      <Link to="/app/agents/new">{msg("generation.quality.agent.create")}</Link>
+                    </div>
+                  ) : null}
+                </section>
+                <div className="generation-design-review">
+                  <section>
+                    <h4>{msg("generation.quality.integrations")}</h4>
+                    <ul>
+                      {generation.result.quality.integrations.length ? (
+                        generation.result.quality.integrations.map((integration) => (
+                          <li key={integration.key} data-mode={integration.mode}>
+                            <strong>{integration.label}</strong>
+                            <span>
+                              {integration.mode.replace("_", " ")} · {integration.reason}
+                            </span>
+                          </li>
+                        ))
+                      ) : (
+                        <li>{msg("generation.quality.integrations.none")}</li>
+                      )}
+                    </ul>
+                  </section>
+                  <section>
+                    <h4>{msg("generation.quality.agents")}</h4>
+                    <ul>
+                      {generation.result.quality.agents.length ? (
+                        generation.result.quality.agents.map((agent) => (
+                          <li
+                            key={agent.nodeKey}
+                            data-mode={agent.suitable ? "connected" : "missing"}
+                          >
+                            <strong>
+                              {agent.nodeName} → {agent.agentName} v{agent.agentVersion}
+                            </strong>
+                            <span>{agent.reason}</span>
+                          </li>
+                        ))
+                      ) : (
+                        <li>{msg("generation.quality.agents.none")}</li>
+                      )}
+                      {generation.result.quality.agentGaps.map((gap) => (
+                        <li key={gap} data-mode="missing">
+                          <strong>{msg("generation.quality.agent.required")}</strong>
+                          <span>{gap}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                  <section>
+                    <h4>{msg("generation.quality.approval.plan")}</h4>
+                    <ul>
+                      {generation.result.quality.approvals.length ? (
+                        generation.result.quality.approvals.map((approval) => (
+                          <li key={approval.nodeKey}>
+                            <strong>
+                              {approval.nodeName} · {approval.riskLevel}
+                            </strong>
+                            <span>{approval.reason}</span>
+                          </li>
+                        ))
+                      ) : (
+                        <li>{msg("generation.quality.approvals.none")}</li>
+                      )}
+                    </ul>
+                  </section>
+                  <section>
+                    <h4>{msg("generation.quality.path.tests")}</h4>
+                    <ul>
+                      {generation.result.quality.scenarios.map((scenario) => (
+                        <li
+                          key={scenario.id}
+                          data-mode={scenario.status === "passed" ? "connected" : "missing"}
+                        >
+                          <strong>{scenario.name}</strong>
+                          <span>
+                            {msg("generation.quality.path.summary", {
+                              status: scenario.status,
+                              steps: scenario.path.length,
+                              terminal:
+                                scenario.terminalNodeKey ?? msg("generation.quality.missing")
+                            })}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                </div>
                 <div className="review-columns">
                   <section>
                     <h4>{msg("generation.assumptions")}</h4>
@@ -455,6 +635,10 @@ export function GuidedWorkflowCreate({
                     <div>
                       <dt>{msg("generation.prompt.version")}</dt>
                       <dd>{generation.result.promptVersion}</dd>
+                    </div>
+                    <div>
+                      <dt>{msg("generation.compiler.version")}</dt>
+                      <dd>{generation.result.compilerVersion}</dd>
                     </div>
                     <div>
                       <dt>{msg("generation.cost")}</dt>
@@ -556,15 +740,27 @@ export function GuidedWorkflowCreate({
             </ul>
             <div className="publish-bar">
               <div>
-                <strong>{msg("generation.publish.ready.heading")}</strong>
-                <span>{msg("generation.publish.ready.body")}</span>
+                <strong>
+                  {generation?.result?.quality.publishable
+                    ? msg("generation.publish.ready.heading")
+                    : msg("generation.draft.ready.heading")}
+                </strong>
+                <span>
+                  {generation?.result?.quality.publishable
+                    ? msg("generation.publish.ready.body")
+                    : msg("generation.draft.ready.body")}
+                </span>
               </div>
               <Button
                 tone="accent"
                 onClick={() => void accept()}
                 disabled={working || !dryRun.preflight.allowed}
               >
-                {working ? msg("generation.publishing") : msg("generation.accept.publish")}
+                {working
+                  ? msg("generation.publishing")
+                  : generation?.result?.quality.publishable
+                    ? msg("generation.accept.publish")
+                    : msg("generation.accept.draft")}
               </Button>
             </div>
           </section>

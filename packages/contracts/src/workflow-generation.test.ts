@@ -89,6 +89,7 @@ describe("workflow import and dry run", () => {
           position: { x: 900, y: 120 },
           configuration: {
             connectionRef: "conn_fixture_12345678",
+            action: "write_record",
             idempotencyKey: "fixture-key",
             risk: "high"
           }

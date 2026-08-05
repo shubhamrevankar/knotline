@@ -80,7 +80,7 @@ import {
   parseCookies
 } from "./auth.js";
 import { type CaptureInvitationMailer, type WorkspaceService } from "./workspace.js";
-import { WorkflowGenerationService } from "./workflow-generation.js";
+import { generationAcceptanceBlock, WorkflowGenerationService } from "./workflow-generation.js";
 
 export interface BuildAppOptions {
   readonly environment: string;
@@ -381,6 +381,15 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       .object({ publish: z.boolean().default(false) })
       .strict()
       .parse(request.body ?? {});
+    const acceptanceBlock = generationAcceptanceBlock(resource.result, publish);
+    if (acceptanceBlock)
+      throw new AuthFailure(
+        acceptanceBlock,
+        422,
+        acceptanceBlock === "WORKFLOW_GENERATED_INVALID"
+          ? "The generated workflow has unresolved correctness findings. Regenerate it before acceptance."
+          : "Save this workflow as a draft or configure the required connections before publication."
+      );
     const alreadyAccepted = Boolean(resource.acceptedWorkflowId);
     const workflowId =
       resource.acceptedWorkflowId ??

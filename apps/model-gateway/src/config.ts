@@ -439,7 +439,8 @@ const recordedWorkflowFixture = {
     "Customer relationship management connection",
     "Customer messaging connection",
     "Immutable audit-store connection"
-  ]
+  ],
+  missingAgentCapabilities: []
 } as const;
 
 const recordedAgentFixture = (promptVersionId: string) => {
@@ -499,7 +500,7 @@ export function buildGatewayFromEnvironment() {
       ? new OpenAIResponsesAdapter({ apiKey: required("OPENAI_API_KEY") })
       : new RecordedContractAdapter((request) => {
           if (request.kind !== "generation") return {};
-          return request.promptVersionId === "workflow-generation.v1"
+          return request.promptVersionId === "workflow-generation.v2"
             ? recordedWorkflowFixture
             : recordedAgentFixture(request.promptVersionId);
         });
