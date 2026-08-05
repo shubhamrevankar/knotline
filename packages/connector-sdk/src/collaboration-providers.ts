@@ -113,12 +113,12 @@ export const COLLABORATION_PROVIDER_MANIFESTS: Readonly<
     displayName: "Slack",
     provider: "slack",
     capabilities: ["discover", "read", "write", "webhook", "permissions", "reconcile"],
-    requiredScopes: ["team:read", "users:read", "channels:read"],
+    requiredScopes: ["team:read", "channels:read", "chat:write"],
     optionalScopes: [
       "channels:history",
       "groups:history",
       "search:read",
-      "chat:write",
+      "users:read",
       "files:read"
     ],
     objectTypes: ["workspace", "channel", "message", "thread", "user", "file"],

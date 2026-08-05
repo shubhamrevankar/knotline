@@ -1155,7 +1155,6 @@ async function runSuite(pool: DatabasePool) {
     "linear-work",
     "jira-cloud-work",
     "github-app",
-    "slack-collaboration",
     "microsoft-teams-collaboration",
     "x-publishing"
   ]) {
@@ -1167,11 +1166,19 @@ async function runSuite(pool: DatabasePool) {
       `Recorded collaboration certification was not explicit for ${connectorKey}`
     );
   }
+  const slackCatalog = await connectorRepository.catalog(contextA, "slack-collaboration");
+  assert(
+    slackCatalog.length === 1 &&
+      (slackCatalog[0]?.certification as { liveStatus?: string; externalGate?: string } | undefined)
+        ?.liveStatus === "LIVE" &&
+      (slackCatalog[0]?.certification as { liveStatus?: string; externalGate?: string } | undefined)
+        ?.externalGate === "CUSTOMER_OAUTH_APPLICATION",
+    "Slack live OAuth certification was not explicit"
+  );
   for (const connectorKey of [
     "microsoft-365",
     "google-mail-calendar",
     "salesforce-crm",
-    "hubspot-crm",
     "s3-compatible",
     "csv-import",
     "generic-rest",
@@ -1185,6 +1192,19 @@ async function runSuite(pool: DatabasePool) {
       `Recorded data connector certification was not explicit for ${connectorKey}`
     );
   }
+  const hubspotCatalog = await connectorRepository.catalog(contextA, "hubspot-crm");
+  assert(
+    hubspotCatalog.length === 1 &&
+      (
+        hubspotCatalog[0]?.certification as
+          { liveStatus?: string; externalGate?: string } | undefined
+      )?.liveStatus === "LIVE" &&
+      (
+        hubspotCatalog[0]?.certification as
+          { liveStatus?: string; externalGate?: string } | undefined
+      )?.externalGate === "CUSTOMER_OAUTH_APPLICATION",
+    "HubSpot live OAuth certification was not explicit"
+  );
   const providerConnection = await connectorRepository.create(contextA, {
     connectorKey: "google-workspace-knowledge",
     manifestVersion: "1.0.0",

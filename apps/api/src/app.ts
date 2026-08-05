@@ -1,7 +1,16 @@
 import cors from "@fastify/cors";
 import { createHash, randomUUID } from "node:crypto";
-import { executeLiveHttpRequest } from "@knotline/connector-sdk";
 import {
+  exchangeProviderCode,
+  executeLiveHttpRequest,
+  providerCredentialSchema,
+  refreshProviderCredential,
+  testProviderCredential,
+  type LiveProvider,
+  type ProviderOAuthApplication
+} from "@knotline/connector-sdk";
+import {
+  analyzeWorkflowQuality,
   createWorkflowRequestSchema,
   validateAgentDefinition,
   dryRunFixtureSchema,
@@ -110,6 +119,9 @@ export interface BuildAppOptions {
   readonly retrieval?: RetrievalRepository;
   readonly knowledgeGraph?: KnowledgeGraphRepository;
   readonly connectors?: ConnectorRepository;
+  readonly connectorOAuthApplications?: Readonly<
+    Partial<Record<LiveProvider, ProviderOAuthApplication>>
+  >;
   readonly triggers?: TriggerRepository;
   readonly notifications?: NotificationRepository;
   readonly analytics?: AnalyticsRepository;
@@ -330,13 +342,78 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   const generationReadiness = async (context: TenantContext, workflowId: string) => {
     const generation = await workflowGeneration.getByAcceptedWorkflow(context, workflowId);
     if (!generation?.result) return undefined;
+    const draft = await workflowDefinitions().getDraft(context, workflowId);
+    const [connectionRows, agentRows] =
+      draft && options.connectors && options.agents
+        ? await Promise.all([options.connectors.connections(context), options.agents.list(context)])
+        : [[], []];
+    const replacementConnectionCount = draft
+      ? Math.max(
+          0,
+          draft.definition.nodes.filter(({ kind }) => kind === "integration_action").length -
+            generation.result.quality.summary.connectedActions
+        )
+      : 0;
+    const replacementAgentCount = draft
+      ? Math.max(
+          0,
+          draft.definition.nodes.filter(({ kind }) => kind === "agent").length -
+            generation.result.quality.agents.filter(({ suitable }) => suitable).length
+        )
+      : 0;
+    const quality =
+      draft && options.connectors && options.agents
+        ? analyzeWorkflowQuality({
+            definition: draft.definition,
+            sourcePrompt: generation.sourcePrompt,
+            missingIntegrations: generation.result.missingIntegrations.slice(
+              replacementConnectionCount
+            ),
+            missingAgentCapabilities:
+              generation.result.missingAgentCapabilities.slice(replacementAgentCount),
+            capabilities: {
+              connections: connectionRows.map((connection) => ({
+                id: String(connection.id),
+                name:
+                  typeof connection.displayName === "string"
+                    ? connection.displayName
+                    : typeof connection.connectorKey === "string"
+                      ? connection.connectorKey
+                      : "Connection",
+                provider:
+                  typeof connection.connectorKey === "string"
+                    ? connection.connectorKey
+                    : "provider",
+                state: typeof connection.state === "string" ? connection.state : "draft",
+                actions: Array.isArray(connection.actions)
+                  ? connection.actions.filter(
+                      (action): action is string => typeof action === "string"
+                    )
+                  : []
+              })),
+              agents: agentRows
+                .map((agent) => ({
+                  id: String(agent.id),
+                  version: Number(agent.current_version ?? agent.currentVersion ?? 0),
+                  name: typeof agent.name === "string" ? agent.name : "Agent",
+                  description: typeof agent.description === "string" ? agent.description : "",
+                  purpose: typeof agent.description === "string" ? agent.description : "",
+                  tags: Array.isArray(agent.tags)
+                    ? agent.tags.filter((tag): tag is string => typeof tag === "string")
+                    : [],
+                  tools: [] as string[]
+                }))
+                .filter(({ version }) => version > 0)
+            }
+          })
+        : generation.result.quality;
     return {
       generationId: generation.id,
       sourcePrompt: generation.sourcePrompt,
       compilerVersion: generation.result.compilerVersion,
       missingIntegrations: generation.result.missingIntegrations,
       missingAgentCapabilities: generation.result.missingAgentCapabilities,
-      quality: generation.result.quality
+      quality
     };
   };
   const readinessFinding = (
@@ -3974,6 +4051,65 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       return { connectionId, operationId, state: "failed", errorCode };
     }
   };
+  const testLiveProviderConnection = async (connectionId: string, context: TenantContext) => {
+    const configuration = await connectorRepository().providerConfiguration(context, connectionId);
+    if (!configuration) throw new HumanTaskConflictError("PROVIDER_CONNECTION_NOT_CONFIGURED");
+    const application = options.connectorOAuthApplications?.[configuration.provider];
+    if (!application) throw new HumanTaskConflictError("PROVIDER_OAUTH_NOT_CONFIGURED");
+    const operationId = `connection-test:${randomUUID()}`;
+    const requestTarget = `${configuration.provider}:identity`;
+    const requestBodyHash = createHash("sha256").update("{}").digest("hex");
+    const started = Date.now();
+    try {
+      const current = providerCredentialSchema.parse(JSON.parse(configuration.credential));
+      const credential = await refreshProviderCredential(current, application);
+      if (credential.accessToken !== current.accessToken)
+        await connectorRepository().updateProviderCredential(
+          context,
+          connectionId,
+          JSON.stringify(credential)
+        );
+      const identity = await testProviderCredential(credential);
+      const durationMs = Date.now() - started;
+      await connectorRepository().recordHttpReceipt(context, {
+        connectionId,
+        operationId,
+        requestMethod: "GET",
+        requestUrlHash: createHash("sha256").update(requestTarget).digest("hex"),
+        requestBodyHash,
+        responseStatus: 200,
+        responseBodyHash: createHash("sha256")
+          .update(JSON.stringify(identity.detail))
+          .digest("hex"),
+        responseExcerpt: identity.detail,
+        durationMs,
+        state: "succeeded"
+      });
+      return {
+        connectionId,
+        operationId,
+        state: "succeeded",
+        provider: configuration.provider,
+        accountId: identity.accountId,
+        accountLabel: identity.accountLabel,
+        durationMs,
+        detail: identity.detail
+      };
+    } catch (cause) {
+      const errorCode = cause instanceof Error ? cause.message : "PROVIDER_TEST_FAILED";
+      await connectorRepository().recordHttpReceipt(context, {
+        connectionId,
+        operationId,
+        requestMethod: "GET",
+        requestUrlHash: createHash("sha256").update(requestTarget).digest("hex"),
+        requestBodyHash,
+        durationMs: Date.now() - started,
+        state: "failed",
+        errorCode
+      });
+      return { connectionId, operationId, state: "failed", errorCode };
+    }
+  };
   app.post("/v1/workspaces/:workspaceId/http-connections", async (request, reply) => {
     const authenticated = await protectMutation(request);
     const { workspaceId } = workspaceParamsSchema.parse(request.params);
@@ -4023,7 +4159,12 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     await protectMutation(request);
     const { connectionId } = connectionParams.parse(request.params);
     const context = await agentAccess(request, true);
-    return { data: await testLiveHttpConnection(connectionId, context) };
+    const provider = await connectorRepository().providerConfiguration(context, connectionId);
+    return {
+      data: provider
+        ? await testLiveProviderConnection(connectionId, context)
+        : await testLiveHttpConnection(connectionId, context)
+    };
   });
   app.get("/v1/workspaces/:workspaceId/runtime-readiness", async (request) => {
     const authenticated = await authenticate(request);
@@ -4049,6 +4190,13 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
         connection.state === "active" &&
         (connection.connectorKey === "generic-rest" || connection.connectorKey === "signed-webhook")
     );
+    const activeLiveConnections = connections.filter(
+      (connection) =>
+        connection.state === "active" &&
+        ["generic-rest", "signed-webhook", "slack-collaboration", "hubspot-crm"].includes(
+          String(connection.connectorKey)
+        )
+    );
     const publishedAgents = agents.filter(
       (agent) => Number(agent.current_version ?? agent.currentVersion ?? 0) > 0
     );
@@ -4062,6 +4210,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
         model,
         counts: {
           activeHttpConnections: activeHttpConnections.length,
+          activeLiveConnections: activeLiveConnections.length,
           publishedAgents: publishedAgents.length,
           workflows: workflows.length,
           publishedWorkflows: publishedWorkflows.length
@@ -4086,11 +4235,11 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
           },
           {
             key: "connection",
-            ready: activeHttpConnections.length > 0,
+            ready: activeLiveConnections.length > 0,
             label: "Tested live connection",
-            detail: activeHttpConnections.length
-              ? `${String(activeHttpConnections.length)} HTTPS connection${activeHttpConnections.length === 1 ? "" : "s"} passed a live delivery test.`
-              : "Add a REST API or signed webhook connection and pass its delivery test."
+            detail: activeLiveConnections.length
+              ? `${String(activeLiveConnections.length)} live connection${activeLiveConnections.length === 1 ? "" : "s"} passed provider verification.`
+              : "Connect Slack, HubSpot, a REST API, or a signed webhook and pass its live test."
           },
           {
             key: "workflow",
@@ -4120,29 +4269,87 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
           }
         });
   });
-  app.get("/callbacks/v1/connections/oauth/:provider", async (request) => {
+  app.get("/callbacks/v1/connections/oauth/:provider", async (request, reply) => {
+    const { provider } = z
+      .object({ provider: z.enum(["slack", "hubspot", "fixture"]) })
+      .parse(request.params);
     const query = z
       .object({
-        connection_id: z.string().uuid(),
+        connection_id: z.string().uuid().optional(),
         state: z.string().min(20),
+        code: z.string().min(1).max(4096).optional(),
+        error: z.string().max(200).optional(),
         granted_scope: z.string().default("objects.read"),
         account_id: z.string().default("fixture-account"),
         account_label: z.string().default("Fixture account")
       })
       .parse(request.query);
-    return {
-      data: await connectorRepository().activate(
-        await agentAccess(request, true),
-        query.connection_id,
-        {
+    const context = await agentAccess(request, true);
+    if (provider === "fixture") {
+      if (query.error) throw new AuthFailure("CONNECTOR_AUTHORIZATION_DENIED", 400, query.error);
+      if (!query.connection_id)
+        throw new AuthFailure(
+          "CONNECTOR_CONNECTION_ID_REQUIRED",
+          400,
+          "The connection authorization is missing its connection identifier."
+        );
+      return {
+        data: await connectorRepository().activate(context, query.connection_id, {
           state: query.state,
           grantedScopes: query.granted_scope.split(" ").filter(Boolean),
           accountId: query.account_id,
           accountLabel: query.account_label,
           credentialReference: `credential://connections/${query.connection_id}`
-        }
-      )
-    };
+        })
+      };
+    }
+    const oauth = options.connectorOAuthApplications?.[provider];
+    if (!oauth)
+      throw new AuthFailure(
+        "PROVIDER_OAUTH_NOT_CONFIGURED",
+        503,
+        `${provider} OAuth is not configured for this deployment.`
+      );
+    const transaction = await connectorRepository().oauthContext(context, query.state, provider);
+    if (!transaction)
+      throw new AuthFailure(
+        "OAUTH_STATE_INVALID_OR_REPLAYED",
+        400,
+        "The authorization is invalid."
+      );
+    const connectionId = String(transaction.connectionId);
+    if (query.error) {
+      await connectorRepository().failAuthorization(
+        context,
+        connectionId,
+        query.state,
+        `PROVIDER_${query.error}`
+      );
+      return reply.redirect(
+        `${options.webOrigin}/app/connections/${connectionId}?authorization=denied`
+      );
+    }
+    if (!query.code)
+      throw new AuthFailure("PROVIDER_CODE_MISSING", 400, "The provider did not return a code.");
+    const credential = await exchangeProviderCode(provider, oauth, query.code);
+    const identity = await testProviderCredential(credential);
+    await connectorRepository().activate(context, connectionId, {
+      state: query.state,
+      grantedScopes: credential.scopes.length
+        ? credential.scopes
+        : (transaction.requestedScopes as string[]),
+      accountId: identity.accountId,
+      accountLabel: identity.accountLabel,
+      credentialReference: `credential://connections/${connectionId}`,
+      credential: JSON.stringify({
+        ...credential,
+        accountId: identity.accountId,
+        accountLabel: identity.accountLabel
+      })
+    });
+    return reply.redirect(
+      `${options.webOrigin}/app/connections/${connectionId}?authorization=succeeded`
+    );
   });
   if (options.environment === "local" || options.environment === "ci")
     app.get(`/__local/connectors/fixture/authorize`, async (request, reply) => {

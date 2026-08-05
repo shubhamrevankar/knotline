@@ -6,6 +6,7 @@ import {
 } from "@knotline/contracts";
 import {
   OAuthTransactionStore,
+  providerAuthorizationUrl,
   reconcileScopes,
   validateManifest,
   validateSourceSelection,
@@ -52,6 +53,21 @@ export interface LiveHttpConnectionConfiguration {
   readonly method: "POST" | "PUT" | "PATCH";
   readonly authorization?: string;
   readonly timeoutMs: number;
+}
+
+export interface LiveProviderConnectionConfiguration {
+  readonly connectionId: string;
+  readonly connectorKey: "slack-collaboration" | "hubspot-crm";
+  readonly provider: "slack" | "hubspot";
+  readonly state: string;
+  readonly credential: string;
+}
+
+export interface ConnectorOAuthOptions {
+  readonly apiOrigin: string;
+  readonly applications: Readonly<
+    Partial<Record<"slack" | "hubspot", { readonly clientId: string }>>
+  >;
 }
 
 const recordedSources = (connectorKey: string): readonly ProviderSource[] =>
@@ -175,6 +191,26 @@ export interface ConnectorRepository {
     context: TenantContext,
     connectionId: string
   ): Promise<LiveHttpConnectionConfiguration | undefined>;
+  providerConfiguration(
+    context: TenantContext,
+    connectionId: string
+  ): Promise<LiveProviderConnectionConfiguration | undefined>;
+  updateProviderCredential(
+    context: TenantContext,
+    connectionId: string,
+    credential: string
+  ): Promise<void>;
+  oauthContext(
+    context: TenantContext,
+    state: string,
+    provider: string
+  ): Promise<Record<string, unknown> | undefined>;
+  failAuthorization(
+    context: TenantContext,
+    connectionId: string,
+    state: string,
+    errorCode: string
+  ): Promise<void>;
   recordHttpReceipt(
     context: TenantContext,
     input: Readonly<Record<string, unknown>>
@@ -190,7 +226,8 @@ export class PostgresConnectorRepository implements ConnectorRepository {
   readonly #credentialKey: Buffer;
   constructor(
     private readonly pool: Pool,
-    signingKey: Buffer
+    signingKey: Buffer,
+    private readonly oauthOptions?: ConnectorOAuthOptions
   ) {
     this.#oauth = new OAuthTransactionStore(signingKey);
     if (signingKey.byteLength !== 32) throw new Error("CONNECTOR_KEY_MUST_BE_32_BYTES");
@@ -222,7 +259,11 @@ export class PostgresConnectorRepository implements ConnectorRepository {
       async (client) =>
         (
           await client.query<Record<string, unknown>>(
-            `SELECT id,connector_key "connectorKey",display_name "displayName",state,external_account_label "accountLabel",granted_scopes "grantedScopes",requested_scopes "requestedScopes",permission_fidelity "permissionFidelity",last_success_at "lastSuccessAt",freshness_lag_seconds "freshnessLagSeconds",next_retry_at "nextRetryAt",current_operation "currentOperation",object_count "objectCount",error_count "errorCount",error_summary "errorSummary",runtime_configuration->>'endpoint' "endpoint",health_checked_at "healthCheckedAt",health_latency_ms "healthLatencyMs",updated_at "updatedAt" FROM connections WHERE workspace_id=$1 AND state<>'deleted' ORDER BY updated_at DESC,id`,
+            `SELECT connection.id,connection.connector_key "connectorKey",connection.display_name "displayName",connection.state,connection.external_account_label "accountLabel",connection.granted_scopes "grantedScopes",connection.requested_scopes "requestedScopes",connection.permission_fidelity "permissionFidelity",connection.last_success_at "lastSuccessAt",connection.freshness_lag_seconds "freshnessLagSeconds",connection.next_retry_at "nextRetryAt",connection.current_operation "currentOperation",connection.object_count "objectCount",connection.error_count "errorCount",connection.error_summary "errorSummary",connection.runtime_configuration->>'endpoint' "endpoint",connection.health_checked_at "healthCheckedAt",connection.health_latency_ms "healthLatencyMs",connection.updated_at "updatedAt",COALESCE(manifest.manifest->'actions','[]'::jsonb) actions
+             FROM connections connection
+             JOIN connector_manifest_versions manifest ON manifest.workspace_id=connection.workspace_id AND manifest.id=connection.connector_manifest_id
+             WHERE connection.workspace_id=$1 AND connection.state<>'deleted'
+             ORDER BY connection.updated_at DESC,connection.id`,
             [context.workspaceId]
           )
         ).rows
@@ -267,7 +308,10 @@ export class PostgresConnectorRepository implements ConnectorRepository {
     return withTenantTransaction(this.pool, context, async (client) => {
       const connection = (
         await client.query<Record<string, unknown>>(
-          `SELECT id,connector_key "connectorKey",display_name "displayName",state,auth_method "authMethod",external_account_id "accountId",external_account_label "accountLabel",granted_scopes "grantedScopes",requested_scopes "requestedScopes",permission_fidelity "permissionFidelity",last_success_at "lastSuccessAt",freshness_lag_seconds "freshnessLagSeconds",next_retry_at "nextRetryAt",current_operation "currentOperation",object_count "objectCount",error_count "errorCount",error_summary "errorSummary",runtime_configuration->>'endpoint' "endpoint",runtime_configuration->>'method' "method",encrypted_credential IS NOT NULL "authorizationConfigured",health_checked_at "healthCheckedAt",health_latency_ms "healthLatencyMs",updated_at "updatedAt" FROM connections WHERE workspace_id=$1 AND id=$2`,
+          `SELECT connection.id,connection.connector_key "connectorKey",connection.display_name "displayName",connection.state,connection.auth_method "authMethod",connection.external_account_id "accountId",connection.external_account_label "accountLabel",connection.granted_scopes "grantedScopes",connection.requested_scopes "requestedScopes",connection.permission_fidelity "permissionFidelity",connection.last_success_at "lastSuccessAt",connection.freshness_lag_seconds "freshnessLagSeconds",connection.next_retry_at "nextRetryAt",connection.current_operation "currentOperation",connection.object_count "objectCount",connection.error_count "errorCount",connection.error_summary "errorSummary",connection.runtime_configuration->>'endpoint' "endpoint",connection.runtime_configuration->>'method' "method",connection.encrypted_credential IS NOT NULL "authorizationConfigured",connection.health_checked_at "healthCheckedAt",connection.health_latency_ms "healthLatencyMs",connection.updated_at "updatedAt",COALESCE(manifest.manifest->'actions','[]'::jsonb) actions
+           FROM connections connection
+           JOIN connector_manifest_versions manifest ON manifest.workspace_id=connection.workspace_id AND manifest.id=connection.connector_manifest_id
+           WHERE connection.workspace_id=$1 AND connection.id=$2`,
           [context.workspaceId, connectionId]
         )
       ).rows[0];
@@ -325,6 +369,19 @@ export class PostgresConnectorRepository implements ConnectorRepository {
       ).rows[0];
       if (!row) throw new HumanTaskAuthorizationError("CONNECTION_NOT_AUTHORIZABLE");
       const manifest = validateManifest(row.manifest);
+      const liveProvider =
+        manifest.provider === "slack" || manifest.provider === "hubspot"
+          ? manifest.provider
+          : undefined;
+      const liveApplication = liveProvider
+        ? this.oauthOptions?.applications[liveProvider]
+        : undefined;
+      if (liveProvider && !liveApplication)
+        throw new HumanTaskConflictError("PROVIDER_OAUTH_NOT_CONFIGURED");
+      const redirectUri = liveApplication
+        ? `${this.oauthOptions?.apiOrigin}/callbacks/v1/connections/oauth/${manifest.provider}`
+        : "http://127.0.0.1:4100/callbacks/v1/connections/oauth/fixture";
+      const clientApplicationId = liveApplication?.clientId ?? "local-fixture-app";
       const expiresAt = new Date(Date.now() + 10 * 60_000).toISOString();
       const started = this.#oauth.start({
         workspaceId: context.workspaceId,
@@ -335,9 +392,9 @@ export class PostgresConnectorRepository implements ConnectorRepository {
         connectorKey: manifest.key,
         manifestVersion: manifest.version,
         provider: manifest.provider,
-        clientApplicationId: "local-fixture-app",
-        configVersion: "local-v1",
-        redirectUri: "http://127.0.0.1:4100/callbacks/v1/connections/oauth/fixture",
+        clientApplicationId,
+        configVersion: liveApplication ? "live-v1" : "local-v1",
+        redirectUri,
         requestedScopes: value.requestedScopes,
         returnTarget: value.returnTarget,
         expiresAt
@@ -355,8 +412,8 @@ export class PostgresConnectorRepository implements ConnectorRepository {
           sha(started.verifier),
           row.connector_manifest_id,
           manifest.provider,
-          "local-fixture-app",
-          "local-v1",
+          clientApplicationId,
+          liveApplication ? "live-v1" : "local-v1",
           started.binding.redirectUri,
           value.requestedScopes,
           value.returnTarget,
@@ -369,7 +426,15 @@ export class PostgresConnectorRepository implements ConnectorRepository {
       );
       return {
         authorizationId: started.binding.id,
-        authorizationUrl: `${manifest.oauth?.authorizationEndpoint}?response_type=code&state=${encodeURIComponent(started.state)}&code_challenge=${started.challenge}&code_challenge_method=S256&connection_id=${connectionId}`,
+        authorizationUrl:
+          liveProvider && liveApplication
+            ? providerAuthorizationUrl({
+                provider: liveProvider,
+                application: { clientId: liveApplication.clientId, redirectUri },
+                state: started.state,
+                scopes: value.requestedScopes
+              })
+            : `${manifest.oauth?.authorizationEndpoint}?response_type=code&state=${encodeURIComponent(started.state)}&code_challenge=${started.challenge}&code_challenge_method=S256&connection_id=${connectionId}`,
         expiresAt
       };
     });
@@ -394,7 +459,8 @@ export class PostgresConnectorRepository implements ConnectorRepository {
         grantedScopes: z.array(z.string()),
         accountId: z.string().min(1),
         accountLabel: z.string().min(1),
-        credentialReference: z.string().startsWith("credential://")
+        credentialReference: z.string().startsWith("credential://"),
+        credential: z.string().min(1).max(32_000).optional()
       })
       .strict()
       .parse(input);
@@ -416,7 +482,7 @@ export class PostgresConnectorRepository implements ConnectorRepository {
       const scopes = reconcileScopes(manifest, row.requested_scopes, value.grantedScopes);
       const nextState = scopes.reauthorizationRequired ? "reauthorization_required" : "active";
       await client.query(
-        `UPDATE connections SET state=$3,granted_scopes=$4,external_account_id=$5,external_account_label=$6,credential_reference=$7,current_operation=NULL,updated_at=clock_timestamp() WHERE workspace_id=$1 AND id=$2`,
+        `UPDATE connections SET state=$3,granted_scopes=$4,external_account_id=$5,external_account_label=$6,credential_reference=$7,encrypted_credential=COALESCE($8,encrypted_credential),current_operation=NULL,last_success_at=clock_timestamp(),updated_at=clock_timestamp() WHERE workspace_id=$1 AND id=$2`,
         [
           context.workspaceId,
           connectionId,
@@ -424,7 +490,8 @@ export class PostgresConnectorRepository implements ConnectorRepository {
           scopes.grantedScopes,
           value.accountId,
           value.accountLabel,
-          value.credentialReference
+          value.credentialReference,
+          value.credential ? encryptCredential(value.credential, this.#credentialKey) : null
         ]
       );
       await client.query(
@@ -690,6 +757,79 @@ export class PostgresConnectorRepository implements ConnectorRepository {
           ? { authorization: decryptCredential(row.encrypted_credential, this.#credentialKey) }
           : {})
       };
+    });
+  }
+
+  async providerConfiguration(context: TenantContext, connectionId: string) {
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const row = (
+        await client.query<{
+          id: string;
+          connector_key: "slack-collaboration" | "hubspot-crm";
+          state: string;
+          encrypted_credential?: string;
+        }>(
+          `SELECT id,connector_key,state,encrypted_credential FROM connections WHERE workspace_id=$1 AND id=$2 AND connector_key IN ('slack-collaboration','hubspot-crm') AND state IN ('active','degraded')`,
+          [context.workspaceId, connectorId.parse(connectionId)]
+        )
+      ).rows[0];
+      if (!row?.encrypted_credential) return undefined;
+      return {
+        connectionId: row.id,
+        connectorKey: row.connector_key,
+        provider: row.connector_key === "slack-collaboration" ? "slack" : "hubspot",
+        state: row.state,
+        credential: decryptCredential(row.encrypted_credential, this.#credentialKey)
+      } as const;
+    });
+  }
+
+  async updateProviderCredential(context: TenantContext, connectionId: string, credential: string) {
+    await withTenantTransaction(this.pool, context, async (client) => {
+      const result = await client.query(
+        `UPDATE connections SET encrypted_credential=$3,credential_reference='credential://connections/'||id::text,state='active',updated_at=clock_timestamp() WHERE workspace_id=$1 AND id=$2 AND connector_key IN ('slack-collaboration','hubspot-crm') AND state NOT IN ('deleting','deleted','revoked')`,
+        [
+          context.workspaceId,
+          connectorId.parse(connectionId),
+          encryptCredential(credential, this.#credentialKey)
+        ]
+      );
+      if (result.rowCount !== 1) throw new HumanTaskAuthorizationError("CONNECTION_NOT_FOUND");
+    });
+  }
+
+  async oauthContext(context: TenantContext, state: string, provider: string) {
+    return withTenantTransaction(this.pool, context, async (client) => {
+      return (
+        await client.query<Record<string, unknown>>(
+          `SELECT transaction.id,transaction.connection_id "connectionId",transaction.requested_scopes "requestedScopes",transaction.redirect_uri "redirectUri",transaction.return_target "returnTarget",connection.connector_key "connectorKey" FROM connection_authorization_transactions transaction JOIN connections connection ON connection.workspace_id=transaction.workspace_id AND connection.id=transaction.connection_id WHERE transaction.workspace_id=$1 AND transaction.provider=$2 AND transaction.state_hash=$3 AND transaction.consumed_at IS NULL AND transaction.expires_at>clock_timestamp()`,
+          [context.workspaceId, provider, sha(state)]
+        )
+      ).rows[0];
+    });
+  }
+
+  async failAuthorization(
+    context: TenantContext,
+    connectionId: string,
+    state: string,
+    errorCode: string
+  ) {
+    await withTenantTransaction(this.pool, context, async (client) => {
+      const transaction = await client.query(
+        `UPDATE connection_authorization_transactions SET consumed_at=clock_timestamp() WHERE workspace_id=$1 AND connection_id=$2 AND state_hash=$3 AND consumed_at IS NULL AND expires_at>clock_timestamp() RETURNING id`,
+        [context.workspaceId, connectorId.parse(connectionId), sha(state)]
+      );
+      if (transaction.rowCount !== 1)
+        throw new HumanTaskAuthorizationError("OAUTH_STATE_INVALID_OR_REPLAYED");
+      await client.query(
+        `UPDATE connections
+         SET state=CASE WHEN encrypted_credential IS NULL THEN 'draft' ELSE 'reauthorization_required' END,
+             current_operation=NULL,error_count=error_count+1,
+             error_summary=jsonb_build_object('code',$3::text),updated_at=clock_timestamp()
+         WHERE workspace_id=$1 AND id=$2 AND state='authorizing'`,
+        [context.workspaceId, connectionId, errorCode.slice(0, 200)]
+      );
     });
   }
 

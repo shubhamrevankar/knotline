@@ -134,15 +134,20 @@ export const DATA_PROVIDER_MANIFESTS: Readonly<Record<DataProvider, ConnectorMan
       "delete",
       "reconcile"
     ],
-    requiredScopes: ["crm.objects.contacts.read"],
-    optionalScopes: ["crm.objects.contacts.write", "crm.schemas.contacts.read"],
+    requiredScopes: [
+      "crm.objects.contacts.read",
+      "crm.objects.contacts.write",
+      "crm.objects.companies.read",
+      "crm.objects.companies.write"
+    ],
+    optionalScopes: ["crm.schemas.contacts.read"],
     objectTypes: ["account", "schema", "object", "association", "owner", "timeline"],
     triggers: ["crm.object.changed"],
     actions: ["object.create", "object.update", "association.create"],
     webhookMode: "application",
     oauth: {
       authorizationEndpoint: "https://app.hubspot.com/oauth/authorize",
-      tokenEndpoint: "https://api.hubapi.com/oauth/v1/token"
+      tokenEndpoint: "https://api.hubapi.com/oauth/v3/token"
     }
   }),
   "s3-compatible": manifest({

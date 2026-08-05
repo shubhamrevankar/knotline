@@ -1607,6 +1607,7 @@ function NodeInspector({
   onTest: () => void;
   connections: readonly ConnectionSummary[];
 }) {
+  const selectedConnection = connections.find(({ id }) => id === node.configuration.connectionRef);
   return (
     <Card className="studio-inspector-card">
       <Badge tone="accent">{kindLabel(node.kind)}</Badge>
@@ -1790,7 +1791,11 @@ function NodeInspector({
               }
               onChange={(event) =>
                 update({
-                  configuration: { ...node.configuration, connectionRef: event.target.value }
+                  configuration: {
+                    ...node.configuration,
+                    connectionRef: event.target.value,
+                    action: undefined
+                  }
                 })
               }
             >
@@ -1815,6 +1820,26 @@ function NodeInspector({
                 </>
               )}
             </small>
+          </label>
+          <label>
+            {msg("studio.node.action")}
+            <select
+              disabled={!selectedConnection}
+              value={typeof node.configuration.action === "string" ? node.configuration.action : ""}
+              onChange={(event) =>
+                update({
+                  configuration: { ...node.configuration, action: event.target.value }
+                })
+              }
+            >
+              <option value="">{msg("studio.node.action.choose")}</option>
+              {(selectedConnection?.actions ?? []).map((action) => (
+                <option key={action} value={action}>
+                  {action.replaceAll(".", " ")}
+                </option>
+              ))}
+            </select>
+            <small>{msg("studio.node.action.help")}</small>
           </label>
         </>
       ) : null}

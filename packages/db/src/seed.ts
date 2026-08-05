@@ -566,6 +566,7 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
     ] as const) {
       const manifest = COLLABORATION_PROVIDER_MANIFESTS[provider];
       const certification = certifyCollaborationProvider(provider);
+      const liveProvider = provider === "slack";
       for (const [workspaceId, userId] of [
         [SEED.workspaceA, SEED.userA],
         [SEED.workspaceB, SEED.userB]
@@ -585,18 +586,32 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
         );
         await client.query(
           `INSERT INTO provider_connector_certifications(workspace_id,id,connector_key,manifest_version,engineering_status,live_status,external_gate,fixture_digest,capabilities,limitations,certified_at)
-           VALUES($1,$2,$3,$4,'RECORDED','BLOCKED_EXTERNAL',$5,$6,$7,$8,'2026-08-01T00:00:00Z') ON CONFLICT(workspace_id,id) DO NOTHING`,
+           VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'2026-08-01T00:00:00Z') ON CONFLICT(workspace_id,id) DO NOTHING`,
           [
             workspaceId,
             collaborationCertificationIds[provider],
             manifest.key,
             manifest.version,
-            COLLABORATION_EXTERNAL_GATES[provider],
+            liveProvider ? "LIVE" : "RECORDED",
+            liveProvider ? "LIVE" : "BLOCKED_EXTERNAL",
+            liveProvider ? "CUSTOMER_OAUTH_APPLICATION" : COLLABORATION_EXTERNAL_GATES[provider],
             contentHash(certification),
-            certification,
-            JSON.stringify([
-              "Recorded fixtures are certified; provider sandbox certification is required before LIVE."
-            ])
+            liveProvider
+              ? {
+                  authorization: "oauth_v2",
+                  test: "auth.test",
+                  actions: manifest.actions,
+                  tokenRefresh: true,
+                  receipts: true
+                }
+              : certification,
+            JSON.stringify(
+              liveProvider
+                ? ["A customer-owned provider application and its OAuth credentials are required."]
+                : [
+                    "Recorded fixtures are certified; provider sandbox certification is required before LIVE."
+                  ]
+            )
           ]
         );
       }
@@ -626,6 +641,7 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
     for (const provider of dataProviders) {
       const manifest = DATA_PROVIDER_MANIFESTS[provider],
         certification = certifyDataProvider(provider);
+      const liveProvider = provider === "hubspot";
       for (const [workspaceId, userId] of [
         [SEED.workspaceA, SEED.userA],
         [SEED.workspaceB, SEED.userB]
@@ -643,18 +659,30 @@ export async function seedSyntheticTenants(pool: Pool): Promise<void> {
           ]
         );
         await client.query(
-          `INSERT INTO provider_connector_certifications(workspace_id,id,connector_key,manifest_version,engineering_status,live_status,external_gate,fixture_digest,capabilities,limitations,certified_at) VALUES($1,$2,$3,$4,'RECORDED','BLOCKED_EXTERNAL',$5,$6,$7,$8,'2026-08-01T00:00:00Z') ON CONFLICT(workspace_id,id) DO NOTHING`,
+          `INSERT INTO provider_connector_certifications(workspace_id,id,connector_key,manifest_version,engineering_status,live_status,external_gate,fixture_digest,capabilities,limitations,certified_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'2026-08-01T00:00:00Z') ON CONFLICT(workspace_id,id) DO NOTHING`,
           [
             workspaceId,
             dataCertificationIds[provider],
             manifest.key,
             manifest.version,
-            DATA_PROVIDER_EXTERNAL_GATES[provider],
+            liveProvider ? "LIVE" : "RECORDED",
+            liveProvider ? "LIVE" : "BLOCKED_EXTERNAL",
+            liveProvider ? "CUSTOMER_OAUTH_APPLICATION" : DATA_PROVIDER_EXTERNAL_GATES[provider],
             contentHash(certification),
-            certification,
-            JSON.stringify([
-              "Recorded fixture certification only; production activation remains blocked."
-            ])
+            liveProvider
+              ? {
+                  authorization: "oauth_v3",
+                  test: "contacts.read",
+                  actions: manifest.actions,
+                  tokenRefresh: true,
+                  receipts: true
+                }
+              : certification,
+            JSON.stringify(
+              liveProvider
+                ? ["A customer-owned provider application and its OAuth credentials are required."]
+                : ["Recorded fixture certification only; production activation remains blocked."]
+            )
           ]
         );
       }

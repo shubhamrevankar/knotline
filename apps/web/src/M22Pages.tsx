@@ -462,7 +462,12 @@ export function ConnectionDetailPage() {
     }
   >();
   const [error, setError] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(() => {
+    const authorization = new URLSearchParams(location.search).get("authorization");
+    if (authorization === "succeeded") return msg("connections.authorization.succeeded");
+    if (authorization === "denied") return msg("connections.authorization.denied");
+    return "";
+  });
   const id = lastSegment();
   const load = useCallback(
     () =>
@@ -512,7 +517,9 @@ export function ConnectionDetailPage() {
             <RefreshCw aria-hidden size={16} />
             {msg("connections.sync")}
           </Button>
-          {item.connectorKey === "generic-rest" || item.connectorKey === "signed-webhook" ? (
+          {["generic-rest", "signed-webhook", "slack-collaboration", "hubspot-crm"].includes(
+            item.connectorKey
+          ) ? (
             <Button
               tone="neutral"
               onClick={() =>

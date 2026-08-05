@@ -2,7 +2,14 @@ import { createHash, randomUUID } from "node:crypto";
 
 import { Context, activityInfo } from "@temporalio/activity";
 import { GovernedAgentRuntime, type AgentModelStep } from "@knotline/agent-runtime";
-import { executeLiveHttpRequest } from "@knotline/connector-sdk";
+import {
+  executeLiveHttpRequest,
+  executeProviderAction,
+  providerCredentialSchema,
+  refreshProviderCredential,
+  type LiveProvider,
+  type ProviderOAuthApplication
+} from "@knotline/connector-sdk";
 import {
   agentDefinitionSchema,
   generationResultSchema,
@@ -39,6 +46,27 @@ const connectorKey = process.env.CONNECTOR_STATE_SIGNING_KEY
   ? Buffer.from(process.env.CONNECTOR_STATE_SIGNING_KEY, "base64")
   : createHash("sha256").update("knotline-local-connector-state").digest();
 const connectors = pool ? new PostgresConnectorRepository(pool, connectorKey) : undefined;
+
+const providerOAuthApplications: Partial<Record<LiveProvider, ProviderOAuthApplication>> = {
+  ...(process.env.SLACK_CLIENT_ID && process.env.SLACK_CLIENT_SECRET
+    ? {
+        slack: {
+          clientId: process.env.SLACK_CLIENT_ID,
+          clientSecret: process.env.SLACK_CLIENT_SECRET,
+          redirectUri: `${process.env.KNOTLINE_API_ORIGIN ?? "http://localhost:4100"}/callbacks/v1/connections/oauth/slack`
+        }
+      }
+    : {}),
+  ...(process.env.HUBSPOT_CLIENT_ID && process.env.HUBSPOT_CLIENT_SECRET
+    ? {
+        hubspot: {
+          clientId: process.env.HUBSPOT_CLIENT_ID,
+          clientSecret: process.env.HUBSPOT_CLIENT_SECRET,
+          redirectUri: `${process.env.KNOTLINE_API_ORIGIN ?? "http://localhost:4100"}/callbacks/v1/connections/oauth/hubspot`
+        }
+      }
+    : {})
+};
 
 type TransformScope = {
   readonly input: Record<string, unknown>;
@@ -415,9 +443,12 @@ export async function executeConnectorTask(
       connectionId
     )
   )
-    throw new Error("HTTP_CONNECTION_ID_INVALID");
-  const configuration = await connectors.httpConfiguration(context, connectionId);
-  if (!configuration) throw new Error("HTTP_CONNECTION_NOT_CONFIGURED");
+    throw new Error("CONNECTION_ID_INVALID");
+  const providerConfiguration = await connectors.providerConfiguration(context, connectionId);
+  const httpConfiguration = providerConfiguration
+    ? undefined
+    : await connectors.httpConfiguration(context, connectionId);
+  if (!providerConfiguration && !httpConfiguration) throw new Error("CONNECTION_NOT_CONFIGURED");
   const scope = await repository.taskExecutionContext(context, input.runId, input.node.key);
   const configuredBody = input.node.configuration.body ??
     input.node.configuration.payloadMapping ?? {
@@ -427,35 +458,70 @@ export async function executeConnectorTask(
   const body = executeTransformMapping(configuredBody, scope, false);
   const operationId = `${input.runId}:${input.node.key}`;
   const bodyText = JSON.stringify(body);
-  const requestUrlHash = createHash("sha256").update(configuration.endpoint).digest("hex");
+  const action =
+    typeof input.node.configuration.action === "string"
+      ? input.node.configuration.action
+      : undefined;
+  const requestTarget = providerConfiguration
+    ? `${providerConfiguration.provider}:${action ?? "missing-action"}`
+    : httpConfiguration!.endpoint;
+  const requestMethod = providerConfiguration ? "POST" : httpConfiguration!.method;
+  const requestUrlHash = createHash("sha256").update(requestTarget).digest("hex");
   const requestBodyHash = createHash("sha256").update(bodyText).digest("hex");
   await repository.startTask(context, input.runId, input.node.key, info.activityId);
   const started = Date.now();
   try {
-    const response = await executeLiveHttpRequest({
-      ...configuration,
-      operationId,
-      body
-    });
+    let response: { readonly status: number; readonly body: unknown; readonly durationMs: number };
+    if (providerConfiguration) {
+      if (!action) throw new Error("PROVIDER_ACTION_REQUIRED");
+      const application = providerOAuthApplications[providerConfiguration.provider];
+      if (!application) throw new Error("PROVIDER_OAUTH_NOT_CONFIGURED");
+      const existingCredential = providerCredentialSchema.parse(
+        JSON.parse(providerConfiguration.credential)
+      );
+      const credential = await refreshProviderCredential(existingCredential, application);
+      if (credential.accessToken !== existingCredential.accessToken)
+        await connectors.updateProviderCredential(
+          context,
+          connectionId,
+          JSON.stringify(credential)
+        );
+      const providerStarted = Date.now();
+      const providerResponse = await executeProviderAction(
+        credential,
+        {
+          provider: providerConfiguration.provider,
+          action,
+          payload: body && typeof body === "object" && !Array.isArray(body) ? body : { value: body }
+        },
+        operationId
+      );
+      response = { ...providerResponse, durationMs: Date.now() - providerStarted };
+    } else {
+      response = await executeLiveHttpRequest({
+        ...httpConfiguration!,
+        operationId,
+        body
+      });
+    }
     await connectors.recordHttpReceipt(context, {
       connectionId,
       runId: input.runId,
       nodeKey: input.node.key,
       operationId,
-      requestMethod: configuration.method,
+      requestMethod,
       requestUrlHash,
       requestBodyHash,
       responseStatus: response.status,
       responseBodyHash: createHash("sha256").update(JSON.stringify(response.body)).digest("hex"),
       responseExcerpt: response.body,
       durationMs: response.durationMs,
-      state: response.ok ? "succeeded" : "failed",
-      ...(response.ok ? {} : { errorCode: `HTTP_${String(response.status)}` })
+      state: "succeeded"
     });
-    if (!response.ok) throw new Error(`CONNECTOR_HTTP_${String(response.status)}`);
     const output = {
       delivered: true,
       connectionId,
+      ...(providerConfiguration ? { provider: providerConfiguration.provider, action } : {}),
       operationId,
       status: response.status,
       durationMs: response.durationMs,
@@ -471,19 +537,18 @@ export async function executeConnectorTask(
     return { nodeKey: input.node.key, attempt: info.attempt, queue: input.node.queue, output };
   } catch (cause) {
     const errorCode = cause instanceof Error ? cause.message : "CONNECTOR_EXECUTION_FAILED";
-    if (!errorCode.startsWith("CONNECTOR_HTTP_"))
-      await connectors.recordHttpReceipt(context, {
-        connectionId,
-        runId: input.runId,
-        nodeKey: input.node.key,
-        operationId,
-        requestMethod: configuration.method,
-        requestUrlHash,
-        requestBodyHash,
-        durationMs: Date.now() - started,
-        state: "failed",
-        errorCode
-      });
+    await connectors.recordHttpReceipt(context, {
+      connectionId,
+      runId: input.runId,
+      nodeKey: input.node.key,
+      operationId,
+      requestMethod,
+      requestUrlHash,
+      requestBodyHash,
+      durationMs: Date.now() - started,
+      state: "failed",
+      errorCode
+    });
     throw cause;
   }
 }

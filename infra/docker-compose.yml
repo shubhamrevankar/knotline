@@ -259,6 +259,10 @@ services:
       SANDBOX_INTERNAL_TOKEN: local-only-sandbox-token
       TOOL_BROKER_URL: http://tool-broker:4400
       TOOL_BROKER_INTERNAL_TOKEN: local-only-tool-broker-token
+      SLACK_CLIENT_ID: ${SLACK_CLIENT_ID:-}
+      SLACK_CLIENT_SECRET: ${SLACK_CLIENT_SECRET:-}
+      HUBSPOT_CLIENT_ID: ${HUBSPOT_CLIENT_ID:-}
+      HUBSPOT_CLIENT_SECRET: ${HUBSPOT_CLIENT_SECRET:-}
     networks:
       - default
       - sandbox-private
@@ -292,6 +296,7 @@ services:
       tool-broker:
         condition: service_healthy
     environment:
+      KNOTLINE_API_ORIGIN: http://localhost:4100
       DATABASE_URL: postgresql://knotline_runtime:${KNOTLINE_RUNTIME_DB_PASSWORD:-local-only-runtime-password}@postgres:5432/knotline
       TEMPORAL_ADDRESS: temporal:7233
       TEMPORAL_NAMESPACE: default
@@ -302,6 +307,10 @@ services:
       MODEL_GATEWAY_POLICY_VERSION: default-v1
       TOOL_BROKER_URL: http://tool-broker:4400
       TOOL_BROKER_INTERNAL_TOKEN: local-only-tool-broker-token
+      SLACK_CLIENT_ID: ${SLACK_CLIENT_ID:-}
+      SLACK_CLIENT_SECRET: ${SLACK_CLIENT_SECRET:-}
+      HUBSPOT_CLIENT_ID: ${HUBSPOT_CLIENT_ID:-}
+      HUBSPOT_CLIENT_SECRET: ${HUBSPOT_CLIENT_SECRET:-}
     restart: unless-stopped
 
   web:

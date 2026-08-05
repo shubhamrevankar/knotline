@@ -246,31 +246,46 @@ async function provisionConnectorCatalog(client: PoolClient, workspaceId: string
       limitations:
         PROVIDER_CAPABILITY_STATUS[provider as keyof typeof PROVIDER_CAPABILITY_STATUS].limitations
     })),
-    ...Object.entries(COLLABORATION_PROVIDER_MANIFESTS).map(([provider, manifest]) => ({
-      manifest,
-      certification: certifyCollaborationProvider(
-        provider as keyof typeof COLLABORATION_PROVIDER_MANIFESTS
-      ),
-      externalGate:
-        COLLABORATION_EXTERNAL_GATES[provider as keyof typeof COLLABORATION_EXTERNAL_GATES],
-      limitations: ["Provider OAuth certification is required before live activation."]
-    })),
-    ...Object.entries(DATA_PROVIDER_MANIFESTS).map(([provider, manifest]) => {
-      const liveHttp = provider === "generic-rest" || provider === "signed-webhook";
+    ...Object.entries(COLLABORATION_PROVIDER_MANIFESTS).map(([provider, manifest]) => {
+      const liveProvider = provider === "slack";
       return {
         manifest,
-        certification: liveHttp
+        certification: liveProvider
+          ? {
+              engineeringStatus: "LIVE" as const,
+              liveStatus: "LIVE" as const,
+              capabilities: manifest.capabilities
+            }
+          : certifyCollaborationProvider(provider as keyof typeof COLLABORATION_PROVIDER_MANIFESTS),
+        externalGate: liveProvider
+          ? "CUSTOMER_OAUTH_APPLICATION"
+          : COLLABORATION_EXTERNAL_GATES[provider as keyof typeof COLLABORATION_EXTERNAL_GATES],
+        limitations: liveProvider
+          ? ["A customer-owned provider application and its OAuth credentials are required."]
+          : ["Provider OAuth certification is required before live activation."]
+      };
+    }),
+    ...Object.entries(DATA_PROVIDER_MANIFESTS).map(([provider, manifest]) => {
+      const liveHttp = provider === "generic-rest" || provider === "signed-webhook";
+      const liveProvider = liveHttp || provider === "hubspot";
+      return {
+        manifest,
+        certification: liveProvider
           ? {
               engineeringStatus: "LIVE" as const,
               liveStatus: "LIVE" as const,
               capabilities: manifest.capabilities
             }
           : certifyDataProvider(provider as keyof typeof DATA_PROVIDER_MANIFESTS),
-        externalGate: liveHttp
-          ? "SELF_SERVICE_HTTPS"
+        externalGate: liveProvider
+          ? liveHttp
+            ? "SELF_SERVICE_HTTPS"
+            : "CUSTOMER_OAUTH_APPLICATION"
           : DATA_PROVIDER_EXTERNAL_GATES[provider as keyof typeof DATA_PROVIDER_EXTERNAL_GATES],
-        limitations: liveHttp
-          ? ["Public HTTPS endpoints only; private networks and redirects are blocked."]
+        limitations: liveProvider
+          ? liveHttp
+            ? ["Public HTTPS endpoints only; private networks and redirects are blocked."]
+            : ["A customer-owned provider application and its OAuth credentials are required."]
           : ["Provider certification is required before live activation."]
       };
     })

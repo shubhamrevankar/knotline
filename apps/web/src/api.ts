@@ -1684,6 +1684,7 @@ export interface ConnectionSummary {
   readonly connectorKey: string;
   readonly displayName: string;
   readonly state: string;
+  readonly actions: readonly string[];
   readonly accountLabel?: string;
   readonly grantedScopes: readonly string[];
   readonly requestedScopes: readonly string[];
@@ -1761,6 +1762,7 @@ export interface RuntimeReadiness {
   };
   readonly counts: {
     readonly activeHttpConnections: number;
+    readonly activeLiveConnections: number;
     readonly publishedAgents: number;
     readonly workflows: number;
     readonly publishedWorkflows: number;

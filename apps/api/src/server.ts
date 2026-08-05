@@ -217,7 +217,30 @@ if (
 const connectorStateKey = process.env.CONNECTOR_STATE_SIGNING_KEY
   ? Buffer.from(process.env.CONNECTOR_STATE_SIGNING_KEY, "base64")
   : createHash("sha256").update("knotline-local-connector-state").digest();
-const connectors = new PostgresConnectorRepository(pool, connectorStateKey);
+const connectorOAuthApplications = {
+  ...(process.env.SLACK_CLIENT_ID && process.env.SLACK_CLIENT_SECRET
+    ? {
+        slack: {
+          clientId: process.env.SLACK_CLIENT_ID,
+          clientSecret: process.env.SLACK_CLIENT_SECRET,
+          redirectUri: `${environment.api.publicOrigin.origin}/callbacks/v1/connections/oauth/slack`
+        }
+      }
+    : {}),
+  ...(process.env.HUBSPOT_CLIENT_ID && process.env.HUBSPOT_CLIENT_SECRET
+    ? {
+        hubspot: {
+          clientId: process.env.HUBSPOT_CLIENT_ID,
+          clientSecret: process.env.HUBSPOT_CLIENT_SECRET,
+          redirectUri: `${environment.api.publicOrigin.origin}/callbacks/v1/connections/oauth/hubspot`
+        }
+      }
+    : {})
+};
+const connectors = new PostgresConnectorRepository(pool, connectorStateKey, {
+  apiOrigin: environment.api.publicOrigin.origin,
+  applications: connectorOAuthApplications
+});
 const triggers = new PostgresTriggerRepository(pool);
 const notifications = new PostgresNotificationRepository(pool);
 const analytics = new PostgresAnalyticsRepository(pool);
@@ -430,6 +453,7 @@ const app = await buildApp({
   retrieval,
   knowledgeGraph,
   connectors,
+  connectorOAuthApplications,
   triggers,
   notifications,
   analytics,
