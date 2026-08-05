@@ -180,7 +180,12 @@ export function ConnectionSetupPage() {
   }, [provider]);
   const connect = async () => {
     if (!catalog) return;
+    let authorizationWindow: Window | null = null;
     try {
+      setError("");
+      authorizationWindow = window.open("about:blank", "_blank");
+      if (!authorizationWindow) throw new Error(msg("connections.authorize.popup.blocked"));
+      authorizationWindow.opener = null;
       setStatus(msg("connections.setup.creating"));
       const started = await startConnectionAuthorization({
         connectorKey: catalog.key,
@@ -193,9 +198,11 @@ export function ConnectionSetupPage() {
         browserNonce: crypto.randomUUID(),
         returnTarget: "/app/connections"
       });
-      setStatus(msg("connections.setup.ready"));
-      location.assign(started.authorizationUrl);
+      authorizationWindow.location.replace(started.authorizationUrl);
+      setStatus(msg("connections.setup.opened"));
     } catch (cause) {
+      authorizationWindow?.close();
+      setStatus("");
       setError(cause instanceof Error ? cause.message : msg("connections.error"));
     }
   };
