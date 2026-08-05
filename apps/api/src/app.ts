@@ -4284,7 +4284,10 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
         account_label: z.string().default("Fixture account")
       })
       .parse(request.query);
-    const context = await agentAccess(request, true);
+    // Provider redirects are top-level cross-site GET requests, so they cannot
+    // carry our browser Origin or CSRF header. The one-time OAuth state protects
+    // this callback; the session and manage permission are still required.
+    const context = await workflowAccess(request, "workflow.manage");
     if (provider === "fixture") {
       if (query.error) throw new AuthFailure("CONNECTOR_AUTHORIZATION_DENIED", 400, query.error);
       if (!query.connection_id)
