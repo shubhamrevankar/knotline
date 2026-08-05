@@ -343,6 +343,15 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
     : run.tasks?.find(
         ({ node_kind, state }) => ["approval", "human"].includes(node_kind) && state === "ready"
       );
+  const waitingApprovalValue =
+    waitingTask?.node_kind === "approval"
+      ? run.events?.find(
+          ({ event_type, payload }) =>
+            event_type === "approval.requested" && String(payload.nodeKey) === waitingTask.node_key
+        )?.payload.approvalId
+      : undefined;
+  const waitingApprovalId =
+    typeof waitingApprovalValue === "string" ? waitingApprovalValue : undefined;
   const failedTask = run.tasks?.find(({ state }) => state === "failed");
   const activeTask =
     run.tasks?.find(({ state }) => state === "running") ??
@@ -453,7 +462,11 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
         ) : waitingTask ? (
           <Link
             to={
-              waitingTask.node_kind === "human" ? `/app/tasks/${waitingTask.id}` : `/app/approvals`
+              waitingTask.node_kind === "human"
+                ? `/app/tasks/${waitingTask.id}`
+                : waitingApprovalId
+                  ? `/app/approvals/${waitingApprovalId}`
+                  : `/app/approvals`
             }
           >
             Review now <ChevronRight aria-hidden="true" />
