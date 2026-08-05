@@ -76,6 +76,23 @@ export class OpenAIResponsesAdapter implements ModelAdapter {
   }
 }
 
+const supportsStrictStructuredOutput = (schema: unknown): boolean => {
+  if (Array.isArray(schema)) return schema.every(supportsStrictStructuredOutput);
+  if (!schema || typeof schema !== "object") return true;
+  const value = schema as Record<string, unknown>;
+  const types = Array.isArray(value.type) ? value.type : [value.type];
+  if (types.includes("object")) {
+    if (value.additionalProperties !== false) return false;
+    const properties =
+      value.properties && typeof value.properties === "object" && !Array.isArray(value.properties)
+        ? (value.properties as Record<string, unknown>)
+        : {};
+    const required = new Set(Array.isArray(value.required) ? value.required : []);
+    if (Object.keys(properties).some((key) => !required.has(key))) return false;
+  }
+  return Object.values(value).every(supportsStrictStructuredOutput);
+};
+
 export const toOpenAIRequest = (request: GenerationRequest, context: AdapterContext) => ({
   model: context.mapping.modelId,
   input: request.messages.map((message) => ({
@@ -101,7 +118,7 @@ export const toOpenAIRequest = (request: GenerationRequest, context: AdapterCont
             type: "json_schema",
             name: "knotline_result",
             schema: request.outputSchema,
-            strict: true
+            strict: supportsStrictStructuredOutput(request.outputSchema)
           }
         }
       }

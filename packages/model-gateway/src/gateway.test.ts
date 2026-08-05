@@ -227,6 +227,12 @@ describe("OpenAI Responses adapter contract", () => {
   it("uses no-store, hashed safety identity, strict schema, and strict tools", () => {
     const body = toOpenAIRequest(
       request({
+        outputSchema: {
+          type: "object",
+          additionalProperties: false,
+          required: ["summary"],
+          properties: { summary: { type: "string" } }
+        },
         tools: [
           {
             name: "lookup",
@@ -246,6 +252,25 @@ describe("OpenAI Responses adapter contract", () => {
       tools: [{ type: "function", strict: true }]
     });
     expect(JSON.stringify(body)).not.toContain("principal-1");
+  });
+
+  it("uses best-effort structured output when an open object cannot satisfy strict mode", () => {
+    const body = toOpenAIRequest(
+      request({
+        outputSchema: {
+          type: "object",
+          additionalProperties: false,
+          required: ["definition"],
+          properties: {
+            definition: { type: "object", additionalProperties: true }
+          }
+        }
+      }),
+      context
+    );
+    expect(body).toMatchObject({
+      text: { format: { type: "json_schema", strict: false } }
+    });
   });
 
   it("normalizes text, tool calls, usage, and exact provider model", () => {
