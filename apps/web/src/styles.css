@@ -1969,9 +1969,11 @@ a.run-button {
 }
 
 .canvas-panel {
+  position: relative;
   display: grid;
   min-width: 0;
   grid-template-rows: 74px minmax(0, 1fr);
+  overflow: hidden;
   background:
     radial-gradient(circle at 55% 42%, rgba(100, 164, 255, 0.06), transparent 25rem), #131618;
 }
@@ -2151,6 +2153,7 @@ a.run-button {
   border-radius: 8px;
   background: rgba(20, 23, 25, 0.88);
   backdrop-filter: blur(9px);
+  pointer-events: none;
 }
 
 .canvas-legend span {

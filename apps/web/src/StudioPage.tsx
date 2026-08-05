@@ -1001,16 +1001,10 @@ function StudioEditor({ initialDraft }: { initialDraft: WorkflowDraft }) {
             selectionOnDrag
             onInit={(instance) => {
               flowInstance.current = instance;
-              fitView.current = () => void instance.fitView({ padding: 0.2 });
-              const firstNode = state.definition.nodes[0];
-              window.setTimeout(() => {
-                if (firstNode && state.definition.nodes.length > 8)
-                  void instance.setCenter(firstNode.position.x + 109, firstNode.position.y + 45, {
-                    zoom: 0.82,
-                    duration: 450
-                  });
-                else void instance.fitView({ padding: 0.2 });
-              }, 0);
+              fitView.current = () => void instance.fitView({ padding: 0.2, duration: 450 });
+              window.requestAnimationFrame(() => {
+                window.requestAnimationFrame(() => fitView.current?.());
+              });
             }}
             onNodeClick={(event, node) => {
               setContextMenu(undefined);
