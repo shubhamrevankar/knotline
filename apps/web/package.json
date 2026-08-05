@@ -18,17 +18,17 @@
     "@knotline/ui": "workspace:*",
     "@tanstack/react-query": "5.90.5",
     "@xyflow/react": "12.11.2",
-    "lucide-react": "0.553.0",
+    "lucide-react": "1.28.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "react-router-dom": "6.30.4"
+    "react-router-dom": "7.18.2"
   },
   "devDependencies": {
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
-    "@vitejs/plugin-react": "5.1.1",
+    "@vitejs/plugin-react": "6.0.5",
     "typescript": "catalog:",
-    "vite": "7.3.1",
+    "vite": "8.2.0",
     "vitest": "catalog:"
   }
 }
