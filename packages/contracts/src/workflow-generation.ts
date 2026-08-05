@@ -115,7 +115,7 @@ function generatedDefinition(prompt: string): WorkflowDefinition {
         "Prepare notification",
         includesApproval ? 920 : 640,
         {
-          expression: "${nodes.prepare_request.output}"
+          mapping: { notification: "${nodes.prepare_request.output}" }
         }
       )
     );

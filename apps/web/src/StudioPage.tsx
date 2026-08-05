@@ -210,15 +210,17 @@ function createNode(kind: WorkflowDefinitionNode["kind"], index: number): Workfl
       ? { maxIterations: 10 }
       : kind === "approval"
         ? { policy: "workspace_owner" }
-        : kind === "integration_action"
-          ? {
-              connectionRef: "",
-              idempotencyKey: "${input.operationId}",
-              risk: "medium"
-            }
-          : kind === "subworkflow"
-            ? { workflowRef: "wf_configure_me" }
-            : {};
+        : kind === "transform"
+          ? { mapping: {} }
+          : kind === "integration_action"
+            ? {
+                connectionRef: "",
+                idempotencyKey: "${input.operationId}",
+                risk: "medium"
+              }
+            : kind === "subworkflow"
+              ? { workflowRef: "wf_configure_me" }
+              : {};
   return {
     key: `${kind}_${index}`,
     kind,

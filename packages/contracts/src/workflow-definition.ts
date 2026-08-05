@@ -153,6 +153,22 @@ export function validateWorkflowDefinition(input: unknown): readonly ValidationF
           })
         );
     }
+    if (node.kind === "transform") {
+      const mapping = node.configuration.mapping;
+      if (
+        !mapping ||
+        typeof mapping !== "object" ||
+        Array.isArray(mapping) ||
+        Object.keys(mapping).length === 0
+      )
+        findings.push(
+          finding(
+            "WF_TRANSFORM_MAPPING_REQUIRED",
+            "Transform nodes require a non-empty field mapping.",
+            { type: "node", key: node.key, path: "configuration.mapping" }
+          )
+        );
+    }
     if (node.kind === "approval") {
       if (typeof node.configuration.policy !== "string")
         findings.push(

@@ -127,7 +127,7 @@ describe("versioned workflow definition validation", () => {
         name: `Node ${index}`,
         description: "",
         position: { x: index * 100, y: 0 },
-        configuration: {}
+        configuration: index === 0 ? {} : { mapping: { value: "${input.value}" } }
       }));
       const edges: WorkflowDefinition["edges"] = nodes.slice(1).map((node, index) => ({
         key: `edge_${index}`,
@@ -136,6 +136,27 @@ describe("versioned workflow definition validation", () => {
       }));
       expect(validateWorkflowDefinition({ ...valid, nodes, edges })).toEqual([]);
     }
+  });
+
+  it("rejects transform nodes without an executable field mapping", () => {
+    const findings = validateWorkflowDefinition({
+      ...valid,
+      nodes: [
+        valid.nodes[0],
+        {
+          ...valid.nodes[1],
+          kind: "transform",
+          configuration: {}
+        }
+      ]
+    });
+
+    expect(findings).toContainEqual(
+      expect.objectContaining({
+        code: "WF_TRANSFORM_MAPPING_REQUIRED",
+        location: { type: "node", key: "review", path: "configuration.mapping" }
+      })
+    );
   });
 
   it("reports malformed contracts, duplicate keys, missing references, and typed configuration gaps", () => {
