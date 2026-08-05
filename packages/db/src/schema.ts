@@ -197,6 +197,7 @@ export const workspaces = pgTable("workspaces", {
   id: uuid("id").primaryKey(),
   slug: text("slug").notNull().unique(),
   name: text("name").notNull(),
+  description: text("description").notNull().default(""),
   state: text("state").notNull().default("active"),
   version: integer("version").notNull().default(1),
   ...timestamps
