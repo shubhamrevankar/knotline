@@ -23,6 +23,14 @@ export const providerCredentialSchema = z
 
 export type ProviderCredential = z.infer<typeof providerCredentialSchema>;
 
+export interface ProviderSyncObject {
+  readonly objectType: "channel" | "contact" | "company";
+  readonly externalId: string;
+  readonly externalVersion: string;
+  readonly label?: string;
+  readonly payloadReference: string;
+}
+
 const readJson = async (response: Response): Promise<Record<string, unknown>> => {
   const text = (await response.text()).slice(0, 64 * 1024);
   if (!text) return {};
@@ -200,6 +208,109 @@ export async function testProviderCredential(
         accountLabel: credential.accountLabel,
         detail: { reachable: true }
       };
+}
+
+export async function fetchProviderObjects(
+  credentialInput: ProviderCredential,
+  fetcher: typeof globalThis.fetch = globalThis.fetch
+): Promise<readonly ProviderSyncObject[]> {
+  const credential = providerCredentialSchema.parse(credentialInput);
+  const objects: ProviderSyncObject[] = [];
+  if (credential.provider === "slack") {
+    let cursor = "";
+    for (let page = 0; page < 20; page += 1) {
+      const url = new URL("https://slack.com/api/conversations.list");
+      url.searchParams.set("types", "public_channel");
+      url.searchParams.set("exclude_archived", "true");
+      url.searchParams.set("limit", "200");
+      if (cursor) url.searchParams.set("cursor", cursor);
+      const response = await fetcher(url, {
+        method: "GET",
+        headers: { authorization: `Bearer ${credential.accessToken}`, accept: "application/json" }
+      });
+      const body = await readJson(response);
+      if (!response.ok || body.ok !== true) throw providerError("slack", body, response.status);
+      const channels = Array.isArray(body.channels) ? body.channels : [];
+      for (const value of channels) {
+        if (!value || typeof value !== "object" || Array.isArray(value)) continue;
+        const channel = value as Record<string, unknown>;
+        if (typeof channel.id !== "string" || !channel.id) continue;
+        const version = channel.updated ?? channel.created;
+        objects.push({
+          objectType: "channel",
+          externalId: channel.id,
+          externalVersion:
+            typeof version === "string" || typeof version === "number"
+              ? String(version)
+              : "current",
+          ...(typeof channel.name === "string" ? { label: channel.name } : {}),
+          payloadReference: `slack://channel/${encodeURIComponent(channel.id)}`
+        });
+      }
+      const metadata = body.response_metadata as Record<string, unknown> | undefined;
+      cursor = typeof metadata?.next_cursor === "string" ? metadata.next_cursor : "";
+      if (!cursor || objects.length >= 4_000) break;
+    }
+    return objects;
+  }
+
+  for (const objectType of ["contacts", "companies"] as const) {
+    let after = "";
+    for (let page = 0; page < 20; page += 1) {
+      const url = new URL(`https://api.hubapi.com/crm/objects/2026-03/${objectType}`);
+      url.searchParams.set("limit", "100");
+      url.searchParams.set(
+        "properties",
+        objectType === "contacts" ? "firstname,lastname,email" : "name,domain"
+      );
+      if (after) url.searchParams.set("after", after);
+      const response = await fetcher(url, {
+        method: "GET",
+        headers: { authorization: `Bearer ${credential.accessToken}`, accept: "application/json" }
+      });
+      const body = await readJson(response);
+      if (!response.ok) throw providerError("hubspot", body, response.status);
+      const results = Array.isArray(body.results) ? body.results : [];
+      for (const value of results) {
+        if (!value || typeof value !== "object" || Array.isArray(value)) continue;
+        const record = value as Record<string, unknown>;
+        if (typeof record.id !== "string" || !record.id) continue;
+        const properties =
+          record.properties &&
+          typeof record.properties === "object" &&
+          !Array.isArray(record.properties)
+            ? (record.properties as Record<string, unknown>)
+            : {};
+        const label =
+          objectType === "contacts"
+            ? [properties.firstname, properties.lastname]
+                .filter((part): part is string => typeof part === "string" && Boolean(part))
+                .join(" ") || (typeof properties.email === "string" ? properties.email : undefined)
+            : typeof properties.name === "string"
+              ? properties.name
+              : typeof properties.domain === "string"
+                ? properties.domain
+                : undefined;
+        objects.push({
+          objectType: objectType === "contacts" ? "contact" : "company",
+          externalId: record.id,
+          externalVersion:
+            typeof record.updatedAt === "string"
+              ? record.updatedAt
+              : typeof record.createdAt === "string"
+                ? record.createdAt
+                : "current",
+          ...(label ? { label } : {}),
+          payloadReference: `hubspot://${objectType}/${encodeURIComponent(record.id)}`
+        });
+      }
+      const paging = body.paging as Record<string, unknown> | undefined;
+      const next = paging?.next as Record<string, unknown> | undefined;
+      after = typeof next?.after === "string" ? next.after : "";
+      if (!after || objects.length >= 4_000) break;
+    }
+  }
+  return objects;
 }
 
 const providerActionSchema = z.discriminatedUnion("provider", [

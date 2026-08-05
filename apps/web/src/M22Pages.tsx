@@ -514,6 +514,7 @@ export function ConnectionDetailPage() {
     }
   >();
   const [error, setError] = useState("");
+  const [syncing, setSyncing] = useState(false);
   const [status, setStatus] = useState(() => {
     const authorization = new URLSearchParams(location.search).get("authorization");
     if (authorization === "succeeded") return msg("connections.authorization.succeeded");
@@ -542,6 +543,31 @@ export function ConnectionDetailPage() {
       setError(cause instanceof Error ? cause.message : msg("connections.error"));
     }
   };
+  const syncNow = async () => {
+    try {
+      setError("");
+      setSyncing(true);
+      setStatus(msg("connections.sync.running"));
+      const result = await requestConnectionSync(id);
+      if (result.state === "failed")
+        setStatus(
+          msg("connections.sync.failed", {
+            error: typeof result.errorKind === "string" ? result.errorKind : "PROVIDER_SYNC_FAILED"
+          })
+        );
+      else
+        setStatus(
+          msg("connections.sync.completed", {
+            count: typeof result.processedCount === "number" ? result.processedCount : 0
+          })
+        );
+      await load();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : msg("connections.error"));
+    } finally {
+      setSyncing(false);
+    }
+  };
   if (!item && !error)
     return (
       <main className="page-shell">
@@ -561,13 +587,9 @@ export function ConnectionDetailPage() {
         <h1>{item.displayName}</h1>
         <p>{item.accountLabel ?? msg("connections.account.pending")}</p>
         <div className="connection-actions">
-          <Button
-            onClick={() =>
-              void act(() => requestConnectionSync(id), msg("connections.sync.queued"))
-            }
-          >
+          <Button disabled={syncing} onClick={() => void syncNow()}>
             <RefreshCw aria-hidden size={16} />
-            {msg("connections.sync")}
+            {syncing ? msg("connections.sync.running") : msg("connections.sync")}
           </Button>
           {["generic-rest", "signed-webhook", "slack-collaboration", "hubspot-crm"].includes(
             item.connectorKey

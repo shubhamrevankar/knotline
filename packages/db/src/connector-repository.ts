@@ -10,7 +10,8 @@ import {
   reconcileScopes,
   validateManifest,
   validateSourceSelection,
-  type ProviderSource
+  type ProviderSource,
+  type ProviderSyncObject
 } from "@knotline/connector-sdk";
 import type { Pool } from "pg";
 import { z } from "zod";
@@ -170,6 +171,19 @@ export interface ConnectorRepository {
     connectionId: string,
     syncId?: string
   ): Promise<readonly Record<string, unknown>[]>;
+  markSyncRunning(context: TenantContext, connectionId: string, syncId: string): Promise<void>;
+  completeSync(
+    context: TenantContext,
+    connectionId: string,
+    syncId: string,
+    objects: readonly ProviderSyncObject[]
+  ): Promise<Record<string, unknown>>;
+  failSync(
+    context: TenantContext,
+    connectionId: string,
+    syncId: string,
+    errorCode: string
+  ): Promise<void>;
   transition(
     context: TenantContext,
     connectionId: string,
@@ -535,6 +549,10 @@ export class PostgresConnectorRepository implements ConnectorRepository {
         [context.workspaceId, connectorId.parse(connectionId)]
       );
       if (!active.rowCount) throw new HumanTaskAuthorizationError("CONNECTION_NOT_SYNCABLE");
+      await client.query(
+        `UPDATE connection_sync_runs SET state='cancelled',error_kind='SUPERSEDED',completed_at=clock_timestamp() WHERE workspace_id=$1 AND connection_id=$2 AND state='queued'`,
+        [context.workspaceId, connectorId.parse(connectionId)]
+      );
       const id = createId();
       await client.query(
         `INSERT INTO connection_sync_runs(workspace_id,id,connection_id,mode,state,object_types) VALUES($1,$2,$3,$4,'queued',$5)`,
@@ -563,6 +581,71 @@ export class PostgresConnectorRepository implements ConnectorRepository {
           )
         ).rows
     );
+  }
+  async markSyncRunning(context: TenantContext, connectionId: string, syncId: string) {
+    await withTenantTransaction(this.pool, context, async (client) => {
+      const result = await client.query(
+        `UPDATE connection_sync_runs SET state='running',attempt=attempt+1,started_at=clock_timestamp() WHERE workspace_id=$1 AND connection_id=$2 AND id=$3 AND state='queued'`,
+        [context.workspaceId, connectorId.parse(connectionId), connectorId.parse(syncId)]
+      );
+      if (result.rowCount !== 1) throw new HumanTaskConflictError("SYNC_NOT_QUEUED");
+    });
+  }
+  async completeSync(
+    context: TenantContext,
+    connectionId: string,
+    syncId: string,
+    objects: readonly ProviderSyncObject[]
+  ) {
+    connectorId.parse(connectionId);
+    connectorId.parse(syncId);
+    if (objects.length > 4_000) throw new HumanTaskConflictError("SYNC_OBJECT_LIMIT_EXCEEDED");
+    return withTenantTransaction(this.pool, context, async (client) => {
+      for (const object of objects) {
+        const objectType = z.enum(["channel", "contact", "company"]).parse(object.objectType);
+        const externalId = z.string().min(1).max(500).parse(object.externalId);
+        const externalVersion = z.string().min(1).max(500).parse(object.externalVersion);
+        const payloadReference = z.string().min(1).max(2_000).parse(object.payloadReference);
+        await client.query(
+          `INSERT INTO connection_external_objects(workspace_id,connection_id,object_type,external_id,external_version,payload_reference,permission_hash,deleted)
+           VALUES($1,$2,$3,$4,$5,$6,$7,false)
+           ON CONFLICT(workspace_id,connection_id,object_type,external_id) DO UPDATE SET external_version=EXCLUDED.external_version,payload_reference=EXCLUDED.payload_reference,permission_hash=EXCLUDED.permission_hash,deleted=false,last_seen_at=clock_timestamp()`,
+          [
+            context.workspaceId,
+            connectionId,
+            objectType,
+            externalId,
+            externalVersion,
+            payloadReference,
+            sha(`${connectionId}:${objectType}:authorized`)
+          ]
+        );
+      }
+      const objectTypes = [...new Set(objects.map(({ objectType }) => objectType))];
+      const completed = await client.query<Record<string, unknown>>(
+        `UPDATE connection_sync_runs SET state='succeeded',object_types=$4,discovered_count=$5,processed_count=$5,completed_at=clock_timestamp() WHERE workspace_id=$1 AND connection_id=$2 AND id=$3 AND state='running' RETURNING id,connection_id "connectionId",mode,state,processed_count "processedCount",completed_at "completedAt"`,
+        [context.workspaceId, connectionId, syncId, objectTypes, objects.length]
+      );
+      if (completed.rowCount !== 1) throw new HumanTaskConflictError("SYNC_NOT_RUNNING");
+      await client.query(
+        `UPDATE connections SET state='active',object_count=(SELECT count(*) FROM connection_external_objects object WHERE object.workspace_id=$1 AND object.connection_id=$2 AND object.deleted=false),freshness_lag_seconds=0,current_operation=NULL,last_success_at=clock_timestamp(),error_count=0,error_summary=NULL,updated_at=clock_timestamp() WHERE workspace_id=$1 AND id=$2`,
+        [context.workspaceId, connectionId]
+      );
+      return completed.rows[0] ?? { id: syncId, connectionId, state: "succeeded" };
+    });
+  }
+  async failSync(context: TenantContext, connectionId: string, syncId: string, errorCode: string) {
+    await withTenantTransaction(this.pool, context, async (client) => {
+      const code = errorCode.slice(0, 200);
+      await client.query(
+        `UPDATE connection_sync_runs SET state='failed',error_kind=$4,error_detail=jsonb_build_object('code',$4::text),completed_at=clock_timestamp() WHERE workspace_id=$1 AND connection_id=$2 AND id=$3 AND state IN ('queued','running')`,
+        [context.workspaceId, connectorId.parse(connectionId), connectorId.parse(syncId), code]
+      );
+      await client.query(
+        `UPDATE connections SET state='degraded',current_operation=NULL,error_count=error_count+1,error_summary=jsonb_build_object('code',$3::text),updated_at=clock_timestamp() WHERE workspace_id=$1 AND id=$2`,
+        [context.workspaceId, connectionId, code]
+      );
+    });
   }
   async transition(context: TenantContext, connectionId: string, action: string) {
     const states: Record<string, string> = {

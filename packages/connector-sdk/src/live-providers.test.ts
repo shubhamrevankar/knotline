@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   exchangeProviderCode,
   executeProviderAction,
+  fetchProviderObjects,
   providerAuthorizationUrl,
   refreshProviderCredential,
   testProviderCredential,
@@ -141,6 +142,48 @@ describe("live provider connectors", () => {
         actionFetch
       )
     ).resolves.toMatchObject({ status: 200, body: { ok: true, ts: "1.23" } });
+  });
+
+  it("paginates Slack channel inventory for synchronization", async () => {
+    const fetcher = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            ok: true,
+            channels: [{ id: "C1", name: "operations", updated: 10 }],
+            response_metadata: { next_cursor: "next" }
+          }),
+          { status: 200 }
+        )
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            ok: true,
+            channels: [{ id: "C2", name: "incidents", updated: 20 }],
+            response_metadata: { next_cursor: "" }
+          }),
+          { status: 200 }
+        )
+      );
+    await expect(fetchProviderObjects(slackCredential, fetcher)).resolves.toEqual([
+      {
+        objectType: "channel",
+        externalId: "C1",
+        externalVersion: "10",
+        label: "operations",
+        payloadReference: "slack://channel/C1"
+      },
+      {
+        objectType: "channel",
+        externalId: "C2",
+        externalVersion: "20",
+        label: "incidents",
+        payloadReference: "slack://channel/C2"
+      }
+    ]);
+    expect(String(fetcher.mock.calls[1]?.[0])).toContain("cursor=next");
   });
 
   it("executes HubSpot contact updates and default associations", async () => {

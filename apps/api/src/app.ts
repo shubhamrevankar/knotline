@@ -3,6 +3,7 @@ import { createHash, randomUUID } from "node:crypto";
 import {
   exchangeProviderCode,
   executeLiveHttpRequest,
+  fetchProviderObjects,
   providerCredentialSchema,
   refreshProviderCredential,
   testProviderCredential,
@@ -4365,13 +4366,46 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     });
   app.post("/v1/connections/:connectionId/syncs", async (request, reply) => {
     const { connectionId } = connectionParams.parse(request.params);
-    return reply.code(202).send({
-      data: await connectorRepository().sync(
-        await agentAccess(request, true),
+    const context = await agentAccess(request, true);
+    const queued = await connectorRepository().sync(context, connectionId, request.body);
+    const syncId = String(queued.id);
+    const configuration = await connectorRepository().providerConfiguration(context, connectionId);
+    if (!configuration) {
+      await connectorRepository().failSync(
+        context,
         connectionId,
-        request.body
-      )
-    });
+        syncId,
+        "PROVIDER_SYNC_NOT_SUPPORTED"
+      );
+      return reply.code(202).send({
+        data: { ...queued, state: "failed", errorKind: "PROVIDER_SYNC_NOT_SUPPORTED" }
+      });
+    }
+    await connectorRepository().markSyncRunning(context, connectionId, syncId);
+    try {
+      const application = options.connectorOAuthApplications?.[configuration.provider];
+      if (!application) throw new Error("PROVIDER_OAUTH_NOT_CONFIGURED");
+      const current = providerCredentialSchema.parse(JSON.parse(configuration.credential));
+      const credential = await refreshProviderCredential(current, application);
+      if (credential.accessToken !== current.accessToken)
+        await connectorRepository().updateProviderCredential(
+          context,
+          connectionId,
+          JSON.stringify(credential)
+        );
+      const objects = await fetchProviderObjects(credential);
+      const completed = await connectorRepository().completeSync(
+        context,
+        connectionId,
+        syncId,
+        objects
+      );
+      return reply.code(202).send({ data: completed });
+    } catch (cause) {
+      const errorCode = cause instanceof Error ? cause.message : "PROVIDER_SYNC_FAILED";
+      await connectorRepository().failSync(context, connectionId, syncId, errorCode);
+      return reply.code(202).send({ data: { ...queued, state: "failed", errorKind: errorCode } });
+    }
   });
   app.get("/v1/connections/:connectionId/syncs", async (request) => {
     const { connectionId } = connectionParams.parse(request.params);
