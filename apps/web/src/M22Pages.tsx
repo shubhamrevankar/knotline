@@ -1,5 +1,16 @@
 import { Badge, Button, Card, EmptyState, ErrorState, Skeleton } from "@knotline/ui";
-import { Activity, Cable, KeyRound, RefreshCw, ShieldCheck, Trash2 } from "lucide-react";
+import {
+  Activity,
+  ArrowUpRight,
+  Cable,
+  CheckCircle2,
+  Clock3,
+  Database,
+  Ellipsis,
+  RefreshCw,
+  ShieldCheck,
+  Trash2
+} from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import {
   deleteConnection,
@@ -38,15 +49,68 @@ const receiptStatus = (receipt: Readonly<Record<string, unknown>>) => {
 const LIVE_PROVIDER_KEYS = new Set(["slack-collaboration", "hubspot-crm"]);
 const CUSTOM_CONNECTION_KEYS = new Set(["generic-rest", "signed-webhook"]);
 
+function ProviderLogo({ connectorKey, large = false }: { connectorKey: string; large?: boolean }) {
+  const className = `provider-logo${large ? " provider-logo-large" : ""}`;
+  if (connectorKey === "slack-collaboration")
+    return (
+      <span
+        aria-label={msg("connections.provider.slack")}
+        className={`${className} provider-logo-slack`}
+        role="img"
+      >
+        <svg aria-hidden viewBox="-1 -1 140 140">
+          <path
+            d="M30.3 77.2c0 8.4-6.9 15.3-15.3 15.3S-.3 85.6-.3 77.2 6.6 61.9 15 61.9h15.3zM38 77.2c0-8.4 6.9-15.3 15.3-15.3s15.3 6.9 15.3 15.3v38.3c0 8.4-6.9 15.3-15.3 15.3S38 123.9 38 115.5z"
+            fill="#e01e5a"
+          />
+          <path
+            d="M53.3 30.3C44.9 30.3 38 23.4 38 15S44.9-.3 53.3-.3 68.6 6.6 68.6 15v15.3zM53.3 38c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3H15C6.6 68.6-.3 61.7-.3 53.3S6.6 38 15 38z"
+            fill="#36c5f0"
+          />
+          <path
+            d="M107.5 53.3c0-8.4 6.9-15.3 15.3-15.3s15.3 6.9 15.3 15.3-6.9 15.3-15.3 15.3h-15.3zM99.8 53.3c0 8.4-6.9 15.3-15.3 15.3s-15.3-6.9-15.3-15.3V15c0-8.4 6.9-15.3 15.3-15.3S99.8 6.6 99.8 15z"
+            fill="#2eb67d"
+          />
+          <path
+            d="M84.5 107.5c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3v-15.3zM84.5 99.8c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3h38.3c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3z"
+            fill="#ecb22e"
+          />
+        </svg>
+      </span>
+    );
+  if (connectorKey === "hubspot-crm")
+    return (
+      <span
+        aria-label={msg("connections.provider.hubspot")}
+        className={`${className} provider-logo-hubspot`}
+        role="img"
+      >
+        <svg aria-hidden viewBox="0 0 512 512">
+          <path d="M267.4 211.6c-25.1 23.7-40.8 57.3-40.8 94.6 0 29.3 9.7 56.3 26 78L203.1 434c-4.4-1.6-9.1-2.5-14-2.5-10.8 0-20.9 4.2-28.5 11.8-7.6 7.6-11.8 17.8-11.8 28.6s4.2 20.9 11.8 28.5c7.6 7.6 17.8 11.6 28.5 11.6 10.8 0 20.9-3.9 28.6-11.6 7.6-7.6 11.8-17.8 11.8-28.5 0-4.2-.6-8.2-1.9-12.1l50-50.2c22 16.9 49.4 26.9 79.3 26.9 71.9 0 130-58.3 130-130.2 0-65.2-47.7-119.2-110.2-128.7V116c17.5-7.4 28.2-23.8 28.2-42.9 0-26.1-20.9-47.9-47-47.9S311.2 47 311.2 73.1c0 19.1 10.7 35.5 28.2 42.9v61.2c-15.2 2.1-29.6 6.7-42.7 13.6-27.6-20.9-117.5-85.7-168.9-124.8 1.2-4.4 2-9 2-13.8C129.8 23.4 106.3 0 77.4 0 48.6 0 25.2 23.4 25.2 52.2c0 28.9 23.4 52.3 52.2 52.3 9.8 0 18.9-2.9 26.8-7.6l163.2 114.7zm89.5 163.6c-38.1 0-69-30.9-69-69s30.9-69 69-69 69 30.9 69 69-30.9 69-69 69z" />
+        </svg>
+      </span>
+    );
+  return (
+    <span aria-hidden className={className}>
+      <Cable />
+    </span>
+  );
+}
+
 function ConnectorCard({ item, available }: { item: ConnectorCatalogItem; available: boolean }) {
   const content = (
     <Card className={available ? "connector-card" : "connector-card connector-card-planned"}>
-      <KeyRound aria-hidden />
-      <strong>{manifestText(item.manifest.displayName, item.key)}</strong>
-      <p>{manifestText(item.manifest.provider, item.key)}</p>
-      <Badge tone={available ? "success" : "neutral"}>
-        {available ? msg("connections.provider.available") : msg("connections.provider.planned")}
-      </Badge>
+      <div className="connector-card-topline">
+        <ProviderLogo connectorKey={item.key} />
+        <Badge tone={available ? "success" : "neutral"}>
+          {available ? msg("connections.provider.available") : msg("connections.provider.planned")}
+        </Badge>
+      </div>
+      <div className="connector-card-copy">
+        <strong>{manifestText(item.manifest.displayName, item.key)}</strong>
+        <p>{manifestText(item.manifest.provider, item.key)}</p>
+      </div>
+      {available ? <ArrowUpRight aria-hidden className="connector-card-arrow" size={18} /> : null}
     </Card>
   );
   return available ? (
@@ -79,6 +143,12 @@ export function ConnectionsPage() {
   const plannedConnectors = catalog.filter(
     ({ key }) => !LIVE_PROVIDER_KEYS.has(key) && !CUSTOM_CONNECTION_KEYS.has(key)
   );
+  const connectedItems = items.filter(({ state }) =>
+    ["active", "degraded", "disabled", "reauthorization_required"].includes(state)
+  );
+  const setupItems = items.filter(
+    ({ state }) => !["active", "degraded", "disabled", "reauthorization_required"].includes(state)
+  );
   return (
     <main className="page-shell connection-shell">
       <WorkspacePageHeader
@@ -88,27 +158,66 @@ export function ConnectionsPage() {
       />
       {busy ? <Skeleton label={msg("connections.loading")} /> : null}
       {error ? <ErrorState title={msg("connections.error")}>{error}</ErrorState> : null}
-      <section aria-labelledby="connected-heading">
-        <h2 id="connected-heading">{msg("connections.connected")}</h2>
-        <div className="connection-grid">
-          {items.map((item) => (
+      <section aria-labelledby="connected-heading" className="connection-section connected-section">
+        <div className="connection-section-heading">
+          <div>
+            <span className="section-kicker">{msg("connections.connected.kicker")}</span>
+            <h2 id="connected-heading">{msg("connections.connected")}</h2>
+            <p>{msg("connections.connected.body")}</p>
+          </div>
+          {connectedItems.length ? (
+            <span className="connection-total">{connectedItems.length}</span>
+          ) : null}
+        </div>
+        <div className="connection-grid connected-grid">
+          {connectedItems.map((item) => (
             <a href={`/app/connections/${item.id}`} key={item.id}>
-              <Card>
-                <div className="connection-title">
-                  <Cable aria-hidden />
-                  <strong>{item.displayName}</strong>
+              <Card className="connected-card">
+                <div className="connected-card-topline">
+                  <ProviderLogo connectorKey={item.connectorKey} />
                   <Badge tone={healthTone(item.state)}>{item.state.replaceAll("_", " ")}</Badge>
                 </div>
-                <p>{item.accountLabel ?? msg("connections.account.pending")}</p>
-                <small>{msg("connections.objects", { count: item.objectCount })}</small>
+                <div className="connected-card-copy">
+                  <strong>{item.displayName}</strong>
+                  <p>{item.accountLabel ?? msg("connections.account.pending")}</p>
+                </div>
+                <div className="connected-card-footer">
+                  <span>
+                    <Database aria-hidden size={15} />
+                    {msg("connections.objects", { count: item.objectCount })}
+                  </span>
+                  <ArrowUpRight aria-hidden size={17} />
+                </div>
               </Card>
             </a>
           ))}
         </div>
-        {!busy && !items.length ? (
+        {!busy && !connectedItems.length ? (
           <EmptyState title={msg("connections.empty")}>
             <p>{msg("connections.empty.body")}</p>
           </EmptyState>
+        ) : null}
+        {setupItems.length ? (
+          <div className="connection-setup-activity">
+            <div className="setup-activity-heading">
+              <Clock3 aria-hidden size={17} />
+              <strong>{msg("connections.setup.activity")}</strong>
+              <span>{setupItems.length}</span>
+            </div>
+            <div className="setup-activity-list">
+              {setupItems.map((item) => (
+                <a href={`/app/connections/${item.id}`} key={item.id}>
+                  <ProviderLogo connectorKey={item.connectorKey} />
+                  <span>
+                    <strong>{item.displayName}</strong>
+                    <small>{item.accountLabel ?? msg("connections.account.pending")}</small>
+                  </span>
+                  <Badge tone={healthTone(item.state)}>{item.state.replaceAll("_", " ")}</Badge>
+                  <ArrowUpRight aria-hidden size={16} />
+                </a>
+              ))}
+            </div>
+          </div>
         ) : null}
       </section>
       <section className="connection-section">
@@ -582,67 +691,101 @@ export function ConnectionDetailPage() {
     );
   return (
     <main className="page-shell connection-shell">
-      <header>
-        <Badge tone={healthTone(item.state)}>{item.state.replaceAll("_", " ")}</Badge>
-        <h1>{item.displayName}</h1>
-        <p>{item.accountLabel ?? msg("connections.account.pending")}</p>
-        <div className="connection-actions">
-          <Button disabled={syncing} onClick={() => void syncNow()}>
-            <RefreshCw aria-hidden size={16} />
-            {syncing ? msg("connections.sync.running") : msg("connections.sync")}
-          </Button>
-          {["generic-rest", "signed-webhook", "slack-collaboration", "hubspot-crm"].includes(
-            item.connectorKey
-          ) ? (
-            <Button
-              tone="neutral"
-              onClick={() =>
-                void act(() => testHttpConnection(id), msg("connections.http.retested"))
-              }
-            >
-              <Activity aria-hidden size={16} />
-              {msg("connections.http.test")}
+      <header className="connection-detail-hero">
+        <div className="connection-detail-identity">
+          <ProviderLogo connectorKey={item.connectorKey} large />
+          <div>
+            <div className="connection-detail-state">
+              <Badge tone={healthTone(item.state)}>{item.state.replaceAll("_", " ")}</Badge>
+              <span>{msg("connections.detail.managed")}</span>
+            </div>
+            <h1>{item.displayName}</h1>
+            <p>{item.accountLabel ?? msg("connections.account.pending")}</p>
+          </div>
+        </div>
+        <div className="connection-detail-toolbar">
+          <div className="connection-primary-actions">
+            <Button disabled={syncing} onClick={() => void syncNow()}>
+              <RefreshCw aria-hidden size={16} />
+              {syncing ? msg("connections.sync.running") : msg("connections.sync")}
             </Button>
-          ) : null}
-          <Button
-            tone="neutral"
-            onClick={() =>
-              void act(
-                () => transitionConnection(id, "reconciliations"),
-                msg("connections.reconcile.queued")
-              )
-            }
-          >
-            <Activity aria-hidden size={16} />
-            {msg("connections.reconcile")}
-          </Button>
-          <Button
-            tone="neutral"
-            onClick={() =>
-              void act(
-                () =>
-                  transitionConnection(id, item.state === "disabled" ? "resumptions" : "pauses"),
-                msg("connections.state.changed")
-              )
-            }
-          >
-            {item.state === "disabled" ? msg("connections.enable") : msg("connections.disable")}
-          </Button>
-          <Button
-            tone="danger"
-            onClick={() => void act(() => deleteConnection(id), msg("connections.delete.queued"))}
-          >
-            <Trash2 aria-hidden size={16} />
-            {msg("connections.delete")}
-          </Button>
+            {["generic-rest", "signed-webhook", "slack-collaboration", "hubspot-crm"].includes(
+              item.connectorKey
+            ) ? (
+              <Button
+                tone="neutral"
+                onClick={() =>
+                  void act(() => testHttpConnection(id), msg("connections.http.retested"))
+                }
+              >
+                <Activity aria-hidden size={16} />
+                {msg("connections.http.test")}
+              </Button>
+            ) : null}
+          </div>
+          <details className="connection-more-actions">
+            <summary>
+              <Ellipsis aria-hidden size={19} />
+              {msg("connections.more.actions")}
+            </summary>
+            <div>
+              <Button
+                tone="neutral"
+                onClick={() =>
+                  void act(
+                    () => transitionConnection(id, "reconciliations"),
+                    msg("connections.reconcile.queued")
+                  )
+                }
+              >
+                <Activity aria-hidden size={16} />
+                {msg("connections.reconcile")}
+              </Button>
+              <Button
+                tone="neutral"
+                onClick={() =>
+                  void act(
+                    () =>
+                      transitionConnection(
+                        id,
+                        item.state === "disabled" ? "resumptions" : "pauses"
+                      ),
+                    msg("connections.state.changed")
+                  )
+                }
+              >
+                {item.state === "disabled" ? msg("connections.enable") : msg("connections.disable")}
+              </Button>
+              <Button
+                tone="danger"
+                onClick={() =>
+                  void act(() => deleteConnection(id), msg("connections.delete.queued"))
+                }
+              >
+                <Trash2 aria-hidden size={16} />
+                {msg("connections.delete")}
+              </Button>
+            </div>
+          </details>
         </div>
       </header>
       {error ? <ErrorState title={msg("connections.error")}>{error}</ErrorState> : null}
-      {status ? <p role="status">{status}</p> : null}
+      {status ? (
+        <p className="connection-status-message" role="status">
+          <CheckCircle2 aria-hidden size={18} />
+          {status}
+        </p>
+      ) : null}
       <section className="connection-health">
-        <Card>
-          <h2>{msg("connections.health")}</h2>
-          <dl>
+        <Card className="connection-panel">
+          <div className="connection-panel-heading">
+            <Activity aria-hidden size={19} />
+            <div>
+              <h2>{msg("connections.health")}</h2>
+              <p>{msg("connections.health.body")}</p>
+            </div>
+          </div>
+          <dl className="connection-metrics">
             <div>
               <dt>{msg("connections.last.success")}</dt>
               <dd>{item.lastSuccessAt ? new Date(item.lastSuccessAt).toLocaleString() : "—"}</dd>
@@ -667,10 +810,16 @@ export function ConnectionDetailPage() {
             ) : null}
           </dl>
         </Card>
-        <Card>
-          <h2>{msg("connections.scopes")}</h2>
+        <Card className="connection-panel">
+          <div className="connection-panel-heading">
+            <ShieldCheck aria-hidden size={19} />
+            <div>
+              <h2>{msg("connections.scopes")}</h2>
+              <p>{msg("connections.scopes.body")}</p>
+            </div>
+          </div>
           <p>{msg("connections.permission", { fidelity: item.permissionFidelity })}</p>
-          <ul>
+          <ul className="scope-list">
             {item.grantedScopes.map((scope) => (
               <li key={scope}>
                 <code>{scope}</code>
@@ -712,15 +861,39 @@ export function ConnectionDetailPage() {
       ) : null}
       {item.connectorKey === "fixture-cloud" ? null : <ProviderSourcesPanel connectionId={id} />}
       <section>
-        <h2>{msg("connections.sync.history")}</h2>
+        <div className="sync-history-heading">
+          <div>
+            <span className="section-kicker">{msg("connections.sync.history.kicker")}</span>
+            <h2>{msg("connections.sync.history")}</h2>
+          </div>
+        </div>
         {item.runs.length ? (
-          item.runs.map((run) => (
-            <Card key={String(run.id)}>
-              <strong>{String(run.mode)}</strong>
-              <Badge>{String(run.state)}</Badge>
-              <p>{msg("connections.sync.processed", { count: Number(run.processedCount ?? 0) })}</p>
-            </Card>
-          ))
+          <div className="sync-history-list">
+            {item.runs.map((run) => (
+              <Card className="sync-history-row" key={String(run.id)}>
+                <span
+                  aria-hidden
+                  className={`sync-state-dot sync-state-${String(run.state).toLowerCase()}`}
+                />
+                <div>
+                  <strong>{String(run.mode)}</strong>
+                  <p>
+                    {msg("connections.sync.processed", { count: Number(run.processedCount ?? 0) })}
+                  </p>
+                </div>
+                <Badge tone={run.state === "succeeded" ? "success" : "neutral"}>
+                  {String(run.state)}
+                </Badge>
+                <time>
+                  {run.completedAt instanceof Date
+                    ? run.completedAt.toLocaleString()
+                    : typeof run.completedAt === "string" || typeof run.completedAt === "number"
+                      ? new Date(run.completedAt).toLocaleString()
+                      : "—"}
+                </time>
+              </Card>
+            ))}
+          </div>
         ) : (
           <EmptyState title={msg("connections.sync.empty")} />
         )}
