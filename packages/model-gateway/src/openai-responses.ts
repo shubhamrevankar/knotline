@@ -103,7 +103,7 @@ export const toOpenAIRequest = (request: GenerationRequest, context: AdapterCont
   store: false,
   safety_identifier: context.safetyIdentifierHash,
   max_output_tokens: request.maxOutputTokens,
-  max_tool_calls: request.maxToolCalls,
+  ...(request.maxToolCalls > 0 ? { max_tool_calls: request.maxToolCalls } : {}),
   tools: request.tools.map((tool) => ({
     type: "function",
     name: tool.name,

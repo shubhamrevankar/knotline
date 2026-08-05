@@ -254,6 +254,16 @@ describe("OpenAI Responses adapter contract", () => {
     expect(JSON.stringify(body)).not.toContain("principal-1");
   });
 
+  it("omits the provider tool-call limit when tools are disabled", () => {
+    const body = toOpenAIRequest(request({ tools: [], maxToolCalls: 0 }), context);
+    expect(body).not.toHaveProperty("max_tool_calls");
+  });
+
+  it("forwards a positive provider tool-call limit", () => {
+    const body = toOpenAIRequest(request({ maxToolCalls: 3 }), context);
+    expect(body).toHaveProperty("max_tool_calls", 3);
+  });
+
   it("uses best-effort structured output when an open object cannot satisfy strict mode", () => {
     const body = toOpenAIRequest(
       request({
