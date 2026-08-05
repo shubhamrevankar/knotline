@@ -68,6 +68,7 @@ type MutableGeneration = {
 };
 
 const snapshot = (value: MutableGeneration): WorkflowGenerationResource => structuredClone(value);
+const MAX_GENERATION_REPAIR_ATTEMPTS = 2;
 
 const providerWorkflowDefinitionSchema = {
   type: "object",
@@ -270,31 +271,31 @@ export class GatewayWorkflowGenerationWorker implements WorkflowGenerationWorker
       });
       const findings = compilation.quality.findings;
       const errors = findings.filter(({ severity }) => severity === "error");
-      return errors.length
-        ? {
-            issues: errors.slice(0, 30).map((finding) => ({
-              path: [finding.location.type, finding.location.key, finding.location.path]
-                .filter(Boolean)
-                .join("."),
-              message: finding.message
-            }))
-          }
-        : {
-            parsed: { ...candidate.data, definition: compilation.definition },
-            findings,
-            quality: compilation.quality
-          };
+      return {
+        parsed: { ...candidate.data, definition: compilation.definition },
+        findings,
+        quality: compilation.quality,
+        issues: errors.slice(0, 30).map((finding) => ({
+          path: [finding.location.type, finding.location.key, finding.location.path]
+            .filter(Boolean)
+            .join("."),
+          message: finding.message
+        }))
+      };
     };
 
     const firstResult = await invoke("", baseMessages);
     const results = [firstResult];
     let inspected = inspect(firstResult.parsedOutput);
     let repairAttempts = 0;
-    if (!("parsed" in inspected)) {
-      repairAttempts = 1;
-      const priorOutput = JSON.stringify(firstResult.parsedOutput).slice(0, 120_000);
+    while (inspected.issues.length > 0 && repairAttempts < MAX_GENERATION_REPAIR_ATTEMPTS) {
+      repairAttempts += 1;
+      const priorOutput = (JSON.stringify(results.at(-1)?.parsedOutput) ?? "null").slice(
+        0,
+        120_000
+      );
       results.push(
-        await invoke(":repair-1", [
+        await invoke(`:repair-${String(repairAttempts)}`, [
           ...baseMessages,
           { role: "assistant", content: priorOutput },
           {
@@ -303,7 +304,7 @@ export class GatewayWorkflowGenerationWorker implements WorkflowGenerationWorker
           }
         ])
       );
-      inspected = inspect(results[1]!.parsedOutput);
+      inspected = inspect(results.at(-1)?.parsedOutput);
     }
     if (!("parsed" in inspected)) throw new Error("GENERATION_INVALID_OUTPUT");
     const result = results.at(-1)!;

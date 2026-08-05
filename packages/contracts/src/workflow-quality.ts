@@ -586,7 +586,11 @@ export function analyzeWorkflowQuality(input: {
     )
   );
 
-  const gates = definition.nodes.filter(({ kind }) => kind === "human" || kind === "approval");
+  const gates = definition.nodes.filter(
+    (node) =>
+      node.kind === "approval" ||
+      (node.kind === "human" && typeof node.configuration.manualFallbackFor !== "string")
+  );
   if (gates.length > 3 && gates.length / Math.max(1, definition.nodes.length) > 0.4)
     findings.push(
       finding(

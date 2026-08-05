@@ -251,6 +251,16 @@ describe("WorkflowGenerationService", () => {
       ),
       response(
         {
+          definition: invalidDefinition,
+          assumptions: fixture.assumptions,
+          assignments: fixture.assignments,
+          missingIntegrations: fixture.missingIntegrations,
+          missingAgentCapabilities: fixture.missingAgentCapabilities
+        },
+        "resp_still_invalid"
+      ),
+      response(
+        {
           definition: fixture.definition,
           assumptions: fixture.assumptions,
           assignments: fixture.assignments,
@@ -279,13 +289,13 @@ describe("WorkflowGenerationService", () => {
 
     expect(result).toMatchObject({
       providerResponseId: "resp_repaired",
-      repairAttempts: 1,
-      usage: { inputUnits: 200, outputUnits: 400, costMinor: 2 }
+      repairAttempts: 2,
+      usage: { inputUnits: 300, outputUnits: 600, costMinor: 3 }
     });
-    expect(fetcher).toHaveBeenCalledTimes(2);
-    const repairBody = fetcher.mock.calls[1]?.[1]?.body;
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    const repairBody = fetcher.mock.calls[2]?.[1]?.body;
     const repairBodyText = typeof repairBody === "string" ? repairBody : "";
-    expect(repairBodyText).toContain(":repair-1");
+    expect(repairBodyText).toContain(":repair-2");
     expect(repairBodyText).toContain("VALIDATION_FINDINGS");
   });
 });

@@ -157,6 +157,42 @@ describe("workflow generation quality", () => {
     expect(quality.findings.map(({ code }) => code)).toContain("WF_AGENT_CAPABILITY_MISSING");
   });
 
+  it("does not misclassify connection fallbacks as excessive judgment gates", () => {
+    const manualActions = Array.from({ length: 5 }, (_, index) =>
+      node(`manual_${String(index)}`, "human", `Perform missing system action ${String(index)}`, {
+        assignment: "workflow_initiator",
+        justification: "The required connection is unavailable.",
+        manualFallbackFor: `System action ${String(index)}`,
+        outputs: ["owner", "evidence", "completed"]
+      })
+    );
+    const workflow = definition(
+      [
+        node("start", "trigger", "Incident received", { triggerType: "manual" }),
+        ...manualActions,
+        terminal
+      ],
+      [
+        { key: "to_manual_0", source: "start", target: "manual_0", pathType: "success" },
+        ...manualActions.slice(0, -1).map((action, index) => ({
+          key: `to_manual_${String(index + 1)}`,
+          source: action.key,
+          target: manualActions[index + 1]!.key,
+          pathType: "success" as const
+        })),
+        { key: "to_outcome", source: "manual_4", target: "outcome", pathType: "success" }
+      ]
+    );
+    const quality = analyzeWorkflowQuality({
+      definition: workflow,
+      sourcePrompt: "Handle a customer incident using the available systems.",
+      missingIntegrations: []
+    });
+    expect(quality.findings.map(({ code }) => code)).not.toContain("WF_EXCESSIVE_MANUAL_GATES");
+    expect(quality.draftAcceptable).toBe(true);
+    expect(quality.publishable).toBe(false);
+  });
+
   it("rejects an unjustified standard-risk approval", () => {
     const workflow = definition(
       [
