@@ -3844,6 +3844,37 @@ a.run-button {
   resize: vertical;
 }
 
+.workflow-manage-page .comment-composer textarea,
+.workflow-manage-page .comment-thread textarea,
+.workflow-manage-page .comment-composer input:not([type="checkbox"]) {
+  width: 100%;
+  padding: 0.72rem 0.8rem;
+  border: 1px solid #d9dfd8;
+  border-radius: 0.6rem;
+  color: #142321;
+  background: #fafbf8;
+  box-shadow: none;
+  caret-color: #176b5b;
+}
+
+.workflow-manage-page .comment-composer textarea::placeholder,
+.workflow-manage-page .comment-thread textarea::placeholder,
+.workflow-manage-page .comment-composer input::placeholder {
+  color: #81908c;
+  opacity: 1;
+}
+
+.workflow-manage-page .comment-composer textarea:focus,
+.workflow-manage-page .comment-thread textarea:focus,
+.workflow-manage-page .comment-composer input:not([type="checkbox"]):focus {
+  border-color: #5d9184;
+  outline: 3px solid rgb(23 107 91 / 12%);
+}
+
+.workflow-manage-page .comment-composer input[type="checkbox"] {
+  accent-color: #176b5b;
+}
+
 .comment-composer fieldset {
   display: flex;
   flex-wrap: wrap;
@@ -4108,8 +4139,12 @@ a.run-button {
   padding: 1.25rem;
 }
 
+.workflow-current-draft-card,
+.workflow-definition-card,
+.finding-card,
 .definition-card:last-child {
   grid-column: 1 / -1;
+  min-width: 0;
 }
 
 .definition-metrics {
@@ -4147,7 +4182,7 @@ a.run-button {
 .finding-card li,
 .definition-node-list li {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: minmax(5.5rem, auto) minmax(12rem, 1fr) minmax(9rem, 0.7fr);
   align-items: center;
   gap: 0.65rem;
   padding: 0.75rem;
@@ -4159,6 +4194,19 @@ a.run-button {
   color: var(--accent-strong);
   font-size: 0.76rem;
   text-transform: uppercase;
+}
+
+.definition-node-list li > strong,
+.definition-node-list li > code {
+  min-width: 0;
+}
+
+.definition-node-list li > code {
+  justify-self: end;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  text-align: right;
 }
 
 .version-list {
@@ -4189,6 +4237,9 @@ a.run-button {
     grid-template-columns: 1fr;
   }
 
+  .workflow-current-draft-card,
+  .workflow-definition-card,
+  .finding-card,
   .definition-card:last-child {
     grid-column: auto;
   }

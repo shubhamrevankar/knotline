@@ -91,7 +91,7 @@ export function WorkflowDetailPage() {
         <Skeleton label={msg("workflow.detail.loading")} />
       ) : (
         <div className="workflow-manage-grid">
-          <Card className="definition-card">
+          <Card className="definition-card workflow-current-draft-card">
             <div className="row-between">
               <h2>{msg("workflow.detail.draft")}</h2>
               <Badge tone="neutral">
@@ -229,11 +229,9 @@ export function WorkflowDetailPage() {
               </footer>
             </Card>
           ) : null}
-          <Card className="finding-card">
-            <h2>{msg("workflow.findings.heading")}</h2>
-            {findings.length === 0 ? (
-              <p>{msg("workflow.findings.empty")}</p>
-            ) : (
+          {findings.length ? (
+            <Card className="finding-card">
+              <h2>{msg("workflow.findings.heading")}</h2>
               <ul>
                 {findings.map((finding) => (
                   <li key={`${finding.code}-${finding.location.key ?? finding.location.path}`}>
@@ -247,9 +245,9 @@ export function WorkflowDetailPage() {
                   </li>
                 ))}
               </ul>
-            )}
-          </Card>
-          <Card className="definition-card">
+            </Card>
+          ) : null}
+          <Card className="definition-card workflow-definition-card">
             <h2>{msg("workflow.definition.heading")}</h2>
             <ol className="definition-node-list">
               {draft.definition.nodes.map((node) => (
