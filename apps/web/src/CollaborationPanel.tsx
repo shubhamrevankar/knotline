@@ -1,6 +1,18 @@
 import { renderSafeMarkdown } from "@knotline/contracts";
-import { Badge, Button, Card } from "@knotline/ui";
-import { Bell, Eye, MessageSquare, Paperclip, Reply, Send, Share2, Trash2 } from "lucide-react";
+import { Button, Card } from "@knotline/ui";
+import {
+  Activity,
+  Bell,
+  Eye,
+  MessageSquare,
+  Paperclip,
+  Reply,
+  Send,
+  Share2,
+  Trash2,
+  UsersRound,
+  X
+} from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 
 import {
@@ -23,6 +35,14 @@ const reactionLabels = {
   celebrate: "🎉",
   eyes: "👀"
 } as const;
+
+const initials = (name: string) =>
+  name
+    .split(/\s+/u)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("");
 
 export function CollaborationPanel({ workflowId }: { readonly workflowId: string }) {
   const [thread, setThread] = useState<CollaborationThreadView>();
@@ -72,13 +92,19 @@ export function CollaborationPanel({ workflowId }: { readonly workflowId: string
 
   return (
     <Card className="collaboration-card">
-      <div className="row-between">
-        <div>
-          <h2>{msg("collaboration.heading")}</h2>
-          <p>{msg("collaboration.body")}</p>
+      <header className="collaboration-header">
+        <div className="collaboration-heading">
+          <span className="collaboration-heading-icon" aria-hidden="true">
+            <UsersRound />
+          </span>
+          <div>
+            <h2>{msg("collaboration.heading")}</h2>
+            <p>{msg("collaboration.body")}</p>
+          </div>
         </div>
-        <div className="action-row">
+        <div className="collaboration-header-actions">
           <Button
+            className={thread?.followed ? "is-active" : ""}
             onClick={() =>
               void setWorkflowFollow(workflowId, !thread?.followed).then(async () => reload())
             }
@@ -98,26 +124,39 @@ export function CollaborationPanel({ workflowId }: { readonly workflowId: string
             <Share2 aria-hidden="true" /> {msg("collaboration.share")}
           </Button>
         </div>
-      </div>
+      </header>
       <div className="collaboration-presence" aria-live="polite">
-        <Eye aria-hidden="true" />
-        {msg("collaboration.presence", { count: thread?.presence.length ?? 0 })}
-        {thread?.presence.map(({ id, displayName }) => (
-          <Badge key={id} tone="neutral">
-            {displayName}
-          </Badge>
-        ))}
+        <div>
+          <Eye aria-hidden="true" />
+          <span>{msg("collaboration.presence", { count: thread?.presence.length ?? 0 })}</span>
+        </div>
+        {thread?.presence.length ? (
+          <div className="collaboration-presence-people">
+            {thread.presence.map(({ id, displayName }) => (
+              <span key={id} className="collaboration-avatar" title={displayName}>
+                {initials(displayName)}
+                <span className="sr-only">{displayName}</span>
+              </span>
+            ))}
+          </div>
+        ) : null}
       </div>
       <div className="collaboration-tabs" role="tablist" aria-label={msg("collaboration.tabs")}>
         <Button
+          className={tab === "discussion" ? "is-active" : ""}
           role="tab"
           aria-selected={tab === "discussion"}
           onClick={() => setTab("discussion")}
         >
           <MessageSquare aria-hidden="true" /> {msg("collaboration.discussion")}
         </Button>
-        <Button role="tab" aria-selected={tab === "activity"} onClick={() => setTab("activity")}>
-          {msg("collaboration.activity")}
+        <Button
+          className={tab === "activity" ? "is-active" : ""}
+          role="tab"
+          aria-selected={tab === "activity"}
+          onClick={() => setTab("activity")}
+        >
+          <Activity aria-hidden="true" /> {msg("collaboration.activity")}
         </Button>
       </div>
 
@@ -135,15 +174,20 @@ export function CollaborationPanel({ workflowId }: { readonly workflowId: string
           )}
         </ol>
       ) : (
-        <>
+        <div className="collaboration-discussion-layout">
           <ol className="comment-thread">
             {thread?.comments.length ? (
               thread.comments.map((comment) => (
                 <li key={comment.id} className={comment.parentId ? "comment-reply" : ""}>
                   <article>
-                    <header className="row-between">
-                      <strong>{comment.authorDisplayName}</strong>
-                      <small>{new Date(comment.createdAt).toLocaleString()}</small>
+                    <header className="comment-header">
+                      <span className="comment-author-avatar" aria-hidden="true">
+                        {initials(comment.authorDisplayName)}
+                      </span>
+                      <div>
+                        <strong>{comment.authorDisplayName}</strong>
+                        <small>{new Date(comment.createdAt).toLocaleString()}</small>
+                      </div>
                     </header>
                     {editingId === comment.id ? (
                       <form
@@ -232,14 +276,30 @@ export function CollaborationPanel({ workflowId }: { readonly workflowId: string
                 </li>
               ))
             ) : (
-              <li>{msg("collaboration.empty")}</li>
+              <li className="comment-empty-state">
+                <span aria-hidden="true">
+                  <MessageSquare />
+                </span>
+                <strong>{msg("collaboration.empty")}</strong>
+              </li>
             )}
           </ol>
           <form className="comment-composer" onSubmit={(event) => void submit(event)}>
-            <div className="row-between">
-              <strong>
-                {replyTo ? msg("collaboration.replying") : msg("collaboration.compose")}
-              </strong>
+            <div className="comment-composer-header">
+              <div>
+                <strong>
+                  {replyTo ? msg("collaboration.replying") : msg("collaboration.compose")}
+                </strong>
+                {replyTo ? (
+                  <Button
+                    type="button"
+                    aria-label={msg("collaboration.cancel.reply")}
+                    onClick={() => setReplyTo(undefined)}
+                  >
+                    <X aria-hidden="true" />
+                  </Button>
+                ) : null}
+              </div>
               <Button type="button" onClick={() => setPreview((value) => !value)}>
                 {preview ? msg("collaboration.write") : msg("collaboration.preview")}
               </Button>
@@ -295,7 +355,7 @@ export function CollaborationPanel({ workflowId }: { readonly workflowId: string
               <Send aria-hidden="true" /> {msg("collaboration.send")}
             </Button>
           </form>
-        </>
+        </div>
       )}
       {notice ? (
         <p role="status" className="inline-notice">

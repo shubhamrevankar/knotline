@@ -120,6 +120,7 @@
   "collaboration.attachments": "Attachment references",
   "collaboration.attachments.placeholder": "artifact_reference_12345678, artifact_reference_87654321",
   "collaboration.body": "Discuss the workflow, mention teammates, and keep product activity separate from security audit evidence.",
+  "collaboration.cancel.reply": "Cancel reply",
   "collaboration.comment.created": "Comment added and authorized notification intents queued.",
   "collaboration.comment.label": "Comment in Markdown",
   "collaboration.compose": "Add to the discussion",

@@ -1,7 +1,10 @@
 import { Badge, Button, Card, ErrorState, Skeleton } from "@knotline/ui";
 import {
   ArrowLeft,
+  Bot,
+  Cable,
   CheckCircle2,
+  CircleAlert,
   Copy,
   GitCompare,
   History,
@@ -152,46 +155,78 @@ export function WorkflowDetailPage() {
           </Card>
           {draft.generationReadiness && !draft.generationReadiness.quality.publishable ? (
             <Card className="definition-card workflow-readiness-card">
-              <div className="row-between">
-                <h2>{msg("workflow.readiness.heading")}</h2>
+              <header className="workflow-readiness-header">
+                <span className="workflow-readiness-icon" aria-hidden="true">
+                  <CircleAlert />
+                </span>
+                <div>
+                  <h2>{msg("workflow.readiness.heading")}</h2>
+                  <p>
+                    {msg("workflow.readiness.body", {
+                      connections:
+                        draft.generationReadiness.quality.summary.automationOpportunities,
+                      agents: draft.generationReadiness.quality.summary.agentCapabilityGaps
+                    })}
+                  </p>
+                </div>
                 <Badge tone="warning">{msg("workflow.readiness.draft")}</Badge>
+              </header>
+              <div className="workflow-requirements-grid">
+                {draft.generationReadiness.missingIntegrations.length ? (
+                  <section>
+                    <div className="workflow-requirement-heading">
+                      <span aria-hidden="true">
+                        <Cable />
+                      </span>
+                      <h3>{msg("workflow.readiness.connections")}</h3>
+                      <Badge tone="neutral">
+                        {draft.generationReadiness.missingIntegrations.length}
+                      </Badge>
+                    </div>
+                    <ul className="workflow-requirement-list">
+                      {draft.generationReadiness.missingIntegrations.map((requirement) => (
+                        <li key={requirement}>
+                          <span aria-hidden="true" />
+                          {requirement}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                ) : null}
+                {draft.generationReadiness.missingAgentCapabilities.length ? (
+                  <section>
+                    <div className="workflow-requirement-heading">
+                      <span aria-hidden="true">
+                        <Bot />
+                      </span>
+                      <h3>{msg("workflow.readiness.agents")}</h3>
+                      <Badge tone="neutral">
+                        {draft.generationReadiness.missingAgentCapabilities.length}
+                      </Badge>
+                    </div>
+                    <ul className="workflow-requirement-list">
+                      {draft.generationReadiness.missingAgentCapabilities.map((requirement) => (
+                        <li key={requirement}>
+                          <span aria-hidden="true" />
+                          {requirement}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                ) : null}
               </div>
-              <p>
-                {msg("workflow.readiness.body", {
-                  connections: draft.generationReadiness.quality.summary.automationOpportunities,
-                  agents: draft.generationReadiness.quality.summary.agentCapabilityGaps
-                })}
-              </p>
-              {draft.generationReadiness.missingIntegrations.length ? (
-                <section>
-                  <h3>{msg("workflow.readiness.connections")}</h3>
-                  <ul className="workflow-requirement-list">
-                    {draft.generationReadiness.missingIntegrations.map((requirement) => (
-                      <li key={requirement}>{requirement}</li>
-                    ))}
-                  </ul>
-                </section>
-              ) : null}
-              {draft.generationReadiness.missingAgentCapabilities.length ? (
-                <section>
-                  <h3>{msg("workflow.readiness.agents")}</h3>
-                  <ul className="workflow-requirement-list">
-                    {draft.generationReadiness.missingAgentCapabilities.map((requirement) => (
-                      <li key={requirement}>{requirement}</li>
-                    ))}
-                  </ul>
-                </section>
-              ) : null}
-              <div className="action-row">
+              <footer className="workflow-readiness-actions">
                 <Link className="primary-button" to="/app/connections">
+                  <Cable aria-hidden="true" />
                   {msg("workflow.readiness.configure")}
                 </Link>
                 {draft.generationReadiness.missingAgentCapabilities.length ? (
                   <Link className="button-link" to="/app/agents/new">
+                    <Bot aria-hidden="true" />
                     {msg("workflow.readiness.create.agent")}
                   </Link>
                 ) : null}
-              </div>
+              </footer>
             </Card>
           ) : null}
           <Card className="finding-card">
