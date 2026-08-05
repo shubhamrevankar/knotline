@@ -108,27 +108,35 @@
   box-shadow: 0 7px 18px rgb(18 37 32 / 7%);
   color: var(--color-text);
 }
-.provider-logo svg {
+.provider-logo svg,
+.provider-logo img {
   width: 1.6rem;
   height: 1.6rem;
+  object-fit: contain;
   fill: currentColor;
-}
-.provider-logo-slack {
-  color: #4a154b;
-  background: #fff;
-}
-.provider-logo-hubspot {
-  color: #ff5c35;
-  background: #fff8f5;
 }
 .provider-logo-large {
   width: 4.75rem;
   height: 4.75rem;
   border-radius: 1.25rem;
 }
-.provider-logo-large svg {
+.provider-logo-large svg,
+.provider-logo-large img {
   width: 2.45rem;
   height: 2.45rem;
+}
+.connection-setup-header {
+  display: flex !important;
+  align-items: center;
+  gap: 1.25rem !important;
+}
+.connection-setup-header > div {
+  display: grid;
+  gap: 0.45rem;
+}
+.connection-setup-header h1,
+.connection-setup-header p {
+  margin: 0;
 }
 .section-kicker {
   color: var(--color-success, #176b57);
@@ -221,7 +229,8 @@
   height: 2.4rem;
   border-radius: 0.7rem;
 }
-.setup-activity-list .provider-logo svg {
+.setup-activity-list .provider-logo svg,
+.setup-activity-list .provider-logo img {
   width: 1.25rem;
   height: 1.25rem;
 }
@@ -556,6 +565,7 @@
     width: 100%;
   }
   .connection-detail-hero,
+  .connection-setup-header,
   .connection-detail-toolbar,
   .connection-primary-actions {
     align-items: stretch;

@@ -48,51 +48,54 @@ const receiptStatus = (receipt: Readonly<Record<string, unknown>>) => {
 };
 const LIVE_PROVIDER_KEYS = new Set(["slack-collaboration", "hubspot-crm"]);
 const CUSTOM_CONNECTION_KEYS = new Set(["generic-rest", "signed-webhook"]);
+const CONNECTOR_LOGO_URLS: Readonly<Record<string, string>> = {
+  "microsoft-365": "https://api.iconify.design/logos/microsoft-icon.svg",
+  "google-mail-calendar": "https://api.iconify.design/logos/google-icon.svg",
+  "salesforce-crm": "https://api.iconify.design/logos/salesforce.svg",
+  "hubspot-crm": "https://api.iconify.design/logos/hubspot.svg",
+  "s3-compatible": "https://api.iconify.design/logos/aws.svg",
+  "csv-import": "https://api.iconify.design/vscode-icons/file-type-excel2.svg",
+  "generic-rest": "https://api.iconify.design/mdi/api.svg",
+  "signed-webhook": "https://api.iconify.design/mdi/webhook.svg",
+  "google-workspace-knowledge": "https://api.iconify.design/logos/google-drive.svg",
+  "notion-knowledge": "https://api.iconify.design/logos/notion-icon.svg",
+  "confluence-cloud-knowledge": "https://api.iconify.design/logos/confluence.svg",
+  "linear-work": "https://api.iconify.design/logos/linear-icon.svg",
+  "jira-cloud-work": "https://api.iconify.design/logos/jira.svg",
+  "github-app": "https://api.iconify.design/logos/github-icon.svg",
+  "slack-collaboration": "https://api.iconify.design/logos/slack-icon.svg",
+  "microsoft-teams-collaboration": "https://api.iconify.design/logos/microsoft-teams.svg",
+  "x-publishing": "https://api.iconify.design/simple-icons/x.svg",
+  "fixture-cloud": "https://api.iconify.design/mdi/cloud-outline.svg"
+};
 
-function ProviderLogo({ connectorKey, large = false }: { connectorKey: string; large?: boolean }) {
+function ProviderLogo({
+  connectorKey,
+  label,
+  large = false
+}: {
+  connectorKey: string;
+  label: string;
+  large?: boolean;
+}) {
+  const [imageFailed, setImageFailed] = useState(false);
   const className = `provider-logo${large ? " provider-logo-large" : ""}`;
-  if (connectorKey === "slack-collaboration")
-    return (
-      <span
-        aria-label={msg("connections.provider.slack")}
-        className={`${className} provider-logo-slack`}
-        role="img"
-      >
-        <svg aria-hidden viewBox="-1 -1 140 140">
-          <path
-            d="M30.3 77.2c0 8.4-6.9 15.3-15.3 15.3S-.3 85.6-.3 77.2 6.6 61.9 15 61.9h15.3zM38 77.2c0-8.4 6.9-15.3 15.3-15.3s15.3 6.9 15.3 15.3v38.3c0 8.4-6.9 15.3-15.3 15.3S38 123.9 38 115.5z"
-            fill="#e01e5a"
-          />
-          <path
-            d="M53.3 30.3C44.9 30.3 38 23.4 38 15S44.9-.3 53.3-.3 68.6 6.6 68.6 15v15.3zM53.3 38c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3H15C6.6 68.6-.3 61.7-.3 53.3S6.6 38 15 38z"
-            fill="#36c5f0"
-          />
-          <path
-            d="M107.5 53.3c0-8.4 6.9-15.3 15.3-15.3s15.3 6.9 15.3 15.3-6.9 15.3-15.3 15.3h-15.3zM99.8 53.3c0 8.4-6.9 15.3-15.3 15.3s-15.3-6.9-15.3-15.3V15c0-8.4 6.9-15.3 15.3-15.3S99.8 6.6 99.8 15z"
-            fill="#2eb67d"
-          />
-          <path
-            d="M84.5 107.5c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3v-15.3zM84.5 99.8c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3h38.3c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3z"
-            fill="#ecb22e"
-          />
-        </svg>
-      </span>
-    );
-  if (connectorKey === "hubspot-crm")
-    return (
-      <span
-        aria-label={msg("connections.provider.hubspot")}
-        className={`${className} provider-logo-hubspot`}
-        role="img"
-      >
-        <svg aria-hidden viewBox="0 0 512 512">
-          <path d="M267.4 211.6c-25.1 23.7-40.8 57.3-40.8 94.6 0 29.3 9.7 56.3 26 78L203.1 434c-4.4-1.6-9.1-2.5-14-2.5-10.8 0-20.9 4.2-28.5 11.8-7.6 7.6-11.8 17.8-11.8 28.6s4.2 20.9 11.8 28.5c7.6 7.6 17.8 11.6 28.5 11.6 10.8 0 20.9-3.9 28.6-11.6 7.6-7.6 11.8-17.8 11.8-28.5 0-4.2-.6-8.2-1.9-12.1l50-50.2c22 16.9 49.4 26.9 79.3 26.9 71.9 0 130-58.3 130-130.2 0-65.2-47.7-119.2-110.2-128.7V116c17.5-7.4 28.2-23.8 28.2-42.9 0-26.1-20.9-47.9-47-47.9S311.2 47 311.2 73.1c0 19.1 10.7 35.5 28.2 42.9v61.2c-15.2 2.1-29.6 6.7-42.7 13.6-27.6-20.9-117.5-85.7-168.9-124.8 1.2-4.4 2-9 2-13.8C129.8 23.4 106.3 0 77.4 0 48.6 0 25.2 23.4 25.2 52.2c0 28.9 23.4 52.3 52.2 52.3 9.8 0 18.9-2.9 26.8-7.6l163.2 114.7zm89.5 163.6c-38.1 0-69-30.9-69-69s30.9-69 69-69 69 30.9 69 69-30.9 69-69 69z" />
-        </svg>
-      </span>
-    );
+  const logoUrl = CONNECTOR_LOGO_URLS[connectorKey];
   return (
-    <span aria-hidden className={className}>
-      <Cable />
+    <span aria-label={label} className={className} role="img">
+      {logoUrl && !imageFailed ? (
+        <img
+          alt=""
+          aria-hidden
+          decoding="async"
+          loading={large ? "eager" : "lazy"}
+          onError={() => setImageFailed(true)}
+          referrerPolicy="no-referrer"
+          src={logoUrl}
+        />
+      ) : (
+        <Cable aria-hidden />
+      )}
     </span>
   );
 }
@@ -101,7 +104,10 @@ function ConnectorCard({ item, available }: { item: ConnectorCatalogItem; availa
   const content = (
     <Card className={available ? "connector-card" : "connector-card connector-card-planned"}>
       <div className="connector-card-topline">
-        <ProviderLogo connectorKey={item.key} />
+        <ProviderLogo
+          connectorKey={item.key}
+          label={manifestText(item.manifest.displayName, item.key)}
+        />
         <Badge tone={available ? "success" : "neutral"}>
           {available ? msg("connections.provider.available") : msg("connections.provider.planned")}
         </Badge>
@@ -174,7 +180,7 @@ export function ConnectionsPage() {
             <a href={`/app/connections/${item.id}`} key={item.id}>
               <Card className="connected-card">
                 <div className="connected-card-topline">
-                  <ProviderLogo connectorKey={item.connectorKey} />
+                  <ProviderLogo connectorKey={item.connectorKey} label={item.displayName} />
                   <Badge tone={healthTone(item.state)}>{item.state.replaceAll("_", " ")}</Badge>
                 </div>
                 <div className="connected-card-copy">
@@ -207,7 +213,7 @@ export function ConnectionsPage() {
             <div className="setup-activity-list">
               {setupItems.map((item) => (
                 <a href={`/app/connections/${item.id}`} key={item.id}>
-                  <ProviderLogo connectorKey={item.connectorKey} />
+                  <ProviderLogo connectorKey={item.connectorKey} label={item.displayName} />
                   <span>
                     <strong>{item.displayName}</strong>
                     <small>{item.accountLabel ?? msg("connections.account.pending")}</small>
@@ -350,12 +356,19 @@ export function ConnectionSetupPage() {
     );
   return (
     <main className="page-shell connection-shell">
-      <header>
-        <Badge>{msg("connections.setup.badge")}</Badge>
-        <h1>
-          {msg("connections.setup.heading", { provider: String(catalog.manifest.displayName) })}
-        </h1>
-        <p>{msg("connections.setup.body")}</p>
+      <header className="connection-setup-header">
+        <ProviderLogo
+          connectorKey={catalog.key}
+          label={manifestText(catalog.manifest.displayName, catalog.key)}
+          large
+        />
+        <div>
+          <Badge>{msg("connections.setup.badge")}</Badge>
+          <h1>
+            {msg("connections.setup.heading", { provider: String(catalog.manifest.displayName) })}
+          </h1>
+          <p>{msg("connections.setup.body")}</p>
+        </div>
       </header>
       <Card>
         {isLiveHttp ? (
@@ -693,7 +706,7 @@ export function ConnectionDetailPage() {
     <main className="page-shell connection-shell">
       <header className="connection-detail-hero">
         <div className="connection-detail-identity">
-          <ProviderLogo connectorKey={item.connectorKey} large />
+          <ProviderLogo connectorKey={item.connectorKey} label={item.displayName} large />
           <div>
             <div className="connection-detail-state">
               <Badge tone={healthTone(item.state)}>{item.state.replaceAll("_", " ")}</Badge>
