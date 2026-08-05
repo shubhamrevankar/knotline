@@ -2073,6 +2073,16 @@ async function runSuite(pool: DatabasePool) {
     values: { response: "Proceed" }
   });
   assert(submitted.id === repeatedSubmission.id, "Task submission was not idempotent");
+  const downstreamApprovalTask = await withTenantTransaction(pool, contextA, async (client) =>
+    client.query<{ state: string }>(
+      "SELECT state FROM task_runs WHERE workspace_id=$1 AND run_id=$2 AND node_key='approval'",
+      [contextA.workspaceId, durableRun.id]
+    )
+  );
+  assert(
+    downstreamApprovalTask.rows[0]?.state === "ready",
+    "Human task submission did not unlock its downstream task"
+  );
   const queue = await taskAdministration.createQueue(contextA, {
     name: "Renewal operations",
     routingMode: "least_loaded",

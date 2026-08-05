@@ -475,6 +475,15 @@ export class PostgresHumanTaskRepository implements HumanTaskRepository {
         `UPDATE task_dependencies SET state='satisfied' WHERE workspace_id=$1 AND run_id=$2 AND depends_on_task_id=$3`,
         [context.workspaceId, row.run_id, taskId]
       );
+      await client.query(
+        `UPDATE task_runs task SET state='ready',state_version=state_version+1,updated_at=clock_timestamp()
+         WHERE task.workspace_id=$1 AND task.run_id=$2 AND task.state='pending'
+           AND NOT EXISTS (
+             SELECT 1 FROM task_dependencies dependency
+             WHERE dependency.workspace_id=task.workspace_id AND dependency.task_id=task.id AND dependency.state!='satisfied'
+           )`,
+        [context.workspaceId, row.run_id]
+      );
       await this.event(client, context, taskId, "task.submitted", { revision, submissionId: id });
       return { id, temporalWorkflowId: row.temporal_workflow_id, nodeKey: row.node_key };
     });
