@@ -169,6 +169,23 @@ describe("WorkflowGenerationService", () => {
       unknown
     >;
     expect(sent).toMatchObject({ retention: "no-store", role: "balanced" });
+    expect(sent).toMatchObject({
+      outputSchema: {
+        properties: {
+          definition: {
+            properties: {
+              schemaVersion: { enum: [1] },
+              nodes: {
+                items: {
+                  required: ["key", "kind", "name", "description", "position", "configuration"]
+                }
+              },
+              edges: { items: { required: ["key", "source", "target"] } }
+            }
+          }
+        }
+      }
+    });
     expect(JSON.stringify(sent)).toContain("Launch operations");
     expect(JSON.stringify(sent)).toContain("Launch analyst");
     expect(JSON.stringify(fetcher.mock.calls)).not.toContain("OPENAI_API_KEY");
