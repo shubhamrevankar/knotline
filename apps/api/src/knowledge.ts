@@ -260,53 +260,63 @@ export class KnowledgeIngestionService {
       detectedMediaType: session.mediaType,
       etag
     });
+    if (!completed.jobId) throw new Error("DOCUMENT_PROCESSING_JOB_MISSING");
     const sourceObjectKey = `private/${context.workspaceId}/${completed.fileId}/${String(completed.version)}`;
     const normalizedObjectKey = `derived/${context.workspaceId}/${completed.fileId}/${String(completed.version)}/normalized.txt`;
-    await this.objects.put(sourceObjectKey, body, session.mediaType);
-    await this.objects.put(
-      normalizedObjectKey,
-      Buffer.from(extracted.text),
-      "text/plain; charset=utf-8"
-    );
-    if (!completed.jobId) throw new Error("DOCUMENT_PROCESSING_JOB_MISSING");
-    await this.files.completeProcessing(context, completed.jobId, {
-      state: "ready",
-      language: "en",
-      sections: extracted.sections.map((section) => ({
-        textHash: checksum(section.text),
-        coordinate: section.coordinate
-      })),
-      warnings: [],
-      derivedArtifact: {
-        kind: "normalized_text",
-        objectKey: normalizedObjectKey,
-        mediaType: "text/plain; charset=utf-8",
-        checksum: checksum(extracted.text),
-        sanitized: true
-      }
-    });
-    const now = new Date();
-    const indexed = await this.retrieval.indexDocument(context, completed.fileId, {
-      version: completed.version,
-      title: session.filename,
-      sourceType: session.sourceType,
-      sourceChecksum: session.expectedChecksum,
-      parserVersion: "safe-document-v2",
-      chunkerVersion: "deterministic-v1",
-      embedderVersion: "deterministic-embedding-v1",
-      classification: session.classification,
-      acl: {
-        epoch: Date.now(),
-        providerRevision: `workspace:${context.workspaceId}:${String(Date.now())}`,
-        complete: true,
-        subjects: [context.principalId],
-        groups: [],
-        observedAt: now.toISOString(),
-        expiresAt: new Date(now.getTime() + 240_000).toISOString()
-      },
-      sections: extracted.sections
-    });
-    return { ...completed, ...indexed, state: "ready", characters: extracted.text.length };
+    try {
+      await this.objects.put(sourceObjectKey, body, session.mediaType);
+      await this.objects.put(
+        normalizedObjectKey,
+        Buffer.from(extracted.text),
+        "text/plain; charset=utf-8"
+      );
+      const now = new Date();
+      const indexed = await this.retrieval.indexDocument(context, completed.fileId, {
+        version: completed.version,
+        title: session.filename,
+        sourceType: session.sourceType,
+        sourceChecksum: session.expectedChecksum,
+        parserVersion: "safe-document-v2",
+        chunkerVersion: "deterministic-v1",
+        embedderVersion: "deterministic-embedding-v1",
+        classification: session.classification,
+        acl: {
+          epoch: Date.now(),
+          providerRevision: `workspace:${context.workspaceId}:${String(Date.now())}`,
+          complete: true,
+          subjects: [context.principalId],
+          groups: [],
+          observedAt: now.toISOString(),
+          expiresAt: new Date(now.getTime() + 240_000).toISOString()
+        },
+        sections: extracted.sections
+      });
+      await this.files.completeProcessing(context, completed.jobId, {
+        state: "ready",
+        language: "en",
+        sections: extracted.sections.map((section) => ({
+          textHash: checksum(section.text),
+          coordinate: section.coordinate
+        })),
+        warnings: [],
+        derivedArtifact: {
+          kind: "normalized_text",
+          objectKey: normalizedObjectKey,
+          mediaType: "text/plain; charset=utf-8",
+          checksum: checksum(extracted.text),
+          sanitized: true
+        }
+      });
+      return { ...completed, ...indexed, state: "ready", characters: extracted.text.length };
+    } catch (error) {
+      await this.files.completeProcessing(context, completed.jobId, {
+        state: "failed",
+        sections: [],
+        warnings: [],
+        errorCode: "KNOWLEDGE_INDEXING_FAILED"
+      });
+      throw error;
+    }
   }
 
   async ingestWebsite(
@@ -354,8 +364,10 @@ export class KnowledgeIngestionService {
   async deleteObjects(context: TenantContext, fileId: string) {
     const file = await this.files.get(context, fileId);
     if (!file) return;
-    const versions = Array.isArray(file.versions) ? file.versions : [];
-    const artifacts = Array.isArray(file.derived_artifacts) ? file.derived_artifacts : [];
+    const versions: unknown[] = Array.isArray(file.versions) ? file.versions : [];
+    const artifacts: unknown[] = Array.isArray(file.derived_artifacts)
+      ? file.derived_artifacts
+      : [];
     const keys = [...versions, ...artifacts].flatMap((item) => {
       if (!item || typeof item !== "object") return [];
       const key = (item as Record<string, unknown>).object_key;

@@ -74,7 +74,7 @@ export class PostgresRetrievalRepository implements RetrievalRepository {
          WHERE file.workspace_id=$1 AND file.id=$2 AND file.deleted_at IS NULL AND version.malware_state='clean' FOR UPDATE OF file`,
         [context.workspaceId, documentId, value.version]
       );
-      if (!file.rows[0] || file.rows[0].state !== "ready")
+      if (!file.rows[0] || !["processing", "ready"].includes(file.rows[0].state))
         throw new HumanTaskAuthorizationError("DOCUMENT_NOT_INDEXABLE");
       if (file.rows[0].checksum !== value.sourceChecksum)
         throw new HumanTaskConflictError("DOCUMENT_CHECKSUM_MISMATCH");

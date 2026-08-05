@@ -597,6 +597,10 @@ export class PostgresFileRepository implements FileRepository {
           `UPDATE files SET state='failed',updated_at=clock_timestamp() WHERE workspace_id=$1 AND id=$2`,
           [context.workspaceId, row.file_id]
         );
+        await client.query(
+          `UPDATE file_upload_sessions SET state='failed' WHERE workspace_id=$1 AND file_id=$2 AND completed_version=$3`,
+          [context.workspaceId, row.file_id, row.file_version]
+        );
       }
       return { fileId: row.file_id, state: fileState };
     });

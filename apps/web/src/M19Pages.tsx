@@ -72,7 +72,7 @@ export function KnowledgeSourcesPage() {
         checksum,
         classification,
         partCount: 1,
-        idempotencyKey: `${selected.name}-${selected.size}-${selected.lastModified}`
+        idempotencyKey: `knowledge-upload-${crypto.randomUUID()}`
       });
       const uploadId =
         typeof created.upload_id === "string"
