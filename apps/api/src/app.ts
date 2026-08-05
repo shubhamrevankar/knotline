@@ -732,7 +732,8 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       scope: z.string().max(1_000).optional(),
       authuser: z.string().max(40).optional(),
       prompt: z.string().max(80).optional(),
-      hd: z.string().max(255).optional()
+      hd: z.string().max(255).optional(),
+      iss: z.string().url().max(500).optional()
     })
     .strict();
   app.get("/callbacks/v1/identity/oauth/:provider", async (request, reply) => {

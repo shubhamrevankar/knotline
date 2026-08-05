@@ -109,6 +109,8 @@ async function app(isReady = true) {
           },
           csrfToken: "test-csrf"
         }),
+      completeGoogleCallback: () =>
+        Promise.resolve("http://localhost:5173/auth/google/callback#result=test-result"),
       verifyMutation: () => undefined
     } as unknown as AuthService
   });
@@ -117,6 +119,19 @@ async function app(isReady = true) {
 }
 
 describe("API application", () => {
+  it("accepts Google's OAuth issuer callback parameter", async () => {
+    const selected = await app();
+    const response = await selected.inject({
+      method: "GET",
+      url: "/callbacks/v1/identity/oauth/google?state=test-state&code=test-code&iss=https%3A%2F%2Faccounts.google.com"
+    });
+
+    expect(response.statusCode).toBe(303);
+    expect(response.headers.location).toBe(
+      "http://localhost:5173/auth/google/callback#result=test-result"
+    );
+  });
+
   it("mints knowledge-search proofs with read permission", async () => {
     const repository = new TestRepository();
     const requirePermission = vi.fn().mockImplementation(
