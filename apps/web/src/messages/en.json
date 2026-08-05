@@ -750,6 +750,8 @@
   "studio.loading": "Loading workflow studio",
   "studio.node": "Step",
   "studio.node.approval": "Approval policy",
+  "studio.node.approval.deadline": "Response target (minutes)",
+  "studio.node.approval.self": "Allow the workflow initiator to approve",
   "studio.node.advanced": "Advanced data contracts",
   "studio.node.advanced.body": "Configure versioned inputs and outputs when this step exchanges structured data.",
   "studio.node.assignment": "Assignment",

@@ -209,7 +209,7 @@ function createNode(kind: WorkflowDefinitionNode["kind"], index: number): Workfl
     kind === "loop"
       ? { maxIterations: 10 }
       : kind === "approval"
-        ? { policy: "workspace_owner" }
+        ? { policy: "workspace_owner", dueInMinutes: 30 }
         : kind === "transform"
           ? { mapping: {} }
           : kind === "integration_action"
@@ -1711,19 +1711,57 @@ function NodeInspector({
         </select>
       </label>
       {node.kind === "approval" ? (
-        <label>
-          {msg("studio.node.approval")}
-          <input
-            value={
-              typeof node.configuration.policy === "string"
-                ? node.configuration.policy
-                : "workspace_owner"
-            }
-            onChange={(event) =>
-              update({ configuration: { ...node.configuration, policy: event.target.value } })
-            }
-          />
-        </label>
+        <>
+          <label>
+            {msg("studio.node.approval")}
+            <input
+              value={
+                typeof node.configuration.policy === "string"
+                  ? node.configuration.policy
+                  : "workspace_owner"
+              }
+              onChange={(event) =>
+                update({ configuration: { ...node.configuration, policy: event.target.value } })
+              }
+            />
+          </label>
+          <label>
+            {msg("studio.node.approval.deadline")}
+            <input
+              type="number"
+              min="1"
+              max="1440"
+              value={Number(
+                node.configuration.dueInMinutes ??
+                  Number(node.configuration.timeoutMs ?? 1_800_000) / 60_000
+              )}
+              onChange={(event) =>
+                update({
+                  configuration: {
+                    ...node.configuration,
+                    dueInMinutes: Number(event.target.value),
+                    timeoutMs: undefined
+                  }
+                })
+              }
+            />
+          </label>
+          <label className="checkbox-row">
+            <input
+              type="checkbox"
+              checked={node.configuration.allowSelfApproval === true}
+              onChange={(event) =>
+                update({
+                  configuration: {
+                    ...node.configuration,
+                    allowSelfApproval: event.target.checked
+                  }
+                })
+              }
+            />
+            {msg("studio.node.approval.self")}
+          </label>
+        </>
       ) : null}
       {node.kind === "integration_action" ? (
         <>

@@ -98,7 +98,9 @@ export function compileRuntimePlan(definition: WorkflowDefinition): readonly Run
           node.configuration.timeoutMs ??
             (typeof node.configuration.dueInMinutes === "number"
               ? node.configuration.dueInMinutes * 60_000
-              : 60_000)
+              : node.kind === "approval"
+                ? 1_800_000
+                : 60_000)
         )
       )
     ),

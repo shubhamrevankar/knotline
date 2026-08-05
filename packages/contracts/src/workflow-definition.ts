@@ -191,17 +191,26 @@ export function validateWorkflowDefinition(input: unknown): readonly ValidationF
             { type: "node", key: node.key, path: "configuration.assignment" }
           )
         );
-      if (
+      const dueInMinutesInvalid =
         node.configuration.dueInMinutes !== undefined &&
         (!Number.isFinite(node.configuration.dueInMinutes) ||
           Number(node.configuration.dueInMinutes) < 1 ||
-          Number(node.configuration.dueInMinutes) > 1_440)
-      )
+          Number(node.configuration.dueInMinutes) > 1_440);
+      const timeoutMsInvalid =
+        node.configuration.timeoutMs !== undefined &&
+        (!Number.isFinite(node.configuration.timeoutMs) ||
+          Number(node.configuration.timeoutMs) < 60_000 ||
+          Number(node.configuration.timeoutMs) > 86_400_000);
+      if (dueInMinutesInvalid || timeoutMsInvalid)
         findings.push(
           finding(
             "WF_APPROVAL_DEADLINE_INVALID",
             "Approval deadlines must be between 1 minute and 24 hours.",
-            { type: "node", key: node.key, path: "configuration.dueInMinutes" }
+            {
+              type: "node",
+              key: node.key,
+              path: timeoutMsInvalid ? "configuration.timeoutMs" : "configuration.dueInMinutes"
+            }
           )
         );
     }

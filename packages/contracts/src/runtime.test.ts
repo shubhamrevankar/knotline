@@ -86,5 +86,26 @@ describe("durable runtime contracts", () => {
     });
 
     expect(plan[1]?.timeoutMs).toBe(1_800_000);
+
+    const defaulted = compileRuntimePlan({
+      ...{
+        schemaVersion: 1 as const,
+        name: "Default approval deadline",
+        description: "",
+        inputSchema: {},
+        outputSchema: {},
+        nodes: plan.map((node, index) => ({
+          key: node.key,
+          kind: node.kind,
+          name: node.key,
+          description: "",
+          position: { x: index, y: 0 },
+          configuration:
+            node.kind === "approval" ? { policy: "owner", allowSelfApproval: true } : {}
+        })),
+        edges: [{ key: "start_authorize", source: "start", target: "authorize" }]
+      }
+    });
+    expect(defaulted[1]?.timeoutMs).toBe(1_800_000);
   });
 });
