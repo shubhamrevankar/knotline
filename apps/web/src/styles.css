@@ -1868,7 +1868,6 @@ a.run-button {
   color: inherit;
   background: transparent;
   text-align: left;
-  cursor: pointer;
 }
 
 .workflow-card:hover {
@@ -1915,7 +1914,20 @@ a.run-button {
   background: rgba(255, 255, 255, 0.06);
 }
 
-.workflow-card > strong {
+.workflow-card-select {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.workflow-card-select > strong {
   margin-top: 15px;
   font-size: 13px;
   letter-spacing: -0.02em;
@@ -1936,8 +1948,24 @@ a.run-button {
   font-size: 8px;
 }
 
-.workflow-meta svg {
+.workflow-card-open {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
   margin-left: auto;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: inherit;
+}
+
+.workflow-card-open:hover,
+.workflow-card-open:focus-visible {
+  border-color: currentColor;
+  color: #0d493f;
+  background: rgba(157, 188, 179, 0.18);
+  outline: none;
 }
 
 .canvas-panel {

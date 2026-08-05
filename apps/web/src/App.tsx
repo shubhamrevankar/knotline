@@ -229,29 +229,39 @@ export function App() {
                 role="region"
               >
                 {workflows.map((item) => (
-                  <button
-                    aria-pressed={item.id === selectedId}
+                  <article
                     key={item.id}
                     className={
                       item.id === selectedId
                         ? "workflow-card workflow-card--active"
                         : "workflow-card"
                     }
-                    onClick={() => setSelectedId(item.id)}
-                    type="button"
                   >
-                    <span className="workflow-card-top">
-                      <StatusPill status={item.status} />
-                      <small>v{item.version}</small>
-                    </span>
-                    <strong>{item.name}</strong>
-                    <p>{item.description}</p>
+                    <button
+                      aria-pressed={item.id === selectedId}
+                      className="workflow-card-select"
+                      onClick={() => setSelectedId(item.id)}
+                      type="button"
+                    >
+                      <span className="workflow-card-top">
+                        <StatusPill status={item.status} />
+                        <small>v{item.version}</small>
+                      </span>
+                      <strong>{item.name}</strong>
+                      <p>{item.description}</p>
+                    </button>
                     <span className="workflow-meta">
                       <span>{msg("customer.workflow.steps", { count: item.nodeCount })}</span>
                       <span>{msg("customer.workflow.runs", { count: item.activeRuns })}</span>
-                      <ArrowUpRight aria-hidden="true" size={15} />
+                      <Link
+                        aria-label={msg("customer.library.open", { name: item.name })}
+                        className="workflow-card-open"
+                        to={`/app/workflows/${item.id}/studio`}
+                      >
+                        <ArrowUpRight aria-hidden="true" size={15} />
+                      </Link>
                     </span>
-                  </button>
+                  </article>
                 ))}
                 {!connected && workflows.length === 0 ? (
                   <p role="status">{msg("app.loading.workspace")}</p>
