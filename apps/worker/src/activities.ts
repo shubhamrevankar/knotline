@@ -225,6 +225,7 @@ export async function recordRunTransition(
     readonly next:
       "running" | "paused" | "cancelling" | "cancelled" | "succeeded" | "failed" | "policy_stopped";
     readonly expectedVersion: number;
+    readonly output?: unknown;
   }
 ) {
   if (!repository) throw new Error("DATABASE_URL_REQUIRED");
@@ -239,7 +240,8 @@ export async function recordRunTransition(
     input.expectedVersion,
     1,
     input.next,
-    `run.${input.next}`
+    `run.${input.next}`,
+    input.output
   );
 }
 
@@ -257,6 +259,48 @@ export async function recordTaskFailure(
     input.nodeKey,
     activityInfo().activityId,
     input.errorCode
+  );
+}
+
+export async function activateTask(input: DurableRunInput & { readonly nodeKey: string }) {
+  if (!repository) throw new Error("DATABASE_URL_REQUIRED");
+  return repository.activateTask(
+    {
+      workspaceId: input.workspaceId,
+      principalId: input.principalId,
+      requestId: `activity-${activityInfo().activityId}`
+    },
+    input.runId,
+    input.nodeKey
+  );
+}
+
+export async function skipTask(
+  input: DurableRunInput & { readonly nodeKey: string; readonly reason: string }
+) {
+  if (!repository) throw new Error("DATABASE_URL_REQUIRED");
+  return repository.skipTask(
+    {
+      workspaceId: input.workspaceId,
+      principalId: input.principalId,
+      requestId: `activity-${activityInfo().activityId}`
+    },
+    input.runId,
+    input.nodeKey,
+    input.reason
+  );
+}
+
+export async function readTaskOutput(input: DurableRunInput & { readonly nodeKey: string }) {
+  if (!repository) throw new Error("DATABASE_URL_REQUIRED");
+  return repository.taskOutput(
+    {
+      workspaceId: input.workspaceId,
+      principalId: input.principalId,
+      requestId: `activity-${activityInfo().activityId}`
+    },
+    input.runId,
+    input.nodeKey
   );
 }
 
@@ -306,22 +350,34 @@ export async function executeSyntheticTask(
   )
     throw new Error("EXTERNAL_OPERATION_UNCERTAIN");
   if (!repository) throw new Error("DATABASE_URL_REQUIRED");
+  const executionScope = await repository.taskExecutionContext(
+    {
+      workspaceId: input.workspaceId,
+      principalId: input.principalId,
+      requestId: `activity-${info.activityId}`
+    },
+    input.runId,
+    input.node.key
+  );
+  const dependencyOutputs = Object.values(executionScope.nodes).map(({ output }) => output);
   const output =
     input.node.kind === "transform"
       ? executeTransformMapping(
           input.node.configuration.mapping,
-          await repository.taskExecutionContext(
-            {
-              workspaceId: input.workspaceId,
-              principalId: input.principalId,
-              requestId: `activity-${info.activityId}`
-            },
-            input.runId,
-            input.node.key
-          ),
+          executionScope,
           input.node.configuration.dropEmpty === true
         )
-      : (input.node.configuration.fixtureOutput ?? {});
+      : (input.node.configuration.fixtureOutput ??
+        (input.node.kind === "trigger"
+          ? executionScope.input
+          : input.node.kind === "condition"
+            ? (dependencyOutputs.at(-1) ?? {})
+            : input.node.kind === "loop"
+              ? {
+                  iteration: 1,
+                  maxIterations: Number(input.node.configuration.maxIterations ?? 1)
+                }
+              : {}));
   const result = {
     nodeKey: input.node.key,
     attempt: info.attempt,

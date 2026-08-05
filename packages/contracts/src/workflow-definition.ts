@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { humanFormSchema } from "./human-task.js";
+
 export const workflowNodeKindSchema = z.enum([
   "trigger",
   "human",
@@ -152,6 +154,36 @@ export function validateWorkflowDefinition(input: unknown): readonly ValidationF
             path: "configuration.maxIterations"
           })
         );
+      findings.push(
+        finding(
+          "WF_LOOP_RUNTIME_UNSUPPORTED",
+          "Repeated loop execution is not available; model one explicit bounded revision path instead.",
+          { type: "node", key: node.key }
+        )
+      );
+    }
+    if (node.kind === "human") {
+      const outputs = node.configuration.outputs;
+      const hasOutputs =
+        Array.isArray(outputs) &&
+        outputs.filter((value) => typeof value === "string" && value.trim()).length >= 3;
+      const hasForm = humanFormSchema.safeParse(node.configuration.formSchema).success;
+      if (!hasOutputs && !hasForm)
+        findings.push(
+          finding(
+            "WF_HUMAN_EVIDENCE_FORM_REQUIRED",
+            "Human tasks require a typed form or at least three explicit evidence outputs.",
+            { type: "node", key: node.key, path: "configuration.formSchema" }
+          )
+        );
+      if (typeof node.configuration.assignment !== "string")
+        findings.push(
+          finding(
+            "WF_HUMAN_ASSIGNMENT_REQUIRED",
+            "Human tasks require an accountable assignment; use workflow_initiator when no role is available.",
+            { type: "node", key: node.key, path: "configuration.assignment" }
+          )
+        );
     }
     if (node.kind === "transform") {
       const mapping = node.configuration.mapping;
@@ -212,6 +244,18 @@ export function validateWorkflowDefinition(input: unknown): readonly ValidationF
               path: timeoutMsInvalid ? "configuration.timeoutMs" : "configuration.dueInMinutes"
             }
           )
+        );
+      if (
+        !(["low", "medium", "high", "critical"] as const).includes(
+          node.configuration.riskLevel as never
+        )
+      )
+        findings.push(
+          finding("WF_APPROVAL_RISK_REQUIRED", "Approval nodes require an explicit risk level.", {
+            type: "node",
+            key: node.key,
+            path: "configuration.riskLevel"
+          })
         );
     }
     if (node.kind === "integration_action") {
@@ -285,6 +329,29 @@ export function validateWorkflowDefinition(input: unknown): readonly ValidationF
       continue;
     }
     outgoing.set(edge.source, [...(outgoing.get(edge.source) ?? []), edge.target]);
+  }
+
+  for (const node of definition.nodes.filter(({ kind }) => kind === "condition")) {
+    const decisionEdges = definition.edges.filter(
+      ({ source, pathType }) => source === node.key && pathType !== "failure"
+    );
+    if (decisionEdges.length < 2)
+      findings.push(
+        finding(
+          "WF_CONDITION_BRANCHES_REQUIRED",
+          "Condition nodes require at least two successful decision paths.",
+          { type: "node", key: node.key }
+        )
+      );
+    for (const edge of decisionEdges)
+      if (!edge.condition)
+        findings.push(
+          finding(
+            "WF_CONDITION_EXPRESSION_REQUIRED",
+            "Every successful path from a condition node requires an explicit condition.",
+            { type: "edge", key: edge.key, path: "condition" }
+          )
+        );
   }
 
   const reachable = new Set<string>();

@@ -1212,6 +1212,7 @@ export interface RuntimeRunView {
   readonly state: string;
   readonly created_by: string;
   readonly input?: Readonly<Record<string, unknown>>;
+  readonly output?: Readonly<Record<string, unknown>>;
   readonly policy_snapshot?: Readonly<Record<string, unknown>>;
   readonly started_at?: string;
   readonly finished_at?: string;

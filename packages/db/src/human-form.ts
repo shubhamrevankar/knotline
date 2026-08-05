@@ -17,9 +17,13 @@ const fieldKey = (value: string, index: number) => {
 };
 
 const inferredType = (key: string): HumanFormField["type"] =>
-  /(?:complete|confirmed|compliant|approved|verified)$/iu.test(key)
+  /(?:complete|completed|confirmed|compliant|approved|verified|notified|delivered|restored|accepted)$/iu.test(
+    key
+  )
     ? "boolean"
-    : /(?:context|description|details|evidence|notes?|plan|reason|summary)$/iu.test(key)
+    : /(?:context|description|details|evidence|notes?|plan|reason|summary|actions?|results?|contacts?|communication|disposition)$/iu.test(
+          key
+        )
       ? "rich_text"
       : /(?:url|link)$/iu.test(key)
         ? "url"
@@ -61,7 +65,49 @@ export function normalizeHumanForm(value: unknown, title: string): HumanForm {
           (field): field is string => typeof field === "string" && field.length > 0
         )
       : [];
-  const sourceFields = configuredFields.length > 0 ? configuredFields : ["response"];
+  const normalizedTitle = title.toLowerCase();
+  const defaultFields = /(?:account|context|verify)/u.test(normalizedTitle)
+    ? [
+        "account_owner",
+        "account_status",
+        "authorized_contacts",
+        "customer_context",
+        "commitments_and_restrictions",
+        "verification_evidence",
+        "context_verified"
+      ]
+    : /(?:execute|recover|notify)/u.test(normalizedTitle)
+      ? [
+          "change_or_incident_reference",
+          "actions_performed",
+          "validation_results",
+          "customer_contact",
+          "customer_communication",
+          "delivery_confirmed",
+          "evidence_links",
+          "recovery_completed"
+        ]
+      : /(?:audit|resolution|close)/u.test(normalizedTitle)
+        ? [
+            "disposition",
+            "resolution_summary",
+            "actions_and_approvals",
+            "customer_communication",
+            "evidence_links",
+            "customer_notified",
+            "audit_complete"
+          ]
+        : /(?:escalat|failure)/u.test(normalizedTitle)
+          ? [
+              "escalation_reason",
+              "escalation_owner",
+              "actions_attempted",
+              "preserved_evidence",
+              "customer_status",
+              "owner_accepted"
+            ]
+          : ["work_summary", "evidence_links", "work_completed"];
+  const sourceFields = configuredFields.length > 0 ? configuredFields : defaultFields;
   const usedKeys = new Set<string>();
   const fields = sourceFields.map((source, index) => {
     let key = fieldKey(source, index);
@@ -73,6 +119,11 @@ export function normalizeHumanForm(value: unknown, title: string): HumanForm {
       label: presentation.label,
       type: inferredType(source),
       required: true,
+      ...(inferredType(source) === "boolean" &&
+      /(?:complete|completed|confirmed|accepted|verified|notified|delivered|restored)$/iu.test(key)
+        ? { mustBeTrue: true }
+        : {}),
+      ...(["rich_text", "text"].includes(inferredType(source)) ? { minLength: 8 } : {}),
       ...(presentation.help ? { help: presentation.help } : {})
     } satisfies HumanFormField;
   });

@@ -39,6 +39,7 @@ function FormControl({ field }: { readonly field: HumanFormField }) {
     id: `task-field-${field.key}`,
     name: field.key,
     required: field.required,
+    minLength: field.minLength,
     disabled: field.readOnly,
     "aria-describedby": helpId
   };
@@ -409,6 +410,13 @@ export function TaskDetailPage() {
               Review the preceding execution, evidence, and outputs before submitting your decision.
             </p>
             <Link to={`/app/runs/${String(task.run_id)}`}>Open run room</Link>
+          </Card>
+          <Card>
+            <h2>Evidence available to this task</h2>
+            <p>
+              Use these immutable workflow inputs and prerequisite outputs when completing the form.
+            </p>
+            <pre>{JSON.stringify(task.input ?? {}, null, 2)}</pre>
           </Card>
           <Card>
             <h2>Assignment</h2>

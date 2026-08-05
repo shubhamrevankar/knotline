@@ -20,7 +20,14 @@ import {
 } from "./human-task.js";
 
 export const workflowStatusSchema = z.enum(["draft", "active", "paused", "archived"]);
-export const nodeStatusSchema = z.enum(["queued", "running", "waiting", "complete", "failed"]);
+export const nodeStatusSchema = z.enum([
+  "queued",
+  "running",
+  "waiting",
+  "complete",
+  "failed",
+  "skipped"
+]);
 export const nodeKindSchema = z.enum([
   "trigger",
   "human",
@@ -2294,6 +2301,34 @@ const CONNECTOR_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
     "receiveProviderWebhook",
     "Authenticate and enqueue a provider webhook",
     "provider_callback"
+  ],
+  [
+    "POST",
+    "/v1/workspaces/{workspaceId}/http-connections",
+    "createHttpConnection",
+    "Create and test an HTTP connection",
+    "browser_internal"
+  ],
+  [
+    "GET",
+    "/v1/workspaces/{workspaceId}/runtime-readiness",
+    "getRuntimeReadiness",
+    "Read workflow runtime readiness",
+    "browser_internal"
+  ],
+  [
+    "PUT",
+    "/v1/connections/{connectionId}/http-configuration",
+    "configureHttpConnection",
+    "Configure an HTTP connection",
+    "browser_internal"
+  ],
+  [
+    "POST",
+    "/v1/connections/{connectionId}/tests",
+    "testHttpConnection",
+    "Test an HTTP connection",
+    "browser_internal"
   ]
 ].map(([method, path, operationId, summary, exposure]) => ({
   method: method as HttpRouteContract["method"],
@@ -3073,6 +3108,21 @@ export const HTTP_ROUTE_CONTRACTS: readonly HttpRouteContract[] = [
   ...GOVERNANCE_ROUTE_CONTRACTS,
   ...ENTERPRISE_ROUTE_CONTRACTS,
   ...SUPPORT_ROUTE_CONTRACTS,
+  {
+    method: "GET",
+    path: "/edge/v1/auth/capabilities",
+    operationId: "getAuthenticationCapabilities",
+    summary: "Read enabled sign-in methods",
+    tags: ["Authentication"],
+    exposure: "public_anonymous",
+    responses: {
+      200: apiEnvelope(
+        z
+          .object({ google: z.boolean(), email: z.boolean(), invitations: z.boolean() })
+          .strict()
+      )
+    }
+  },
   {
     method: "POST",
     path: "/edge/v1/auth/magic-links",

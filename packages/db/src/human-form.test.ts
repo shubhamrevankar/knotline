@@ -28,6 +28,7 @@ describe("normalizeHumanForm", () => {
           label: "Accountable owner",
           type: "text",
           required: true,
+          minLength: 8,
           help: "Enter the person responsible for coordinating this response, including their role."
         },
         {
@@ -35,6 +36,7 @@ describe("normalizeHumanForm", () => {
           label: "Response commitment",
           type: "text",
           required: true,
+          minLength: 8,
           help: "State the promised response and recovery timeframes, including update frequency."
         },
         {
@@ -42,6 +44,7 @@ describe("normalizeHumanForm", () => {
           label: "Customer situation",
           type: "rich_text",
           required: true,
+          minLength: 8,
           help: "Summarize who is affected, business impact, urgency, known facts, and open questions."
         },
         {
@@ -49,9 +52,25 @@ describe("normalizeHumanForm", () => {
           label: "Required evidence is complete",
           type: "boolean",
           required: true,
+          mustBeTrue: true,
           help: "Confirm only after checking the evidence available in the run."
         }
       ]
     });
+  });
+});
+
+describe("operational form inference", () => {
+  it("requires structured recovery execution evidence instead of a generic response", () => {
+    const form = normalizeHumanForm(undefined, "execute_and_notify");
+    expect(form.fields.map(({ key }) => key)).toEqual(
+      expect.arrayContaining([
+        "actions_performed",
+        "validation_results",
+        "delivery_confirmed",
+        "evidence_links"
+      ])
+    );
+    expect(form.fields).not.toContainEqual(expect.objectContaining({ key: "response" }));
   });
 });

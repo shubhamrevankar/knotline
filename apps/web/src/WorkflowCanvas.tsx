@@ -103,6 +103,7 @@ export function WorkflowCanvas({ workflow }: { workflow: Workflow }) {
     failed: msg("canvas.status.failed"),
     queued: msg("canvas.status.queued"),
     running: msg("canvas.status.running"),
+    skipped: msg("canvas.status.skipped"),
     waiting: msg("canvas.status.waiting")
   };
   const nodes: Node<OperationNodeData>[] = workflow.nodes.map((node) => ({

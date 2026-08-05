@@ -2064,6 +2064,11 @@ a.run-button {
   background: var(--blue);
 }
 
+.status-dot--skipped {
+  border-color: #8c9691;
+  background: transparent;
+}
+
 .operation-node h3 {
   margin: 12px 0 5px;
   font-size: 13px;

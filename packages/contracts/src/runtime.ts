@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { type WorkflowDefinition } from "./workflow-definition.js";
+import { type WorkflowDefinition, type WorkflowDefinitionEdge } from "./workflow-definition.js";
 
 export const runStateSchema = z.enum([
   "queued",
@@ -62,6 +62,8 @@ export interface RuntimePlanNode {
   readonly kind: WorkflowDefinition["nodes"][number]["kind"];
   readonly dependencies: readonly string[];
   readonly successors: readonly string[];
+  readonly incoming: readonly WorkflowDefinitionEdge[];
+  readonly outgoing: readonly WorkflowDefinitionEdge[];
   readonly queue: "system" | "human" | "agent" | "connector";
   readonly maxAttempts: number;
   readonly timeoutMs: number;
@@ -88,6 +90,12 @@ export function compileRuntimePlan(definition: WorkflowDefinition): readonly Run
     kind: node.kind,
     dependencies: [...(incoming.get(node.key) ?? [])].sort(),
     successors: [...(outgoing.get(node.key) ?? [])].sort(),
+    incoming: definition.edges
+      .filter(({ target }) => target === node.key)
+      .toSorted((left, right) => left.key.localeCompare(right.key)),
+    outgoing: definition.edges
+      .filter(({ source }) => source === node.key)
+      .toSorted((left, right) => left.key.localeCompare(right.key)),
     queue: queueFor(node.kind),
     maxAttempts: Math.max(1, Math.min(10, Number(node.configuration.maxAttempts ?? 3))),
     timeoutMs: Math.max(
@@ -106,6 +114,166 @@ export function compileRuntimePlan(definition: WorkflowDefinition): readonly Run
     ),
     configuration: node.configuration
   }));
+}
+
+export interface RuntimeExpressionScope {
+  readonly input: Readonly<Record<string, unknown>>;
+  readonly nodes: Readonly<Record<string, { readonly output: unknown }>>;
+  readonly sourceOutput?: unknown;
+  readonly iteration?: number;
+}
+
+type ExpressionToken =
+  | { readonly kind: "operator"; readonly value: string }
+  | { readonly kind: "literal"; readonly value: unknown }
+  | { readonly kind: "reference"; readonly value: string };
+
+const tokenizeExpression = (expression: string): readonly ExpressionToken[] => {
+  const source = expression.trim();
+  const tokens: ExpressionToken[] = [];
+  const matcher =
+    /\s*(\|\||&&|==|!=|<=|>=|<|>|!|\(|\)|true\b|false\b|null\b|-?\d+(?:\.\d+)?|'(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"|\$\{(?:input|nodes)\.[a-zA-Z0-9_.-]+\}|[a-zA-Z_][a-zA-Z0-9_.-]*)/gy;
+  let offset = 0;
+  while (offset < source.length) {
+    matcher.lastIndex = offset;
+    const match = matcher.exec(source);
+    if (!match || match.index !== offset) throw new Error("RUNTIME_EXPRESSION_INVALID");
+    const value = match[1]!;
+    offset = matcher.lastIndex;
+    if (["||", "&&", "==", "!=", "<=", ">=", "<", ">", "!", "(", ")"].includes(value))
+      tokens.push({ kind: "operator", value });
+    else if (value === "true" || value === "false")
+      tokens.push({ kind: "literal", value: value === "true" });
+    else if (value === "null") tokens.push({ kind: "literal", value: null });
+    else if (/^-?\d/u.test(value)) tokens.push({ kind: "literal", value: Number(value) });
+    else if (value.startsWith("'") || value.startsWith('"'))
+      tokens.push({
+        kind: "literal",
+        value: value.slice(1, -1).replace(/\\(['"\\])/gu, "$1")
+      });
+    else tokens.push({ kind: "reference", value });
+  }
+  return tokens;
+};
+
+const nestedValue = (value: unknown, path: readonly string[]): unknown => {
+  let current = value;
+  for (const segment of path) {
+    if (!current || typeof current !== "object" || !(segment in current)) return undefined;
+    current = (current as Record<string, unknown>)[segment];
+  }
+  return current;
+};
+
+const findNestedKey = (value: unknown, key: string): unknown => {
+  if (!value || typeof value !== "object") return undefined;
+  if (!Array.isArray(value) && key in value) return (value as Record<string, unknown>)[key];
+  for (const child of Array.isArray(value) ? value : Object.values(value)) {
+    const found = findNestedKey(child, key);
+    if (found !== undefined) return found;
+  }
+  return undefined;
+};
+
+const normalizedDecisionValue = (reference: string, value: unknown): unknown => {
+  if (typeof value !== "string") return value;
+  const normalized = value.trim().toLowerCase();
+  if (/(?:severity|risk)$/iu.test(reference)) {
+    if (/\bcritical\b|\bsev[- ]?1\b/iu.test(normalized)) return "critical";
+    if (/\bhigh\b|\bsev[- ]?2\b/iu.test(normalized)) return "high";
+    if (/\bmedium\b|\bsev[- ]?3\b/iu.test(normalized)) return "medium";
+    if (/\blow\b|\bsev[- ]?4\b/iu.test(normalized)) return "low";
+  }
+  return normalized;
+};
+
+const resolveExpressionReference = (reference: string, scope: RuntimeExpressionScope): unknown => {
+  const unwrapped = reference.startsWith("${") ? reference.slice(2, -1) : reference;
+  if (unwrapped === "iteration") return scope.iteration ?? 0;
+  const segments = unwrapped.split(".");
+  let value: unknown;
+  if (segments[0] === "input") value = nestedValue(scope.input, segments.slice(1));
+  else if (segments[0] === "nodes") value = nestedValue(scope.nodes, segments.slice(1));
+  else {
+    value = nestedValue(scope.sourceOutput, segments);
+    if (value === undefined && segments.length === 1)
+      for (const node of Object.values(scope.nodes).toReversed()) {
+        value = findNestedKey(node.output, segments[0]!);
+        if (value !== undefined) break;
+      }
+    if (value === undefined) value = nestedValue(scope.input, segments);
+  }
+  return normalizedDecisionValue(unwrapped, value);
+};
+
+const expressionEquals = (left: unknown, right: unknown) =>
+  typeof left === "string" && typeof right === "string"
+    ? left.toLowerCase() === right.toLowerCase()
+    : left === right;
+
+/** Evaluates the deliberately small workflow condition language without dynamic code execution. */
+export function evaluateRuntimeExpression(
+  expression: string,
+  scope: RuntimeExpressionScope
+): boolean {
+  try {
+    const tokens = tokenizeExpression(expression);
+    let cursor = 0;
+    const peek = () => tokens[cursor];
+    const take = () => tokens[cursor++];
+    const operand = (): unknown => {
+      const token = take();
+      if (!token) throw new Error("RUNTIME_EXPRESSION_INCOMPLETE");
+      if (token.kind === "literal") return token.value;
+      if (token.kind === "reference") return resolveExpressionReference(token.value, scope);
+      if (token.value === "(") {
+        const value = disjunction();
+        if (take()?.value !== ")") throw new Error("RUNTIME_EXPRESSION_PARENTHESIS");
+        return value;
+      }
+      if (token.value === "!") return !operand();
+      throw new Error("RUNTIME_EXPRESSION_OPERAND");
+    };
+    const comparison = (): boolean => {
+      const left = operand();
+      const operator = peek();
+      if (
+        operator?.kind !== "operator" ||
+        !["==", "!=", "<", "<=", ">", ">="].includes(operator.value)
+      )
+        return Boolean(left);
+      take();
+      const right = operand();
+      if (operator.value === "==") return expressionEquals(left, right);
+      if (operator.value === "!=") return !expressionEquals(left, right);
+      if (operator.value === "<") return Number(left) < Number(right);
+      if (operator.value === "<=") return Number(left) <= Number(right);
+      if (operator.value === ">") return Number(left) > Number(right);
+      return Number(left) >= Number(right);
+    };
+    const conjunction = (): boolean => {
+      let value = comparison();
+      while (peek()?.value === "&&") {
+        take();
+        const right = comparison();
+        value = value && right;
+      }
+      return value;
+    };
+    const disjunction = (): boolean => {
+      let value = conjunction();
+      while (peek()?.value === "||") {
+        take();
+        const right = conjunction();
+        value = value || right;
+      }
+      return value;
+    };
+    const result = disjunction();
+    return cursor === tokens.length && result;
+  } catch {
+    return false;
+  }
 }
 
 export const runIntentSchema = z

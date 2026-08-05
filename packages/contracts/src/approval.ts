@@ -94,7 +94,7 @@ export const approvalPacketSchema = z.object({
 export const approvalDecisionSchema = z.object({
   stepKey: z.string().regex(/^[a-z][a-z0-9_]{0,63}$/u),
   outcome: approvalOutcomeSchema,
-  reason: z.string().trim().max(2_000),
+  reason: z.string().trim().min(12).max(2_000),
   expectedVersion: z.number().int().positive(),
   idempotencyKey: z.string().min(16).max(160)
 });

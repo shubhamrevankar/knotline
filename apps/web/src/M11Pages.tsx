@@ -50,6 +50,7 @@ const stateLabel = (state: string) => state.replaceAll("_", " ");
 
 const nodeStatus = (state: string | undefined): NodeStatus => {
   if (state === "succeeded") return "complete";
+  if (state === "skipped") return "skipped";
   if (state === "failed" || state === "cancelled") return "failed";
   if (state === "running") return "running";
   if (state === "ready" || state === "waiting") return "waiting";
@@ -337,6 +338,8 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
       </RunShell>
     );
   const completed = run.tasks?.filter(({ state }) => state === "succeeded").length ?? 0;
+  const skipped = run.tasks?.filter(({ state }) => state === "skipped").length ?? 0;
+  const settled = completed + skipped;
   const total = run.tasks?.length ?? 0;
   const waitingTask = terminalStates.has(run.state)
     ? undefined
@@ -449,7 +452,7 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
               : run.state === "policy_stopped"
                 ? `${completed} of ${total} steps completed. The required approval expired or could not be authorized; no later actions were started.`
                 : terminalStates.has(run.state)
-                  ? `${completed} of ${total} steps completed in ${duration(run)}.`
+                  ? `${completed} steps executed and ${skipped} irrelevant paths skipped in ${duration(run)}.`
                   : focusNode
                     ? `${focusNode.title} · ${completed} of ${total} steps complete. This page updates automatically.`
                     : `${completed} of ${total} steps complete. This page updates automatically.`}
@@ -481,7 +484,7 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
         <Card>
           <span>Progress</span>
           <strong>
-            {completed} / {total}
+            {settled} / {total}
           </strong>
         </Card>
         <Card>
@@ -503,10 +506,11 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
       </section>
       <section className="run-progress-detail" aria-label="Step status breakdown">
         <div>
-          <span style={{ width: total ? `${String((completed / total) * 100)}%` : "0%" }} />
+          <span style={{ width: total ? `${String((settled / total) * 100)}%` : "0%" }} />
         </div>
         <p>
           <strong>{completed} complete</strong>
+          <span>{skipped} skipped</span>
           <span>{run.tasks?.filter(({ state }) => state === "running").length ?? 0} running</span>
           <span>{run.tasks?.filter(({ state }) => state === "ready").length ?? 0} ready</span>
           <span>{run.tasks?.filter(({ state }) => state === "pending").length ?? 0} upcoming</span>
@@ -555,6 +559,14 @@ export function RunRoomPage({ view = "room" }: { readonly view?: "room" | "timel
           <ChevronRight aria-hidden="true" />
         </Link>
       </section>
+      {terminalStates.has(run.state) && run.output ? (
+        <details className="run-input-summary" open>
+          <summary>
+            Canonical outcome <span>Authoritative</span>
+          </summary>
+          <pre>{JSON.stringify(run.output, null, 2)}</pre>
+        </details>
+      ) : null}
       <details className="run-input-summary">
         <summary>
           Run input <span>Immutable</span>

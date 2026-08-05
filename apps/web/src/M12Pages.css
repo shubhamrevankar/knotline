@@ -370,6 +370,18 @@
 .task-context ol {
   padding-left: 20px;
 }
+.task-context pre {
+  max-height: 320px;
+  overflow: auto;
+  margin: 12px 0 0;
+  padding: 12px;
+  border: 1px solid #dce3df;
+  border-radius: 8px;
+  color: #30463e;
+  background: #f6f8f5;
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+}
 .task-context li {
   margin-bottom: 12px;
 }

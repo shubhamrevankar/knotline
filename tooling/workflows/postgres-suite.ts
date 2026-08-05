@@ -127,7 +127,10 @@ const definition = (name = "Incident response"): WorkflowDefinition => ({
       name: "Triage",
       description: "",
       position: { x: 240, y: 0 },
-      configuration: { assignment: "owner" }
+      configuration: {
+        assignment: "owner",
+        outputs: ["triage_summary", "evidence_links", "triage_completed"]
+      }
     },
     {
       key: "approval",
@@ -135,7 +138,12 @@ const definition = (name = "Incident response"): WorkflowDefinition => ({
       name: "Approve response",
       description: "",
       position: { x: 480, y: 0 },
-      configuration: { policy: "workspace_owner", allowSelfApproval: true, dueInMinutes: 30 }
+      configuration: {
+        policy: "workspace_owner",
+        allowSelfApproval: true,
+        riskLevel: "medium",
+        dueInMinutes: 30
+      }
     }
   ],
   edges: [
@@ -2064,15 +2072,24 @@ async function runSuite(pool: DatabasePool) {
     schemaVersion: 1,
     expectedVersion: 3,
     idempotencyKey: "human-task-submit-fixture-0001",
-    values: { response: "Proceed" }
+    values: {
+      triage_summary: "Incident triage completed with the customer impact confirmed.",
+      evidence_links: "https://evidence.example/incidents/fixture-1",
+      triage_completed: true
+    }
   });
   const repeatedSubmission = await humanTaskRepository.submit(contextA, triageTask.id, {
     schemaVersion: 1,
     expectedVersion: 3,
     idempotencyKey: "human-task-submit-fixture-0001",
-    values: { response: "Proceed" }
+    values: {
+      triage_summary: "Incident triage completed with the customer impact confirmed.",
+      evidence_links: "https://evidence.example/incidents/fixture-1",
+      triage_completed: true
+    }
   });
   assert(submitted.id === repeatedSubmission.id, "Task submission was not idempotent");
+  await runtimeRepository.activateTask(contextA, durableRun.id, "approval");
   const downstreamApprovalTask = await withTenantTransaction(pool, contextA, async (client) =>
     client.query<{ state: string }>(
       "SELECT state FROM task_runs WHERE workspace_id=$1 AND run_id=$2 AND node_key='approval'",
@@ -2081,7 +2098,7 @@ async function runSuite(pool: DatabasePool) {
   );
   assert(
     downstreamApprovalTask.rows[0]?.state === "ready",
-    "Human task submission did not unlock its downstream task"
+    "Selected downstream task was not activated after human completion"
   );
   const queue = await taskAdministration.createQueue(contextA, {
     name: "Renewal operations",

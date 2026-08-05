@@ -216,33 +216,40 @@ export function ApprovalDetailPage() {
                 <span>Reason</span>
                 <textarea
                   required
+                  minLength={12}
                   value={reason}
                   onChange={(event) => setReason(event.currentTarget.value)}
-                  placeholder="Explain your decision"
+                  placeholder="State the evidence reviewed, decision rationale, and any conditions"
                 />
+                <small>
+                  Use at least 12 characters. This rationale becomes part of the audit record.
+                </small>
               </label>
               <div className="approval-actions">
                 <Button
                   tone="accent"
-                  disabled={busy || !reason.trim()}
+                  disabled={busy || reason.trim().length < 12}
                   onClick={() => void decide("approve")}
                 >
                   <Check aria-hidden="true" /> Approve
                 </Button>
                 <Button
-                  disabled={busy || !reason.trim()}
+                  disabled={busy || reason.trim().length < 12}
                   onClick={() => void decide("request_changes")}
                 >
                   Request changes
                 </Button>
                 <Button
                   tone="danger"
-                  disabled={busy || !reason.trim()}
+                  disabled={busy || reason.trim().length < 12}
                   onClick={() => void decide("reject")}
                 >
                   <X aria-hidden="true" /> Reject
                 </Button>
-                <Button disabled={busy || !reason.trim()} onClick={() => void decide("abstain")}>
+                <Button
+                  disabled={busy || reason.trim().length < 12}
+                  onClick={() => void decide("abstain")}
+                >
                   Abstain
                 </Button>
               </div>

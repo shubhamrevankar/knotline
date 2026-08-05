@@ -5,7 +5,8 @@ import {
   assertRunTransition,
   assertTaskTransition,
   canReserveUnits,
-  compileRuntimePlan
+  compileRuntimePlan,
+  evaluateRuntimeExpression
 } from "./runtime.js";
 
 describe("durable runtime contracts", () => {
@@ -45,10 +46,29 @@ describe("durable runtime contracts", () => {
     });
     expect(plan[1]).toMatchObject({
       dependencies: ["start"],
+      incoming: [{ key: "start_notify", source: "start", target: "notify" }],
       queue: "connector",
       maxAttempts: 10,
       timeoutMs: 1000
     });
+  });
+
+  it("evaluates branch expressions against typed workflow context without dynamic code", () => {
+    const scope = {
+      input: { iteration: 1 },
+      nodes: {
+        assess: { output: { assessment: { severity: "SEV-1 / Critical" } } }
+      },
+      sourceOutput: {}
+    };
+    expect(
+      evaluateRuntimeExpression(
+        "highRiskAction == true || severity == 'high' || severity == 'critical'",
+        scope
+      )
+    ).toBe(true);
+    expect(evaluateRuntimeExpression("iteration < 2", { ...scope, iteration: 1 })).toBe(true);
+    expect(evaluateRuntimeExpression("constructor.constructor('x')", scope)).toBe(false);
   });
 
   it("uses exact integer base units at the last available unit", () => {

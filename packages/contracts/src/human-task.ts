@@ -21,6 +21,8 @@ export interface HumanFormField {
   label: string;
   type: z.infer<typeof humanFieldTypeSchema>;
   required?: boolean | undefined;
+  minLength?: number | undefined;
+  mustBeTrue?: boolean | undefined;
   readOnly?: boolean | undefined;
   help?: string | undefined;
   options?: { value: string; label: string }[] | undefined;
@@ -34,6 +36,8 @@ export const humanFormFieldSchema: z.ZodType<HumanFormField> = z.lazy(() =>
     label: z.string().min(1).max(160),
     type: humanFieldTypeSchema,
     required: z.boolean().optional(),
+    minLength: z.number().int().min(1).max(10_000).optional(),
+    mustBeTrue: z.boolean().optional(),
     readOnly: z.boolean().optional(),
     help: z.string().max(500).optional(),
     options: z
@@ -221,6 +225,13 @@ export function validateHumanSubmission(
       errors[field.key] = "NUMBER_REQUIRED";
     else if (value !== undefined && field.type === "boolean" && typeof value !== "boolean")
       errors[field.key] = "BOOLEAN_REQUIRED";
+    else if (field.mustBeTrue && value !== true) errors[field.key] = "CONFIRMATION_REQUIRED";
+    else if (
+      typeof value === "string" &&
+      field.minLength !== undefined &&
+      value.trim().length < field.minLength
+    )
+      errors[field.key] = "DETAIL_REQUIRED";
     else if (
       value !== undefined &&
       field.type === "url" &&

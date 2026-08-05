@@ -230,6 +230,7 @@ const runStarter = {
     readonly principalId: string;
     readonly runId: string;
     readonly temporalWorkflowId: string;
+    readonly input: Readonly<Record<string, unknown>>;
     readonly plan: readonly unknown[];
   }) {
     try {
@@ -241,6 +242,7 @@ const runStarter = {
             workspaceId: input.workspaceId,
             principalId: input.principalId,
             runId: input.runId,
+            input: input.input,
             plan: input.plan
           }
         ]
@@ -257,10 +259,15 @@ const runStarter = {
       .getHandle(temporalWorkflowId)
       .signal("completeHumanTask", nodeKey);
   },
-  async completeApproval(temporalWorkflowId: string, nodeKey: string, operationId: string) {
+  async completeApproval(
+    temporalWorkflowId: string,
+    nodeKey: string,
+    operationId: string,
+    outcome = "approve"
+  ) {
     await temporalClient.workflow
       .getHandle(temporalWorkflowId)
-      .signal("completeApproval", nodeKey, operationId);
+      .signal("completeApproval", nodeKey, operationId, outcome);
   }
 };
 const modelRuntime = async () => {

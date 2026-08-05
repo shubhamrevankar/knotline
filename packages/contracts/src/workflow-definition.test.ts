@@ -28,7 +28,10 @@ const valid: WorkflowDefinition = {
       name: "Review",
       description: "",
       position: { x: 200, y: 0 },
-      configuration: {}
+      configuration: {
+        assignment: "workflow_initiator",
+        outputs: ["review_summary", "evidence_links", "review_completed"]
+      }
     }
   ],
   edges: [{ key: "start_review", source: "start", target: "review" }]

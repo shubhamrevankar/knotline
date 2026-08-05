@@ -109,6 +109,7 @@
   "canvas.status.failed": "Failed",
   "canvas.status.queued": "Queued",
   "canvas.status.running": "Running",
+  "canvas.status.skipped": "Skipped",
   "canvas.status.waiting": "Waiting",
   "consent.body": "Essential storage keeps your preference. Optional measurement uses only content-free route and control identifiers.",
   "consent.essential": "Essential only",

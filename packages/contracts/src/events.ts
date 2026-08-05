@@ -385,6 +385,7 @@ export const EVENT_SCHEMA_REGISTRY = [
     "task.started",
     "task.succeeded",
     "task.failed",
+    "task.skipped",
     "task.claimed",
     "task.unclaimed",
     "task.reassigned",
@@ -482,6 +483,7 @@ export const EVENT_SCHEMA_REGISTRY = [
   })),
   ...[
     "approval.requested",
+    "approval.packet_refreshed",
     "approval.delegated",
     "approval.abstained",
     "approval.decided",

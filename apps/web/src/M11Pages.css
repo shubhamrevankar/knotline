@@ -733,6 +733,11 @@
   border-color: #cf8076;
   background: #fff8f6;
 }
+.run-live-graph .operation-node--skipped {
+  opacity: 0.55;
+  border-style: dashed;
+  filter: grayscale(0.65);
+}
 .run-live-graph .node-kind {
   color: #176b5b;
 }

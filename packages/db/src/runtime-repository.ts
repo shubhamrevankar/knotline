@@ -39,6 +39,7 @@ export interface PendingRuntimeStart {
   readonly principalId: string;
   readonly runId: string;
   readonly temporalWorkflowId: string;
+  readonly input: Readonly<Record<string, unknown>>;
   readonly plan: readonly RuntimePlanNode[];
 }
 
@@ -51,6 +52,16 @@ export interface RuntimeProjection extends Record<string, unknown> {
 
 export class RuntimeConflictError extends Error {}
 export class AdmissionDeniedError extends Error {}
+
+const inferredRiskLevel = (value: unknown): "low" | "medium" | "high" | "critical" => {
+  const text = JSON.stringify(value).toLowerCase();
+  if (/\bcritical\b|\bsev[- ]?1\b/u.test(text)) return "critical";
+  if (/\bhigh\b|\bsev[- ]?2\b/u.test(text)) return "high";
+  if (/\bmedium\b|\bsev[- ]?3\b/u.test(text)) return "medium";
+  return "low";
+};
+
+const riskRank = { low: 0, medium: 1, high: 2, critical: 3 } as const;
 
 export interface RuntimeRepository {
   startRun(
@@ -78,6 +89,7 @@ export interface RuntimeRepository {
     readonly input: Record<string, unknown>;
     readonly nodes: Record<string, { readonly output: unknown }>;
   }>;
+  taskOutput(context: TenantContext, runId: string, nodeKey: string): Promise<unknown>;
   completeSyntheticTask(
     context: TenantContext,
     runId: string,
@@ -85,6 +97,8 @@ export interface RuntimeRepository {
     workerIdentity: string,
     output: unknown
   ): Promise<void>;
+  activateTask(context: TenantContext, runId: string, nodeKey: string): Promise<void>;
+  skipTask(context: TenantContext, runId: string, nodeKey: string, reason: string): Promise<void>;
   startTask(
     context: TenantContext,
     runId: string,
@@ -134,6 +148,26 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
       );
       const version = versionResult.rows[0];
       if (!version) throw new Error("PUBLISHED_WORKFLOW_REQUIRED");
+
+      for (const node of version.definition.nodes.filter(
+        ({ kind }) => kind === "integration_action"
+      )) {
+        const connectionRef = node.configuration.connectionRef;
+        if (
+          typeof connectionRef !== "string" ||
+          !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(
+            connectionRef
+          )
+        )
+          throw new AdmissionDeniedError(`CONNECTION_NOT_CONFIGURED:${node.key}`);
+        const connection = await client.query(
+          `SELECT 1 FROM connections
+           WHERE workspace_id=$1 AND id=$2 AND state IN ('active','degraded')
+             AND runtime_configuration->>'endpoint' IS NOT NULL`,
+          [context.workspaceId, connectionRef]
+        );
+        if (!connection.rows[0]) throw new AdmissionDeniedError(`CONNECTION_NOT_READY:${node.key}`);
+      }
 
       const disabledControl = await client.query(
         `SELECT 1 FROM runtime_control_switches
@@ -265,7 +299,10 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
               taskId,
               context.principalId,
               node.configuration.assignment === "workflow_initiator" ? context.principalId : null,
-              normalizeHumanForm(node.configuration.formSchema, node.key)
+              normalizeHumanForm(
+                node.configuration.formSchema ?? { fields: node.configuration.outputs },
+                node.key
+              )
             ]
           );
         if (node.kind === "approval") {
@@ -437,7 +474,8 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
     expectedVersion: number,
     fencingToken: number,
     next: RunState,
-    eventType: string
+    eventType: string,
+    output?: unknown
   ) {
     assertRunTransition(expected, next);
     return withTenantTransaction(this.pool, context, async (client) => {
@@ -451,11 +489,12 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
         policy_snapshot: { reservationId?: string; maximumQuantity?: string };
       }>(
         `UPDATE workflow_runs SET state=$6,state_version=state_version+1,updated_at=clock_timestamp(),
+          output=CASE WHEN $7::jsonb IS NULL THEN output ELSE $7::jsonb END,
           started_at=CASE WHEN $6='running' AND started_at IS NULL THEN clock_timestamp() ELSE started_at END,
           finished_at=CASE WHEN $6 IN ('cancelled','succeeded','failed','policy_stopped') THEN clock_timestamp() ELSE finished_at END
          WHERE workspace_id=$1 AND id=$2 AND state=$3 AND state_version=$4 AND fencing_token=$5
          RETURNING workflow_id,workflow_version,state_version,fencing_token,temporal_workflow_id,created_at,policy_snapshot`,
-        [context.workspaceId, runId, expected, expectedVersion, fencingToken, next]
+        [context.workspaceId, runId, expected, expectedVersion, fencingToken, next, output ?? null]
       );
       if (!result.rows[0]) throw new RuntimeConflictError("STALE_RUN_FENCE");
       await this.appendEvent(
@@ -465,7 +504,7 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
         eventType,
         "system",
         context.principalId,
-        { from: expected, to: next }
+        { from: expected, to: next, ...(output === undefined ? {} : { output }) }
       );
       if (["cancelled", "succeeded", "failed", "policy_stopped"].includes(next)) {
         const reservationId = result.rows[0].policy_snapshot.reservationId;
@@ -532,7 +571,7 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
       if (!row) throw new Error("TASK_NOT_FOUND");
       if (row.state === "succeeded") return;
       const blocked = await client.query(
-        `SELECT 1 FROM task_dependencies WHERE workspace_id=$1 AND task_id=$2 AND state!='satisfied' LIMIT 1`,
+        `SELECT 1 FROM task_dependencies WHERE workspace_id=$1 AND task_id=$2 AND state='pending' LIMIT 1`,
         [context.workspaceId, row.id]
       );
       if (blocked.rows[0]) throw new RuntimeConflictError("TASK_DEPENDENCIES_PENDING");
@@ -592,12 +631,6 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
          WHERE workspace_id=$1 AND run_id=$2 AND depends_on_task_id=$3`,
         [context.workspaceId, runId, row.id]
       );
-      await client.query(
-        `UPDATE task_runs task SET state='ready',state_version=state_version+1,updated_at=clock_timestamp()
-         WHERE task.workspace_id=$1 AND task.run_id=$2 AND task.state='pending'
-           AND NOT EXISTS (SELECT 1 FROM task_dependencies dependency WHERE dependency.workspace_id=task.workspace_id AND dependency.task_id=task.id AND dependency.state!='satisfied')`,
-        [context.workspaceId, runId]
-      );
       await this.appendEvent(
         client,
         context.workspaceId,
@@ -606,6 +639,131 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
         "worker",
         workerIdentity,
         { nodeKey, attempt: attemptNumber }
+      );
+    });
+  }
+
+  async activateTask(context: TenantContext, runId: string, nodeKey: string) {
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const task = await client.query<{
+        id: string;
+        node_kind: string;
+        timeout_ms: number;
+        runtime_config: Record<string, unknown>;
+        state: string;
+      }>(
+        `SELECT id,node_kind,timeout_ms,runtime_config,state FROM task_runs
+         WHERE workspace_id=$1 AND run_id=$2 AND node_key=$3 FOR UPDATE`,
+        [context.workspaceId, runId, nodeKey]
+      );
+      const row = task.rows[0];
+      if (!row || !["pending", "ready"].includes(row.state)) return;
+      await client.query(
+        `UPDATE task_runs task SET
+           state=CASE WHEN state='pending' THEN 'ready' ELSE state END,
+           state_version=CASE WHEN state='pending' THEN state_version+1 ELSE state_version END,
+           input=jsonb_build_object(
+             'workflowInput',(SELECT input FROM workflow_runs run WHERE run.workspace_id=task.workspace_id AND run.id=task.run_id),
+             'dependencies',coalesce((
+               SELECT jsonb_object_agg(dependency.node_key,dependency.output)
+               FROM task_dependencies relation
+               JOIN task_runs dependency ON dependency.workspace_id=relation.workspace_id AND dependency.id=relation.depends_on_task_id
+               WHERE relation.workspace_id=task.workspace_id AND relation.run_id=task.run_id AND relation.task_id=task.id
+             ),'{}'::jsonb)
+           ),
+           updated_at=clock_timestamp()
+         WHERE task.workspace_id=$1 AND task.id=$2`,
+        [context.workspaceId, row.id]
+      );
+      if (row.node_kind !== "approval") return;
+      const approval = await client.query<{ id: string; packet: unknown }>(
+        `SELECT id,packet FROM approvals
+         WHERE workspace_id=$1 AND task_id=$2 AND state IN ('PENDING','IN_REVIEW') FOR UPDATE`,
+        [context.workspaceId, row.id]
+      );
+      if (!approval.rows[0]) return;
+      const evidence = await client.query<{ node_key: string; output: unknown }>(
+        `SELECT dependency.node_key,dependency.output
+         FROM task_dependencies relation
+         JOIN task_runs dependency ON dependency.workspace_id=relation.workspace_id AND dependency.id=relation.depends_on_task_id
+         WHERE relation.workspace_id=$1 AND relation.run_id=$2 AND relation.task_id=$3`,
+        [context.workspaceId, runId, row.id]
+      );
+      const prior = approvalPacketSchema.parse(approval.rows[0].packet);
+      const prerequisiteOutputs = Object.fromEntries(
+        evidence.rows.map(({ node_key, output }) => [node_key, output])
+      );
+      const configuredRisk = ["low", "medium", "high", "critical"].includes(
+        String(row.runtime_config.riskLevel)
+      )
+        ? (row.runtime_config.riskLevel as "low" | "medium" | "high" | "critical")
+        : prior.risk.level;
+      const inferred = inferredRiskLevel(prerequisiteOutputs);
+      const level = riskRank[inferred] > riskRank[configuredRisk] ? inferred : configuredRisk;
+      const packet = approvalPacketSchema.parse({
+        ...prior,
+        diff: { ...prior.diff, prerequisiteOutputs },
+        risk: {
+          level,
+          findings: [
+            ...prior.risk.findings,
+            ...(level !== prior.risk.level
+              ? [`Runtime evidence raised the approval risk from ${prior.risk.level} to ${level}.`]
+              : [])
+          ]
+        },
+        expiresAt: new Date(Date.now() + row.timeout_ms).toISOString()
+      });
+      await client.query(
+        `UPDATE approvals SET packet=$3,packet_hash=$4,expires_at=$5,updated_at=clock_timestamp()
+         WHERE workspace_id=$1 AND id=$2`,
+        [context.workspaceId, approval.rows[0].id, packet, contentHash(packet), packet.expiresAt]
+      );
+      await client.query(
+        `UPDATE sla_timer_events SET due_at=$3
+         WHERE workspace_id=$1 AND approval_id=$2 AND timer_type='expiry'`,
+        [context.workspaceId, approval.rows[0].id, packet.expiresAt]
+      );
+      await this.appendEvent(
+        client,
+        context.workspaceId,
+        runId,
+        "approval.packet_refreshed",
+        "system",
+        context.principalId,
+        { approvalId: approval.rows[0].id, nodeKey, packetHash: contentHash(packet) }
+      );
+    });
+  }
+
+  async skipTask(context: TenantContext, runId: string, nodeKey: string, reason: string) {
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const task = await client.query<{ id: string }>(
+        `UPDATE task_runs SET state='skipped',state_version=state_version+1,
+           output=$4,finished_at=clock_timestamp(),updated_at=clock_timestamp()
+         WHERE workspace_id=$1 AND run_id=$2 AND node_key=$3 AND state IN ('pending','ready')
+         RETURNING id`,
+        [context.workspaceId, runId, nodeKey, { reason }]
+      );
+      if (!task.rows[0]) return;
+      await client.query(
+        `UPDATE task_dependencies SET state='skipped'
+         WHERE workspace_id=$1 AND run_id=$2 AND depends_on_task_id=$3 AND state='pending'`,
+        [context.workspaceId, runId, task.rows[0].id]
+      );
+      await client.query(
+        `UPDATE approvals SET state='CANCELLED',resolved_at=clock_timestamp(),updated_at=clock_timestamp()
+         WHERE workspace_id=$1 AND task_id=$2 AND state IN ('PENDING','IN_REVIEW')`,
+        [context.workspaceId, task.rows[0].id]
+      );
+      await this.appendEvent(
+        client,
+        context.workspaceId,
+        runId,
+        "task.skipped",
+        "system",
+        context.principalId,
+        { nodeKey, reason }
       );
     });
   }
@@ -621,7 +779,7 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
       if (!row) throw new Error("TASK_NOT_FOUND");
       if (["running", "succeeded"].includes(row.state)) return;
       const blocked = await client.query(
-        `SELECT 1 FROM task_dependencies WHERE workspace_id=$1 AND task_id=$2 AND state!='satisfied' LIMIT 1`,
+        `SELECT 1 FROM task_dependencies WHERE workspace_id=$1 AND task_id=$2 AND state='pending' LIMIT 1`,
         [context.workspaceId, row.id]
       );
       if (blocked.rows[0]) throw new RuntimeConflictError("TASK_DEPENDENCIES_PENDING");
@@ -756,6 +914,16 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
     });
   }
 
+  async taskOutput(context: TenantContext, runId: string, nodeKey: string) {
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const result = await client.query<{ output: unknown }>(
+        `SELECT output FROM task_runs WHERE workspace_id=$1 AND run_id=$2 AND node_key=$3`,
+        [context.workspaceId, runId, nodeKey]
+      );
+      return result.rows[0]?.output ?? {};
+    });
+  }
+
   async run(context: TenantContext, runId: string) {
     return withTenantTransaction(this.pool, context, async (client) => {
       const run = await client.query(
@@ -803,8 +971,11 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
         id: string;
         temporal_workflow_id: string;
         created_by: string;
+        workflow_id: string;
+        workflow_version: number;
+        input: Record<string, unknown>;
       }>(
-        `SELECT r.id,r.temporal_workflow_id,r.created_by FROM workflow_runs r
+        `SELECT r.id,r.temporal_workflow_id,r.created_by,r.workflow_id,r.workflow_version,r.input FROM workflow_runs r
          JOIN outbox_events o ON o.workspace_id=r.workspace_id AND o.aggregate_id=r.id
          LEFT JOIN event_receipts receipt ON receipt.workspace_id=o.workspace_id AND receipt.event_id=o.id AND receipt.consumer='temporal-starter'
          WHERE r.workspace_id=$1 AND r.state='queued' AND o.event_type='run.start.requested' AND receipt.event_id IS NULL
@@ -813,49 +984,19 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
       );
       const output = [];
       for (const run of runs.rows) {
-        const tasks = await client.query<{
-          node_key: string;
-          node_kind: RuntimePlanNode["kind"];
-          queue_class: "system" | "human" | "agent" | "connector";
-          runtime_config: Record<string, unknown>;
-          maximum_attempts: number;
-          timeout_ms: number;
-        }>(
-          `SELECT node_key,node_kind,queue_class,runtime_config,maximum_attempts,timeout_ms
-            FROM task_runs WHERE workspace_id=$1 AND run_id=$2 ORDER BY created_at`,
-          [context.workspaceId, run.id]
+        const version = await client.query<{ definition: WorkflowDefinition }>(
+          `SELECT definition FROM workflow_versions
+           WHERE workspace_id=$1 AND workflow_id=$2 AND version=$3`,
+          [context.workspaceId, run.workflow_id, run.workflow_version]
         );
-        const dependencies = await client.query<{ node_key: string; dependency_key: string }>(
-          `SELECT task.node_key,dependency.node_key AS dependency_key FROM task_dependencies d
-           JOIN task_runs task ON task.workspace_id=d.workspace_id AND task.id=d.task_id
-           JOIN task_runs dependency ON dependency.workspace_id=d.workspace_id AND dependency.id=d.depends_on_task_id
-           WHERE d.workspace_id=$1 AND d.run_id=$2`,
-          [context.workspaceId, run.id]
-        );
-        const byNode = new Map<string, string[]>();
-        for (const row of dependencies.rows)
-          byNode.set(row.node_key, [...(byNode.get(row.node_key) ?? []), row.dependency_key]);
-        const successors = new Map<string, string[]>();
-        for (const row of dependencies.rows)
-          successors.set(row.dependency_key, [
-            ...(successors.get(row.dependency_key) ?? []),
-            row.node_key
-          ]);
+        if (!version.rows[0]) continue;
         output.push({
           workspaceId: context.workspaceId,
           principalId: run.created_by,
           runId: run.id,
           temporalWorkflowId: run.temporal_workflow_id,
-          plan: tasks.rows.map((task) => ({
-            key: task.node_key,
-            kind: task.node_kind,
-            dependencies: (byNode.get(task.node_key) ?? []).sort(),
-            successors: (successors.get(task.node_key) ?? []).sort(),
-            queue: task.queue_class,
-            maxAttempts: task.maximum_attempts,
-            timeoutMs: task.timeout_ms,
-            configuration: task.runtime_config
-          }))
+          input: run.input,
+          plan: compileRuntimePlan(version.rows[0].definition)
         });
       }
       return output;

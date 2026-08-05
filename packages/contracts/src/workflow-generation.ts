@@ -97,13 +97,17 @@ function generatedDefinition(prompt: string): WorkflowDefinition {
   const includesNotification = /notify|message|email|slack/u.test(normalized);
   const nodes: WorkflowDefinition["nodes"] = [
     node("request_received", "trigger", "Request received", 80, { triggerType: "manual" }),
-    node("prepare_request", "human", "Prepare request", 360, { assignment: "workflow_initiator" })
+    node("prepare_request", "human", "Prepare request", 360, {
+      assignment: "workflow_initiator",
+      outputs: ["request_summary", "supporting_evidence", "request_confirmed"]
+    })
   ];
   if (includesApproval)
     nodes.push(
       node("review_request", "approval", "Review request", 640, {
         policy: "workspace_owner",
         allowSelfApproval: true,
+        riskLevel: "medium",
         dueInMinutes: 30
       })
     );
@@ -357,10 +361,19 @@ export function importWorkflowCsv(csv: string): WorkflowDefinition {
       position: { x: 100 + index * 260, y: 120 },
       configuration:
         kind === "approval"
-          ? { policy: "workspace_owner", assignment: "workspace_owner" }
-          : kind === "loop"
-            ? { maxIterations: 10 }
-            : {}
+          ? {
+              policy: "workspace_owner",
+              assignment: "workspace_owner",
+              riskLevel: "medium"
+            }
+          : kind === "human"
+            ? {
+                assignment: "workflow_initiator",
+                outputs: ["work_summary", "evidence_links", "work_completed"]
+              }
+            : kind === "loop"
+              ? { maxIterations: 10 }
+              : {}
     })
   );
   const edges = rows.flatMap(([target, , , dependencies], rowIndex) =>

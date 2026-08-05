@@ -57,7 +57,11 @@ import type {
   VersionedWorkflowRepository,
   WorkflowRepository
 } from "@knotline/db";
-import { HumanTaskAuthorizationError, HumanTaskConflictError } from "@knotline/db";
+import {
+  AdmissionDeniedError,
+  HumanTaskAuthorizationError,
+  HumanTaskConflictError
+} from "@knotline/db";
 import Fastify, {
   LogController,
   type FastifyInstance,
@@ -132,6 +136,7 @@ export interface BuildAppOptions {
       readonly principalId: string;
       readonly runId: string;
       readonly temporalWorkflowId: string;
+      readonly input: Readonly<Record<string, unknown>>;
       readonly plan: readonly unknown[];
     }): Promise<void>;
     signal(temporalWorkflowId: string, signal: "pause" | "resume" | "cancel"): Promise<void>;
@@ -139,7 +144,8 @@ export interface BuildAppOptions {
     completeApproval(
       temporalWorkflowId: string,
       nodeKey: string,
-      operationId: string
+      operationId: string,
+      outcome?: string
     ): Promise<void>;
   };
 }
@@ -1796,6 +1802,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       principalId: authenticated.identity.user.id,
       runId: run.id,
       temporalWorkflowId: run.temporalWorkflowId,
+      input: body.input,
       plan: run.plan ?? []
     });
     await options.runtime.markStartDispatched(context, run.id);
@@ -2241,13 +2248,18 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       userAgent: request.headers["user-agent"] ?? "unknown",
       ip: request.ip
     });
-    if (result.state === "APPROVED_PENDING_EXECUTION") {
+    if (
+      ["APPROVED_PENDING_EXECUTION", "REJECTED", "REVISION_REQUESTED", "CANCELLED"].includes(
+        String(result.state)
+      )
+    ) {
       const approval = await options.approvals!.get(context, approvalId);
       if (!approval) throw new Error("APPROVAL_NOT_FOUND_AFTER_DECISION");
       await options.runStarter.completeApproval(
         String(approval.temporal_workflow_id),
         String(approval.node_key),
-        randomUUID()
+        randomUUID(),
+        String(result.outcome)
       );
     }
     return reply.code(201).send({ data: result });
@@ -4709,6 +4721,18 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   });
 
   app.setErrorHandler((error, request, reply) => {
+    if (error instanceof AdmissionDeniedError) {
+      const connectionBlocked = error.message.startsWith("CONNECTION_");
+      return reply.code(409).send({
+        error: {
+          code: connectionBlocked ? "RUN_CONNECTION_NOT_READY" : "RUN_ADMISSION_DENIED",
+          message: connectionBlocked
+            ? "A required connection is not active and tested. Open Connections, repair it, then start the run again."
+            : "The run could not start because its workspace execution policy denied admission.",
+          requestId: request.id
+        }
+      });
+    }
     if (error instanceof HumanTaskConflictError) {
       const agentConflicts: Record<string, string> = {
         AGENT_HAS_ACTIVE_REFERENCES:
