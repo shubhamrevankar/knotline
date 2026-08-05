@@ -9,6 +9,7 @@ import {
   CircleHelp,
   Command,
   Gauge,
+  LibraryBig,
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
@@ -59,6 +60,12 @@ const primaryNavigation = [
     icon: Cable,
     to: "/app/connections",
     matches: (path: string) => path.startsWith("/app/connections")
+  },
+  {
+    label: "Knowledge",
+    icon: LibraryBig,
+    to: "/app/knowledge/sources",
+    matches: (path: string) => path.startsWith("/app/knowledge")
   }
 ] as const;
 
