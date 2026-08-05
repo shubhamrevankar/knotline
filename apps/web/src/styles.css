@@ -4801,3 +4801,31 @@ a.run-button {
     grid-template-columns: 1fr;
   }
 }
+
+.workflow-readiness-card {
+  border-color: color-mix(in srgb, #b97a2b 34%, var(--line));
+}
+
+.workflow-readiness-card section {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.workflow-readiness-card h3 {
+  margin: 0;
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.workflow-requirement-list {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.workflow-requirement-list li {
+  color: var(--muted);
+  line-height: 1.5;
+}

@@ -2551,6 +2551,45 @@ async function runSuite(pool: DatabasePool) {
         acceptanceResponse.json<{ published: boolean }>().published === false,
       "Valid generation was not accepted as a draft"
     );
+    const acceptedWorkflowId = acceptanceResponse.json<{ workflowId: string }>().workflowId;
+    const acceptedDraft = await app.inject({
+      method: "GET",
+      url: `/v1/workflows/${acceptedWorkflowId}/draft`
+    });
+    assert(
+      acceptedDraft.statusCode === 200 &&
+        acceptedDraft.json<{
+          data: { generationReadiness?: { quality: { publishable: boolean } } };
+        }>().data.generationReadiness?.quality.publishable === false,
+      "Accepted draft omitted its generation readiness provenance"
+    );
+    const readinessValidation = await app.inject({
+      method: "POST",
+      url: `/v1/workflows/${acceptedWorkflowId}/draft/validations`
+    });
+    assert(
+      readinessValidation.statusCode === 200 &&
+        readinessValidation
+          .json<{ data: { valid: boolean; findings: { code: string }[] } }>()
+          .data.findings.some(({ code }) => code === "WF_AUTOMATION_NOT_READY"),
+      "Draft validation ignored generation readiness blockers"
+    );
+    const acceptedDraftBody = acceptedDraft.json<{ data: { revision: number } }>().data;
+    const bypassPublication = await app.inject({
+      method: "POST",
+      url: `/v1/workflows/${acceptedWorkflowId}/draft/publications`,
+      payload: { revision: acceptedDraftBody.revision, releaseNote: "Attempt blocked" }
+    });
+    assert(
+      bypassPublication.statusCode === 200 &&
+        bypassPublication.json<{
+          data: { published: boolean; findings: { code: string }[] };
+        }>().data.published === false &&
+        bypassPublication
+          .json<{ data: { findings: { code: string }[] } }>()
+          .data.findings.some(({ code }) => code === "WF_AUTOMATION_NOT_READY"),
+      "Studio publication bypassed generation readiness blockers"
+    );
     const commentResponse = await app.inject({
       method: "POST",
       url: `/v1/resources/workflow/${workflowId}/comments`,

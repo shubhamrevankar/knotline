@@ -420,6 +420,22 @@ export class WorkflowGenerationService {
     return this.repository?.get(context, id);
   }
 
+  async getByAcceptedWorkflow(
+    context: TenantContext,
+    workflowId: string
+  ): Promise<WorkflowGenerationResource | undefined> {
+    const inMemory = [...this.#resources.values()]
+      .filter(
+        (resource) =>
+          resource.workspaceId === context.workspaceId &&
+          resource.acceptedWorkflowId === workflowId &&
+          Boolean(resource.result)
+      )
+      .sort((left, right) => right.createdAt.localeCompare(left.createdAt))[0];
+    if (inMemory) return snapshot(inMemory);
+    return this.repository?.getByAcceptedWorkflow(context, workflowId);
+  }
+
   async cancel(
     context: TenantContext,
     id: string

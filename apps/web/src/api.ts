@@ -895,6 +895,14 @@ export interface WorkflowDraft {
   readonly etag: string;
   readonly contentHash: string;
   readonly definition: WorkflowDefinition;
+  readonly generationReadiness?: {
+    readonly generationId: string;
+    readonly sourcePrompt: string;
+    readonly compilerVersion: string;
+    readonly missingIntegrations: readonly string[];
+    readonly missingAgentCapabilities: readonly string[];
+    readonly quality: WorkflowGenerationResult["quality"];
+  };
 }
 
 export interface WorkflowVersionSummary {

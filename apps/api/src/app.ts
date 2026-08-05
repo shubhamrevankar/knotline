@@ -18,6 +18,7 @@ import {
   workflowDefinitionSchema,
   workflowGenerationRequestSchema,
   type ApiEnvelope,
+  type ValidationFinding,
   type Workflow,
   type WorkflowSummary
 } from "@knotline/contracts";
@@ -325,6 +326,30 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     if (!options.workspace) return tenantContext(options, request, authenticated);
     return (await options.workspace.require(authenticated.identity, request.id, permission))
       .context;
+  };
+  const generationReadiness = async (context: TenantContext, workflowId: string) => {
+    const generation = await workflowGeneration.getByAcceptedWorkflow(context, workflowId);
+    if (!generation?.result) return undefined;
+    return {
+      generationId: generation.id,
+      sourcePrompt: generation.sourcePrompt,
+      compilerVersion: generation.result.compilerVersion,
+      missingIntegrations: generation.result.missingIntegrations,
+      missingAgentCapabilities: generation.result.missingAgentCapabilities,
+      quality: generation.result.quality
+    };
+  };
+  const readinessFinding = (
+    readiness: NonNullable<Awaited<ReturnType<typeof generationReadiness>>>
+  ): ValidationFinding => {
+    const connectionCount = readiness.quality.summary.automationOpportunities;
+    const agentCount = readiness.quality.summary.agentCapabilityGaps;
+    return {
+      code: "WF_AUTOMATION_NOT_READY",
+      severity: "error",
+      message: `${String(connectionCount)} automation ${connectionCount === 1 ? "action requires" : "actions require"} configured connections and ${String(agentCount)} agent ${agentCount === 1 ? "capability is" : "capabilities are"} unavailable. Complete the workflow readiness requirements before publication.`,
+      location: { type: "workflow", path: "generationReadiness" }
+    };
   };
 
   app.post("/v1/workspaces/:workspaceId/workflow-generations", async (request, reply) => {
@@ -1452,7 +1477,12 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
           404,
           "The workflow draft does not exist."
         );
-      return { data: draft };
+      return {
+        data: {
+          ...draft,
+          generationReadiness: await generationReadiness(context, workflowId)
+        }
+      };
     });
     app.put("/v1/workflows/:workflowId/draft", async (request, reply) => {
       const context = await workflowAccess(request, "workflow.manage", true);
@@ -1523,7 +1553,17 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
           404,
           "The workflow draft does not exist."
         );
-      return { data: { valid: findings.every(({ severity }) => severity !== "error"), findings } };
+      const readiness = await generationReadiness(context, workflowId);
+      const combined =
+        readiness && !readiness.quality.publishable
+          ? [...findings, readinessFinding(readiness)]
+          : findings;
+      return {
+        data: {
+          valid: combined.every(({ severity }) => severity !== "error"),
+          findings: combined
+        }
+      };
     });
     app.post("/v1/workflows/:workflowId/draft/publications", async (request) => {
       const context = await workflowAccess(request, "workflow.manage", true);
@@ -1535,6 +1575,11 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
         })
         .strict()
         .parse(request.body);
+      const readiness = await generationReadiness(context, workflowId);
+      if (readiness && !readiness.quality.publishable)
+        return {
+          data: { published: false, findings: [readinessFinding(readiness)] }
+        };
       const result = await workflowDefinitions().publish(
         context,
         workflowId,

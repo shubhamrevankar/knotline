@@ -24,6 +24,10 @@ export interface WorkflowGenerationRecord {
 export interface WorkflowGenerationRepository {
   put(context: TenantContext, resource: WorkflowGenerationRecord): Promise<void>;
   get(context: TenantContext, id: string): Promise<WorkflowGenerationRecord | undefined>;
+  getByAcceptedWorkflow(
+    context: TenantContext,
+    workflowId: string
+  ): Promise<WorkflowGenerationRecord | undefined>;
 }
 
 interface GenerationRow {
@@ -97,6 +101,23 @@ export class PostgresWorkflowGenerationRepository implements WorkflowGenerationR
                 failure_code,retry_of,accepted_workflow_id,created_at,updated_at
          FROM workflow_generations WHERE workspace_id=$1 AND id=$2`,
         [context.workspaceId, id]
+      );
+      return result.rows[0] ? fromRow(result.rows[0]) : undefined;
+    });
+  }
+
+  getByAcceptedWorkflow(
+    context: TenantContext,
+    workflowId: string
+  ): Promise<WorkflowGenerationRecord | undefined> {
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const result = await client.query<GenerationRow>(
+        `SELECT id,workspace_id,principal_id,source_prompt,lifecycle,progress_phase,result,
+                failure_code,retry_of,accepted_workflow_id,created_at,updated_at
+         FROM workflow_generations
+         WHERE workspace_id=$1 AND accepted_workflow_id=$2
+         ORDER BY created_at DESC LIMIT 1`,
+        [context.workspaceId, workflowId]
       );
       return result.rows[0] ? fromRow(result.rows[0]) : undefined;
     });

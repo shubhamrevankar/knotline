@@ -150,6 +150,50 @@ export function WorkflowDetailPage() {
               </p>
             ) : null}
           </Card>
+          {draft.generationReadiness && !draft.generationReadiness.quality.publishable ? (
+            <Card className="definition-card workflow-readiness-card">
+              <div className="row-between">
+                <h2>{msg("workflow.readiness.heading")}</h2>
+                <Badge tone="warning">{msg("workflow.readiness.draft")}</Badge>
+              </div>
+              <p>
+                {msg("workflow.readiness.body", {
+                  connections: draft.generationReadiness.quality.summary.automationOpportunities,
+                  agents: draft.generationReadiness.quality.summary.agentCapabilityGaps
+                })}
+              </p>
+              {draft.generationReadiness.missingIntegrations.length ? (
+                <section>
+                  <h3>{msg("workflow.readiness.connections")}</h3>
+                  <ul className="workflow-requirement-list">
+                    {draft.generationReadiness.missingIntegrations.map((requirement) => (
+                      <li key={requirement}>{requirement}</li>
+                    ))}
+                  </ul>
+                </section>
+              ) : null}
+              {draft.generationReadiness.missingAgentCapabilities.length ? (
+                <section>
+                  <h3>{msg("workflow.readiness.agents")}</h3>
+                  <ul className="workflow-requirement-list">
+                    {draft.generationReadiness.missingAgentCapabilities.map((requirement) => (
+                      <li key={requirement}>{requirement}</li>
+                    ))}
+                  </ul>
+                </section>
+              ) : null}
+              <div className="action-row">
+                <Link className="primary-button" to="/app/connections">
+                  {msg("workflow.readiness.configure")}
+                </Link>
+                {draft.generationReadiness.missingAgentCapabilities.length ? (
+                  <Link className="button-link" to="/app/agents/new">
+                    {msg("workflow.readiness.create.agent")}
+                  </Link>
+                ) : null}
+              </div>
+            </Card>
+          ) : null}
           <Card className="finding-card">
             <h2>{msg("workflow.findings.heading")}</h2>
             {findings.length === 0 ? (
