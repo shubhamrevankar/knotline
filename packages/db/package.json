@@ -29,12 +29,12 @@
     "@knotline/knowledge-graph": "workspace:*",
     "@knotline/connector-sdk": "workspace:*",
     "drizzle-orm": "0.45.2",
-    "pg": "8.16.3",
-    "zod": "4.1.12"
+    "pg": "8.22.0",
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@types/node": "catalog:",
-    "@types/pg": "8.16.0",
+    "@types/pg": "8.20.3",
     "tsx": "4.20.6",
     "typescript": "catalog:",
     "vitest": "catalog:"
