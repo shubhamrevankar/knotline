@@ -35,6 +35,28 @@ const receiptStatus = (receipt: Readonly<Record<string, unknown>>) => {
   if (typeof receipt.errorCode === "string") return receipt.errorCode;
   return msg("connections.http.no.response");
 };
+const LIVE_PROVIDER_KEYS = new Set(["slack-collaboration", "hubspot-crm"]);
+const CUSTOM_CONNECTION_KEYS = new Set(["generic-rest", "signed-webhook"]);
+
+function ConnectorCard({ item, available }: { item: ConnectorCatalogItem; available: boolean }) {
+  const content = (
+    <Card className={available ? "connector-card" : "connector-card connector-card-planned"}>
+      <KeyRound aria-hidden />
+      <strong>{manifestText(item.manifest.displayName, item.key)}</strong>
+      <p>{manifestText(item.manifest.provider, item.key)}</p>
+      <Badge tone={available ? "success" : "neutral"}>
+        {available ? msg("connections.provider.available") : msg("connections.provider.planned")}
+      </Badge>
+    </Card>
+  );
+  return available ? (
+    <a href={`/app/connections/new/${item.key}`}>{content}</a>
+  ) : (
+    <div aria-label={`${manifestText(item.manifest.displayName, item.key)} coming soon`}>
+      {content}
+    </div>
+  );
+}
 
 export function ConnectionsPage() {
   const [items, setItems] = useState<ConnectionSummary[]>([]);
@@ -52,6 +74,11 @@ export function ConnectionsPage() {
       )
       .finally(() => setBusy(false));
   }, []);
+  const liveProviders = catalog.filter(({ key }) => LIVE_PROVIDER_KEYS.has(key));
+  const customConnections = catalog.filter(({ key }) => CUSTOM_CONNECTION_KEYS.has(key));
+  const plannedConnectors = catalog.filter(
+    ({ key }) => !LIVE_PROVIDER_KEYS.has(key) && !CUSTOM_CONNECTION_KEYS.has(key)
+  );
   return (
     <main className="page-shell connection-shell">
       <WorkspacePageHeader
@@ -84,26 +111,44 @@ export function ConnectionsPage() {
           </EmptyState>
         ) : null}
       </section>
-      <section>
-        <h2>{msg("connections.catalog")}</h2>
+      <section className="connection-section">
+        <div className="connection-section-heading">
+          <div>
+            <Badge tone="success">{msg("connections.available.badge")}</Badge>
+            <h2>{msg("connections.available")}</h2>
+            <p>{msg("connections.available.body")}</p>
+          </div>
+        </div>
         <div className="connection-grid">
-          {catalog.map((item) => (
-            <a href={`/app/connections/new/${item.key}`} key={item.id}>
-              <Card>
-                <KeyRound aria-hidden />
-                <strong>{manifestText(item.manifest.displayName, item.key)}</strong>
-                <p>
-                  {manifestText(item.manifest.provider, item.key)} · v{item.version}
-                </p>
-                {item.certification ? (
-                  <Badge tone={item.certification.liveStatus === "LIVE" ? "success" : "warning"}>
-                    {item.certification.liveStatus === "LIVE"
-                      ? msg("connections.provider.live")
-                      : msg("connections.provider.recorded")}
-                  </Badge>
-                ) : null}
-              </Card>
-            </a>
+          {liveProviders.map((item) => (
+            <ConnectorCard available item={item} key={item.id} />
+          ))}
+        </div>
+      </section>
+      <section className="connection-section">
+        <div className="connection-section-heading">
+          <div>
+            <h2>{msg("connections.custom")}</h2>
+            <p>{msg("connections.custom.body")}</p>
+          </div>
+        </div>
+        <div className="connection-grid">
+          {customConnections.map((item) => (
+            <ConnectorCard available item={item} key={item.id} />
+          ))}
+        </div>
+      </section>
+      <section className="connection-section connection-section-planned">
+        <div className="connection-section-heading">
+          <div>
+            <Badge>{msg("connections.planned.badge")}</Badge>
+            <h2>{msg("connections.catalog")}</h2>
+            <p>{msg("connections.catalog.body")}</p>
+          </div>
+        </div>
+        <div className="connection-grid">
+          {plannedConnectors.map((item) => (
+            <ConnectorCard available={false} item={item} key={item.id} />
           ))}
         </div>
       </section>
