@@ -1,7 +1,7 @@
 /* eslint-disable knotline/no-hardcoded-user-visible-string -- This operational surface now renders server-authored task data; localization follows the verified vertical journey. */
 import type { HumanForm, HumanFormField } from "@knotline/contracts";
 import { Badge, Button, Card, ErrorState, Skeleton } from "@knotline/ui";
-import { CheckCircle2, Search, UserRoundCheck } from "lucide-react";
+import { CheckCircle2, Clock3, Search, UserRoundCheck } from "lucide-react";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 
@@ -233,11 +233,25 @@ export function TaskDetailPage() {
   const [busy, setBusy] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   useEffect(() => {
-    void fetchHumanTask(taskRunId)
-      .then(setTask)
-      .catch((cause: unknown) =>
-        setError(cause instanceof Error ? cause : new Error("Unable to load task."))
-      );
+    let active = true;
+    const refresh = async (reportError: boolean) => {
+      try {
+        const next = await fetchHumanTask(taskRunId);
+        if (active) {
+          setTask(next);
+          setError(undefined);
+        }
+      } catch (cause) {
+        if (active && reportError)
+          setError(cause instanceof Error ? cause : new Error("Unable to load task."));
+      }
+    };
+    void refresh(true);
+    const timer = globalThis.setInterval(() => void refresh(false), 1500);
+    return () => {
+      active = false;
+      globalThis.clearInterval(timer);
+    };
   }, [taskRunId]);
   const claim = async () => {
     if (!task) return;
@@ -300,6 +314,7 @@ export function TaskDetailPage() {
       </TaskShell>
     );
   const ready = ["ready", "running", "waiting"].includes(String(task.state));
+  const waitingForPrerequisites = task.state === "pending";
   const canClaim = task.can_claim === true && ready;
   const canSubmit = task.can_submit === true && ready;
   const form = taskForm(task);
@@ -361,6 +376,19 @@ export function TaskDetailPage() {
               </Button>
             </footer>
           </form>
+        ) : waitingForPrerequisites ? (
+          <section className="task-claim-card task-claim-card--waiting" aria-live="polite">
+            <Clock3 aria-hidden="true" />
+            <div>
+              <span className="task-eyebrow">Waiting in this run</span>
+              <h2>Earlier steps must finish first</h2>
+              <p>
+                This task is not available yet. It will become claimable automatically when its
+                prerequisite steps complete; you can keep this page open.
+              </p>
+            </div>
+            <Link to={`/app/runs/${String(task.run_id)}`}>Follow live run progress</Link>
+          </section>
         ) : (
           <section className="task-claim-card task-claim-card--locked">
             <UserRoundCheck aria-hidden="true" />
@@ -385,7 +413,16 @@ export function TaskDetailPage() {
           <Card>
             <h2>Assignment</h2>
             <p>Priority: {label(task.priority)}</p>
-            <p>Status: {canSubmit ? "Assigned to you" : canClaim ? "Unassigned" : "Assigned"}</p>
+            <p>
+              Status:{" "}
+              {waitingForPrerequisites
+                ? "Waiting for prerequisites"
+                : canSubmit
+                  ? "Assigned to you"
+                  : canClaim
+                    ? "Available to claim"
+                    : "Assigned to another reviewer"}
+            </p>
             <p>State version: {String(task.state_version)}</p>
           </Card>
         </aside>

@@ -293,6 +293,13 @@
 .task-claim-card--locked {
   background: #fff;
 }
+.task-claim-card--waiting {
+  background: linear-gradient(145deg, #ffffff 0%, #f7f8f3 100%);
+  border-color: #d9ded4;
+}
+.task-claim-card--waiting > svg {
+  color: #69766d;
+}
 .task-inline-error {
   margin-top: 18px;
   border: 1px solid #e3b9b2;
