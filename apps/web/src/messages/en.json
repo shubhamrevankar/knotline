@@ -152,7 +152,7 @@
   "customer.library.count": "{count} workflows",
   "customer.library.group": "Workspace workflows",
   "customer.library.heading": "Library",
-  "customer.library.open": "Open {name} in workflow studio",
+  "customer.library.open": "Open {name} workflow details",
   "customer.library.settings": "Workflow library settings",
   "customer.map.complete": "Complete",
   "customer.map.edit": "Edit workflow",

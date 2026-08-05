@@ -256,7 +256,7 @@ export function App() {
                       <Link
                         aria-label={msg("customer.library.open", { name: item.name })}
                         className="workflow-card-open"
-                        to={`/app/workflows/${item.id}/studio`}
+                        to={`/app/workflows/${item.id}`}
                       >
                         <ArrowUpRight aria-hidden="true" size={15} />
                       </Link>
