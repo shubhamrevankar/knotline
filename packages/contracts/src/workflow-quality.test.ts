@@ -127,6 +127,7 @@ describe("workflow generation quality", () => {
     expect(quality.draftAcceptable).toBe(true);
     expect(quality.publishable).toBe(false);
     expect(quality.summary.automationOpportunities).toBe(2);
+    expect(quality.score).toBeGreaterThanOrEqual(90);
   });
 
   it("keeps an honest human fallback as draft-only when the requested agent is unavailable", () => {

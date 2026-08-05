@@ -618,9 +618,18 @@ export function analyzeWorkflowQuality(input: {
     ).values()
   ];
   const errors = uniqueFindings.filter(({ severity }) => severity === "error").length;
-  const warnings = uniqueFindings.length - errors;
   const automationBlockers = integrations.filter(({ mode }) => mode === "missing").length;
   const manualFallbacks = integrations.filter(({ mode }) => mode === "manual_fallback").length;
+  const automationOpportunities = Math.max(automationBlockers, manualFallbacks);
+  const designWarnings = uniqueFindings.filter(
+    ({ severity, code }) =>
+      severity === "warning" &&
+      ![
+        "WF_AUTOMATION_CONNECTION_MISSING",
+        "WF_MANUAL_AUTOMATION_FALLBACK",
+        "WF_AGENT_CAPABILITY_MISSING"
+      ].includes(code)
+  ).length;
   const scenariosPassed = scenarios.filter(({ status }) => status === "passed").length;
   const draftAcceptable = errors === 0;
   const publishable =
@@ -637,7 +646,7 @@ export function analyzeWorkflowQuality(input: {
   return workflowQualityReportSchema.parse({
     score: Math.max(
       0,
-      100 - errors * 18 - warnings * 4 - automationBlockers * 8 - manualFallbacks * 4
+      100 - errors * 18 - designWarnings * 4 - automationOpportunities * 2 - agentGaps.length * 2
     ),
     draftAcceptable,
     publishable,
@@ -650,7 +659,7 @@ export function analyzeWorkflowQuality(input: {
       conditionalApprovals: approvals.filter(({ required }) => required).length,
       connectedActions: integrations.filter(({ mode }) => mode === "connected").length,
       manualFallbacks,
-      automationOpportunities: Math.max(automationBlockers, manualFallbacks),
+      automationOpportunities,
       scenariosPassed,
       scenariosTotal: scenarios.length
     },
