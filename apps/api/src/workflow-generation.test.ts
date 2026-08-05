@@ -190,4 +190,85 @@ describe("WorkflowGenerationService", () => {
     expect(JSON.stringify(sent)).toContain("Launch analyst");
     expect(JSON.stringify(fetcher.mock.calls)).not.toContain("OPENAI_API_KEY");
   });
+
+  it("repairs a provider workflow that fails semantic validation", async () => {
+    const fixture = await runDeterministicGeneration({
+      prompt: "Create a detailed launch request approval workflow.",
+      fixture: "standard"
+    });
+    const invalidDefinition = {
+      ...fixture.definition,
+      nodes: fixture.definition.nodes.filter(({ kind }) => kind !== "trigger")
+    };
+    const response = (parsedOutput: unknown, responseId: string) =>
+      new Response(
+        JSON.stringify({
+          data: {
+            kind: "generation",
+            provider: "openai",
+            modelId: "gpt-5.6-terra-2026-07-30",
+            responseId,
+            status: "completed",
+            latencyMs: 100,
+            estimatedCost: {
+              amountDecimal: "0.010000000000",
+              currency: "USD",
+              scale: 12,
+              priceVersionId: "provider-price-v1"
+            },
+            outputItems: [],
+            parsedOutput,
+            usage: { inputTokens: 100, cachedInputTokens: 0, outputTokens: 200 }
+          }
+        }),
+        { status: 200, headers: { "content-type": "application/json" } }
+      );
+    const responses = [
+      response(
+        {
+          definition: invalidDefinition,
+          assumptions: fixture.assumptions,
+          assignments: fixture.assignments,
+          missingIntegrations: fixture.missingIntegrations
+        },
+        "resp_invalid"
+      ),
+      response(
+        {
+          definition: fixture.definition,
+          assumptions: fixture.assumptions,
+          assignments: fixture.assignments,
+          missingIntegrations: fixture.missingIntegrations
+        },
+        "resp_repaired"
+      )
+    ];
+    const fetcher = vi.fn((input: string | URL | Request, init?: RequestInit) => {
+      void input;
+      void init;
+      return Promise.resolve(responses.shift()!);
+    });
+    const worker = new GatewayWorkflowGenerationWorker(
+      "http://127.0.0.1:4200",
+      "internal-test-token",
+      fetcher
+    );
+
+    const result = await worker.generate(
+      { prompt: "Create a detailed launch request approval workflow.", fixture: "standard" },
+      new AbortController().signal,
+      context
+    );
+
+    expect(result).toMatchObject({
+      providerResponseId: "resp_repaired",
+      repairAttempts: 1,
+      usage: { inputUnits: 200, outputUnits: 400, costMinor: 2 }
+    });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    const repairBody = fetcher.mock.calls[1]?.[1]?.body;
+    const repairBodyText = typeof repairBody === "string" ? repairBody : "";
+    expect(repairBodyText).toContain(":repair-1");
+    expect(repairBodyText).toContain("VALIDATION_FINDINGS");
+  });
 });
