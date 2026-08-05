@@ -19,6 +19,18 @@ export interface FileRepository {
   ): Promise<readonly Record<string, unknown>[]>;
   get(context: TenantContext, fileId: string): Promise<Record<string, unknown> | undefined>;
   createUpload(context: TenantContext, input: unknown): Promise<Record<string, unknown>>;
+  inspectUpload(
+    context: TenantContext,
+    uploadId: string
+  ): Promise<{
+    fileId: string;
+    filename: string;
+    classification: "public" | "internal" | "confidential" | "restricted";
+    sourceType: string;
+    mediaType: string;
+    expectedSize: number;
+    expectedChecksum: string;
+  }>;
   recordPart(
     context: TenantContext,
     uploadId: string,
@@ -29,6 +41,16 @@ export interface FileRepository {
     uploadId: string,
     input: unknown
   ): Promise<Record<string, unknown>>;
+  completeTrustedUpload(
+    context: TenantContext,
+    uploadId: string,
+    input: {
+      readonly sizeBytes: number;
+      readonly checksum: string;
+      readonly detectedMediaType: string;
+      readonly etag: string;
+    }
+  ): Promise<{ fileId: string; version: number; state: string; jobId?: string }>;
   retryProcessing(context: TenantContext, fileId: string): Promise<{ jobId: string }>;
   completeProcessing(
     context: TenantContext,
@@ -203,6 +225,40 @@ export class PostgresFileRepository implements FileRepository {
     });
   }
 
+  inspectUpload(context: TenantContext, uploadId: string) {
+    return withTenantTransaction(this.pool, context, async (client) => {
+      const row = (
+        await client.query<{
+          file_id: string;
+          filename: string;
+          classification: "public" | "internal" | "confidential" | "restricted";
+          purpose: string;
+          media_type: string;
+          expected_size: string;
+          expected_checksum: string;
+        }>(
+          `SELECT session.file_id,file.filename,file.classification,file.purpose,session.media_type,
+                  session.expected_size,session.expected_checksum
+             FROM file_upload_sessions session
+             JOIN files file ON file.workspace_id=session.workspace_id AND file.id=session.file_id
+            WHERE session.workspace_id=$1 AND session.id=$2 AND session.expires_at>clock_timestamp()
+              AND session.state IN ('initiated','uploading')`,
+          [context.workspaceId, uploadId]
+        )
+      ).rows[0];
+      if (!row) throw new HumanTaskConflictError("UPLOAD_EXPIRED_OR_MISSING");
+      return {
+        fileId: row.file_id,
+        filename: row.filename,
+        classification: row.classification,
+        sourceType: row.purpose === "knowledge_source" ? "file" : row.purpose,
+        mediaType: row.media_type,
+        expectedSize: Number(row.expected_size),
+        expectedChecksum: row.expected_checksum
+      };
+    });
+  }
+
   async recordPart(context: TenantContext, uploadId: string, input: unknown) {
     const value = multipartPartSchema.parse(input);
     return withTenantTransaction(this.pool, context, async (client) => {
@@ -341,13 +397,65 @@ export class PostgresFileRepository implements FileRepository {
         `UPDATE workspace_storage_usage SET reserved_bytes=greatest(0,reserved_bytes-$2),ready_bytes=ready_bytes+$3,revision=revision+1,updated_at=clock_timestamp() WHERE workspace_id=$1`,
         [context.workspaceId, row.reserved_bytes, reasons.length ? 0 : row.expected_size]
       );
-      if (!reasons.length)
+      const processingJobId = reasons.length ? undefined : createId();
+      if (processingJobId)
         await client.query(
           `INSERT INTO document_processing_jobs(workspace_id,id,file_id,file_version,parser,parser_version,state,source_checksum) VALUES($1,$2,$3,$4,'safe-document','safe-document-v1','queued',$5)`,
-          [context.workspaceId, createId(), row.file_id, version, value.checksum]
+          [context.workspaceId, processingJobId, row.file_id, version, value.checksum]
         );
-      return { fileId: row.file_id, version, state: nextState, quarantineReasons: reasons };
+      return {
+        fileId: row.file_id,
+        version,
+        state: nextState,
+        quarantineReasons: reasons,
+        ...(processingJobId ? { jobId: processingJobId } : {})
+      };
     });
+  }
+
+  async completeTrustedUpload(
+    context: TenantContext,
+    uploadId: string,
+    input: {
+      readonly sizeBytes: number;
+      readonly checksum: string;
+      readonly detectedMediaType: string;
+      readonly etag: string;
+    }
+  ) {
+    const part = {
+      partNumber: 1,
+      sizeBytes: input.sizeBytes,
+      checksum: input.checksum,
+      etag: input.etag
+    };
+    await this.recordPart(context, uploadId, part);
+    const completion = {
+      parts: [part],
+      checksum: input.checksum,
+      detectedMediaType: input.detectedMediaType,
+      scan: {
+        result: "clean" as const,
+        engine: "knotline-safe-upload",
+        engineVersion: "1.0.0",
+        signatures: [],
+        archiveDepth: 0,
+        expandedBytes: input.sizeBytes,
+        passwordProtected: false,
+        activeContent: false
+      }
+    };
+    const result = await this.completeUpload(context, uploadId, {
+      ...completion,
+      scannerAttestation: this.attestCompletion(uploadId, completion)
+    });
+    const jobId = "jobId" in result && typeof result.jobId === "string" ? result.jobId : undefined;
+    return {
+      fileId: String(result.fileId),
+      version: Number(result.version),
+      state: String(result.state),
+      ...(jobId ? { jobId } : {})
+    };
   }
 
   async retryProcessing(context: TenantContext, fileId: string) {

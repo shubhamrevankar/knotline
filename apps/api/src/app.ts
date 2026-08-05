@@ -92,6 +92,7 @@ import {
 } from "./auth.js";
 import { type CaptureInvitationMailer, type WorkspaceService } from "./workspace.js";
 import { generationAcceptanceBlock, WorkflowGenerationService } from "./workflow-generation.js";
+import type { KnowledgeIngestionService } from "./knowledge.js";
 
 export interface BuildAppOptions {
   readonly environment: string;
@@ -119,6 +120,7 @@ export interface BuildAppOptions {
   readonly files?: FileRepository;
   readonly retrieval?: RetrievalRepository;
   readonly knowledgeGraph?: KnowledgeGraphRepository;
+  readonly knowledgeIngestion?: KnowledgeIngestionService;
   readonly connectors?: ConnectorRepository;
   readonly connectorOAuthApplications?: Readonly<
     Partial<Record<LiveProvider, ProviderOAuthApplication>>
@@ -213,6 +215,12 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     genReqId: (request) =>
       requestIdentifier(request.headers["knotline-request-id"] ?? request.headers["x-request-id"])
   });
+
+  app.addContentTypeParser(
+    "application/octet-stream",
+    { parseAs: "buffer" },
+    (_request, body, done) => done(null, body)
+  );
 
   await app.register(cors, {
     origin: options.webOrigin,
@@ -2696,6 +2704,10 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     if (!options.knowledgeGraph) throw new Error("Knowledge graph is not configured");
     return options.knowledgeGraph;
   };
+  const knowledgeIngestionService = () => {
+    if (!options.knowledgeIngestion) throw new Error("Knowledge ingestion is not configured");
+    return options.knowledgeIngestion;
+  };
   const connectorRepository = () => {
     if (!options.connectors) throw new Error("Connectors are not configured");
     return options.connectors;
@@ -4489,6 +4501,41 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       data: await fileRepository().createUpload(await agentAccess(request, true), request.body)
     });
   });
+  app.put(
+    "/v1/file-uploads/:uploadId/content",
+    { bodyLimit: 25 * 1024 * 1024 },
+    async (request, reply) => {
+      await protectMutation(request);
+      const { uploadId } = fileUploadParams.parse(request.params);
+      if (!Buffer.isBuffer(request.body))
+        throw new HumanTaskConflictError("UPLOAD_CONTENT_REQUIRED");
+      return reply.code(201).send({
+        data: await knowledgeIngestionService().ingestUpload(
+          await agentAccess(request, true),
+          uploadId,
+          request.body
+        )
+      });
+    }
+  );
+  app.post("/v1/workspaces/:workspaceId/website-sources", async (request, reply) => {
+    const authenticated = await protectMutation(request);
+    const { workspaceId } = workspaceParamsSchema.parse(request.params);
+    requireActiveWorkspace(authenticated, workspaceId);
+    const body = z
+      .object({
+        url: z.url().max(2_000),
+        title: z.string().trim().min(1).max(160).optional()
+      })
+      .strict()
+      .parse(request.body);
+    return reply.code(201).send({
+      data: await knowledgeIngestionService().ingestWebsite(await agentAccess(request, true), {
+        url: body.url,
+        ...(body.title ? { title: body.title } : {})
+      })
+    });
+  });
   app.post("/v1/file-uploads/:uploadId/parts", async (request, reply) => {
     const { uploadId } = fileUploadParams.parse(request.params);
     return reply.code(201).send({
@@ -4754,16 +4801,15 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       .object({ documentId: z.string().uuid() })
       .strict()
       .parse(request.params);
+    const context = await agentAccess(request, true);
+    if (options.knowledgeIngestion)
+      await knowledgeIngestionService().deleteObjects(context, documentId);
     const retrieval = options.retrieval
-      ? await retrievalRepository().deleteDocument(await agentAccess(request, true), documentId)
+      ? await retrievalRepository().deleteDocument(context, documentId)
       : undefined;
     return {
       data: {
-        ...(await fileRepository().delete(
-          await agentAccess(request, true),
-          documentId,
-          "document_deleted"
-        )),
+        ...(await fileRepository().delete(context, documentId, "document_deleted")),
         retrieval
       }
     };
@@ -4792,7 +4838,11 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   });
   app.get("/v1/files/:fileId/preview", async (request) => {
     const { fileId } = fileParams.parse(request.params);
-    return { data: await fileRepository().preview(await agentAccess(request), fileId) };
+    return {
+      data: options.knowledgeIngestion
+        ? await knowledgeIngestionService().preview(await agentAccess(request), fileId)
+        : await fileRepository().preview(await agentAccess(request), fileId)
+    };
   });
   app.post("/v1/files/:fileId/processing-retries", async (request, reply) => {
     const { fileId } = fileParams.parse(request.params);
@@ -4823,9 +4873,10 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
       .object({ reason: z.string().min(3).max(500) })
       .strict()
       .parse(request.body ?? { reason: "user_deleted" });
-    return {
-      data: await fileRepository().delete(await agentAccess(request, true), fileId, body.reason)
-    };
+    const context = await agentAccess(request, true);
+    if (options.knowledgeIngestion)
+      await knowledgeIngestionService().deleteObjects(context, fileId);
+    return { data: await fileRepository().delete(context, fileId, body.reason) };
   });
 
   const modelRepository = () => {

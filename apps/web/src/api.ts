@@ -1498,6 +1498,9 @@ export type FileView = Readonly<{
 export const fetchFiles = async () =>
   (await request<ApiEnvelope<FileView[]>>(`/v1/workspaces/${workspaceId}/files`)).data;
 
+export const fetchKnowledgeFiles = async () =>
+  (await request<ApiEnvelope<FileView[]>>(`/v1/workspaces/${workspaceId}/documents`)).data;
+
 export const fetchFile = async (fileId: string) =>
   (await request<ApiEnvelope<Record<string, unknown>>>(`/v1/files/${fileId}`)).data;
 
@@ -1505,6 +1508,48 @@ export const createFileUpload = async (input: Readonly<Record<string, unknown>>)
   (
     await mutate<ApiEnvelope<Record<string, unknown>>>(
       `/v1/workspaces/${workspaceId}/file-uploads`,
+      "POST",
+      input
+    )
+  ).data;
+
+export const uploadFileContent = async (uploadId: string, file: Blob) => {
+  const csrf = document.cookie
+    .split(";")
+    .map((part) => part.trim())
+    .find((part) => part.startsWith("__Host-knotline-csrf="))
+    ?.slice("__Host-knotline-csrf=".length);
+  const response = await fetch(`${apiUrl}/v1/file-uploads/${uploadId}/content`, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      accept: "application/json",
+      "content-type": "application/octet-stream",
+      ...(csrf ? { "x-csrf-token": decodeURIComponent(csrf) } : {})
+    },
+    body: file
+  });
+  if (!response.ok) {
+    const error = (await response.json().catch(() => undefined)) as
+      { error?: { code?: string; message?: string } } | undefined;
+    throw new RequestFailure(
+      error?.error?.message ?? `Request failed with ${response.status}`,
+      classifyStatus(response.status),
+      response.headers.get("knotline-request-id") ?? undefined,
+      undefined,
+      error?.error?.code
+    );
+  }
+  return (await response.json()) as ApiEnvelope<Record<string, unknown>>;
+};
+
+export const createWebsiteKnowledgeSource = async (input: {
+  readonly url: string;
+  readonly title?: string;
+}) =>
+  (
+    await mutate<ApiEnvelope<Record<string, unknown>>>(
+      `/v1/workspaces/${workspaceId}/website-sources`,
       "POST",
       input
     )

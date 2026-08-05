@@ -56,6 +56,7 @@ import {
   GatewayWorkflowGenerationWorker,
   WorkflowGenerationService
 } from "./workflow-generation.js";
+import { KnowledgeIngestionService, S3KnowledgeObjectStore } from "./knowledge.js";
 
 const environment = loadConfig(process.env);
 if (environment.environment === "local") {
@@ -207,6 +208,24 @@ const authorizationProofKey = process.env.AUTHORIZATION_PROOF_SIGNING_KEY
   ? Buffer.from(process.env.AUTHORIZATION_PROOF_SIGNING_KEY, "base64")
   : createHash("sha256").update("knotline-local-authorization-proofs").digest();
 const retrieval = new PostgresRetrievalRepository(pool, authorizationProofKey);
+const resolveLocalReference = (value: string | undefined, fallback: string) => {
+  const resolved = value ?? fallback;
+  return resolved.startsWith("local-only:") ? resolved.slice("local-only:".length) : resolved;
+};
+const knowledgeObjects = new S3KnowledgeObjectStore(
+  process.env.S3_KNOWLEDGE_BUCKET ?? "knotline-knowledge",
+  {
+    ...(process.env.S3_ENDPOINT ? { endpoint: process.env.S3_ENDPOINT } : {}),
+    region: process.env.S3_REGION ?? "us-east-1",
+    accessKeyId: resolveLocalReference(process.env.S3_ACCESS_KEY_REFERENCE, "knotline-local"),
+    secretAccessKey: resolveLocalReference(
+      process.env.S3_SECRET_KEY_REFERENCE,
+      "local-only-minio-password"
+    )
+  }
+);
+await knowledgeObjects.ensureReady();
+const knowledgeIngestion = new KnowledgeIngestionService(files, retrieval, knowledgeObjects);
 const knowledgeGraph = new PostgresKnowledgeGraphRepository(pool);
 if (
   environment.environment !== "local" &&
@@ -451,6 +470,7 @@ const app = await buildApp({
   evaluations,
   files,
   retrieval,
+  knowledgeIngestion,
   knowledgeGraph,
   connectors,
   connectorOAuthApplications,
@@ -475,6 +495,7 @@ const app = await buildApp({
 
 app.addHook("onClose", async () => {
   await temporalConnection.close();
+  knowledgeObjects.close();
   await pool.end();
 });
 
