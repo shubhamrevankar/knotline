@@ -255,6 +255,7 @@ export class PostgresRetrievalRepository implements RetrievalRepository {
     if (value.resourceId !== context.workspaceId)
       throw new HumanTaskAuthorizationError("AUTHORIZATION_PROOF_RESOURCE_FORBIDDEN");
     return withTenantTransaction(this.pool, context, async (client) => {
+      await this.#refreshOwnedAclProjections(client, context);
       const epoch = await this.#currentEpoch(client, context, value.groupIds);
       if (!epoch) throw new HumanTaskAuthorizationError("NO_CURRENT_KNOWLEDGE_GRANT");
       const issuedAt = new Date();
@@ -652,9 +653,9 @@ export class PostgresRetrievalRepository implements RetrievalRepository {
   }
 
   async #currentEpoch(client: PoolClient, context: TenantContext, groupIds: readonly string[]) {
-    return (
-      await client.query<{ epoch: number; hash: string }>(
-        `SELECT max(acl.epoch)::int epoch,$4::text hash FROM knowledge_acl_projections acl
+    const row = (
+      await client.query<{ epoch: string; hash: string }>(
+        `SELECT max(acl.epoch)::text epoch,$4::text hash FROM knowledge_acl_projections acl
        WHERE acl.workspace_id=$1 AND acl.authoritative AND acl.complete AND acl.expires_at>clock_timestamp()
          AND EXISTS(SELECT 1 FROM knowledge_acl_members member WHERE member.workspace_id=acl.workspace_id AND member.source_id=acl.source_id AND member.epoch=acl.epoch AND ((member.subject_kind='user' AND member.subject_id=$2) OR (member.subject_kind='group' AND member.subject_id=ANY($3::uuid[]))))
        HAVING count(*)>0`,
@@ -666,6 +667,90 @@ export class PostgresRetrievalRepository implements RetrievalRepository {
         ]
       )
     ).rows[0];
+    return row ? { epoch: Number(row.epoch), hash: row.hash } : undefined;
+  }
+
+  async #refreshOwnedAclProjections(client: PoolClient, context: TenantContext) {
+    const stale = await client.query<{ source_id: string; epoch: string }>(
+      `SELECT source.id source_id,acl.epoch::text
+         FROM knowledge_sources source
+         JOIN knowledge_acl_projections acl
+           ON acl.workspace_id=source.workspace_id
+          AND acl.source_id=source.id
+          AND acl.authoritative
+          AND acl.complete
+        WHERE source.workspace_id=$1
+          AND source.owner_id=$2
+          AND source.state='ready'
+          AND acl.expires_at<=clock_timestamp()+interval '30 seconds'
+        FOR UPDATE OF acl`,
+      [context.workspaceId, context.principalId]
+    );
+    let refreshed = false;
+    for (const source of stale.rows) {
+      const members = await client.query<{ subject_kind: "user" | "group" | "workspace"; subject_id: string }>(
+        `SELECT subject_kind,subject_id
+           FROM knowledge_acl_members
+          WHERE workspace_id=$1 AND source_id=$2 AND epoch=$3
+          ORDER BY subject_kind,subject_id`,
+        [context.workspaceId, source.source_id, source.epoch]
+      );
+      const nextEpoch = Math.max(Date.now(), Number(source.epoch) + 1);
+      const providerRevision = `owned-source:${source.source_id}:${String(nextEpoch)}`;
+      const projectionHash = digest(
+        JSON.stringify({
+          members: members.rows.map(({ subject_kind, subject_id }) => ({
+            kind: subject_kind,
+            id: subject_id
+          })),
+          revision: providerRevision
+        })
+      );
+      await client.query(
+        `UPDATE knowledge_acl_projections
+            SET authoritative=false,invalidation_reason='owned_source_refresh'
+          WHERE workspace_id=$1 AND source_id=$2 AND epoch=$3 AND authoritative`,
+        [context.workspaceId, source.source_id, source.epoch]
+      );
+      const now = new Date();
+      await client.query(
+        `INSERT INTO knowledge_acl_projections(
+           workspace_id,source_id,epoch,projection_hash,provider_revision,complete,authoritative,
+           predecessor_epoch,observed_at,expires_at
+         ) VALUES($1,$2,$3,$4,$5,true,true,$6,$7,$8)`,
+        [
+          context.workspaceId,
+          source.source_id,
+          nextEpoch,
+          projectionHash,
+          providerRevision,
+          source.epoch,
+          now.toISOString(),
+          new Date(now.getTime() + 300_000).toISOString()
+        ]
+      );
+      for (const member of members.rows)
+        await client.query(
+          `INSERT INTO knowledge_acl_members(
+             workspace_id,source_id,epoch,subject_kind,subject_id
+           ) VALUES($1,$2,$3,$4,$5)`,
+          [
+            context.workspaceId,
+            source.source_id,
+            nextEpoch,
+            member.subject_kind,
+            member.subject_id
+          ]
+        );
+      refreshed = true;
+    }
+    if (refreshed)
+      await client.query(
+        `UPDATE knowledge_authorization_proofs
+            SET revoked_at=clock_timestamp()
+          WHERE workspace_id=$1 AND subject_id=$2 AND revoked_at IS NULL`,
+        [context.workspaceId, context.principalId]
+      );
   }
 
   async #activeGeneration(client: PoolClient, workspaceId: string) {

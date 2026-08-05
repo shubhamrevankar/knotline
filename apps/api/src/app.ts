@@ -4659,7 +4659,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
     requireActiveWorkspace(authenticated, workspaceId);
     return reply.code(201).send({
       data: await retrievalRepository().mintAuthorizationProof(
-        await agentAccess(request, true),
+        await agentAccess(request),
         request.body
       )
     });
@@ -5105,17 +5105,30 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
         }
       });
     }
-    if (error instanceof HumanTaskAuthorizationError)
+    if (error instanceof HumanTaskAuthorizationError) {
+      const knowledgeMessages: Record<string, string> = {
+        NO_CURRENT_KNOWLEDGE_GRANT:
+          "No current company knowledge is available to this identity.",
+        AUTHORIZATION_PROOF_INVALID:
+          "The knowledge-search permission expired. Run the search again.",
+        CITATION_PERMISSION_REVOKED:
+          "Access to this knowledge citation is no longer available."
+      };
       return reply.code(403).send({
         error: {
-          code: error.message === "AGENT_OWNER_REQUIRED" ? error.message : "TASK_FORBIDDEN",
+          code:
+            error.message === "AGENT_OWNER_REQUIRED" || knowledgeMessages[error.message]
+              ? error.message
+              : "TASK_FORBIDDEN",
           message:
             error.message === "AGENT_OWNER_REQUIRED"
               ? "Only this agent's owner can change its configuration or lifecycle."
-              : "The task cannot be changed by this identity.",
+              : (knowledgeMessages[error.message] ??
+                "The task cannot be changed by this identity."),
           requestId: request.id
         }
       });
+    }
     if (error instanceof AuthFailure) {
       if (error.statusCode === 401) reply.header("set-cookie", clearAuthCookies());
       return reply.code(error.statusCode).send({

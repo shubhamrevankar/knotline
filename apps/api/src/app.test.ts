@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   HTTP_ROUTE_CONTRACTS,
   OPERATIONAL_PROBE_CONTRACTS,
@@ -117,6 +117,72 @@ async function app(isReady = true) {
 }
 
 describe("API application", () => {
+  it("mints knowledge-search proofs with read permission", async () => {
+    const repository = new TestRepository();
+    const requirePermission = vi.fn().mockImplementation(
+      (_identity: unknown, requestId: string, permission: string) => {
+        if (permission !== "workflow.read")
+          throw new Error(`UNEXPECTED_PERMISSION:${permission}`);
+        return Promise.resolve({
+          context: { workspaceId, principalId, requestId },
+          permissions: ["workflow.read"],
+          role: "member"
+        });
+      }
+    );
+    const mintAuthorizationProof = vi
+      .fn()
+      .mockResolvedValue({ proof: "proof-value-with-at-least-thirty-two-characters", expiresAt: new Date(Date.now() + 300_000).toISOString() });
+    const selected = await buildApp({
+      environment: "test",
+      logLevel: false,
+      webOrigin: "http://localhost:5173",
+      repository,
+      auth: {
+        authenticate: () =>
+          Promise.resolve({
+            identity: {
+              sessionId: "30000000-0000-4000-8000-000000000001",
+              familyId: "30000000-0000-4000-8000-000000000002",
+              user: {
+                id: principalId,
+                email: "maya@northstar.example",
+                displayName: "Maya Chen",
+                status: "active",
+                locale: "en",
+                timezone: "UTC"
+              },
+              activeWorkspaceId: workspaceId,
+              issuedAt: new Date(0).toISOString(),
+              lastUsedAt: new Date(0).toISOString(),
+              idleExpiresAt: new Date(86_400_000).toISOString(),
+              absoluteExpiresAt: new Date(86_400_000).toISOString(),
+              deviceSummary: "Test browser"
+            },
+            csrfToken: "test-csrf"
+          }),
+        verifyMutation: () => undefined
+      } as unknown as AuthService,
+      workspace: { require: requirePermission } as never,
+      retrieval: { mintAuthorizationProof } as never
+    });
+    apps.push(selected);
+
+    const response = await selected.inject({
+      method: "POST",
+      url: `/v1/workspaces/${workspaceId}/authorization-proofs`,
+      headers: {
+        origin: "http://localhost:5173",
+        "x-csrf-token": "test-csrf"
+      },
+      payload: { resourceId: workspaceId, groupIds: [] }
+    });
+
+    expect(response.statusCode).toBe(201);
+    expect(requirePermission).toHaveBeenCalledWith(expect.anything(), expect.any(String), "workflow.read");
+    expect(mintAuthorizationProof).toHaveBeenCalledOnce();
+  });
+
   it("serves separate liveness and readiness endpoints", async () => {
     const selected = await app();
     const [health, ready] = await Promise.all([
