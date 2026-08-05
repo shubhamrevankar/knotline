@@ -23,13 +23,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Validate digest shape
         env:
           ARTIFACT_DIGEST: ${{ inputs.artifact_digest }}
         run: test "${ARTIFACT_DIGEST#sha256:}" != "$ARTIFACT_DIGEST" && test "${#ARTIFACT_DIGEST}" -eq 71
       - name: Configure AWS through OIDC
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
           aws-region: ${{ vars.AWS_PRIMARY_REGION }}
