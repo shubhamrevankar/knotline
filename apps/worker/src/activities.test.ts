@@ -114,4 +114,61 @@ describe("published agent execution preparation", () => {
     );
     expect(prepared.toolAliases.records_create).toEqual({ name: "records.create", version: "1" });
   });
+
+  it("binds a generic string request to serialized workflow context", () => {
+    const prepared = preparePublishedAgent(
+      {
+        schemaVersion: 1,
+        name: "Incident analyst",
+        description: "Classifies operational incidents",
+        purpose: "Produce a typed severity assessment",
+        visibility: "workspace",
+        tags: ["operations"],
+        prompts: {
+          system: "Use the supplied incident evidence.",
+          developer: "Return the declared output.",
+          user: "Assess {{request}}",
+          variables: [
+            {
+              key: "request",
+              type: "string",
+              required: true,
+              description: "The operator request",
+              sensitive: false
+            }
+          ]
+        },
+        modelPolicy: {
+          role: "reasoning",
+          requiredCapabilities: ["text", "structured_output"],
+          temperature: 0.1,
+          reasoning: "high",
+          fallbackRoles: []
+        },
+        inputSchema: { type: "object" },
+        outputSchema: { type: "object", additionalProperties: true },
+        tools: [],
+        knowledge: [],
+        memory: { scope: "none", retentionDays: 0, purpose: "" },
+        limits: {
+          maxModelCalls: 2,
+          maxToolCalls: 0,
+          maxInputTokens: 12000,
+          maxOutputTokens: 3000,
+          maxDurationMs: 90000,
+          maxCostMinor: 100
+        },
+        fallback: { behavior: "human_task", message: "Ask an operator" },
+        humanApproval: { requiredForRisk: ["high", "critical"] }
+      },
+      {
+        input: { incidentId: "INC-42", customerName: "Northstar Health" },
+        nodes: { intake: { output: { reported: true } } }
+      }
+    );
+
+    expect(prepared.prompts.at(-1)?.content).toContain("incidentId");
+    expect(prepared.prompts.at(-1)?.content).toContain("INC-42");
+    expect(prepared.prompts.at(-1)?.content).toContain("reported");
+  });
 });

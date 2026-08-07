@@ -127,12 +127,15 @@ export function preparePublishedAgent(
       : {};
   const fixture = Object.fromEntries(
     definition.prompts.variables.map((variable) => {
+      const workflowContext = { workflowInput: scope.input, completedNodes: scope.nodes };
       const value =
         configuredVariables[variable.key] ??
         scope.input[variable.key] ??
         scope.nodes[variable.key]?.output ??
-        (["input", "workflow_input", "context"].includes(variable.key)
-          ? { input: scope.input, nodes: scope.nodes }
+        (["input", "workflow_input", "context", "request"].includes(variable.key)
+          ? variable.type === "string"
+            ? JSON.stringify(workflowContext)
+            : workflowContext
           : undefined);
       return [variable.key, value];
     })
