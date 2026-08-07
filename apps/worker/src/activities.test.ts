@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { executeTransformMapping, preparePublishedAgent } from "./activities.js";
+import {
+  executeTransformMapping,
+  normalizeProviderActionPayload,
+  preparePublishedAgent
+} from "./activities.js";
 
 describe("transform execution", () => {
   it("maps typed run input and dependency outputs without evaluating arbitrary code", () => {
@@ -25,6 +29,46 @@ describe("transform execution", () => {
     expect(() => executeTransformMapping(undefined, { input: {}, nodes: {} }, false)).toThrow(
       "TRANSFORM_MAPPING_REQUIRED"
     );
+  });
+});
+
+describe("provider action payloads", () => {
+  it("derives a valid Slack message from workflow input and agent evidence", () => {
+    const payload = normalizeProviderActionPayload(
+      "slack",
+      "message.post",
+      { workflowInput: {}, completedSteps: {} },
+      {
+        input: {
+          incidentId: "INC-42",
+          customerName: "Northstar Health",
+          coordinationChannel: "C123"
+        },
+        nodes: {
+          triage: {
+            output: {
+              incidentSummary: "Employees cannot access the production workspace.",
+              severity: "high",
+              confidence: 0.91
+            }
+          }
+        }
+      }
+    );
+
+    expect(payload.channel).toBe("C123");
+    expect(String(payload.text)).toContain("Employees cannot access the production workspace.");
+  });
+
+  it("preserves explicit Slack channel and text mappings", () => {
+    expect(
+      normalizeProviderActionPayload(
+        "slack",
+        "message.post",
+        { channel: "C999", text: "Explicit update" },
+        { input: { coordinationChannel: "C123" }, nodes: {} }
+      )
+    ).toEqual({ channel: "C999", text: "Explicit update" });
   });
 });
 

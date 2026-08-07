@@ -347,6 +347,68 @@ export const executeTransformMapping = (
   return dropEmpty ? removeEmptyTransformValues(rendered) : rendered;
 };
 
+const recordValue = (value: unknown): Record<string, unknown> | undefined =>
+  value && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : undefined;
+
+const workflowUpdateText = (scope: TransformScope) => {
+  const outputs = Object.values(scope.nodes)
+    .map(({ output }) => recordValue(output))
+    .filter((output): output is Record<string, unknown> => Boolean(output));
+  const primary = outputs.toReversed().find((output) =>
+    ["incidentSummary", "summary", "customerCommunicationDraft", "resolutionSummary"].some(
+      (key) => typeof output[key] === "string" && Boolean(output[key])
+    )
+  );
+  const summary = primary
+    ? ["incidentSummary", "summary", "customerCommunicationDraft", "resolutionSummary"]
+        .map((key) => primary[key])
+        .find((value): value is string => typeof value === "string" && Boolean(value))
+    : undefined;
+  const incidentId =
+    typeof scope.input.incidentId === "string" ? scope.input.incidentId : "Workflow update";
+  const customer =
+    typeof scope.input.customerName === "string" ? ` · ${scope.input.customerName}` : "";
+  const details = [
+    summary,
+    typeof primary?.severity === "string" ? `Severity: ${primary.severity}` : undefined,
+    typeof primary?.confidence === "number"
+      ? `Confidence: ${Math.round(primary.confidence * 100)}%`
+      : undefined
+  ].filter((value): value is string => Boolean(value));
+  if (!details.length && primary) details.push(JSON.stringify(primary));
+  return `*${incidentId}${customer}*\n${details.join("\n") || "Workflow step completed."}`.slice(
+    0,
+    3_500
+  );
+};
+
+export const normalizeProviderActionPayload = (
+  provider: "slack" | "hubspot",
+  action: string,
+  payload: unknown,
+  scope: TransformScope
+): Record<string, unknown> => {
+  const configured = recordValue(payload) ?? { value: payload };
+  if (provider !== "slack") return configured;
+  const channel =
+    typeof configured.channel === "string" && configured.channel
+      ? configured.channel
+      : [scope.input.coordinationChannel, scope.input.slackChannel, scope.input.channel].find(
+          (value): value is string => typeof value === "string" && Boolean(value)
+        );
+  if (!channel) throw new Error("SLACK_CHANNEL_REQUIRED");
+  if (action === "message.post") {
+    const text =
+      typeof configured.text === "string" && configured.text
+        ? configured.text
+        : workflowUpdateText(scope);
+    return { ...configured, channel, text };
+  }
+  return { ...configured, channel };
+};
+
 export async function recordRunTransition(
   input: DurableRunInput & {
     readonly expected: "queued" | "running" | "paused" | "cancelling";
@@ -555,13 +617,21 @@ export async function executeConnectorTask(
       workflowInput: "${input}",
       completedSteps: "${nodes}"
     };
-  const body = executeTransformMapping(configuredBody, scope, false);
+  const renderedBody = executeTransformMapping(configuredBody, scope, false);
   const operationId = `${input.runId}:${input.node.key}`;
-  const bodyText = JSON.stringify(body);
   const action =
     typeof input.node.configuration.action === "string"
       ? input.node.configuration.action
       : undefined;
+  const body = providerConfiguration
+    ? normalizeProviderActionPayload(
+        providerConfiguration.provider,
+        action ?? "missing-action",
+        renderedBody,
+        scope
+      )
+    : renderedBody;
+  const bodyText = JSON.stringify(body);
   const requestTarget = providerConfiguration
     ? `${providerConfiguration.provider}:${action ?? "missing-action"}`
     : httpConfiguration!.endpoint;

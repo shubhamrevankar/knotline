@@ -215,6 +215,11 @@ export class GatewayWorkflowGenerationWorker implements WorkflowGenerationWorker
       {
         role: "developer",
         content:
+          "Every integration action must declare an executable configuration.payloadMapping for its provider action. Slack message.post requires channel and text: map channel from the workflow input (for example ${input.coordinationChannel}) and text from the relevant prior-node output or a concise template. Slack message.update and message.delete also require ts. HubSpot actions require the supported object type and properties or record identifiers. Never pass a generic workflow envelope as a provider action payload."
+      },
+      {
+        role: "developer",
+        content:
           "Return missingAgentCapabilities as a list of required agent capabilities that could not be matched to a suitable published workspace agent. Never put an unrelated available agent in the graph."
       },
       { role: "user", content: request.prompt }
