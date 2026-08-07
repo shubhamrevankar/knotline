@@ -14,7 +14,7 @@ import { classifyStatus, RequestFailure } from "./query/errors.js";
 const configuredApiUrl: unknown = import.meta.env.VITE_API_URL;
 const apiUrl = typeof configuredApiUrl === "string" ? configuredApiUrl.replace(/\/$/u, "") : "";
 const configuredWorkspaceId: unknown = import.meta.env.VITE_WORKSPACE_ID;
-const workspaceId =
+let workspaceId =
   typeof configuredWorkspaceId === "string"
     ? configuredWorkspaceId
     : "10000000-0000-4000-8000-000000000001";
@@ -620,7 +620,11 @@ export const fetchAgentVersions = async (agentId: string) =>
     )
   ).data;
 
-export const fetchMeBootstrap = () => request<MeBootstrap>("/v1/me/bootstrap");
+export const fetchMeBootstrap = async () => {
+  const bootstrap = await request<MeBootstrap>("/v1/me/bootstrap");
+  if (bootstrap.activeWorkspaceId) workspaceId = bootstrap.activeWorkspaceId;
+  return bootstrap;
+};
 
 export const fetchProfile = async () =>
   (await request<{ readonly data: MeBootstrap["user"] }>("/v1/me")).data;
@@ -697,11 +701,17 @@ export const updateWorkspace = async (workspace: string, input: Partial<Workspac
     )
   ).data;
 
-export const switchWorkspace = (workspace: string) =>
-  mutate<{ readonly activeWorkspaceId: string; readonly cacheEpoch: number }>(
+export const switchWorkspace = async (workspace: string) => {
+  const switched = await mutate<{
+    readonly activeWorkspaceId: string;
+    readonly cacheEpoch: number;
+  }>(
     `/v1/workspaces/${encodeURIComponent(workspace)}/switch`,
     "POST"
   );
+  workspaceId = switched.activeWorkspaceId;
+  return switched;
+};
 
 export const archiveWorkspace = (workspace: string) =>
   mutate<void>(`/v1/workspaces/${encodeURIComponent(workspace)}/archive`, "POST");
