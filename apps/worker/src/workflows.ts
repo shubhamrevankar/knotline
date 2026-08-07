@@ -38,6 +38,12 @@ type RoutedTaskState = "pending" | "succeeded" | "failed" | "skipped";
 const taskTerminal = (state: RoutedTaskState | undefined) =>
   state === "succeeded" || state === "failed" || state === "skipped";
 
+export function approvedTaskOutput(output: unknown) {
+  return output && typeof output === "object"
+    ? { ...output, outcome: "approve", approved: true }
+    : { value: output, outcome: "approve", approved: true };
+}
+
 export function runtimeEdgeSelected(
   edge: RuntimePlanNode["incoming"][number],
   sourceState: RoutedTaskState,
@@ -193,10 +199,7 @@ export async function durableWorkflowRun(input: DurableRunInput) {
                 fencingToken: 1
               });
               const result = await executeSyntheticTask({ ...input, node });
-              output =
-                result.output && typeof result.output === "object"
-                  ? { ...result.output, outcome: "approved" }
-                  : { value: result.output, outcome: "approved" };
+              output = approvedTaskOutput(result.output);
             } else {
               await recordTaskFailure({
                 ...input,
@@ -264,6 +267,7 @@ export async function durableWorkflowRun(input: DurableRunInput) {
       .filter(
         (node) =>
           states.get(node.key) === "succeeded" &&
+          node.outgoing.length === 0 &&
           !node.outgoing.some((edge) =>
             runtimeEdgeSelected(
               edge,

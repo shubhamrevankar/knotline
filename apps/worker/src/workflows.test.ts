@@ -1,12 +1,25 @@
 import { describe, expect, it } from "vitest";
 import { compileRuntimePlan } from "@knotline/contracts";
 
-import { durableWorkflowRun, runtimeEdgeSelected } from "./workflows.js";
+import { approvedTaskOutput, durableWorkflowRun, runtimeEdgeSelected } from "./workflows.js";
 
 describe("Temporal durable workflow", () => {
   it("exports the deterministic workflow and signal contract", () => {
     expect(typeof durableWorkflowRun).toBe("function");
     expect(durableWorkflowRun.name).toBe("durableWorkflowRun");
+  });
+
+  it("emits the same approval decision contract used by generated edge conditions", () => {
+    expect(approvedTaskOutput({ receipt: "approval-receipt" })).toEqual({
+      receipt: "approval-receipt",
+      outcome: "approve",
+      approved: true
+    });
+    expect(approvedTaskOutput(undefined)).toEqual({
+      value: undefined,
+      outcome: "approve",
+      approved: true
+    });
   });
 
   it("selects exactly the matching risk branch and never the failure path after success", () => {
