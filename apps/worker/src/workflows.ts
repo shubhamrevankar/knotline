@@ -40,8 +40,8 @@ const taskTerminal = (state: RoutedTaskState | undefined) =>
 
 export function approvedTaskOutput(output: unknown) {
   return output && typeof output === "object"
-    ? { ...output, outcome: "approve", approved: true }
-    : { value: output, outcome: "approve", approved: true };
+    ? { ...output, decision: "approved", outcome: "approve", approved: true }
+    : { value: output, decision: "approved", outcome: "approve", approved: true };
 }
 
 export function runtimeEdgeSelected(

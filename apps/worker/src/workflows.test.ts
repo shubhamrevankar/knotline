@@ -12,11 +12,13 @@ describe("Temporal durable workflow", () => {
   it("emits the same approval decision contract used by generated edge conditions", () => {
     expect(approvedTaskOutput({ receipt: "approval-receipt" })).toEqual({
       receipt: "approval-receipt",
+      decision: "approved",
       outcome: "approve",
       approved: true
     });
     expect(approvedTaskOutput(undefined)).toEqual({
       value: undefined,
+      decision: "approved",
       outcome: "approve",
       approved: true
     });
