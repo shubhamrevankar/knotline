@@ -194,6 +194,37 @@ describe("workflow generation quality", () => {
     expect(quality.publishable).toBe(false);
   });
 
+  it("keeps explicitly assigned accountable human work publishable", () => {
+    const workflow = definition(
+      [
+        node("start", "trigger", "Incident received", { triggerType: "manual" }),
+        node("audit", "human", "Record auditable incident closure", {
+          assignment: "workflow_initiator",
+          justification:
+            "The operator is explicitly accountable for confirming evidence and recording closure.",
+          outputs: ["owner", "evidence", "completed"]
+        }),
+        terminal
+      ],
+      [
+        { key: "to_audit", source: "start", target: "audit", pathType: "success" },
+        { key: "to_outcome", source: "audit", target: "outcome", pathType: "success" }
+      ]
+    );
+    const quality = analyzeWorkflowQuality({
+      definition: workflow,
+      sourcePrompt:
+        "Assign audit recording to an accountable person and do not require an audit integration.",
+      missingIntegrations: []
+    });
+    expect(quality.publishable).toBe(true);
+    expect(quality.summary.manualFallbacks).toBe(0);
+    expect(quality.summary.automationOpportunities).toBe(0);
+    expect(quality.findings.map(({ code }) => code)).not.toContain(
+      "WF_MANUAL_AUTOMATION_FALLBACK"
+    );
+  });
+
   it("compiles typed model outputs and fallback lists into executable human configuration", () => {
     const workflow = definition(
       [

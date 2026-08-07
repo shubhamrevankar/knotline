@@ -455,11 +455,7 @@ export function analyzeWorkflowQuality(input: {
 
     if (node.kind === "human") {
       const fallback = node.configuration.manualFallbackFor;
-      const looksAutomatable =
-        typeof fallback === "string" ||
-        /\b(?:fetch|retrieve|sync|send|notify|update|write|publish|record|execute)\b/iu.test(
-          `${node.name} ${node.description}`
-        );
+      const looksAutomatable = typeof fallback === "string";
       if (looksAutomatable) {
         const label = typeof fallback === "string" ? fallback : node.name;
         integrations.push({

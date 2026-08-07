@@ -210,6 +210,11 @@ export class GatewayWorkflowGenerationWorker implements WorkflowGenerationWorker
       {
         role: "developer",
         content:
+          "Honor explicit human-work constraints. When the user explicitly assigns an action to a person, people, a human, or manual execution, model it as a human judgment task with a clear accountability justification and do not set manualFallbackFor or list a missing integration for that action. manualFallbackFor is reserved only for automation the user requested but the workspace cannot provide. Never add a human fallback for an action already provided by an active connection, and never duplicate a connected integration action as a manual fallback."
+      },
+      {
+        role: "developer",
+        content:
           "Return missingAgentCapabilities as a list of required agent capabilities that could not be matched to a suitable published workspace agent. Never put an unrelated available agent in the graph."
       },
       { role: "user", content: request.prompt }
