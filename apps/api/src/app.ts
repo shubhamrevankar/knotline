@@ -174,6 +174,23 @@ interface ApiErrorReply {
   };
 }
 
+export function approvalSignalOutcome(
+  state: unknown
+): "approve" | "reject" | "request_changes" | "cancel" {
+  switch (state) {
+    case "APPROVED_PENDING_EXECUTION":
+      return "approve";
+    case "REJECTED":
+      return "reject";
+    case "REVISION_REQUESTED":
+      return "request_changes";
+    case "CANCELLED":
+      return "cancel";
+    default:
+      throw new Error(`APPROVAL_SIGNAL_STATE_INVALID:${String(state)}`);
+  }
+}
+
 const teamParamsSchema = z.object({ teamId: z.string().min(1).max(160) }).strict();
 const workflowParamsSchema = z.object({ workflowId: z.string().min(1).max(160) }).strict();
 
@@ -2400,7 +2417,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
         String(approval.temporal_workflow_id),
         String(approval.node_key),
         randomUUID(),
-        String(result.outcome)
+        approvalSignalOutcome(result.state)
       );
     }
     return reply.code(201).send({ data: result });

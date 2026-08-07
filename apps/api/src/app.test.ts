@@ -10,7 +10,7 @@ import {
 import type { TenantContext, WorkflowRepository, WorkspaceBootstrap } from "@knotline/db";
 import type { Workflow, WorkflowSummary } from "@knotline/contracts";
 
-import { buildApp } from "./app.js";
+import { approvalSignalOutcome, buildApp } from "./app.js";
 import type { AuthService } from "./auth.js";
 
 const apps: Awaited<ReturnType<typeof buildApp>>[] = [];
@@ -76,6 +76,23 @@ class TestRepository implements WorkflowRepository {
 
 afterEach(async () => {
   await Promise.all(apps.splice(0).map((app) => app.close()));
+});
+
+describe("approval workflow signals", () => {
+  it.each([
+    ["APPROVED_PENDING_EXECUTION", "approve"],
+    ["REJECTED", "reject"],
+    ["REVISION_REQUESTED", "request_changes"],
+    ["CANCELLED", "cancel"]
+  ] as const)("maps %s to %s", (state, outcome) => {
+    expect(approvalSignalOutcome(state)).toBe(outcome);
+  });
+
+  it("rejects a non-terminal approval state instead of signaling an undefined outcome", () => {
+    expect(() => approvalSignalOutcome("IN_REVIEW")).toThrow(
+      "APPROVAL_SIGNAL_STATE_INVALID:IN_REVIEW"
+    );
+  });
 });
 
 async function app(isReady = true) {
