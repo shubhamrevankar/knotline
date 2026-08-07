@@ -53,6 +53,20 @@ export interface RuntimeProjection extends Record<string, unknown> {
 export class RuntimeConflictError extends Error {}
 export class AdmissionDeniedError extends Error {}
 
+interface RuntimeConnectionReadiness {
+  readonly connectorKey: string;
+  readonly state: string;
+  readonly hasCredential: boolean;
+  readonly endpoint: string | null;
+}
+
+export const isRuntimeConnectionReady = (connection: RuntimeConnectionReadiness | undefined) => {
+  if (!connection || !["active", "degraded"].includes(connection.state)) return false;
+  if (["slack-collaboration", "hubspot-crm"].includes(connection.connectorKey))
+    return connection.hasCredential;
+  return Boolean(connection.endpoint);
+};
+
 const inferredRiskLevel = (value: unknown): "low" | "medium" | "high" | "critical" => {
   const text = JSON.stringify(value).toLowerCase();
   if (/\bcritical\b|\bsev[- ]?1\b/u.test(text)) return "critical";
@@ -160,13 +174,15 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
           )
         )
           throw new AdmissionDeniedError(`CONNECTION_NOT_CONFIGURED:${node.key}`);
-        const connection = await client.query(
-          `SELECT 1 FROM connections
-           WHERE workspace_id=$1 AND id=$2 AND state IN ('active','degraded')
-             AND runtime_configuration->>'endpoint' IS NOT NULL`,
+        const connection = await client.query<RuntimeConnectionReadiness>(
+          `SELECT connector_key "connectorKey",state,
+                  encrypted_credential IS NOT NULL "hasCredential",
+                  runtime_configuration->>'endpoint' endpoint
+           FROM connections WHERE workspace_id=$1 AND id=$2`,
           [context.workspaceId, connectionRef]
         );
-        if (!connection.rows[0]) throw new AdmissionDeniedError(`CONNECTION_NOT_READY:${node.key}`);
+        if (!isRuntimeConnectionReady(connection.rows[0]))
+          throw new AdmissionDeniedError(`CONNECTION_NOT_READY:${node.key}`);
       }
 
       const disabledControl = await client.query(
