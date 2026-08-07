@@ -450,7 +450,8 @@ export class PostgresRuntimeRepository implements RuntimeRepository {
       for (const node of plan)
         for (const dependency of node.dependencies)
           await client.query(
-            `INSERT INTO task_dependencies(workspace_id,run_id,task_id,depends_on_task_id) VALUES ($1,$2,$3,$4)`,
+            `INSERT INTO task_dependencies(workspace_id,run_id,task_id,depends_on_task_id)
+             VALUES ($1,$2,$3,$4) ON CONFLICT DO NOTHING`,
             [context.workspaceId, runId, ids.get(node.key), ids.get(dependency)]
           );
       await this.appendEvent(

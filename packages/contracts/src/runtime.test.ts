@@ -53,6 +53,52 @@ describe("durable runtime contracts", () => {
     });
   });
 
+  it("deduplicates task dependencies while preserving governed path edges", () => {
+    const plan = compileRuntimePlan({
+      schemaVersion: 1,
+      name: "Conditional paths",
+      description: "",
+      inputSchema: {},
+      outputSchema: {},
+      nodes: [
+        {
+          key: "route",
+          kind: "condition",
+          name: "Route",
+          description: "",
+          position: { x: 0, y: 0 },
+          configuration: {}
+        },
+        {
+          key: "escalate",
+          kind: "human",
+          name: "Escalate",
+          description: "",
+          position: { x: 1, y: 0 },
+          configuration: { assignment: "workflow_initiator" }
+        }
+      ],
+      edges: [
+        {
+          key: "route_failed",
+          source: "route",
+          target: "escalate",
+          condition: "status == 'failed'"
+        },
+        {
+          key: "route_incomplete",
+          source: "route",
+          target: "escalate",
+          condition: "status == 'incomplete'"
+        }
+      ]
+    });
+
+    expect(plan[0]?.successors).toEqual(["escalate"]);
+    expect(plan[1]?.dependencies).toEqual(["route"]);
+    expect(plan[1]?.incoming).toHaveLength(2);
+  });
+
   it("evaluates branch expressions against typed workflow context without dynamic code", () => {
     const scope = {
       input: { iteration: 1 },

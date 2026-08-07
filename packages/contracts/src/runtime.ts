@@ -88,8 +88,8 @@ export function compileRuntimePlan(definition: WorkflowDefinition): readonly Run
   return definition.nodes.map((node) => ({
     key: node.key,
     kind: node.kind,
-    dependencies: [...(incoming.get(node.key) ?? [])].sort(),
-    successors: [...(outgoing.get(node.key) ?? [])].sort(),
+    dependencies: [...new Set(incoming.get(node.key) ?? [])].sort(),
+    successors: [...new Set(outgoing.get(node.key) ?? [])].sort(),
     incoming: definition.edges
       .filter(({ target }) => target === node.key)
       .toSorted((left, right) => left.key.localeCompare(right.key)),
