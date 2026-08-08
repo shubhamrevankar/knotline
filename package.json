@@ -125,6 +125,6 @@
   },
   "dependencies": {
     "@knotline/contracts": "workspace:*",
-    "zod": "4.1.12"
+    "zod": "4.4.3"
   }
 }

@@ -20,9 +20,9 @@
     "lint": "eslint src --max-warnings 0"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "3.883.0",
-    "@aws-sdk/client-sesv2": "3.883.0",
-    "@fastify/cors": "11.1.0",
+    "@aws-sdk/client-s3": "3.1101.0",
+    "@aws-sdk/client-sesv2": "3.1101.0",
+    "@fastify/cors": "11.3.0",
     "@knotline/config": "workspace:*",
     "@knotline/connector-sdk": "workspace:*",
     "@knotline/contracts": "workspace:*",
@@ -33,7 +33,7 @@
     "html-to-text": "10.0.0",
     "mammoth": "1.12.0",
     "pdf-parse": "2.4.5",
-    "zod": "4.1.12"
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@types/html-to-text": "9.0.4",
