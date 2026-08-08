@@ -352,6 +352,14 @@ const recordValue = (value: unknown): Record<string, unknown> | undefined =>
     ? (value as Record<string, unknown>)
     : undefined;
 
+const firstTextValue = (
+  record: Record<string, unknown> | undefined,
+  keys: readonly string[]
+) =>
+  keys
+    .map((key) => record?.[key])
+    .find((value): value is string => typeof value === "string" && Boolean(value));
+
 const workflowUpdateText = (scope: TransformScope) => {
   const outputs = Object.values(scope.nodes)
     .map(({ output }) => recordValue(output))
@@ -361,17 +369,32 @@ const workflowUpdateText = (scope: TransformScope) => {
       (key) => typeof output[key] === "string" && Boolean(output[key])
     )
   );
-  const summary = primary
-    ? ["incidentSummary", "summary", "customerCommunicationDraft", "resolutionSummary"]
-        .map((key) => primary[key])
-        .find((value): value is string => typeof value === "string" && Boolean(value))
-    : undefined;
+  const latest = outputs.at(-1);
+  const summary =
+    firstTextValue(primary, [
+      "incidentSummary",
+      "summary",
+      "customerCommunicationDraft",
+      "resolutionSummary"
+    ]) ?? firstTextValue(latest, ["actionsRecorded", "actions_recorded"]);
+  const closureOutcome = firstTextValue(latest, ["closureOutcome", "closure_outcome"]);
+  const auditReference = firstTextValue(latest, [
+    "auditRecordReference",
+    "audit_record_reference"
+  ]);
+  const communicationReference = firstTextValue(latest, [
+    "customerCommunicationReference",
+    "customer_communication_reference"
+  ]);
   const incidentId =
     typeof scope.input.incidentId === "string" ? scope.input.incidentId : "Workflow update";
   const customer =
     typeof scope.input.customerName === "string" ? ` · ${scope.input.customerName}` : "";
   const details = [
     summary,
+    closureOutcome ? `Resolution status: ${closureOutcome}` : undefined,
+    auditReference ? `Audit record: ${auditReference}` : undefined,
+    communicationReference ? `Customer communication: ${communicationReference}` : undefined,
     typeof primary?.severity === "string" ? `Severity: ${primary.severity}` : undefined,
     typeof primary?.confidence === "number"
       ? `Confidence: ${Math.round(primary.confidence * 100)}%`

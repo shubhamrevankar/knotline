@@ -70,6 +70,36 @@ describe("provider action payloads", () => {
       )
     ).toEqual({ channel: "C999", text: "Explicit update" });
   });
+
+  it("renders an auditable final Slack update from canonical human-task output", () => {
+    const payload = normalizeProviderActionPayload(
+      "slack",
+      "message.post",
+      { workflowInput: {}, completedSteps: {} },
+      {
+        input: {
+          incidentId: "INC-42",
+          customerName: "Northstar Health",
+          coordinationChannel: "C123"
+        },
+        nodes: {
+          closure_result: {
+            output: {
+              closure_outcome: "resolved",
+              actions_recorded: "Recorded the approved recovery and auditable closure.",
+              audit_record_reference: "AUDIT-42",
+              customer_communication_reference: "COMMS-42"
+            }
+          }
+        }
+      }
+    );
+
+    expect(String(payload.text)).toContain("Recorded the approved recovery");
+    expect(String(payload.text)).toContain("Resolution status: resolved");
+    expect(String(payload.text)).toContain("Audit record: AUDIT-42");
+    expect(String(payload.text)).toContain("Customer communication: COMMS-42");
+  });
 });
 
 describe("published agent execution preparation", () => {

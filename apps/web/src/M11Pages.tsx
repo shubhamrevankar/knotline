@@ -39,6 +39,14 @@ import "./M11Pages.css";
 
 const terminalStates = new Set(["cancelled", "succeeded", "failed", "policy_stopped"]);
 
+export const terminalRunGuidance = (state: string) => {
+  if (state === "succeeded")
+    return "The authoritative outcome is ready. Review or export the audit timeline, or run the workflow again with new input.";
+  if (state === "cancelled")
+    return "This run was cancelled. Review the audit timeline before starting a new run.";
+  return "Review the stopped step and audit timeline, then correct the workflow policy before starting a new run.";
+};
+
 const stateTone = (state: string): "accent" | "danger" | "success" | "warning" => {
   if (["failed", "cancelled", "policy_stopped"].includes(state)) return "danger";
   if (state === "succeeded") return "success";
@@ -694,7 +702,7 @@ function RunExecution({
         <h2>What happens next</h2>
         <p>
           {terminalStates.has(run.state)
-            ? "Review the stopped step and audit timeline, then correct the workflow policy before starting a new run."
+            ? terminalRunGuidance(run.state)
             : run.tasks?.some(
                   ({ node_kind, state }) => node_kind === "approval" && state === "ready"
                 )
