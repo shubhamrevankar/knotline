@@ -212,6 +212,10 @@ describe("WorkflowGenerationService", () => {
     expect(JSON.stringify(sent)).toContain("Launch operations");
     expect(JSON.stringify(sent)).toContain("Production launches require a named rollback owner");
     expect(JSON.stringify(sent)).toContain("Launch analyst");
+    expect(JSON.stringify(sent)).toContain(
+      "Treat a short user prompt as a high-level operational intent"
+    );
+    expect(JSON.stringify(sent)).toContain("output.response.id");
     expect(JSON.stringify(fetcher.mock.calls)).not.toContain("OPENAI_API_KEY");
   });
 
