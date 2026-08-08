@@ -250,6 +250,8 @@ const resolveLocalReference = (value: string | undefined, fallback: string) => {
   const resolved = value ?? fallback;
   return resolved.startsWith("local-only:") ? resolved.slice("local-only:".length) : resolved;
 };
+const useKnowledgeServerSideEncryption =
+  !process.env.S3_ENDPOINT && !["local", "ci"].includes(environment.environment);
 const knowledgeObjects = new S3KnowledgeObjectStore(
   process.env.S3_KNOWLEDGE_BUCKET ?? "knotline-knowledge",
   {
@@ -260,9 +262,7 @@ const knowledgeObjects = new S3KnowledgeObjectStore(
       process.env.S3_SECRET_KEY_REFERENCE,
       "local-only-minio-password"
     ),
-    ...(["local", "ci"].includes(environment.environment)
-      ? {}
-      : { serverSideEncryption: "AES256" as const })
+    ...(useKnowledgeServerSideEncryption ? { serverSideEncryption: "AES256" as const } : {})
   }
 );
 await knowledgeObjects.ensureReady();
