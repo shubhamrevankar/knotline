@@ -35,10 +35,13 @@ test("run surfaces use light cards and the persistent shared navigation", async 
   page
 }, testInfo) => {
   test.skip(testInfo.project.name.includes("mobile"), "Desktop sidebar collapse behavior");
+  await page.setViewportSize({ width: 1536, height: 864 });
   await page.goto("/app/runs/ca67b16d-049d-4019-b538-1f00c23be76b");
   const elapsedCard = page.getByText("Elapsed", { exact: true }).locator("..");
   await expect(elapsedCard).toHaveCSS("background-color", "rgb(255, 255, 255)");
   const navigation = page.locator("#workspace-navigation");
+  await expect(navigation).toHaveCSS("width", "220px");
+  await page.setViewportSize({ width: 1920, height: 1080 });
   await expect(navigation).toHaveCSS("width", "244px");
   await page.getByRole("button", { name: "Collapse sidebar" }).click();
   await expect(navigation).toHaveCSS("width", "76px");
