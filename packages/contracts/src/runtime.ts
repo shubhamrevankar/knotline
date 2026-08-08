@@ -159,8 +159,12 @@ const tokenizeExpression = (expression: string): readonly ExpressionToken[] => {
 const nestedValue = (value: unknown, path: readonly string[]): unknown => {
   let current = value;
   for (const segment of path) {
-    if (!current || typeof current !== "object" || !(segment in current)) return undefined;
-    current = (current as Record<string, unknown>)[segment];
+    if (!current || typeof current !== "object") return undefined;
+    const record = current as Record<string, unknown>;
+    const snakeCaseSegment = segment.replace(/([a-z0-9])([A-Z])/gu, "$1_$2").toLowerCase();
+    const resolvedSegment = segment in record ? segment : snakeCaseSegment;
+    if (!(resolvedSegment in record)) return undefined;
+    current = record[resolvedSegment];
   }
   return current;
 };
@@ -184,6 +188,10 @@ const normalizedDecisionValue = (reference: string, value: unknown): unknown => 
     if (/\bmedium\b|\bsev[- ]?3\b/iu.test(normalized)) return "medium";
     if (/\blow\b|\bsev[- ]?4\b/iu.test(normalized)) return "low";
   }
+  // Older generated workflows used the UI label value "recovered" while the
+  // canonical recovery form records the equivalent state as "validated".
+  if (/(?:^|\.)recovery_?status$/iu.test(reference) && normalized === "validated")
+    return "recovered";
   return normalized;
 };
 

@@ -117,6 +117,28 @@ describe("durable runtime contracts", () => {
     expect(evaluateRuntimeExpression("constructor.constructor('x')", scope)).toBe(false);
   });
 
+  it("routes legacy recovery conditions against canonical human-form output", () => {
+    const scope = {
+      input: {},
+      nodes: {
+        execute_recovery: {
+          output: { recovery_status: "validated", completion_confirmed: true }
+        }
+      },
+      sourceOutput: {}
+    };
+
+    expect(
+      evaluateRuntimeExpression(
+        "${nodes.execute_recovery.output.recoveryStatus} == 'recovered'",
+        scope
+      )
+    ).toBe(true);
+    expect(
+      evaluateRuntimeExpression("${nodes.execute_recovery.output.completionConfirmed} == true", scope)
+    ).toBe(true);
+  });
+
   it("uses exact integer base units at the last available unit", () => {
     expect(addDecimalUnits("999999999999999999", "1")).toBe("1000000000000000000");
     expect(canReserveUnits("100", "60", "39", "1")).toBe(true);
