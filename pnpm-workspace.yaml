@@ -5,8 +5,8 @@ injectWorkspacePackages: true
 syncInjectedDepsAfterScripts:
   - build
 catalog:
-  "@types/node": 24.13.3
-  typescript: 6.0.3
+  "@types/node": 26.1.2
+  typescript: 7.0.2
   vitest: 4.1.10
 allowBuilds:
   "@swc/core": true
