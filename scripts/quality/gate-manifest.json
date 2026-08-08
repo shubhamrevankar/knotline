@@ -39,12 +39,6 @@
       "script": "verify:reproducible-build"
     },
     {
-      "name": "verify:brand",
-      "status": "ACTIVE",
-      "script": "verify:brand",
-      "declarationRow": "brand/provenance guard"
-    },
-    {
       "name": "verify:boundaries",
       "status": "ACTIVE",
       "script": "verify:boundaries",

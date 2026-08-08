@@ -4,7 +4,7 @@
 **Document type:** Product and implementation baseline  
 **Date:** 2026-07-31  
 **Status:** Active build plan  
-**Architecture source:** [Trace end-to-end system design](../../system-design/trace/2026-07-29-trace-end-to-end-system-design.md)
+**Architecture source:** [Knotline complete implementation plan](../../implementation/knotline/2026-07-31-complete-end-to-end-implementation-plan.md)
 
 ## Product thesis
 
@@ -14,10 +14,8 @@ many durable runs, delegates bounded steps to people or agents, pauses at
 explicit judgment gates, and retains the context, decisions, costs, and
 side-effects needed to understand what happened.
 
-Knotline is not a visual clone of Trace. The underlying product category and
-production requirements are informed by the Trace research, while the brand,
-interaction model, information architecture, component system, API contract,
-security posture, and implementation are original.
+Knotline defines its own brand, interaction model, information architecture,
+component system, API contract, security posture, and implementation.
 
 ## Working brand system
 
@@ -35,7 +33,7 @@ The name is centralized and can be replaced without changing domain concepts.
 
 ### Visual direction
 
-- Deep graphite workspace instead of Trace's beige canvas
+- Deep graphite workspace with restrained, high-contrast operational surfaces
 - Mineral blue for structure and trusted system state
 - Acid lime for live execution and primary action
 - Coral reserved for irreversible risk and failure

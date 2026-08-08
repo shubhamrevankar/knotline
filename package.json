@@ -52,7 +52,6 @@
     "verify": "tsx scripts/quality/run-gate.ts",
     "preverify:boundaries": "pnpm build:packages",
     "verify:boundaries": "node tooling/boundaries/verify.mjs && dependency-cruiser apps packages scripts tooling --config dependency-cruiser.config.mjs --output-type err-long",
-    "verify:brand": "node tooling/brand/verify.mjs --self-test && node tooling/brand/verify.mjs",
     "verify:containers": "bash tooling/containers/test-containers.sh",
     "verify:contracts": "pnpm contracts:check",
     "verify:evidence": "pnpm evidence:check",

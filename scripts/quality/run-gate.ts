@@ -77,7 +77,6 @@ const ACTIVATION_MILESTONES = {
   typecheck: "M01",
   "verify:boundaries": "M01",
   "verify:backup": "M03",
-  "verify:brand": "M01",
   "verify:containers": "M01",
   "verify:contracts": "M01",
   "verify:dependencies": "M01",

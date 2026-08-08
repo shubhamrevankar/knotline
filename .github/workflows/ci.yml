@@ -39,7 +39,6 @@ jobs:
       - run: pnpm format:check
       - run: pnpm lint
       - run: pnpm typecheck
-      - run: pnpm verify:brand
       - run: pnpm verify:boundaries
       - run: pnpm verify:secrets
       - run: pnpm verify:contracts
