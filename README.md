@@ -31,7 +31,7 @@
 
 <p align="center">
   <a href="https://youtu.be/SnxhRPikL0g">
-    <img src="./docs/assets/readme/workflow-map.webp" width="100%" alt="Knotline workflow library and visual workflow map" />
+    <img src="./docs/assets/readme/workflow-studio.webp" width="100%" alt="Knotline Workflow Studio showing an enterprise onboarding graph with approval, HubSpot, Slack, and escalation paths" />
   </a>
 </p>
 
@@ -118,6 +118,17 @@ flowchart LR
 | **Company knowledge**      | Safe document processing, classification, deterministic chunking, hybrid retrieval, pgvector search, short-lived authorization proofs, and citations.               |
 | **Operations**             | Pulse, global search, notifications, run history, timelines, generated reports, export, workspace membership, and policy controls.                                  |
 | **Governance**             | Tenant isolation, immutable definitions, append-only evidence, content-free operational logs, spend admission, kill switches, and audit-ready provenance.           |
+
+### Connected systems remain inside the control plane
+
+Connections are workspace-authorized capabilities rather than credentials
+embedded in workflow definitions. Knotline discovers supported actions, checks
+connection readiness before publication, refreshes OAuth tokens at runtime, and
+records bounded receipts for external effects.
+
+<p align="center">
+  <img src="./docs/assets/readme/connections.webp" width="100%" alt="Knotline Connections showing active HubSpot and Slack accounts" />
+</p>
 
 ## A complete operational journey
 
