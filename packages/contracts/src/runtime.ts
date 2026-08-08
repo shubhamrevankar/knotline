@@ -192,6 +192,8 @@ const normalizedDecisionValue = (reference: string, value: unknown): unknown => 
   // canonical recovery form records the equivalent state as "validated".
   if (/(?:^|\.)recovery_?status$/iu.test(reference) && normalized === "validated")
     return "recovered";
+  if (/(?:^|\.)communication_?status$/iu.test(reference) && normalized === "documented")
+    return "communicated";
   return normalized;
 };
 

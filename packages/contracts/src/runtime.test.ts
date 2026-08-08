@@ -139,6 +139,25 @@ describe("durable runtime contracts", () => {
     ).toBe(true);
   });
 
+  it("routes legacy communication conditions against canonical human-form output", () => {
+    const scope = {
+      input: {},
+      nodes: {
+        communicate_customer: {
+          output: { communication_status: "documented", completion_confirmed: true }
+        }
+      },
+      sourceOutput: {}
+    };
+
+    expect(
+      evaluateRuntimeExpression(
+        "${nodes.communicate_customer.output.communicationStatus} == 'communicated'",
+        scope
+      )
+    ).toBe(true);
+  });
+
   it("uses exact integer base units at the last available unit", () => {
     expect(addDecimalUnits("999999999999999999", "1")).toBe("1000000000000000000");
     expect(canReserveUnits("100", "60", "39", "1")).toBe(true);
