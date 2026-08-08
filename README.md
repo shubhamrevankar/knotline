@@ -14,7 +14,8 @@
 </p>
 
 <p align="center">
-  <a href="https://knotline.in"><strong>Open Knotline</strong></a> ·
+  <a href="https://youtu.be/SnxhRPikL0g"><strong>Watch the product walkthrough</strong></a> ·
+  <a href="https://knotline.in">Open Knotline</a> ·
   <a href="./docs/demo/knotline/2026-08-02-complete-product-demo.md">Product tour</a> ·
   <a href="./docs/README.md">Documentation</a> ·
   <a href="#run-knotline-locally">Run locally</a>
@@ -26,6 +27,17 @@
   <img alt="Temporal" src="https://img.shields.io/badge/Temporal-Durable%20Workflows-141414" />
   <img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-17-4169E1?logo=postgresql&logoColor=white" />
   <img alt="pnpm" src="https://img.shields.io/badge/pnpm-11.9-F69220?logo=pnpm&logoColor=white" />
+</p>
+
+<p align="center">
+  <a href="https://youtu.be/SnxhRPikL0g">
+    <img src="./docs/assets/readme/workflow-map.webp" width="100%" alt="Knotline workflow library and visual workflow map" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://youtu.be/SnxhRPikL0g"><strong>▶ Watch Knotline turn intent into an auditable outcome</strong></a><br />
+  <sub>Workflow generation, approval, human work, integrations, knowledge, search, reporting, and the final run result.</sub>
 </p>
 
 ---
@@ -50,6 +62,16 @@ A workflow is not a prompt or a checklist. It is a versioned graph with typed
 inputs, explicit owners, bounded AI work, human decisions, integration actions,
 failure routes, and terminal outcomes. Every run uses the published definition
 that started it and remains inspectable from immutable input to final result.
+
+### From a short request to a publishable system
+
+The generation gateway expands plain-language intent into a typed workflow,
+then exposes its assumptions, required capabilities, approval policy,
+integration plan, and simulated terminal paths before publication.
+
+<p align="center">
+  <img src="./docs/assets/readme/workflow-generation.webp" width="760" alt="Knotline generating a governed critical incident recovery workflow from a plain-language request" />
+</p>
 
 ```mermaid
 flowchart LR
@@ -121,6 +143,14 @@ The verified resolved path executed 12 of 14 nodes, skipped only the two
 irrelevant escalation nodes, delivered the coordination messages, and emitted
 `resolved_outcome` as the authoritative terminal result. The alternative path
 remains explicit and inspectable without being executed.
+
+<p align="center">
+  <img src="./docs/assets/readme/completed-run.webp" width="100%" alt="A successful Knotline run with 12 completed steps, two intentionally skipped paths, and an authoritative canonical outcome" />
+</p>
+
+<p align="center">
+  <sub>A completed run keeps the immutable input, published version, executed and skipped nodes, timeline, evidence, and canonical outcome together.</sub>
+</p>
 
 An enterprise onboarding workflow uses the same primitives to assess readiness,
 gate CRM creation behind approval, create and associate HubSpot company/contact
