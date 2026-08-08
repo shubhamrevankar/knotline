@@ -26,25 +26,25 @@ const teams = [
   [
     "01",
     "Operations",
-    "Coordinate recurring, cross-functional work with explicit owners, response targets, exceptions, and recovery.",
+    "Run recurring, cross-functional processes with explicit owners, service targets, exception paths, and recovery.",
     "/solutions/operations"
   ],
   [
     "02",
     "Customer support",
-    "Resolve consequential cases with complete account context, governed remediation, and visible customer communication.",
+    "Coordinate consequential cases with account context, approved remediation, and documented customer communication.",
     "/solutions/support"
   ],
   [
     "03",
     "Product teams",
-    "Turn signals into coordinated launch, feedback, and incident workflows shared across teams and agents.",
+    "Connect launch readiness, feedback, and incident work across teams, systems, and agents.",
     "/solutions/product"
   ],
   [
     "04",
     "IT & service delivery",
-    "Standardize access, change, incidents, and service delivery without hiding control inside brittle automation.",
+    "Standardize access, change, incident, and service workflows without burying control in scripts and handoffs.",
     "/solutions/it"
   ]
 ] as const;
@@ -54,35 +54,37 @@ const operationalFlow = [
     number: "01",
     label: "Signal",
     title: "A critical case arrives",
-    detail: "Capture the trigger, account context, severity, and response target.",
+    detail:
+      "Create one immutable run with the trigger, account context, severity, and response target.",
     icon: Zap
   },
   {
     number: "02",
     label: "Context",
     title: "Knowledge is assembled",
-    detail: "Bring verified customer, incident, and policy data into one case record.",
+    detail:
+      "Assemble the permitted customer, incident, and policy evidence needed for the decision.",
     icon: Database
   },
   {
     number: "03",
     label: "Action",
     title: "Agents move the work",
-    detail: "Investigate, draft, classify, and execute only within explicit authority.",
+    detail: "Let agents investigate and prepare actions within their published authority.",
     icon: Bot
   },
   {
     number: "04",
     label: "Judgment",
     title: "People approve the stakes",
-    detail: "Present evidence, recommendations, and impact to the accountable reviewer.",
+    detail: "Route the evidence, recommendation, and risk to the accountable reviewer.",
     icon: UserCheck
   },
   {
     number: "05",
     label: "Outcome",
     title: "The loop closes visibly",
-    detail: "Communicate, verify recovery, record the result, and retain the audit trail.",
+    detail: "Execute the approved path, verify the result, and retain the supporting evidence.",
     icon: FileCheck2
   }
 ] as const;
@@ -90,11 +92,11 @@ const operationalFlow = [
 const faq = [
   [
     "Is Knotline another task or automation tool?",
-    "No. Task tools track work and automation tools move data. Knotline coordinates an entire operation: workflow state, agent action, human judgment, source context, exceptions, and an inspectable history in one system."
+    "Not quite. Task tools track assignments and automation tools move data. Knotline keeps execution state, agent work, human decisions, connected context, exception handling, and evidence in the same versioned run."
   ],
   [
     "Do agents make decisions without our team?",
-    "Only where you explicitly allow it. Each agent has scoped instructions, connected knowledge, tools, and approval policy. High-impact actions can always stop at a human gate."
+    "Only within the authority you publish. Each agent has scoped instructions, knowledge, tools, output contracts, and approval policy. Consequential actions can be required to stop at a human gate."
   ],
   [
     "Does this replace the systems we already use?",
@@ -479,29 +481,26 @@ export function PublicHomeContent() {
       <section className="kh-problem kh-section">
         <div className="kh-wrap kh-section-heading">
           <span className="kh-section-index">01 / THE SHIFT</span>
-          <h2>
-            Your most important operations were never meant to live across tickets, chat,
-            spreadsheets, and opaque automation.
-          </h2>
+          <h2>When operational state is scattered, ownership and judgment disappear with it.</h2>
           <p>
-            Knotline gives the whole operation a shared state. Everyone can see what is happening,
-            what comes next, and where human judgment belongs.
+            Knotline brings triggers, context, actions, approvals, and outcomes into one shared run.
+            Everyone can see the current state, the next step, and who owns the decision.
           </p>
         </div>
         <div className="kh-wrap kh-before-after">
           <div className="kh-chaos" aria-label="Disconnected operations before Knotline">
             <span className="kh-chaos__label">BEFORE</span>
             <div className="kh-chaos__item">
-              Spreadsheet <small>Owner unclear</small>
+              Spreadsheet <small>Context fragmented</small>
             </div>
             <div className="kh-chaos__item">
-              #incident-war-room <small>126 new messages</small>
+              #incident-war-room <small>Decision buried</small>
             </div>
             <div className="kh-chaos__item">
-              Automation run <small>Failed silently</small>
+              Automation run <small>Failure disconnected</small>
             </div>
             <div className="kh-chaos__item">
-              Approval request <small>Waiting 3 hours</small>
+              Approval request <small>Owner unclear</small>
             </div>
           </div>
           <div className="kh-transition" aria-hidden="true">
@@ -529,7 +528,7 @@ export function PublicHomeContent() {
             </div>
             <div className="kh-clarity__footer">
               <strong>Everyone sees the same truth.</strong>
-              <span>One owner · One status · Full history</span>
+              <span>One run · Explicit owners · Durable history</span>
             </div>
           </div>
         </div>
@@ -539,31 +538,31 @@ export function PublicHomeContent() {
         <div className="kh-wrap kh-section-heading kh-section-heading--split">
           <div>
             <span className="kh-section-index">02 / THE PLATFORM</span>
-            <h2>From process to outcome, without losing control.</h2>
+            <h2>Design the work. Govern the execution.</h2>
           </div>
           <p>
-            Design the operation, equip the agents, route judgment, and follow the live execution in
-            one continuous product.
+            Model the operation, define agent authority, route human judgment, and follow every run
+            in one continuous system.
           </p>
         </div>
         <div className="kh-wrap kh-feature kh-feature--builder">
           <div className="kh-feature__copy">
             <span>01 · WORKFLOWS</span>
-            <h3>Turn how your team works into a system everyone can follow.</h3>
+            <h3>Model the work your team actually performs.</h3>
             <p>
-              Describe an outcome or build visually. Add logic, parallel paths, retries, owners,
-              data contracts, review steps, and safe failure handling—then publish a version your
-              team can trust.
+              Start with plain language or build visually. Define branching, parallel work, retries,
+              owners, typed data, approval gates, and failure paths—then validate and publish an
+              immutable version.
             </p>
             <ul>
               <li>
-                <Check /> Natural-language generation
+                <Check /> Prompt-to-workflow generation
               </li>
               <li>
-                <Check /> Visual editing and branching
+                <Check /> Typed steps and conditional paths
               </li>
               <li>
-                <Check /> Validation before publishing
+                <Check /> Pre-publish graph validation
               </li>
             </ul>
             <Link to="/product/workflows">
@@ -576,20 +575,20 @@ export function PublicHomeContent() {
           <AgentPreview />
           <div className="kh-feature__copy">
             <span>02 · AGENTS</span>
-            <h3>Delegate the work. Keep authority explicit.</h3>
+            <h3>Give agents responsibility—not unchecked authority.</h3>
             <p>
-              Give each agent a job, trusted knowledge, permitted tools, and a clear boundary.
-              Version every change and require review before consequential action.
+              Configure the job, instructions, knowledge, tools, output schema, and approval policy.
+              Test and version the agent before a workflow can depend on it.
             </p>
             <ul>
               <li>
-                <Check /> Scoped tools and knowledge
+                <Check /> Scoped knowledge and tools
               </li>
               <li>
-                <Check /> Test before publishing
+                <Check /> Typed output contracts
               </li>
               <li>
-                <Check /> Human approval policies
+                <Check /> Versioned review and publishing
               </li>
             </ul>
             <Link to="/product/agents">
@@ -600,18 +599,17 @@ export function PublicHomeContent() {
         <div className="kh-wrap kh-feature">
           <div className="kh-feature__copy">
             <span>03 · EXECUTION</span>
-            <h3>Give operators a live room, not another status page.</h3>
+            <h3>Operate the run, not a collection of status updates.</h3>
             <p>
-              Follow progress at the level that matters. See inputs, outputs, ownership, elapsed
-              time, exceptions, and the exact context behind each decision—and act without leaving
-              the run.
+              Inspect immutable input, step-level state, outputs, ownership, elapsed time, and
+              exceptions. Claim human work, review evidence, and intervene without leaving the run.
             </p>
             <ul>
               <li>
-                <Check /> Live execution timeline
+                <Check /> Live step-level state
               </li>
               <li>
-                <Check /> Human tasks and approvals
+                <Check /> Claimable work and approvals
               </li>
               <li>
                 <Check /> Retry, recover, and resume
@@ -630,17 +628,18 @@ export function PublicHomeContent() {
             <h3>Answer “what happened?” without reconstructing the story.</h3>
             <p>
               Every input, agent action, approval, tool call, retry, and outcome becomes part of one
-              inspectable run history. Operators can diagnose quickly; leaders can trust the system.
+              inspectable history. Trace any outcome back to its workflow version, evidence, actor,
+              and decision.
             </p>
             <ul>
               <li>
                 <Check /> Source-linked decisions
               </li>
               <li>
-                <Check /> Immutable workflow versions
+                <Check /> Immutable workflow and agent versions
               </li>
               <li>
-                <Check /> Exportable evidence history
+                <Check /> Exportable audit evidence
               </li>
             </ul>
             <Link to="/security">
@@ -654,11 +653,11 @@ export function PublicHomeContent() {
         <div className="kh-wrap kh-section-heading kh-section-heading--split">
           <div>
             <span className="kh-section-index">03 / ONE REAL OPERATION</span>
-            <h2>A critical customer case, coordinated end to end.</h2>
+            <h2>One workflow. Every handoff accounted for.</h2>
           </div>
           <p>
-            A single run can carry complex work across systems, agents, and teams while preserving
-            one clear line of accountability.
+            See how a critical customer case moves across systems, agents, and people while
+            preserving one clear line of accountability.
           </p>
         </div>
         <ol className="kh-wrap kh-operational-flow">
@@ -676,15 +675,15 @@ export function PublicHomeContent() {
         </ol>
         <div className="kh-wrap kh-example__result">
           <span>
-            <GitBranch /> 26 coordinated steps
+            <GitBranch /> Multi-system execution
           </span>
           <i />
           <span>
-            <Clock3 /> One live response target
+            <Clock3 /> Explicit response target
           </span>
           <i />
           <span>
-            <ShieldCheck /> Complete evidence trail
+            <ShieldCheck /> Exportable evidence trail
           </span>
         </div>
       </section>
@@ -692,7 +691,7 @@ export function PublicHomeContent() {
       <section className="kh-principles kh-section">
         <div className="kh-wrap kh-section-heading">
           <span className="kh-section-index">04 / BUILT FOR THE WORK</span>
-          <h2>One operating foundation. Four teams that cannot afford ambiguity.</h2>
+          <h2>One operating model, adapted to the teams doing the work.</h2>
         </div>
         <div className="kh-wrap kh-principle-grid">
           {teams.map(([number, title, body, href]) => (
@@ -714,8 +713,8 @@ export function PublicHomeContent() {
             <span className="kh-section-index">05 / GOVERNANCE BY DESIGN</span>
             <h2>Trust is part of the workflow, not a promise around it.</h2>
             <p>
-              Knotline keeps access, context, authority, and evidence close to the work itself—so
-              teams can automate more without surrendering oversight.
+              Access, context, authority, and evidence live with the run—so execution remains
+              reviewable before, during, and after automation acts.
             </p>
             <Link className="kh-button kh-button--light" to="/security">
               Visit the security center <ArrowRight />
@@ -725,24 +724,24 @@ export function PublicHomeContent() {
             <article>
               <LockKeyhole />
               <h3>Explicit authority</h3>
-              <p>Roles, agent tools, and approval gates define who—or what—can take each action.</p>
+              <p>
+                Workspace roles, tool scopes, and approval gates define who can take each action.
+              </p>
             </article>
             <article>
               <Network />
               <h3>Permission-aware context</h3>
-              <p>Knowledge remains scoped to the identity and workspace allowed to use it.</p>
+              <p>Agents retrieve only the knowledge available to their workspace and authority.</p>
             </article>
             <article>
               <FileCheck2 />
               <h3>Versioned operations</h3>
-              <p>Published workflows and agents retain a stable, attributable change history.</p>
+              <p>Published workflows and agents are immutable, attributable execution contracts.</p>
             </article>
             <article>
               <Search />
               <h3>Inspectable execution</h3>
-              <p>
-                Run history keeps the inputs, actions, decisions, failures, and outcomes together.
-              </p>
+              <p>Every run retains its inputs, actions, decisions, failures, and final outcome.</p>
             </article>
           </div>
         </div>
@@ -752,10 +751,10 @@ export function PublicHomeContent() {
         <div className="kh-wrap kh-faq__layout">
           <div className="kh-faq__intro">
             <span className="kh-section-index">06 / QUESTIONS, ANSWERED</span>
-            <h2>Know what you are putting at the center of operations.</h2>
+            <h2>Questions teams ask before governing real work.</h2>
             <p>
-              Start with a single workflow. Add systems and agents as the operating model proves
-              itself.
+              Start with a human-led workflow, make it observable, then add agents and integrations
+              behind explicit controls.
             </p>
             <Link to="/contact">
               Talk with us <ArrowRight />
