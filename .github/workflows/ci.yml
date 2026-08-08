@@ -41,6 +41,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm verify:brand
       - run: pnpm verify:boundaries
+      - run: pnpm verify:secrets
       - run: pnpm verify:contracts
       - run: pnpm verify:openapi
       - run: pnpm verify:events

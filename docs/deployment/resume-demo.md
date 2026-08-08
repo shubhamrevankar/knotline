@@ -7,12 +7,13 @@ This deployment runs the same web application, API, durable Temporal worker, Pos
 - Google OAuth sessions use secure cookies.
 - Workflow generation calls OpenAI through the isolated model gateway.
 - Published agent nodes execute their saved prompts and output contracts against run context.
+- Slack OAuth connections send governed messages and retain provider delivery receipts.
 - REST and signed-webhook connections send real HTTPS requests and retain delivery receipts.
 - Workflow runs use Temporal and PostgreSQL rather than browser state.
 - Magic links and workspace invitations use Resend when enabled.
 - Caddy obtains and renews TLS certificates automatically.
 
-The other provider catalog entries remain visibly marked as requiring provider certification. Do not present Slack, Salesforce, Google Drive, or similar catalog entries as live integrations until their OAuth adapters are implemented.
+Provider catalog entries without a tested adapter remain visibly marked as requiring provider certification. Do not present Salesforce, Google Drive, or another catalog entry as live until its OAuth adapter and delivery path have passed the same acceptance test as Slack.
 
 ## Required accounts
 

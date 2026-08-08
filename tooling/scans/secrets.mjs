@@ -37,7 +37,7 @@ const rules = [
   {
     id: "assigned-secret",
     expression:
-      /(?:api[_-]?key|password|secret|token)\s*[:=]\s*(?:"([^"\r\n]{12,256})"|'([^'\r\n]{12,256})'|([a-z0-9][a-z0-9_./+=:@-]{11,255})\s*(?=$|#))/gimu
+      /(?:api[_-]?key|password|secret|token)[ \t]*[:=][ \t]*(?:"([^"\r\n]{12,256})"|'([^'\r\n]{12,256})'|([a-z0-9][a-z0-9_./+=:@-]{11,255})[ \t]*(?=$|#))/gimu
   }
 ];
 
@@ -102,6 +102,8 @@ function selfTest() {
       safe,
       [
         'password="local-only-not-a-secret"',
+        "API_KEY=",
+        "CLIENT_SECRET=",
         "const TOKEN = /^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$/;",
         "const token = inheritedToken();",
         "ClientRequestToken = base64url(SHA-256(recordIdentity))"

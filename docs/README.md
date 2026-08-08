@@ -9,7 +9,8 @@ workspace.
 
 ## File-placement convention
 
-- Do not place generated Markdown files at the workspace root.
+- Keep the repository landing page at `/README.md`; place all other generated
+  Markdown artifacts under `docs/`.
 - Put each Markdown artifact in a task-appropriate subfolder under `docs/`.
 - Prefer the structure `docs/<category>/<subject>/`.
 - Use lowercase kebab-case for directory and file names.
