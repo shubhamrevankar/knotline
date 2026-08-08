@@ -1,29 +1,25 @@
 /* eslint-disable knotline/no-hardcoded-user-visible-string -- This is the owned English marketing surface. */
+import { useState } from "react";
 import {
   ArrowRight,
   Bot,
   Check,
   CheckCircle2,
-  Circle,
   Clock3,
   Database,
   FileCheck2,
   GitBranch,
   LockKeyhole,
-  MessageSquareText,
   Network,
   Play,
   Search,
   ShieldCheck,
   UserCheck,
-  UsersRound,
-  Waypoints,
   Workflow,
   Zap
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import { KnotlineMark } from "./KnotlineLogo.js";
 import "./PublicHomePage.css";
 
 const teams = [
@@ -114,155 +110,66 @@ const faq = [
   ]
 ] as const;
 
-function RunRoomPreview() {
+function DemoShowcase() {
+  const [isPlaying, setIsPlaying] = useState(false);
+
   return (
-    <div
-      className="kh-app"
-      aria-label="Product preview showing a live enterprise customer recovery run"
-    >
-      <div className="kh-app__rail" aria-hidden="true">
-        <KnotlineMark className="kh-app__brand" size={24} />
-        <span className="is-active">
-          <Waypoints />
+    <div className="kh-demo" id="demo">
+      <div className="kh-demo__chrome" aria-hidden="true">
+        <span className="kh-demo__dots">
+          <i />
+          <i />
+          <i />
         </span>
-        <span>
-          <Workflow />
-        </span>
-        <span>
-          <Bot />
-        </span>
-        <span>
-          <UsersRound />
+        <span className="kh-demo__chrome-label">Product walkthrough</span>
+        <span className="kh-demo__live">
+          <i /> Knotline in action
         </span>
       </div>
-      <div className="kh-app__main">
-        <header className="kh-app__topbar">
-          <div>
-            <span>Runs</span>
-            <b>/</b>
-            <strong>Enterprise customer recovery</strong>
-          </div>
-          <div className="kh-app__status">
-            <i /> Live updates
-          </div>
-        </header>
-        <section className="kh-run">
-          <div className="kh-run__heading">
-            <div>
-              <span className="kh-ui-label">RUN 1842 · PRODUCTION</span>
-              <h2>Enterprise customer recovery orchestration</h2>
-              <p>Critical account · Response target 45 minutes</p>
-            </div>
-            <span className="kh-pill kh-pill--live">
-              <Play /> Running
-            </span>
-          </div>
-          <div className="kh-run__metrics">
-            <span>
-              <small>Progress</small>
-              <strong>9 / 26</strong>
-            </span>
-            <span>
-              <small>Elapsed</small>
-              <strong>18m 24s</strong>
-            </span>
-            <span>
-              <small>Owner</small>
-              <strong>Recovery team</strong>
-            </span>
-            <span>
-              <small>Health</small>
-              <strong className="kh-positive">On track</strong>
-            </span>
-          </div>
-          <div className="kh-run__body">
-            <div className="kh-timeline">
-              <div className="kh-timeline__top">
-                <strong>Execution</strong>
-                <span>26 steps</span>
-              </div>
-              <div className="kh-step is-done">
-                <CheckCircle2 />
-                <span>
-                  <strong>Normalize account and incident context</strong>
-                  <small>Transform · Completed in 2.4s</small>
-                </span>
-                <time>13:46</time>
-              </div>
-              <div className="kh-step is-done">
-                <CheckCircle2 />
-                <span>
-                  <strong>Collect product and support evidence</strong>
-                  <small>Agent · 14 sources verified</small>
-                </span>
-                <time>13:49</time>
-              </div>
-              <div className="kh-step is-active">
-                <span className="kh-step__number">9</span>
-                <span>
-                  <strong>Review customer recovery proposal</strong>
-                  <small>Human approval · Assigned to Nora Singh</small>
-                </span>
-                <span className="kh-pill kh-pill--waiting">Review</span>
-              </div>
-              <div className="kh-step">
-                <Circle />
-                <span>
-                  <strong>Execute governed remediation</strong>
-                  <small>Action · Waiting for approval</small>
-                </span>
-                <time>—</time>
-              </div>
-              <div className="kh-step">
-                <Circle />
-                <span>
-                  <strong>Verify recovery and close the loop</strong>
-                  <small>Agent + human task</small>
-                </span>
-                <time>—</time>
-              </div>
-            </div>
-            <aside className="kh-review">
-              <div className="kh-review__label">
-                <ShieldCheck /> HUMAN JUDGMENT
-              </div>
-              <h3>Recovery proposal ready</h3>
-              <p>
-                The response is inside policy and the remediation has no irreversible external
-                writes.
-              </p>
-              <dl>
-                <div>
-                  <dt>Evidence</dt>
-                  <dd>14 verified sources</dd>
-                </div>
-                <div>
-                  <dt>Recommendation</dt>
-                  <dd>Approve with monitoring</dd>
-                </div>
-                <div>
-                  <dt>Risk</dt>
-                  <dd>
-                    <span className="kh-risk">Low</span>
-                  </dd>
-                </div>
-              </dl>
-              <div className="kh-review__note">
-                <MessageSquareText />
-                <span>
-                  <strong>Agent rationale</strong>
-                  <small>
-                    Customer impact is contained. Rollback remains available for 24 hours.
-                  </small>
-                </span>
-              </div>
-              <div className="kh-review__actions">
-                <span>Request changes</span>
-                <span>Approve step</span>
-              </div>
-            </aside>
-          </div>
-        </section>
+      <div className="kh-demo__stage">
+        {isPlaying ? (
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/SnxhRPikL0g?autoplay=1&rel=0"
+            title="Knotline product walkthrough"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        ) : (
+          <>
+            <img
+              src="/product/workflow-studio.webp"
+              alt="Knotline workflow studio showing a governed enterprise onboarding workflow"
+            />
+            <div className="kh-demo__shade" aria-hidden="true" />
+            <button
+              className="kh-demo__play"
+              type="button"
+              onClick={() => setIsPlaying(true)}
+              aria-label="Play the Knotline product walkthrough"
+            >
+              <span>
+                <Play fill="currentColor" />
+              </span>
+              <strong>Watch Knotline work</strong>
+              <small>Generation, approvals, integrations, and the final audit trail</small>
+            </button>
+          </>
+        )}
+      </div>
+      <div className="kh-demo__chapters" aria-label="Walkthrough highlights">
+        <span>
+          <Workflow /> Plain-language generation
+        </span>
+        <span>
+          <UserCheck /> Human approval
+        </span>
+        <span>
+          <Network /> HubSpot + Slack
+        </span>
+        <span>
+          <FileCheck2 /> Canonical outcome
+        </span>
       </div>
     </div>
   );
@@ -530,8 +437,8 @@ export function PublicHomeContent() {
             <Link className="kh-button kh-button--primary" to="/auth/sign-in">
               Start building <ArrowRight />
             </Link>
-            <a className="kh-button kh-button--quiet" href="#platform">
-              See how it works <Play />
+            <a className="kh-button kh-button--quiet" href="#demo">
+              Watch the walkthrough <Play />
             </a>
           </div>
           <div className="kh-assurance" aria-label="Platform assurances">
@@ -547,7 +454,7 @@ export function PublicHomeContent() {
           </div>
         </div>
         <div className="kh-wrap kh-hero__product">
-          <RunRoomPreview />
+          <DemoShowcase />
         </div>
         <div className="kh-wrap kh-proofbar">
           <p>For operations, support, product, and IT teams</p>
