@@ -16,7 +16,7 @@
   "dependencies": {
     "@knotline/contracts": "workspace:*",
     "@knotline/ui": "workspace:*",
-    "@tanstack/react-query": "5.90.5",
+    "@tanstack/react-query": "5.101.4",
     "@xyflow/react": "12.11.2",
     "lucide-react": "0.553.0",
     "react": "19.2.8",
