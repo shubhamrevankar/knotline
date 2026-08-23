@@ -7,7 +7,7 @@ syncInjectedDepsAfterScripts:
 catalog:
   "@types/node": 24.13.3
   typescript: 6.0.3
-  vitest: 4.1.10
+  vitest: 4.1.11
 allowBuilds:
   "@swc/core": true
   esbuild: true
